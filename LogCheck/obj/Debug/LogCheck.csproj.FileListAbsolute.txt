@@ -1,0 +1,15 @@
+C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\LogCheck.csproj.AssemblyReference.cache
+C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\MainWindow.g.cs
+C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\App.g.cs
+C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\LogCheck_MarkupCompile.cache
+C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\LogCheck_MarkupCompile.lref
+C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\LogCheck.exe.config
+C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\LogCheck.exe
+C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\LogCheck.pdb
+C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\MainWindow.baml
+C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\LogCheck.g.resources
+C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\LogCheck.Properties.Resources.resources
+C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\LogCheck.csproj.GenerateResource.cache
+C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
+C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\LogCheck.exe
+C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\LogCheck.pdb

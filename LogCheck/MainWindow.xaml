@@ -1,0 +1,36 @@
+﻿<Window x:Class="WindowsSentinel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WindowsSentinel"
+        mc:Ignorable="d"
+        Title="Windows Sentinel" Height="600" Width="1000">
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Margin="10">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <RadioButton x:Name="rb1Day" Content="1일 이내" IsChecked="True" Margin="0,0,10,0"/>
+                <RadioButton x:Name="rb7Days" Content="7일 이내" Margin="0,0,10,0"/>
+                <RadioButton x:Name="rb30Days" Content="30일 이내" Margin="0,0,10,0"/>
+            </StackPanel>
+            <Button x:Name="btnCollectPrograms" Content="설치된 프로그램 검사" 
+                    Click="btnCollectPrograms_Click" Padding="10,5"/>
+        </StackPanel>
+
+        <DataGrid x:Name="programDataGrid" Grid.Row="1" Margin="10" 
+                  AutoGenerateColumns="False" IsReadOnly="True"
+                  AlternatingRowBackground="#F5F5F5">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="프로그램 이름" Binding="{Binding Name}" Width="250"/>
+                <DataGridTextColumn Header="설치 날짜" Binding="{Binding InstallDate}" Width="150"/>
+                <DataGridTextColumn Header="제조사" Binding="{Binding Publisher}" Width="200"/>
+                <DataGridTextColumn Header="설치 위치" Binding="{Binding InstallLocation}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
