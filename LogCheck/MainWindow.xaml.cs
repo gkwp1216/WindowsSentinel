@@ -5,6 +5,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
 using Microsoft.Win32;
+using System.Security.Cryptography.X509Certificates;
+using System.IO;
+using System.Diagnostics;
 
 namespace WindowsSentinel
 {
@@ -94,6 +97,7 @@ namespace WindowsSentinel
                                     else if (installDate >= day30) period = "30일 이내";
                                     else continue;
 
+                                    var securityInfo = GetSecurityInfo(installLocation);
                                     programList.Add(new ProgramInfo
                                     {
                                         Name = name,
@@ -101,7 +105,10 @@ namespace WindowsSentinel
                                         Period = period,
                                         Version = version ?? "알 수 없음",
                                         Publisher = publisher ?? "알 수 없음",
-                                        InstallLocation = installLocation ?? "알 수 없음"
+                                        InstallLocation = installLocation ?? "알 수 없음",
+                                        SecurityLevel = securityInfo.SecurityLevel,
+                                        SecurityDetails = securityInfo.Details,
+                                        HasSecurityChanges = securityInfo.HasSecurityChanges
                                     });
                                 }
                             }
@@ -116,6 +123,94 @@ namespace WindowsSentinel
                           "검사 완료", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+        private SecurityInfo GetSecurityInfo(string installLocation)
+        {
+            var securityInfo = new SecurityInfo();
+            
+            if (string.IsNullOrEmpty(installLocation) || installLocation == "알 수 없음")
+            {
+                securityInfo.SecurityLevel = "알 수 없음";
+                securityInfo.Details = "설치 위치를 찾을 수 없음";
+                return securityInfo;
+            }
+
+            try
+            {
+                // 방화벽 규칙 확인
+                using (RegistryKey firewallKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallRules"))
+                {
+                    if (firewallKey != null)
+                    {
+                        var rules = firewallKey.GetValueNames()
+                            .Where(name => name.Contains(installLocation))
+                            .ToList();
+                        
+                        if (rules.Any())
+                        {
+                            securityInfo.HasSecurityChanges = true;
+                            securityInfo.Details += "방화벽 규칙이 추가됨\n";
+                        }
+                    }
+                }
+
+                // Windows Defender 예외 확인
+                using (RegistryKey defenderKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths"))
+                {
+                    if (defenderKey != null)
+                    {
+                        var exclusions = defenderKey.GetValueNames()
+                            .Where(name => name.Contains(installLocation))
+                            .ToList();
+                        
+                        if (exclusions.Any())
+                        {
+                            securityInfo.HasSecurityChanges = true;
+                            securityInfo.Details += "Windows Defender 예외로 등록됨\n";
+                        }
+                    }
+                }
+
+                // 실행 파일의 디지털 서명 확인
+                var exeFiles = Directory.GetFiles(installLocation, "*.exe", SearchOption.AllDirectories);
+                foreach (var exeFile in exeFiles)
+                {
+                    try
+                    {
+                        var cert = X509Certificate.CreateFromSignedFile(exeFile);
+                        if (cert != null)
+                        {
+                            securityInfo.Details += $"디지털 서명 확인됨: {Path.GetFileName(exeFile)}\n";
+                        }
+                    }
+                    catch
+                    {
+                        securityInfo.Details += $"디지털 서명 없음: {Path.GetFileName(exeFile)}\n";
+                    }
+                }
+
+                // 보안 수준 결정
+                if (securityInfo.HasSecurityChanges)
+                {
+                    securityInfo.SecurityLevel = "높음";
+                }
+                else if (securityInfo.Details.Contains("디지털 서명"))
+                {
+                    securityInfo.SecurityLevel = "중간";
+                }
+                else
+                {
+                    securityInfo.SecurityLevel = "낮음";
+                }
+            }
+            catch (Exception ex)
+            {
+                securityInfo.SecurityLevel = "오류";
+                securityInfo.Details = $"보안 정보 수집 중 오류 발생: {ex.Message}";
+            }
+
+            return securityInfo;
+        }
+
         private void DisplayFilteredPrograms()
         {
             string selectedPeriod = "";
@@ -126,7 +221,7 @@ namespace WindowsSentinel
             var filteredPrograms = programList.Where(p => 
             {
                 if (selectedPeriod == "30일 이내")
-                    return true; // 30일 이내 선택 시 모든 프로그램 표시
+                    return true;
                 return p.Period == selectedPeriod;
             })
             .OrderBy(p => p.InstallDate)
@@ -144,6 +239,16 @@ namespace WindowsSentinel
             public string Version { get; set; }
             public string Publisher { get; set; }
             public string InstallLocation { get; set; }
+            public string SecurityLevel { get; set; }
+            public string SecurityDetails { get; set; }
+            public bool HasSecurityChanges { get; set; }
+        }
+
+        private class SecurityInfo
+        {
+            public string SecurityLevel { get; set; }
+            public string Details { get; set; }
+            public bool HasSecurityChanges { get; set; }
         }
     }
 }
