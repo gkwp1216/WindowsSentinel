@@ -123,9 +123,14 @@ namespace WindowsSentinel
             else if (rb7Days.IsChecked == true) selectedPeriod = "7일 이내";
             else if (rb30Days.IsChecked == true) selectedPeriod = "30일 이내";
 
-            var filteredPrograms = programList.Where(p => p.Period == selectedPeriod)
-                                            .OrderBy(p => p.InstallDate)
-                                            .ToList();
+            var filteredPrograms = programList.Where(p => 
+            {
+                if (selectedPeriod == "30일 이내")
+                    return true; // 30일 이내 선택 시 모든 프로그램 표시
+                return p.Period == selectedPeriod;
+            })
+            .OrderBy(p => p.InstallDate)
+            .ToList();
 
             programDataGrid.ItemsSource = filteredPrograms;
             Title = $"Windows Sentinel - {selectedPeriod} 설치된 프로그램 ({filteredPrograms.Count}개)";

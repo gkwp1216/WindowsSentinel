@@ -1,0 +1,11 @@
+[
+  {
+    "Name": "새 프로필",
+    "Projects": [
+      {
+        "Path": "WpfApp1.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
