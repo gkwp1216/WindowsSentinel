@@ -22,7 +22,7 @@
                     Click="btnCollectPrograms_Click" Padding="10,5"/>
         </StackPanel>
 
-        <DataGrid x:Name="programDataGrid" Grid.Row="1" Margin="10" 
+        <DataGrid x:Name="programDataGrid" Grid.Row="1" Margin="10,10,10,34" 
                   AutoGenerateColumns="False" IsReadOnly="True"
                   AlternatingRowBackground="#F5F5F5"
                   CanUserResizeColumns="True"
