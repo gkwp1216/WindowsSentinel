@@ -10,3 +10,7 @@
 UI 개선:
 	보안 수준을 색상으로 구분 (빨간색: 높음, 주황색: 중간, 초록색: 낮음)
 	보안 상세 정보 컬럼 추가
+
+WMI(Windows Management Instrumentation) 사용하여 antivirus 프로그램 정보 확인
+ㄴ Windows Security Center API 사용 *
+ㄴ WMI(Windows Management Instrumentation) 사용

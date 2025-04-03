@@ -23,8 +23,10 @@
                     Click="btnCollectPrograms_Click" Padding="10,5"/>
             <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
                 <Button x:Name="btnDefenderAntivirus" Content="Windows Defender Antivirus" Margin="0,0,10,0" Padding="10,5" Background="LightGray" Click="btnDefenderAntivirus_Click"/>
-                <Button x:Name="btnDefenderFirewall" Content="Windows Defender Firewall" Margin="0,0,10,0" Padding="10,5" Background="LightGray" Click="btnDefenderFirewall_Click"/>
-                <Button x:Name="btnDefenderSmartScreen" Content="Windows Defender SmartScreen" Margin="0,0,10,0" Padding="10,5" Background="LightGray" Click="btnDefenderSmartScreen_Click"/>
+                <Button x:Name="btnDefenderFirewall" Content="Windows 방화벽" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="120" Height="30" Click="btnDefenderFirewall_Click"/>
+                <TextBlock x:Name="txtFirewallDomainStatus" HorizontalAlignment="Left" Margin="140,10,0,0" VerticalAlignment="Top" Width="100"/>
+                <TextBlock x:Name="txtFirewallPrivateStatus" HorizontalAlignment="Left" Margin="250,10,0,0" VerticalAlignment="Top" Width="100"/>
+                <TextBlock x:Name="txtFirewallPublicStatus" HorizontalAlignment="Left" Margin="360,10,0,0" VerticalAlignment="Top" Width="100"/>
             </StackPanel>
         </StackPanel>
 

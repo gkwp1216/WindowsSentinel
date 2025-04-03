@@ -7,6 +7,8 @@ using System.Linq;
 using Microsoft.Win32;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Management;
 
 /// <summary>
 /// Windows Sentinel - 시스템에 설치된 프로그램 모니터링 및 보안 분석 도구
@@ -327,21 +329,29 @@ namespace WindowsSentinel
         }
 
         /// <summary>
-        /// Windows Defender Antivirus, Windows Defender Firewall, Windows Defender SmartScreen 상태 확인 및 버튼 색상 업데이트
+        /// Windows Security Center API를 사용하여 보안 상태 확인
         /// </summary>
         private void CheckSecurityStatus()
         {
-            // Windows Defender Antivirus 상태 확인
-            bool isAntivirusEnabled = IsDefenderAntivirusEnabled();
-            btnDefenderAntivirus.Background = isAntivirusEnabled ? Brushes.LightGreen : Brushes.LightCoral;
+            bool isAntivirusEnabled = SecurityCenterHelper.IsAntivirusHealthy();
+            var (isDomainFirewallEnabled, isPrivateFirewallEnabled, isPublicFirewallEnabled) = SecurityCenterHelper.IsFirewallHealthy();
 
-            // Windows Defender Firewall 상태 확인
-            bool isFirewallEnabled = IsDefenderFirewallEnabled();
-            btnDefenderFirewall.Background = isFirewallEnabled ? Brushes.LightGreen : Brushes.LightCoral;
+            // UI 업데이트
+            UpdateSecurityUI(isAntivirusEnabled, isDomainFirewallEnabled, isPrivateFirewallEnabled, isPublicFirewallEnabled);
+        }
 
-            // Windows Defender SmartScreen 상태 확인
-            bool isSmartScreenEnabled = IsDefenderSmartScreenEnabled();
-            btnDefenderSmartScreen.Background = isSmartScreenEnabled ? Brushes.LightGreen : Brushes.LightCoral;
+        /// <summary>
+        /// UI 업데이트
+        /// </summary>
+        private void UpdateSecurityUI(bool isAntivirusEnabled, bool isDomainFirewallEnabled, bool isPrivateFirewallEnabled, bool isPublicFirewallEnabled)
+        {
+            btnDefenderAntivirus.Background = isAntivirusEnabled ? Brushes.Green : Brushes.Red;
+            btnDefenderFirewall.Background = isDomainFirewallEnabled && isPrivateFirewallEnabled && isPublicFirewallEnabled ? Brushes.Green : Brushes.Red;
+
+            // 도메인, 개인, 공용 프로필 상태 표시
+            txtFirewallDomainStatus.Text = isDomainFirewallEnabled ? "도메인: 활성화" : "도메인: 비활성화";
+            txtFirewallPrivateStatus.Text = isPrivateFirewallEnabled ? "개인: 활성화" : "개인: 비활성화";
+            txtFirewallPublicStatus.Text = isPublicFirewallEnabled ? "공용: 활성화" : "공용: 비활성화";
         }
 
         /// <summary>
@@ -352,49 +362,75 @@ namespace WindowsSentinel
             CheckSecurityStatus();
         }
 
-        private void btnDefenderFirewall_Click(object sender, RoutedEventArgs e)
+        private void btnDefenderFirewallDomain_Click(object sender, RoutedEventArgs e)
         {
             CheckSecurityStatus();
         }
 
-        private void btnDefenderSmartScreen_Click(object sender, RoutedEventArgs e)
+        private void btnDefenderFirewallPrivate_Click(object sender, RoutedEventArgs e)
+        {
+            CheckSecurityStatus();
+        }
+
+        private void btnDefenderFirewallPublic_Click(object sender, RoutedEventArgs e)
         {
             CheckSecurityStatus();
         }
 
         /// <summary>
-        /// Windows Defender Antivirus 활성화 여부 확인
+        /// Windows Security Center API 헬퍼 클래스
         /// </summary>
-        /// <returns>활성화 여부</returns>
-        private bool IsDefenderAntivirusEnabled()
+        public class SecurityCenterHelper
         {
-            using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows Defender\Real-Time Protection"))
+            public static bool IsAntivirusHealthy()
             {
-                return key?.GetValue("DisableRealtimeMonitoring")?.ToString() == "0";
+                try
+                {
+                    using (var searcher = new ManagementObjectSearcher("root\SecurityCenter2", "SELECT * FROM AntiVirusProduct"))
+                    {
+                        var antivirusProducts = searcher.Get();
+                        foreach (ManagementObject product in antivirusProducts)
+                        {
+                            if (product["productState"] != null)
+                            {
+                                int productState = Convert.ToInt32(product["productState"]);
+                                return (productState & 0x1000) == 0x1000;
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    // 예외 발생 시 비활성화 상태로 간주
+                }
+                return false;
             }
-        }
 
-        /// <summary>
-        /// Windows Defender Firewall 활성화 여부 확인
-        /// </summary>
-        /// <returns>활성화 여부</returns>
-        private bool IsDefenderFirewallEnabled()
-        {
-            using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile"))
+            public static (bool Domain, bool Private, bool Public) IsFirewallHealthy()
             {
-                return key?.GetValue("EnableFirewall")?.ToString() == "1";
-            }
-        }
-
-        /// <summary>
-        /// Windows Defender SmartScreen 활성화 여부 확인
-        /// </summary>
-        /// <returns>활성화 여부</returns>
-        private bool IsDefenderSmartScreenEnabled()
-        {
-            using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer"))
-            {
-                return key?.GetValue("SmartScreenEnabled")?.ToString() == "On";
+                try
+                {
+                    using (var searcher = new ManagementObjectSearcher("root\SecurityCenter2", "SELECT * FROM FirewallProduct"))
+                    {
+                        var firewallProducts = searcher.Get();
+                        foreach (ManagementObject product in firewallProducts)
+                        {
+                            if (product["productState"] != null)
+                            {
+                                int productState = Convert.ToInt32(product["productState"]);
+                                bool isDomainEnabled = (productState & 0x1000) == 0x1000;
+                                bool isPrivateEnabled = (productState & 0x2000) == 0x2000;
+                                bool isPublicEnabled = (productState & 0x4000) == 0x4000;
+                                return (isDomainEnabled, isPrivateEnabled, isPublicEnabled);
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    // 예외 발생 시 비활성화 상태로 간주
+                }
+                return (false, false, false);
             }
         }
 
