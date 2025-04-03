@@ -4,11 +4,16 @@
 winexe
 C#
 .cs
+<<<<<<< HEAD
 C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\
+=======
+C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\obj\Debug\
+>>>>>>> 96e6459 (설치된 프로그램 1년 이내 라디오 버튼 추가, 하위 항목도 출력되도록 수정)
 LogCheck
 none
 false
 DEBUG;TRACE
+<<<<<<< HEAD
 C:\My_Project\WindowsSentinel\LogCheck\App.xaml
 1219584333
 
@@ -17,4 +22,14 @@ C:\My_Project\WindowsSentinel\LogCheck\App.xaml
 MainWindow.xaml;
 
 True
+=======
+C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\App.xaml
+1219584333
+
+51579654133
+13-1310406943
+MainWindow.xaml;
+
+False
+>>>>>>> 96e6459 (설치된 프로그램 1년 이내 라디오 버튼 추가, 하위 항목도 출력되도록 수정)
 

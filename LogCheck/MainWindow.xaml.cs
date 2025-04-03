@@ -43,12 +43,20 @@ namespace WindowsSentinel
         /// - rb1Day: 1일 이내 설치된 프로그램 필터
         /// - rb7Days: 7일 이내 설치된 프로그램 필터
         /// - rb30Days: 30일 이내 설치된 프로그램 필터
+<<<<<<< HEAD
+=======
+        /// - rb365Days: 1년 이내 설치된 프로그램 필터
+>>>>>>> 96e6459 (설치된 프로그램 1년 이내 라디오 버튼 추가, 하위 항목도 출력되도록 수정)
         /// </summary>
         private void InitializeRadioButtons()
         {
             rb1Day.Checked += RadioButton_Checked;    // 1일 필터 이벤트 연결
             rb7Days.Checked += RadioButton_Checked;   // 7일 필터 이벤트 연결
             rb30Days.Checked += RadioButton_Checked;  // 30일 필터 이벤트 연결
+<<<<<<< HEAD
+=======
+            rb365Days.Checked += RadioButton_Checked;  // 1년 필터 이벤트 연결
+>>>>>>> 96e6459 (설치된 프로그램 1년 이내 라디오 버튼 추가, 하위 항목도 출력되도록 수정)
         }
 
         /// <summary>
@@ -83,6 +91,7 @@ namespace WindowsSentinel
         /// 3. 보안 상태 분석
         /// 4. 중복 제거 후 목록에 추가
         /// </summary>
+<<<<<<< HEAD
 private void CollectInstalledPrograms()
 {
     // 날짜 기준점 설정: 프로그램 설치 날짜를 기준으로 최근 설치된 프로그램을 식별하기 위해 날짜 기준점을 설정합니다.
@@ -142,6 +151,69 @@ private void CollectInstalledPrograms()
                     string version = subKey?.GetValue("DisplayVersion") as string;
                     string publisher = subKey?.GetValue("Publisher") as string;
                     string installLocation = subKey?.GetValue("InstallLocation") as string;
+=======
+        private void CollectInstalledPrograms()
+        {
+            // 날짜 기준점 설정: 프로그램 설치 날짜를 기준으로 최근 설치된 프로그램을 식별하기 위해 날짜 기준점을 설정합니다.
+            // - today: 현재 날짜
+            // - day1: 1일 전 (어제)
+            // - day7: 7일 전 (일주일 전)
+            // - day30: 30일 전 (한달 전)
+            // - day365: 1년 전
+            DateTime today = DateTime.Today;
+            DateTime day1 = today.AddDays(-1);
+            DateTime day7 = today.AddDays(-7);
+            DateTime day30 = today.AddDays(-30);
+            DateTime day365 = today.AddDays(-365);
+
+            // 프로그램 정보를 저장할 컬렉션 초기화: 수집된 프로그램 정보를 저장하고 중복 프로그램을 체크하기 위해 컬렉션을 초기화합니다.
+            // - programList: 수집된 프로그램 정보 저장
+            // - processedPrograms: 중복 프로그램 체크를 위한 해시셋
+            programList = new List<ProgramInfo>();
+            processedPrograms = new HashSet<string>();
+
+            // 검색할 레지스트리 경로 설정: 32비트와 64비트 프로그램을 모두 수집하기 위해 두 가지 레지스트리 경로를 설정합니다.
+            // - Uninstall: 32비트 프로그램용 레지스트리 경로
+            // - WOW6432Node: 64비트 시스템에서 실행되는 32비트 프로그램용 레지스트리 경로
+            string[] registryPaths = new string[]
+            {
+                @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+                @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
+            };
+
+            // 검사한 레지스트리 키의 총 개수를 저장
+            int totalChecked = 0;
+            
+            // 각 레지스트리 경로에서 프로그램 정보 검색
+            foreach (string regPath in registryPaths)
+            {
+                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(regPath))
+                {
+                    if (key == null) continue;  // 레지스트리 키가 없는 경우 스킵
+
+                    // 각 프로그램의 레지스트리 키 검사
+                    foreach (string subKeyName in key.GetSubKeyNames())
+                    {
+                        totalChecked++;  // 검사한 레지스트리 키 수 증가
+                        using (RegistryKey subKey = key.OpenSubKey(subKeyName))
+                        {
+                            // 프로그램 정보 추출: 각 프로그램의 세부 정보를 추출하여 프로그램 정보 객체를 생성합니다.
+                            // - DisplayName: 프로그램 이름
+                            // - InstallDate: 설치 날짜 (yyyyMMdd 형식)
+                            // - DisplayVersion: 프로그램 버전
+                            // - Publisher: 제작사
+                            // - InstallLocation: 설치 위치
+                            //   - DisplayName: 프로그램의 표시 이름을 추출합니다.
+                            //   - InstallDate: 프로그램의 설치 날짜를 추출하여 설치 날짜를 확인합니다.
+                            //   - DisplayVersion: 프로그램의 버전을 추출하여 버전 정보를 확인합니다.
+                            //   - Publisher: 프로그램의 제작사를 추출하여 프로그램의 출처를 확인합니다.
+                            //   - InstallLocation: 프로그램의 설치 위치를 추출하여 프로그램이 설치된 경로를 확인합니다.
+                            string name = subKey?.GetValue("DisplayName") as string;
+                            string installDateRaw = subKey?.GetValue("InstallDate") as string;
+                            string version = subKey?.GetValue("DisplayVersion") as string;
+                            string publisher = subKey?.GetValue("Publisher") as string;
+                            string installLocation = subKey?.GetValue("InstallLocation") as string;
+>>>>>>> 96e6459 (설치된 프로그램 1년 이내 라디오 버튼 추가, 하위 항목도 출력되도록 수정)
 
                             if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(installDateRaw))
                             {
@@ -158,6 +230,10 @@ private void CollectInstalledPrograms()
                                     if (installDate >= day1) period = "1일 이내";
                                     else if (installDate >= day7) period = "7일 이내";
                                     else if (installDate >= day30) period = "30일 이내";
+<<<<<<< HEAD
+=======
+                                    else if (installDate >= day365) period = "1년 이내";
+>>>>>>> 96e6459 (설치된 프로그램 1년 이내 라디오 버튼 추가, 하위 항목도 출력되도록 수정)
                                     else continue;
 
                                     var securityInfo = GetSecurityInfo(installLocation);
@@ -303,12 +379,24 @@ private void CollectInstalledPrograms()
             if (rb1Day.IsChecked == true) selectedPeriod = "1일 이내";
             else if (rb7Days.IsChecked == true) selectedPeriod = "7일 이내";
             else if (rb30Days.IsChecked == true) selectedPeriod = "30일 이내";
+<<<<<<< HEAD
 
             var filteredPrograms = programList.Where(p => 
             {
                 if (selectedPeriod == "30일 이내")
                     return true;
                 return p.Period == selectedPeriod;
+=======
+            else if (rb365Days.IsChecked == true) selectedPeriod = "1년 이내";
+
+            var filteredPrograms = programList.Where(p => 
+            {
+                if (selectedPeriod == "1년 이내") return true;
+                else if (selectedPeriod == "30일 이내") return p.Period == "1일 이내" || p.Period == "7일 이내" || p.Period == "30일 이내";
+                else if (selectedPeriod == "7일 이내") return p.Period == "1일 이내" || p.Period == "7일 이내";
+                else if (selectedPeriod == "1일 이내") return p.Period == "1일 이내";
+                return false;
+>>>>>>> 96e6459 (설치된 프로그램 1년 이내 라디오 버튼 추가, 하위 항목도 출력되도록 수정)
             })
             .OrderBy(p => p.InstallDate)
             .ToList();
