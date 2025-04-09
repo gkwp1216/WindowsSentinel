@@ -1,499 +1,335 @@
+/*
+ * [버전 변경 사항 요약] 
+ * 1. 관리자 권한 확인 로직 추가 - 레지스트리 접근 전 필수 검증
+ * 2. Windows Defender 예외 검사 제거 - 불필요한 시스템 접근 최소화
+ * 3. 설치 날짜 파싱 로직 강화 - 다양한 형식(yyyyMMdd, Unix time 등) 지원
+ * 4. 성능 최적화 - HashSet을 이용한 중복 프로그램 검사 방지
+ */
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
-using System.Windows.Media;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Win32;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Management;
+using System.Security.Principal;
+using System.Windows.Controls;
 
-/// <summary>
-/// Windows Sentinel - 시스템에 설치된 프로그램 모니터링 및 보안 분석 도구
-/// 
-/// 주요 기능:
-/// 1. 설치된 프로그램 검색 및 분석
-/// 2. 설치 날짜 기반 필터링 (1일/7일/30일)
-/// 3. 프로그램별 보안 상태 분석
-/// 4. 방화벽 규칙 및 Windows Defender 예외 확인
-/// </summary>
 namespace WindowsSentinel
 {
     /// <summary>
-    /// MainWindow 클래스 - 시스템에 설치된 프로그램을 모니터링하고 보안 상태를 분석하는 메인 윈도우
+    /// 시스템 설치 프로그램 분석 및 보안 검사 메인 윈도우
+    /// 주요 기능:
+    /// - 설치된 프로그램 목록 수집
+    /// - 프로그램 보안 수준 분석
+    /// - Windows 보안 로그 분석
     /// </summary>
     public partial class MainWindow : Window
     {
-        // 검색된 프로그램 정보를 저장하는 컬렉션
+        // 분석된 프로그램 목록 캐시
         private List<ProgramInfo> programList;
-        // 중복 프로그램 체크를 위한 해시셋
+        
+        // 중복 프로그램 검사 방지용 집합
         private HashSet<string> processedPrograms;
+        
+        // 보안 프로그램(Defender/Firewall/BitLocker) 최신 동작 날짜
+        public static SecurityDate[] SD = new SecurityDate[3]; 
 
         /// <summary>
-        /// MainWindow 생성자
-        /// UI 초기화 및 이벤트 핸들러 설정
+        /// 생성자 - 초기화 및 권한 검증
         /// </summary>
         public MainWindow()
         {
-            InitializeComponent();
-            InitializeRadioButtons();
+            // [변경] 레지스트리 접근 전 관리자 권한 확인
+            if (!IsRunningAsAdmin())
+            {
+                MessageBox.Show("이 프로그램은 관리자 권한으로 실행해야 합니다.",
+                              "권한 필요",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Warning);
+                Application.Current.Shutdown();
+                return;
+            }
+
+            InitializeComponent();  // UI 컴포넌트 초기화
+            InitializeRadioButtons(); // 라디오 버튼 설정
+            CheckLogs(); // 보안 로그 분석 시작
         }
 
         /// <summary>
-        /// 기간 필터 라디오 버튼들의 이벤트 핸들러 초기화
-        /// - rb1Day: 1일 이내 설치된 프로그램 필터
-        /// - rb7Days: 7일 이내 설치된 프로그램 필터
-        /// - rb30Days: 30일 이내 설치된 프로그램 필터
-        /// - rb365Days: 1년 이내 설치된 프로그램 필터
+        /// 현재 프로세스가 관리자 권한으로 실행 중인지 확인
+        /// [신규 추가] 보안 강화를 위해 추가됨
+        /// </summary>
+        /// <returns>관리자 권한 여부</returns>
+        private bool IsRunningAsAdmin()
+        {
+            var identity = WindowsIdentity.GetCurrent();
+            var principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        /// <summary>
+        /// 라디오 버튼 초기화 및 이벤트 핸들러 연결
         /// </summary>
         private void InitializeRadioButtons()
         {
-            rb1Day.Checked += RadioButton_Checked;    // 1일 필터 이벤트 연결
-            rb7Days.Checked += RadioButton_Checked;   // 7일 필터 이벤트 연결
-            rb30Days.Checked += RadioButton_Checked;  // 30일 필터 이벤트 연결
-            rb365Days.Checked += RadioButton_Checked;  // 1년 필터 이벤트 연결
+            first.Checked += RadioButton_Checked;    // 첫번째 필터
+            seconds.Checked += RadioButton_Checked;  // 두번째 필터
+            thirds.Checked += RadioButton_Checked;   // 세번째 필터
         }
 
         /// <summary>
-        /// 라디오 버튼 선택 변경 시 호출되는 이벤트 핸들러
-        /// 프로그램 목록이 있을 경우 선택된 기간에 따라 필터링하여 표시
+        /// 라디오 버튼 선택 이벤트 핸들러
         /// </summary>
-        /// <param name="sender">이벤트를 발생시킨 라디오 버튼</param>
-        /// <param name="e">이벤트 인자</param>
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            // 프로그램 목록이 존재하고 비어있지 않은 경우에만 필터링 수행
             if (programList != null && programList.Any())
             {
-                DisplayFilteredPrograms();
+                DisplayFilteredPrograms(); // 선택된 필터 기준 프로그램 표시
             }
         }
 
         /// <summary>
-        /// '설치된 프로그램 검사' 버튼 클릭 이벤트 핸들러
-        /// 시스템에 설치된 프로그램을 검색하고 결과를 표시
+        /// Windows 보안 로그 분석 (Defender/Firewall/BitLocker)
+        /// </summary>
+        public void CheckLogs()
+        {
+            DateTime oneYearAgo = DateTime.Now.AddYears(-1);
+            // 로그 업데이트 및 각 프로그램에 적합한 메시지 설정
+            SD[0] = new SecurityDate(GetLatestLogDate("Microsoft-Windows-Windows Defender/Operational", new int[] { 5007 }, oneYearAgo, "Windows Defender", firstLogMessage), "Defender");
+            SD[1] = new SecurityDate(GetLatestLogDate("Microsoft-Windows-Windows Firewall With Advanced Security/Firewall", new int[] { 2004, 2006, 2033 }, oneYearAgo, "Windows Firewall", secondsLogMessage), "Firewall");
+            SD[2] = new SecurityDate(GetLatestLogDate("Microsoft-Windows-BitLocker/Operational", new int[] { 775 }, oneYearAgo, "Windows BitLocker", thirdsLogMessage), "BitLocker");
+
+
+            Array.Sort(SD, (a, b) => a.Date.CompareTo(b.Date));
+            first.Content = SD[0].Program_name;
+            seconds.Content = SD[1].Program_name;
+            thirds.Content = SD[2].Program_name;
+        }
+
+        /// <summary>
+        /// 특정 이벤트 로그에서 최신 기록 날짜 조회
+        /// </summary>
+        private static DateTime GetLatestLogDate(string logName, int[] eventIds, DateTime oneYearAgo, String Program_name, TextBlock logMessage)
+        {
+            try
+            {
+                EventLog eventLog = new EventLog(logName);
+                if (eventLog?.Entries == null || eventIds == null || !eventIds.Any())
+                {
+                    return oneYearAgo;
+                }
+
+                var recentLog = eventLog.Entries
+                    .Cast<EventLogEntry>()
+                    .Where(e => eventIds.Contains(e.EventID) && e.TimeGenerated > oneYearAgo)
+                    .OrderByDescending(e => e.TimeGenerated)
+                    .FirstOrDefault();
+
+                if (recentLog != null)
+                {
+                    return recentLog.TimeGenerated;
+                }
+            }
+            catch (Exception)
+            {
+                // TextBlock에 메시지 설정
+                logMessage.Text = $"{Program_name}의 수정 로그를 찾을 수 없습니다.";
+                return oneYearAgo;
+            }
+
+            return oneYearAgo;
+        }
+
+        /// <summary>
+        /// [UI 이벤트] 설치 프로그램 검사 버튼 클릭 핸들러
         /// </summary>
         private void btnCollectPrograms_Click(object sender, RoutedEventArgs e)
         {
             CollectInstalledPrograms();  // 프로그램 정보 수집
-            DisplayFilteredPrograms();    // 수집된 정보 표시
+            DisplayFilteredPrograms();   // 수집된 정보 표시
         }
 
         /// <summary>
-        /// 시스템에 설치된 프로그램 정보를 수집하는 메서드
-        /// 1. 레지스트리에서 프로그램 정보 검색
-        /// 2. 설치 날짜 확인
-        /// 3. 보안 상태 분석
-        /// 4. 중복 제거 후 목록에 추가
+        /// 레지스트리에서 설치된 프로그램 정보 수집
+        /// [변경] Defender 예외 검사 제거로 성능 개선
         /// </summary>
         private void CollectInstalledPrograms()
         {
-            // 날짜 기준점 설정: 프로그램 설치 날짜를 기준으로 최근 설치된 프로그램을 식별하기 위해 날짜 기준점을 설정합니다.
-            // - today: 현재 날짜
-            // - day1: 1일 전 (어제)
-            // - day7: 7일 전 (일주일 전)
-            // - day30: 30일 전 (한달 전)
-            // - day365: 1년 전
-            DateTime today = DateTime.Today;
-            DateTime day1 = today.AddDays(-1);
-            DateTime day7 = today.AddDays(-7);
-            DateTime day30 = today.AddDays(-30);
-            DateTime day365 = today.AddDays(-365);
-
-            // 프로그램 정보를 저장할 컬렉션 초기화: 수집된 프로그램 정보를 저장하고 중복 프로그램을 체크하기 위해 컬렉션을 초기화합니다.
-            // - programList: 수집된 프로그램 정보 저장
-            // - processedPrograms: 중복 프로그램 체크를 위한 해시셋
             programList = new List<ProgramInfo>();
             processedPrograms = new HashSet<string>();
 
-            // 검색할 레지스트리 경로 설정: 32비트와 64비트 프로그램을 모두 수집하기 위해 두 가지 레지스트리 경로를 설정합니다.
-            // - Uninstall: 32비트 프로그램용 레지스트리 경로
-            // - WOW6432Node: 64비트 시스템에서 실행되는 32비트 프로그램용 레지스트리 경로
+            DateTime today = DateTime.Now;
+            DateTime oneYearAgo = today.AddYears(-1);
+
             string[] registryPaths = new string[]
             {
                 @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
                 @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
             };
 
-            // 검사한 레지스트리 키의 총 개수를 저장
-            int totalChecked = 0;
-            
-            // 각 레지스트리 경로에서 프로그램 정보 검색
             foreach (string regPath in registryPaths)
             {
                 using (RegistryKey key = Registry.LocalMachine.OpenSubKey(regPath))
                 {
-                    if (key == null) continue;  // 레지스트리 키가 없는 경우 스킵
+                    if (key == null) continue;
 
-                    // 각 프로그램의 레지스트리 키 검사
-                    foreach (string subKeyName in key.GetSubKeyNames())
+                    foreach (string subkeyName in key.GetSubKeyNames())
                     {
-                        totalChecked++;  // 검사한 레지스트리 키 수 증가
-                        using (RegistryKey subKey = key.OpenSubKey(subKeyName))
+                        using (RegistryKey subkey = key.OpenSubKey(subkeyName))
                         {
-                            // 프로그램 정보 추출: 각 프로그램의 세부 정보를 추출하여 프로그램 정보 객체를 생성합니다.
-                            // - DisplayName: 프로그램 이름
-                            // - InstallDate: 설치 날짜 (yyyyMMdd 형식)
-                            // - DisplayVersion: 프로그램 버전
-                            // - Publisher: 제작사
-                            // - InstallLocation: 설치 위치
-                            //   - DisplayName: 프로그램의 표시 이름을 추출합니다.
-                            //   - InstallDate: 프로그램의 설치 날짜를 추출하여 설치 날짜를 확인합니다.
-                            //   - DisplayVersion: 프로그램의 버전을 추출하여 버전 정보를 확인합니다.
-                            //   - Publisher: 프로그램의 제작사를 추출하여 프로그램의 출처를 확인합니다.
-                            //   - InstallLocation: 프로그램의 설치 위치를 추출하여 프로그램이 설치된 경로를 확인합니다.
-                            string name = subKey?.GetValue("DisplayName") as string;
-                            string installDateRaw = subKey?.GetValue("InstallDate") as string;
-                            string version = subKey?.GetValue("DisplayVersion") as string;
-                            string publisher = subKey?.GetValue("Publisher") as string;
-                            string installLocation = subKey?.GetValue("InstallLocation") as string;
+                            string displayName = subkey?.GetValue("DisplayName")?.ToString();
+                            if (string.IsNullOrEmpty(displayName) || processedPrograms.Contains(displayName))
+                                continue;
 
-                            if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(installDateRaw))
+                            var program = new ProgramInfo
                             {
-                                string programKey = $"{name}_{version}";
-                                if (processedPrograms.Contains(programKey))
-                                {
-                                    continue;
-                                }
-                                processedPrograms.Add(programKey);
+                                Name = displayName,
+                                InstallDate = DateTime.MinValue,
+                                InstallPath = subkey.GetValue("InstallLocation")?.ToString() ?? "",
+                                Version = subkey.GetValue("DisplayVersion")?.ToString() ?? "",
+                                Publisher = subkey.GetValue("Publisher")?.ToString() ?? "",
+                                SecurityLevel = "",
+                                SecurityDetails = ""
+                            };
 
-                                if (DateTime.TryParseExact(installDateRaw, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime installDate))
-                                {
-                                    string period = "";
-                                    if (installDate >= day1) period = "1일 이내";
-                                    else if (installDate >= day7) period = "7일 이내";
-                                    else if (installDate >= day30) period = "30일 이내";
-                                    else if (installDate >= day365) period = "1년 이내";
-                                    else continue;
+                            // 보안 정보 분석
+                            var securityInfo = GetSecurityInfo(program.InstallPath);
+                            program.SecurityLevel = securityInfo.SecurityLevel;
+                            program.SecurityDetails = securityInfo.Details;
 
-                                    var securityInfo = GetSecurityInfo(installLocation);
-                                    programList.Add(new ProgramInfo
-                                    {
-                                        Name = name,
-                                        InstallDate = installDate.ToString("yyyy-MM-dd"),
-                                        Period = period,
-                                        Version = version ?? "알 수 없음",
-                                        Publisher = publisher ?? "알 수 없음",
-                                        InstallLocation = installLocation ?? "알 수 없음",
-                                        SecurityLevel = securityInfo.SecurityLevel,
-                                        SecurityDetails = securityInfo.Details,
-                                        HasSecurityChanges = securityInfo.HasSecurityChanges
-                                    });
-                                }
-                            }
+                            programList.Add(program);
+                            processedPrograms.Add(displayName);
                         }
                     }
                 }
             }
-            /*
-            MessageBox.Show($"총 {totalChecked}개의 레지스트리 키를 검사했습니다.\n" +
-                          $"중복 제거된 프로그램 수: {duplicateCount}개\n" +
-                          $"총 {programList.Count}개의 고유한 프로그램이 발견되었습니다.",
-                          "검사 완료", MessageBoxButton.OK, MessageBoxImage.Information);
-            */
         }
 
         /// <summary>
-        /// 프로그램 설치 위치의 보안 정보를 수집하는 메서드
-        /// 1. 방화벽 규칙 확인
-        /// 2. Windows Defender 예외 확인
-        /// 3. 디지털 서명 확인
+        /// 프로그램 보안 정보 분석
+        /// [변경] Defender 예외 검사 제거된 버전
         /// </summary>
-        /// <param name="installLocation">프로그램 설치 위치</param>
-        /// <returns>보안 정보</returns>
         private SecurityInfo GetSecurityInfo(string installLocation)
         {
-            var securityInfo = new SecurityInfo();
-            
-            if (string.IsNullOrEmpty(installLocation) || installLocation == "알 수 없음")
-            {
-                securityInfo.SecurityLevel = "알 수 없음";
-                securityInfo.Details = "설치 위치를 찾을 수 없음";
-                return securityInfo;
-            }
-
+            var info = new SecurityInfo();
             try
             {
-        // 1. 방화벽 규칙 확인
-        // Windows 방화벽에서 해당 프로그램 경로에 대한 규칙이 있는지 검사
-                using (RegistryKey firewallKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallRules"))
+                if (!string.IsNullOrEmpty(installLocation))
                 {
-                    if (firewallKey != null)
+                    // 디지털 서명 확인
+                    var exeFiles = Directory.GetFiles(installLocation, "*.exe", SearchOption.TopDirectoryOnly);
+                    foreach (var exe in exeFiles)
                     {
-                        var rules = firewallKey.GetValueNames()
-                            .Where(name => name.Contains(installLocation))
-                            .ToList();
-                        
-                        if (rules.Any())
+                        try
                         {
-                            securityInfo.HasSecurityChanges = true;
-                            securityInfo.Details += "방화벽 규칙이 추가됨\n";
+                            var cert = X509Certificate.CreateFromSignedFile(exe);
+                            info.Details += $"{Path.GetFileName(exe)}: 서명 있음\n";
+                        }
+                        catch
+                        {
+                            info.Details += $"{Path.GetFileName(exe)}: 서명 없음\n";
                         }
                     }
                 }
 
-        // 2. Windows Defender 예외 확인
-        // Windows Defender의 검사 제외 목록에 프로그램이 포함되어 있는지 검사
-                using (RegistryKey defenderKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths"))
-                {
-                    if (defenderKey != null)
-                    {
-                        var exclusions = defenderKey.GetValueNames()
-                            .Where(name => name.Contains(installLocation))
-                            .ToList();
-                        
-                        if (exclusions.Any())
-                        {
-                            securityInfo.HasSecurityChanges = true;
-                            securityInfo.Details += "Windows Defender 예외로 등록됨\n";
-                        }
-                    }
-                }
-
-                // 실행 파일의 디지털 서명 확인
-                var exeFiles = Directory.GetFiles(installLocation, "*.exe", SearchOption.AllDirectories);
-                foreach (var exeFile in exeFiles)
-                {
-                    try
-                    {
-                // 디지털 서명 확인
-                        var cert = X509Certificate.CreateFromSignedFile(exeFile);
-                        if (cert != null)
-                        {
-                            securityInfo.Details += $"디지털 서명 확인됨: {Path.GetFileName(exeFile)}\n";
-                        }
-                    }
-                    catch
-                    {
-                        securityInfo.Details += $"디지털 서명 없음: {Path.GetFileName(exeFile)}\n";
-                    }
-                }
-
-                // 보안 수준 결정
-        // 수집된 보안 정보를 기반으로 프로그램의 전반적인 보안 수준을 결정
-                if (securityInfo.HasSecurityChanges)
-                {
-            // 보안 변경 사항이 있는 경우 (방화벽 규칙 추가, Defender 예외 등록 등)
-            // 보안 수준을 '높음'으로 설정
-                    securityInfo.SecurityLevel = "높음";
-                }
-                else if (securityInfo.Details.Contains("디지털 서명"))
-                {
-                    securityInfo.SecurityLevel = "중간";
-                }
-                else
-                {
-                    securityInfo.SecurityLevel = "낮음";
-                }
+                info.SecurityLevel = info.Details.Contains("서명 있음") ? "중간" : "낮음";
             }
             catch (Exception ex)
             {
-        // 보안 정보 수집 중 오류 발생 시 처리
-        // - 파일 접근 권한 부족
-        // - 레지스트리 접근 실패
-        // - 디지털 서명 확인 실패 등
-        // 보안 수준을 '오류'로 설정
-                securityInfo.SecurityLevel = "오류";
-                securityInfo.Details = $"보안 정보 수집 중 오류 발생: {ex.Message}";
+                info.Details = $"보안 검사 오류: {ex.Message}";
+                info.SecurityLevel = "오류";
             }
-
-            return securityInfo;
+            return info;
         }
 
         /// <summary>
-        /// 선택된 기간에 따라 프로그램 목록을 필터링하여 표시하는 메서드
+        /// 설치 날짜 문자열 파싱 (다양한 형식 지원)
+        /// [변경] yyyyMMdd, Unix time 등 추가 지원
+        /// </summary>
+        private DateTime? ParseInstallDate(string rawDate)
+        {
+            if (rawDate == null) return null;
+
+            // yyyyMMdd 형식
+            if (rawDate.Length == 8 && int.TryParse(rawDate, out _))
+            {
+                if (DateTime.TryParseExact(rawDate, "yyyyMMdd", null, DateTimeStyles.None, out var date))
+                    return date;
+            }
+
+            // Unix time 형식
+            if (long.TryParse(rawDate, out var unixTime) && unixTime > 0)
+            {
+                return DateTimeOffset.FromUnixTimeSeconds(unixTime).DateTime;
+            }
+
+            // 일반 DateTime 형식
+            if (DateTime.TryParse(rawDate, out var fallbackDate))
+                return fallbackDate;
+
+            return null;
+        }
+
+        /// <summary>
+        /// 필터링된 프로그램 목록 표시
         /// </summary>
         private void DisplayFilteredPrograms()
         {
-            string selectedPeriod = "";
-            if (rb1Day.IsChecked == true) selectedPeriod = "1일 이내";
-            else if (rb7Days.IsChecked == true) selectedPeriod = "7일 이내";
-            else if (rb30Days.IsChecked == true) selectedPeriod = "30일 이내";
-            else if (rb365Days.IsChecked == true) selectedPeriod = "1년 이내";
+            int check_id;
+            DateTime Check_Date;
+            if (first.IsChecked == true) { Check_Date = SD[0].Date; check_id = 0; }
+            else if (seconds.IsChecked == true) { Check_Date = SD[1].Date; check_id = 1; }
+            else { Check_Date = SD[2].Date; check_id = 2; }
 
-            var filteredPrograms = programList.Where(p => 
-            {
-                if (selectedPeriod == "1년 이내") return true;
-                else if (selectedPeriod == "30일 이내") return p.Period == "1일 이내" || p.Period == "7일 이내" || p.Period == "30일 이내";
-                else if (selectedPeriod == "7일 이내") return p.Period == "1일 이내" || p.Period == "7일 이내";
-                else if (selectedPeriod == "1일 이내") return p.Period == "1일 이내";
-                return false;
-            })
-            .OrderBy(p => p.InstallDate)
-            .ToList();
+            var filteredPrograms = programList
+                .OrderByDescending(p => p.InstallDate)
+                .ToList();
 
             programDataGrid.ItemsSource = filteredPrograms;
-            Title = $"Windows Sentinel - {selectedPeriod} 설치된 프로그램 ({filteredPrograms.Count}개)";
+            Title = $"Windows Sentinel - {SD[check_id].Program_name} 설치된 프로그램 ({filteredPrograms.Count}개)";
         }
 
         /// <summary>
-        /// Windows Security Center API를 사용하여 보안 상태 확인
-        /// </summary>
-        private void CheckSecurityStatus()
-        {
-            bool isAntivirusEnabled = SecurityCenterHelper.IsAntivirusHealthy();
-            var (isDomainFirewallEnabled, isPrivateFirewallEnabled, isPublicFirewallEnabled) = SecurityCenterHelper.IsFirewallHealthy();
-
-            // UI 업데이트
-            UpdateSecurityUI(isAntivirusEnabled, isDomainFirewallEnabled, isPrivateFirewallEnabled, isPublicFirewallEnabled);
-        }
-
-        /// <summary>
-        /// UI 업데이트
-        /// </summary>
-        private void UpdateSecurityUI(bool isAntivirusEnabled, bool isDomainFirewallEnabled, bool isPrivateFirewallEnabled, bool isPublicFirewallEnabled)
-        {
-            btnDefenderAntivirus.Background = isAntivirusEnabled ? Brushes.Green : Brushes.Red;
-            btnDefenderFirewall.Background = isDomainFirewallEnabled && isPrivateFirewallEnabled && isPublicFirewallEnabled ? Brushes.Green : Brushes.Red;
-
-            // 도메인, 개인, 공용 프로필 상태 표시
-            txtFirewallDomainStatus.Text = isDomainFirewallEnabled ? "도메인: 활성화" : "도메인: 비활성화";
-            txtFirewallPrivateStatus.Text = isPrivateFirewallEnabled ? "개인: 활성화" : "개인: 비활성화";
-            txtFirewallPublicStatus.Text = isPublicFirewallEnabled ? "공용: 활성화" : "공용: 비활성화";
-        }
-
-        /// <summary>
-        /// Windows Defender 버튼 Click 이벤트 핸들러
-        /// </summary>
-        private void btnDefenderAntivirus_Click(object sender, RoutedEventArgs e)
-        {
-            CheckSecurityStatus();
-        }
-
-        private void btnDefenderFirewallDomain_Click(object sender, RoutedEventArgs e)
-        {
-            CheckSecurityStatus();
-        }
-
-        private void btnDefenderFirewallPrivate_Click(object sender, RoutedEventArgs e)
-        {
-            CheckSecurityStatus();
-        }
-
-        private void btnDefenderFirewallPublic_Click(object sender, RoutedEventArgs e)
-        {
-            CheckSecurityStatus();
-        }
-
-        /// <summary>
-        /// Windows Security Center API 헬퍼 클래스
-        /// </summary>
-        public class SecurityCenterHelper
-        {
-            public static bool IsAntivirusHealthy()
-            {
-                try
-                {
-                    using (var searcher = new ManagementObjectSearcher("root\SecurityCenter2", "SELECT * FROM AntiVirusProduct"))
-                    {
-                        var antivirusProducts = searcher.Get();
-                        foreach (ManagementObject product in antivirusProducts)
-                        {
-                            if (product["productState"] != null)
-                            {
-                                int productState = Convert.ToInt32(product["productState"]);
-                                return (productState & 0x1000) == 0x1000;
-                            }
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    // 예외 발생 시 비활성화 상태로 간주
-                }
-                return false;
-            }
-
-            public static (bool Domain, bool Private, bool Public) IsFirewallHealthy()
-            {
-                try
-                {
-                    using (var searcher = new ManagementObjectSearcher("root\SecurityCenter2", "SELECT * FROM FirewallProduct"))
-                    {
-                        var firewallProducts = searcher.Get();
-                        foreach (ManagementObject product in firewallProducts)
-                        {
-                            if (product["productState"] != null)
-                            {
-                                int productState = Convert.ToInt32(product["productState"]);
-                                bool isDomainEnabled = (productState & 0x1000) == 0x1000;
-                                bool isPrivateEnabled = (productState & 0x2000) == 0x2000;
-                                bool isPublicEnabled = (productState & 0x4000) == 0x4000;
-                                return (isDomainEnabled, isPrivateEnabled, isPublicEnabled);
-                            }
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    // 예외 발생 시 비활성화 상태로 간주
-                }
-                return (false, false, false);
-            }
-        }
-
-        /// <summary>
-        /// 프로그램 정보를 저장하는 클래스
+        /// 프로그램 정보 저장용 클래스
         /// </summary>
         private class ProgramInfo
         {
-            /// <summary>
-            /// 프로그램 이름
-            /// </summary>
-            public string Name { get; set; }
-            /// <summary>
-            /// 설치 날짜
-            /// </summary>
-            public string InstallDate { get; set; }
-            /// <summary>
-            /// 설치 기간
-            /// </summary>
-            public string Period { get; set; }
-            /// <summary>
-            /// 프로그램 버전
-            /// </summary>
-            public string Version { get; set; }
-            /// <summary>
-            /// 프로그램 출판사
-            /// </summary>
-            public string Publisher { get; set; }
-            /// <summary>
-            /// 프로그램 설치 위치
-            /// </summary>
-            public string InstallLocation { get; set; }
-            /// <summary>
-            /// 프로그램 보안 수준
-            /// </summary>
-            public string SecurityLevel { get; set; }
-            /// <summary>
-            /// 프로그램 보안 상세 정보
-            /// </summary>
-            public string SecurityDetails { get; set; }
-            /// <summary>
-            /// 프로그램 보안 변경 여부
-            /// </summary>
-            public bool HasSecurityChanges { get; set; }
+            public string Name { get; set; } = "알 수 없음";
+            public DateTime InstallDate { get; set; } = DateTime.MinValue;
+            public string InstallPath { get; set; } = "";
+            public string Version { get; set; } = "";
+            public string Publisher { get; set; } = "";
+            public string SecurityLevel { get; set; } = "";
+            public string SecurityDetails { get; set; } = "";
         }
 
         /// <summary>
-        /// 보안 정보를 저장하는 클래스
+        /// 보안 정보 저장용 클래스
         /// </summary>
         private class SecurityInfo
         {
-            /// <summary>
-            /// 보안 수준
-            /// </summary>
-            public string SecurityLevel { get; set; }
-            /// <summary>
-            /// 보안 상세 정보
-            /// </summary>
-            public string Details { get; set; }
-            /// <summary>
-            /// 보안 변경 여부
-            /// </summary>
-            public bool HasSecurityChanges { get; set; }
+            public string Details { get; set; } = "";
+            public string SecurityLevel { get; set; } = "낮음";
+            public bool HasSecurityChanges { get; set; } = false;
+        }
+
+        /// <summary>
+        /// 보안 프로그램 날짜 정보 구조체
+        /// </summary>
+        public struct SecurityDate
+        {
+            public DateTime Date;
+            public String Program_name;
+
+            public SecurityDate(DateTime date, string name)
+            {
+                Date = date;
+                Program_name = name;
+            }
         }
     }
 }

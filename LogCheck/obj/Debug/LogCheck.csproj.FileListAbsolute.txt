@@ -1,17 +1,75 @@
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\bin\Debug\LogCheck.exe.config
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\bin\Debug\LogCheck.exe
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\bin\Debug\LogCheck.pdb
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\bin\Debug\cs\LogCheck.resources.dll
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\obj\Debug\LogCheck.csproj.AssemblyReference.cache
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\obj\Debug\MainWindow.g.cs
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\obj\Debug\App.g.cs
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\obj\Debug\LogCheck_MarkupCompile.cache
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\obj\Debug\LogCheck_MarkupCompile.lref
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\obj\Debug\MainWindow.baml
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\obj\Debug\LogCheck.g.resources
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\obj\Debug\LogCheck.Properties.Resources.resources
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\obj\Debug\LogCheck.csproj.GenerateResource.cache
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\obj\Debug\cs\LogCheck.resources.dll
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\obj\Debug\LogCheck.exe
-C:\Users\admin\Downloads\WindowsSentinel-0324commit\WindowsSentinel-0324commit\LogCheck\obj\Debug\LogCheck.pdb
+C:\Users\herok\Downloads\LogCheck\bin\Debug\LogCheck.exe.config
+C:\Users\herok\Downloads\LogCheck\bin\Debug\LogCheck.exe
+C:\Users\herok\Downloads\LogCheck\bin\Debug\LogCheck.pdb
+C:\Users\herok\Downloads\LogCheck\obj\Debug\LogCheck.csproj.AssemblyReference.cache
+C:\Users\herok\Downloads\LogCheck\obj\Debug\MainWindow.g.cs
+C:\Users\herok\Downloads\LogCheck\obj\Debug\App.g.cs
+C:\Users\herok\Downloads\LogCheck\obj\Debug\LogCheck_MarkupCompile.cache
+C:\Users\herok\Downloads\LogCheck\obj\Debug\LogCheck_MarkupCompile.lref
+C:\Users\herok\Downloads\LogCheck\obj\Debug\MainWindow.baml
+C:\Users\herok\Downloads\LogCheck\obj\Debug\LogCheck.g.resources
+C:\Users\herok\Downloads\LogCheck\obj\Debug\LogCheck.Properties.Resources.resources
+C:\Users\herok\Downloads\LogCheck\obj\Debug\LogCheck.csproj.GenerateResource.cache
+C:\Users\herok\Downloads\LogCheck\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\herok\Downloads\LogCheck\obj\Debug\LogCheck.exe
+C:\Users\herok\Downloads\LogCheck\obj\Debug\LogCheck.pdb
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\bin\Debug\LogCheck.exe.config
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\bin\Debug\LogCheck.exe
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\bin\Debug\LogCheck.pdb
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck.csproj.AssemblyReference.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\MainWindow.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\App.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck_MarkupCompile.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck_MarkupCompile.lref
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\MainWindow.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck.g.resources
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck.Properties.Resources.resources
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck.csproj.GenerateResource.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck.exe
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck.pdb
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\bin\Debug\LogCheck.exe.config
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\bin\Debug\LogCheck.exe
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\bin\Debug\LogCheck.pdb
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\obj\Debug\LogCheck.csproj.AssemblyReference.cache
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\obj\Debug\MainWindow.g.cs
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\obj\Debug\App.g.cs
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\obj\Debug\LogCheck_MarkupCompile.cache
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\obj\Debug\LogCheck_MarkupCompile.lref
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\obj\Debug\MainWindow.baml
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\obj\Debug\LogCheck.g.resources
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\obj\Debug\LogCheck.Properties.Resources.resources
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\obj\Debug\LogCheck.csproj.GenerateResource.cache
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\obj\Debug\LogCheck.exe
+C:\Users\admin\Downloads\LogCheck2\LogCheck2\obj\Debug\LogCheck.pdb
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\bin\Debug\LogCheck.exe.config
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\bin\Debug\LogCheck.exe
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\bin\Debug\LogCheck.pdb
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck.csproj.AssemblyReference.cache
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\MainWindow.g.cs
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\App.g.cs
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck_MarkupCompile.cache
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck_MarkupCompile.lref
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\MainWindow.baml
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck.g.resources
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck.Properties.Resources.resources
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck.csproj.GenerateResource.cache
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck.exe
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck2\obj\Debug\LogCheck.pdb
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\bin\Debug\LogCheck.exe.config
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\bin\Debug\LogCheck.exe
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\bin\Debug\LogCheck.pdb
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj.AssemblyReference.cache
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\MainWindow.g.cs
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\App.g.cs
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck_MarkupCompile.cache
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck_MarkupCompile.lref
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\MainWindow.baml
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.g.resources
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.Properties.Resources.resources
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj.GenerateResource.cache
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.exe
+C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.pdb

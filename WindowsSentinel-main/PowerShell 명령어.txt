@@ -1,0 +1,13 @@
+PowerShell 명령어
+
+1. 최근 설치된 프로그램 찾기
+
+Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, InstallDate | Sort-Object InstallDate -Descending
+
+2. 최근 설치된 파일 찾기
+
+Get-ChildItem -Path "C:\경로" -Recurse | Sort-Object LastWriteTime -Descending | Select-Object -First 10
+
+3. 최근 설치된 Windows 업데이트 확인
+
+Get-HotFix | Sort-Object InstalledOn -Descending
