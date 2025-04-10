@@ -185,11 +185,44 @@ namespace WindowsSentinel
                             if (string.IsNullOrEmpty(displayName) || processedPrograms.Contains(displayName))
                                 continue;
 
+                            // 이름에 "update"가 포함된 프로그램 필터링
+                            if (displayName.ToLower().Contains("update"))
+                                continue;
+
+                            // 설치 경로 가져오기
+                            string installLocation = GetInstallLocation(subkey);
+
+                            DateTime installDate = DateTime.MinValue;
+
+                            // 1. 레지스트리의 InstallDate 키 값 확인
+                            string installDateStr = subkey.GetValue("InstallDate")?.ToString();
+                            if (!string.IsNullOrEmpty(installDateStr))
+                            {
+                                installDate = ParseInstallDate(installDateStr) ?? DateTime.MinValue;
+                            }
+
+                            // 2. InstallDate가 없는 경우 InstallLocation의 파일 생성 시간 확인
+                            if (installDate == DateTime.MinValue && !string.IsNullOrEmpty(installLocation))
+                            {
+                                try
+                                {
+                                    if (Directory.Exists(installLocation))
+                                    {
+                                        var directoryInfo = new DirectoryInfo(installLocation);
+                                        installDate = directoryInfo.CreationTime;
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                                    // 파일 접근 권한 문제 등으로 인한 예외 처리
+                                }
+                            }
+
                             var program = new ProgramInfo
                             {
                                 Name = displayName,
-                                InstallDate = DateTime.MinValue,
-                                InstallPath = subkey.GetValue("InstallLocation")?.ToString() ?? "",
+                                InstallDate = installDate,
+                                InstallPath = installLocation,
                                 Version = subkey.GetValue("DisplayVersion")?.ToString() ?? "",
                                 Publisher = subkey.GetValue("Publisher")?.ToString() ?? "",
                                 SecurityLevel = "",
@@ -207,6 +240,126 @@ namespace WindowsSentinel
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 프로그램의 설치 경로를 가져옵니다.
+        /// </summary>
+        private string GetInstallLocation(RegistryKey subkey)
+        {
+            // 모든 가능한 경로 수집
+            List<string> paths = new List<string>();
+
+            // 1. InstallLocation (우선순위 1)
+            string installLocation = subkey.GetValue("InstallLocation")?.ToString() ?? "";
+            if (!string.IsNullOrEmpty(installLocation) && Directory.Exists(installLocation))
+                paths.Add(installLocation);
+
+            // 2. InstallPath (우선순위 2)
+            string installPath = subkey.GetValue("InstallPath")?.ToString() ?? "";
+            if (!string.IsNullOrEmpty(installPath) && Directory.Exists(installPath))
+                paths.Add(installPath);
+
+            // 3. InstallDir (우선순위 3)
+            string installDir = subkey.GetValue("InstallDir")?.ToString() ?? "";
+            if (!string.IsNullOrEmpty(installDir) && Directory.Exists(installDir))
+                paths.Add(installDir);
+
+            // 4. UninstallString에서 경로 추출 (우선순위 4)
+            string uninstallString = subkey.GetValue("UninstallString")?.ToString() ?? "";
+            if (!string.IsNullOrEmpty(uninstallString))
+            {
+                string path = ExtractPathFromUninstallString(uninstallString);
+                if (!string.IsNullOrEmpty(path) && Directory.Exists(path))
+                    paths.Add(path);
+            }
+
+            // 5. DisplayIcon에서 경로 추출 (우선순위 5)
+            string displayIcon = subkey.GetValue("DisplayIcon")?.ToString() ?? "";
+            if (!string.IsNullOrEmpty(displayIcon))
+            {
+                string path = ExtractPathFromDisplayIcon(displayIcon);
+                if (!string.IsNullOrEmpty(path) && Directory.Exists(path))
+                    paths.Add(path);
+            }
+
+            // 중복 제거 및 우선순위에 따라 정렬
+            paths = paths.Distinct().ToList();
+
+            // 우선순위에 따라 첫 번째 경로 반환
+            return paths.FirstOrDefault() ?? "";
+        }
+
+        /// <summary>
+        /// UninstallString에서 설치 경로를 추출합니다.
+        /// </summary>
+        private string ExtractPathFromUninstallString(string uninstallString)
+        {
+            try
+            {
+                // 따옴표로 묶인 경로 추출
+                if (uninstallString.Contains("\""))
+                {
+                    int start = uninstallString.IndexOf('"') + 1;
+                    int end = uninstallString.IndexOf('"', start);
+                    if (end > start)
+                    {
+                        string path = uninstallString.Substring(start, end - start);
+                        return Path.GetDirectoryName(path);
+                    }
+                }
+
+                // 공백으로 구분된 첫 번째 경로 추출
+                string[] parts = uninstallString.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length > 0)
+                {
+                    string path = parts[0];
+                    if (File.Exists(path) || Directory.Exists(path))
+                        return Path.GetDirectoryName(path);
+                }
+            }
+            catch (Exception)
+            {
+                // 경로 추출 중 오류 발생
+            }
+
+            return "";
+        }
+
+        /// <summary>
+        /// DisplayIcon에서 설치 경로를 추출합니다.
+        /// </summary>
+        private string ExtractPathFromDisplayIcon(string displayIcon)
+        {
+            try
+            {
+                // 따옴표로 묶인 경로 추출
+                if (displayIcon.Contains("\""))
+                {
+                    int start = displayIcon.IndexOf('"') + 1;
+                    int end = displayIcon.IndexOf('"', start);
+                    if (end > start)
+                    {
+                        string path = displayIcon.Substring(start, end - start);
+                        return Path.GetDirectoryName(path);
+                    }
+                }
+
+                // 쉼표로 구분된 첫 번째 경로 추출
+                string[] parts = displayIcon.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length > 0)
+                {
+                    string path = parts[0].Trim();
+                    if (File.Exists(path) || Directory.Exists(path))
+                        return Path.GetDirectoryName(path);
+                }
+            }
+            catch (Exception)
+            {
+                // 경로 추출 중 오류 발생
+            }
+
+            return "";
         }
 
         /// <summary>

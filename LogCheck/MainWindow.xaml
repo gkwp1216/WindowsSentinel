@@ -48,10 +48,10 @@
                   HorizontalScrollBarVisibility="Auto">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="프로그램 이름" Binding="{Binding Name}" Width="200"/>
-                <DataGridTextColumn Header="설치 날짜" Binding="{Binding InstallDate}" Width="100"/>
+                <DataGridTextColumn Header="설치 날짜" Binding="{Binding InstallDate, StringFormat=yyyy-MM-dd}" Width="100"/>
                 <DataGridTextColumn Header="버전" Binding="{Binding Version}" Width="80"/>
                 <DataGridTextColumn Header="제조사" Binding="{Binding Publisher}" Width="150"/>
-                <DataGridTextColumn Header="설치 위치" Binding="{Binding InstallLocation}" Width="200"/>
+                <DataGridTextColumn Header="설치 위치" Binding="{Binding InstallPath}" Width="200"/>
                 <DataGridTextColumn Header="보안 수준" Binding="{Binding SecurityLevel}" Width="80">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
