@@ -36,7 +36,7 @@ namespace WindowsSentinel
         private HashSet<string> processedPrograms;
         
         // 보안 프로그램(Defender/Firewall/BitLocker) 최신 동작 날짜
-        public static SecurityDate[] SD = new SecurityDate[3]; 
+        public static SecurityDate[] SD = new SecurityDate[3];
 
         /// <summary>
         /// 생성자 - 초기화 및 권한 검증
@@ -55,7 +55,6 @@ namespace WindowsSentinel
             }
 
             InitializeComponent();  // UI 컴포넌트 초기화
-            InitializeRadioButtons(); // 라디오 버튼 설정
             CheckLogs(); // 보안 로그 분석 시작
         }
 
@@ -72,48 +71,32 @@ namespace WindowsSentinel
         }
 
         /// <summary>
-        /// 라디오 버튼 초기화 및 이벤트 핸들러 연결
-        /// </summary>
-        private void InitializeRadioButtons()
-        {
-            first.Checked += RadioButton_Checked;    // 첫번째 필터
-            seconds.Checked += RadioButton_Checked;  // 두번째 필터
-            thirds.Checked += RadioButton_Checked;   // 세번째 필터
-        }
-
-        /// <summary>
-        /// 라디오 버튼 선택 이벤트 핸들러
-        /// </summary>
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-            if (programList != null && programList.Any())
-            {
-                DisplayFilteredPrograms(); // 선택된 필터 기준 프로그램 표시
-            }
-        }
-
-        /// <summary>
         /// Windows 보안 로그 분석 (Defender/Firewall/BitLocker)
         /// </summary>
         public void CheckLogs()
         {
             DateTime oneYearAgo = DateTime.Now.AddYears(-1);
             // 로그 업데이트 및 각 프로그램에 적합한 메시지 설정
-            SD[0] = new SecurityDate(GetLatestLogDate("Microsoft-Windows-Windows Defender/Operational", new int[] { 5007 }, oneYearAgo, "Windows Defender", firstLogMessage), "Defender");
-            SD[1] = new SecurityDate(GetLatestLogDate("Microsoft-Windows-Windows Firewall With Advanced Security/Firewall", new int[] { 2004, 2006, 2033 }, oneYearAgo, "Windows Firewall", secondsLogMessage), "Firewall");
-            SD[2] = new SecurityDate(GetLatestLogDate("Microsoft-Windows-BitLocker/Operational", new int[] { 775 }, oneYearAgo, "Windows BitLocker", thirdsLogMessage), "BitLocker");
-
+            SD[0] = new SecurityDate(GetLatestLogDate("Microsoft-Windows-Windows Defender/Operational", new int[] { 5007 }, oneYearAgo, "Windows Defender"), "Defender");
+            SD[1] = new SecurityDate(GetLatestLogDate("Microsoft-Windows-Windows Firewall With Advanced Security/Firewall", new int[] { 2004, 2006, 2033 }, oneYearAgo, "Windows Firewall"), "Firewall");
+            SD[2] = new SecurityDate(GetLatestLogDate("Microsoft-Windows-BitLocker/Operational", new int[] { 775 }, oneYearAgo, "Windows BitLocker"), "BitLocker");
 
             Array.Sort(SD, (a, b) => a.Date.CompareTo(b.Date));
-            first.Content = SD[0].Program_name;
-            seconds.Content = SD[1].Program_name;
-            thirds.Content = SD[2].Program_name;
+            UpdateSecurityStatus();
+        }
+
+        /// <summary>
+        /// 보안 상태 업데이트
+        /// </summary>
+        private void UpdateSecurityStatus()
+        {
+            // 여기에 보안 상태 UI 업데이트 로직 추가
         }
 
         /// <summary>
         /// 특정 이벤트 로그에서 최신 기록 날짜 조회
         /// </summary>
-        private static DateTime GetLatestLogDate(string logName, int[] eventIds, DateTime oneYearAgo, String Program_name, TextBlock logMessage)
+        private static DateTime GetLatestLogDate(string logName, int[] eventIds, DateTime oneYearAgo, String Program_name)
         {
             try
             {
@@ -136,8 +119,6 @@ namespace WindowsSentinel
             }
             catch (Exception)
             {
-                // TextBlock에 메시지 설정
-                logMessage.Text = $"{Program_name}의 수정 로그를 찾을 수 없습니다.";
                 return oneYearAgo;
             }
 
@@ -145,12 +126,25 @@ namespace WindowsSentinel
         }
 
         /// <summary>
+        /// [UI 이벤트] 설치된 프로그램 메뉴 버튼 클릭 핸들러
+        /// </summary>
+        private void btnInstalledPrograms_Click(object sender, RoutedEventArgs e)
+        {
+            programsSection.Visibility = Visibility.Visible;
+            if (programList == null || !programList.Any())
+            {
+                CollectInstalledPrograms();
+            }
+            DisplayFilteredPrograms();
+        }
+
+        /// <summary>
         /// [UI 이벤트] 설치 프로그램 검사 버튼 클릭 핸들러
         /// </summary>
         private void btnCollectPrograms_Click(object sender, RoutedEventArgs e)
         {
-            CollectInstalledPrograms();  // 프로그램 정보 수집
-            DisplayFilteredPrograms();   // 수집된 정보 표시
+            CollectInstalledPrograms();
+            DisplayFilteredPrograms();
         }
 
         /// <summary>
@@ -434,8 +428,8 @@ namespace WindowsSentinel
         {
             int check_id;
             DateTime Check_Date;
-            if (first.IsChecked == true) { Check_Date = SD[0].Date; check_id = 0; }
-            else if (seconds.IsChecked == true) { Check_Date = SD[1].Date; check_id = 1; }
+            if (SD[0].Date > SD[1].Date && SD[0].Date > SD[2].Date) { Check_Date = SD[0].Date; check_id = 0; }
+            else if (SD[1].Date > SD[2].Date) { Check_Date = SD[1].Date; check_id = 1; }
             else { Check_Date = SD[2].Date; check_id = 2; }
 
             var filteredPrograms = programList

@@ -73,3 +73,18 @@ C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj
 C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
 C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.exe
 C:\Users\admin\Downloads\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.pdb
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\bin\Debug\LogCheck.exe.config
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\bin\Debug\LogCheck.exe
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\bin\Debug\LogCheck.pdb
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\obj\Debug\LogCheck.csproj.AssemblyReference.cache
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\obj\Debug\MainWindow.g.cs
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\obj\Debug\App.g.cs
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\obj\Debug\LogCheck_MarkupCompile.cache
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\obj\Debug\LogCheck_MarkupCompile.lref
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\obj\Debug\MainWindow.baml
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\obj\Debug\LogCheck.g.resources
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\obj\Debug\LogCheck.Properties.Resources.resources
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\obj\Debug\LogCheck.csproj.GenerateResource.cache
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\obj\Debug\LogCheck.exe
+C:\Users\admin\Downloads\WindowsSentinel-main - 복사본\LogCheck\obj\Debug\LogCheck.pdb
