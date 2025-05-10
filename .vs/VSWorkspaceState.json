@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\LogCheck",
+    "\\LogCheck\\Resources"
   ],
+  "SelectedNode": "\\LogCheck\\MainWindow.xaml",
   "PreviewInSolutionExplorer": false
 }

@@ -1,17 +1,26 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\admin\\Downloads\\WindowsSentinel-0324commit\\WindowsSentinel-0324commit\\LogCheck\\",
+  "WorkspaceRootPath": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\downloads\\windowssentinel-0324commit\\windowssentinel-0324commit\\logcheck\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|LogCheck||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|C:\\Users\\admin\\Downloads\\WindowsSentinel-0324commit\\WindowsSentinel-0324commit\\LogCheck\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\herok\\onedrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\windowssentinel-main_0510\uC218\uC815\uBCF8\\windowssentinel-main_0510\uC218\uC815\uBCF8\\windowssentinel-main\\logcheck\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\setting.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:setting.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\log.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:log.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\page2.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:page2.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\page1.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:page1.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -21,42 +30,63 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "LogCheck",
-              "DocumentMoniker": "C:\\Users\\admin\\Downloads\\WindowsSentinel-0324commit\\WindowsSentinel-0324commit\\LogCheck\\LogCheck.csproj",
-              "RelativeDocumentMoniker": "LogCheck.csproj",
-              "ToolTip": "C:\\Users\\admin\\Downloads\\WindowsSentinel-0324commit\\WindowsSentinel-0324commit\\LogCheck\\LogCheck.csproj",
-              "RelativeToolTip": "LogCheck.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-04-03T10:55:10.634Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\admin\\Downloads\\WindowsSentinel-0324commit\\WindowsSentinel-0324commit\\LogCheck\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\admin\\Downloads\\WindowsSentinel-0324commit\\WindowsSentinel-0324commit\\LogCheck\\MainWindow.xaml.cs",
-              "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAABoBAAAAAAAAAAAhwCkBAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-03T04:04:04.583Z",
-              "EditorCaption": ""
+              "Title": "Setting.xaml",
+              "DocumentMoniker": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\Setting.xaml",
+              "RelativeDocumentMoniker": "Setting.xaml",
+              "ToolTip": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\Setting.xaml",
+              "RelativeToolTip": "Setting.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-10T12:18:01.435Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "Log.xaml",
+              "DocumentMoniker": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\Log.xaml",
+              "RelativeDocumentMoniker": "Log.xaml",
+              "ToolTip": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\Log.xaml",
+              "RelativeToolTip": "Log.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-10T12:17:56.708Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Page2.xaml",
+              "DocumentMoniker": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\Page2.xaml",
+              "RelativeDocumentMoniker": "Page2.xaml",
+              "ToolTip": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\Page2.xaml",
+              "RelativeToolTip": "Page2.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-10T12:17:53.609Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Page1.xaml",
+              "DocumentMoniker": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\Page1.xaml",
+              "RelativeDocumentMoniker": "Page1.xaml",
+              "ToolTip": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\Page1.xaml",
+              "RelativeToolTip": "Page1.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-10T12:17:51.439Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\admin\\Downloads\\WindowsSentinel-0324commit\\WindowsSentinel-0324commit\\LogCheck\\MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\MainWindow.xaml",
               "RelativeDocumentMoniker": "MainWindow.xaml",
-              "ToolTip": "C:\\Users\\admin\\Downloads\\WindowsSentinel-0324commit\\WindowsSentinel-0324commit\\LogCheck\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main_0510\uC218\uC815\uBCF8\\WindowsSentinel-main\\LogCheck\\MainWindow.xaml",
               "RelativeToolTip": "MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-04-03T04:04:04.665Z"
+              "WhenOpened": "2025-03-20T13:01:42.609Z",
+              "EditorCaption": ""
             }
           ]
         }
