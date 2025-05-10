@@ -1,0 +1,14 @@
+C:\My_Project\WindowsSentinel\WpfApp1\obj\Debug\WpfApp1.csproj.AssemblyReference.cache
+C:\My_Project\WindowsSentinel\WpfApp1\obj\Debug\MainWindow.g.cs
+C:\My_Project\WindowsSentinel\WpfApp1\obj\Debug\App.g.cs
+C:\My_Project\WindowsSentinel\WpfApp1\obj\Debug\WpfApp1_MarkupCompile.cache
+C:\My_Project\WindowsSentinel\WpfApp1\bin\Debug\WpfApp1.exe.config
+C:\My_Project\WindowsSentinel\WpfApp1\bin\Debug\WpfApp1.exe
+C:\My_Project\WindowsSentinel\WpfApp1\bin\Debug\WpfApp1.pdb
+C:\My_Project\WindowsSentinel\WpfApp1\obj\Debug\MainWindow.baml
+C:\My_Project\WindowsSentinel\WpfApp1\obj\Debug\WpfApp1.g.resources
+C:\My_Project\WindowsSentinel\WpfApp1\obj\Debug\WpfApp1.Properties.Resources.resources
+C:\My_Project\WindowsSentinel\WpfApp1\obj\Debug\WpfApp1.csproj.GenerateResource.cache
+C:\My_Project\WindowsSentinel\WpfApp1\obj\Debug\WpfApp1.csproj.CoreCompileInputs.cache
+C:\My_Project\WindowsSentinel\WpfApp1\obj\Debug\WpfApp1.exe
+C:\My_Project\WindowsSentinel\WpfApp1\obj\Debug\WpfApp1.pdb

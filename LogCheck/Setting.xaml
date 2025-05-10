@@ -1,0 +1,50 @@
+﻿<Page x:Class="LogCheck.Setting"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:LogCheck"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="1200"
+      Title="Setting" Background="{DynamicResource BackgroundColor}">
+
+    <Grid Grid.Column="1" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20" Margin="0,0,0,10" BorderBrush="#C2C2C2" BorderThickness="1">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,10,0" VerticalAlignment="Center">
+                        <StackPanel>
+                            <TextBlock Foreground="{DynamicResource ForegroundColor}" Text="화면 모드" FontSize="15" FontFamily="Consolas" TextAlignment="Center" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button x:Name="LightMode" Content="라이트 모드" Background="{DynamicResource ButtonBackgroundColor}" Foreground="{DynamicResource ButtonForegroundColor}"
+                                    BorderThickness="0" Width="120" Height="30" Margin="0,0,20,0"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    Click="SwitchToLightMode_Click"/>
+
+                            <Button x:Name="DarkMode" Content="다크 모드" Background="{DynamicResource ButtonBackgroundColor}" Foreground="{DynamicResource ButtonForegroundColor}"
+                                    BorderThickness="0" Width="120" Height="30"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    Click="SwitchToDarkMode_Click"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

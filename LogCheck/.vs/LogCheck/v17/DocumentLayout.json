@@ -1,14 +1,26 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\admin\\Downloads\\WindowsSentinel-main\\LogCheck\\",
+  "WorkspaceRootPath": "C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\downloads\\windowssentinel-main\\logcheck\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\herok\\downloads\\windowssentinel-kkwpc\\logcheck\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|C:\\Users\\admin\\Downloads\\WindowsSentinel-main\\LogCheck\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\setting.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:setting.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\log.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:log.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\page2.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:page2.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\page1.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:page1.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,31 +30,63 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\admin\\Downloads\\WindowsSentinel-main\\LogCheck\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\admin\\Downloads\\WindowsSentinel-main\\LogCheck\\MainWindow.xaml.cs",
-              "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAAOsAAAAAAAAAAAAEwPoAAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-20T13:01:42.467Z",
-              "EditorCaption": ""
+              "DocumentIndex": 1,
+              "Title": "Setting.xaml",
+              "DocumentMoniker": "C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\Setting.xaml",
+              "RelativeDocumentMoniker": "Setting.xaml",
+              "ToolTip": "C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\Setting.xaml",
+              "RelativeToolTip": "Setting.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-10T12:18:01.435Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
+              "Title": "Log.xaml",
+              "DocumentMoniker": "C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\Log.xaml",
+              "RelativeDocumentMoniker": "Log.xaml",
+              "ToolTip": "C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\Log.xaml",
+              "RelativeToolTip": "Log.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-10T12:17:56.708Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Page2.xaml",
+              "DocumentMoniker": "C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\Page2.xaml",
+              "RelativeDocumentMoniker": "Page2.xaml",
+              "ToolTip": "C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\Page2.xaml",
+              "RelativeToolTip": "Page2.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-10T12:17:53.609Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Page1.xaml",
+              "DocumentMoniker": "C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\Page1.xaml",
+              "RelativeDocumentMoniker": "Page1.xaml",
+              "ToolTip": "C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\Page1.xaml",
+              "RelativeToolTip": "Page1.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-10T12:17:51.439Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\admin\\Downloads\\WindowsSentinel-main\\LogCheck\\MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\MainWindow.xaml",
               "RelativeDocumentMoniker": "MainWindow.xaml",
-              "ToolTip": "C:\\Users\\admin\\Downloads\\WindowsSentinel-main\\LogCheck\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\herok\\Downloads\\WindowsSentinel-kkwpc\\LogCheck\\MainWindow.xaml",
               "RelativeToolTip": "MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-03-20T13:01:42.609Z"
+              "WhenOpened": "2025-03-20T13:01:42.609Z",
+              "EditorCaption": ""
             }
           ]
         }
