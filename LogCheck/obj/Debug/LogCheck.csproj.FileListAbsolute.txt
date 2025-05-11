@@ -206,55 +206,57 @@ C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel-main_0510수
 C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
 C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.exe
 C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.pdb
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\bin\Debug\LogCheck.exe.config
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\bin\Debug\LogCheck.exe
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\bin\Debug\LogCheck.pdb
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj.AssemblyReference.cache
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\DarkTheme.baml
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LightTheme.baml
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Log.g.cs
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\MainWindow.g.cs
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Page1.g.cs
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Page2.g.cs
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Setting.g.cs
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\App.g.cs
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck_MarkupCompile.cache
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck_MarkupCompile.lref
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\App.baml
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Log.baml
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\MainWindow.baml
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Page1.baml
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Page2.baml
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Setting.baml
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.g.resources
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.Properties.Resources.resources
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj.GenerateResource.cache
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.exe
-C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main_0510수정본\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.pdb
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\bin\Debug\LogCheck.exe.config
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\bin\Debug\LogCheck.exe
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\bin\Debug\LogCheck.pdb
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\LogCheck.csproj.AssemblyReference.cache
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\DarkTheme.baml
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\LightTheme.baml
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\Log.g.cs
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\MainWindow.g.cs
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\Page1.g.cs
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\Page2.g.cs
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\Setting.g.cs
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\App.g.cs
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\LogCheck_MarkupCompile.cache
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\LogCheck_MarkupCompile.lref
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\App.baml
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\Log.baml
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\MainWindow.baml
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\Page1.baml
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\Page2.baml
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\Setting.baml
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\LogCheck.g.resources
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\LogCheck.Properties.Resources.resources
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\LogCheck.csproj.GenerateResource.cache
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\LogCheck.exe
-C:\Users\herok\Downloads\WindowsSentinel-kkwpc\LogCheck\obj\Debug\LogCheck.pdb
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj.AssemblyReference.cache
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\DarkTheme.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LightTheme.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Log.g.cs
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\MainWindow.g.cs
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Page1.g.cs
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Page2.g.cs
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Setting.g.cs
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\App.g.cs
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck_MarkupCompile.cache
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck_MarkupCompile.lref
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.exe
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.pdb
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\bin\Debug\LogCheck.exe.config
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\bin\Debug\LogCheck.exe
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\bin\Debug\LogCheck.pdb
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\App.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Log.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\MainWindow.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Page1.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Page2.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\Setting.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.g.resources
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.Properties.Resources.resources
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj.GenerateResource.cache
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main_0510수정본\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\bin\Debug\LogCheck.exe.config
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\bin\Debug\LogCheck.exe
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\bin\Debug\LogCheck.pdb
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj.AssemblyReference.cache
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\DarkTheme.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\LightTheme.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\Log.g.cs
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\MainWindow.g.cs
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\Page1.g.cs
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\Page2.g.cs
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\Setting.g.cs
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\App.g.cs
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck_MarkupCompile.cache
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck_MarkupCompile.lref
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\App.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\Log.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\MainWindow.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\Page1.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\Page2.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\Setting.baml
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.g.resources
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.Properties.Resources.resources
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj.GenerateResource.cache
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.exe
+C:\Users\User\OneDrive\바탕 화면\WindowsSentinel-main\LogCheck\obj\Debug\LogCheck.pdb
+C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main\LogCheck\obj\Debug\DarkTheme.baml
+C:\Users\herok\OneDrive\문서\카카오톡 받은 파일\WindowsSentinel-main\LogCheck\obj\Debug\LightTheme.baml

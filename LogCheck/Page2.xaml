@@ -161,7 +161,7 @@
                                         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding SecurityLevel}" Value="낮음">
-                                            <Setter Property="Foreground" Value="#DC3545"/>
+                                            <Setter Property="Foreground" Value="#4CAF50"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding SecurityLevel}" Value="중간">
                                             <Setter Property="Foreground" Value="#FFC107"/>
