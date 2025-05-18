@@ -286,3 +286,4 @@ C:\Users\김기원\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\De
 C:\Users\김기원\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\LogCheck.csproj.CoreCompileInputs.cache
 C:\Users\김기원\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\Logcheck.exe
 C:\Users\김기원\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\Logcheck.pdb
+C:\Users\김기원\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\Logcheck.exe.config
