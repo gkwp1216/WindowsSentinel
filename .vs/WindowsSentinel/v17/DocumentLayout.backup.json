@@ -1,12 +1,53 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\My_Project\\WindowsSentinel\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\!My_Project\\WindowsSentinel\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{59D741F0-CCAD-4527-B285-04F89F135A39}|WindowsSentinel.csproj|c:\\users\\herok\\onedrive\\\uBB38\uC11C\\!my_project\\windowssentinel\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59D741F0-CCAD-4527-B285-04F89F135A39}|WindowsSentinel.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59D741F0-CCAD-4527-B285-04F89F135A39}|WindowsSentinel.csproj|c:\\users\\herok\\onedrive\\\uBB38\uC11C\\!my_project\\windowssentinel\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{59D741F0-CCAD-4527-B285-04F89F135A39}|WindowsSentinel.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\!My_Project\\WindowsSentinel\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "MainWindow.xaml",
+              "ToolTip": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\!My_Project\\WindowsSentinel\\MainWindow.xaml",
+              "RelativeToolTip": "MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-03-15T07:59:35.851Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\!My_Project\\WindowsSentinel\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\herok\\OneDrive\\\uBB38\uC11C\\!My_Project\\WindowsSentinel\\MainWindow.xaml.cs",
+              "RelativeToolTip": "MainWindow.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-15T07:59:31.575Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
