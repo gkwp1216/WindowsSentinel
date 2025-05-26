@@ -6,56 +6,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/LightTheme.xaml"/>
+                <ResourceDictionary Source="LightTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <!-- 사이드바 버튼 스타일 -->
-            <Style x:Key="SidebarButtonStyle" TargetType="Button">
-                <Setter Property="Background" Value="{DynamicResource ButtonBackgroundColor}"/>
-                <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundColor}"/>
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="BorderBrush" Value="#E0E0E0"/>
-                <Setter Property="Margin" Value="0,5"/>
-                <Setter Property="Height" Value="70"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="8">
-                                <Grid Margin="10">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" 
-                                             Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"
-                                             FontFamily="Segoe MDL2 Assets"
-                                             FontSize="24"
-                                             Foreground="#4CAF50"
-                                             VerticalAlignment="Center"
-                                             Margin="0,0,10,0"/>
-                                    <TextBlock Grid.Column="1" 
-                                             Text="{TemplateBinding Content}"
-                                             FontSize="14"
-                                             TextWrapping="Wrap"
-                                             VerticalAlignment="Center"/>
-                                </Grid>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Effect">
-                                        <Setter.Value>
-                                            <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="#CCCCCC"/>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Setter Property="BorderBrush" Value="#4CAF50"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

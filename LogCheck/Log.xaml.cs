@@ -20,6 +20,180 @@ namespace WindowsSentinel
             public DateTime Date { get; set; }
             public string ProgramName { get; set; }
             public string Reason { get; set; }
+
+            public static Dictionary<DateTime, int> InstallDate = new Dictionary<DateTime, int>();
+            public static Dictionary<DateTime, int> SecurityDate = new Dictionary<DateTime, int>();
+        }
+
+
+        private void BtnShowChangeLogs_Click(object sender, RoutedEventArgs e)
+        {
+            logsSection.Visibility = Visibility.Visible;
+            logsDataGrid.ItemsSource = null;
+
+            int countLimit = 30;
+
+            var logEntries = new List<ChangeLogEntry>();
+            var Counts = new Dictionary<int, int>();
+
+            Counts[5007] = 0;
+            Counts[2004] = 0;
+            Counts[2006] = 0;
+            Counts[2033] = 0;
+            Counts[775] = 0;
+
+            Counts[4624] = 0;
+            Counts[4625] = 0;
+            Counts[4672] = 0;
+
+            var eventSources = new (int Id, string LogName, string ProgramName)[]
+            {
+                (5007, "Microsoft-Windows-Windows Defender/Operational", "Windows Defender"),
+                (2004, "Microsoft-Windows-Windows Firewall With Advanced Security/Firewall", "Windows Firewall"),
+                (2006, "Microsoft-Windows-Windows Firewall With Advanced Security/Firewall", "Windows Firewall"),
+                (2033, "Microsoft-Windows-Windows Firewall With Advanced Security/Firewall", "Windows Firewall"),
+                (775,  "Microsoft-Windows-BitLocker/Operational", "BitLocker")
+            };
+
+            var externalSources = new (int Id, string LogName, string ProgramName)[]
+            {
+                (4624, "Security", "Windows Security (로그인 성공)"),
+                (4625, "Security", "Windows Security (로그인 실패)"),
+                (4672, "Security", "Windows Security (특권 할당)")
+            };
+
+            var SecurityCheck = new (int Id, int score)[]
+            {
+                (11707, 0),
+                (7045, -10),
+                (6, -15),
+                (5156, -10),
+                (5158, -10),
+                (4688, -5)
+            };
+
+            DateTime oneYearAgo = DateTime.Now.AddYears(-1);
+
+            foreach (var es in (isEventChecked ? eventSources : externalSources))
+            {
+                try
+                {
+                    long millisecondsInOneYear = 365L * 24 * 60 * 60 * 1000;
+                    string query = $"*[System[(EventID={es.Id}) and TimeCreated[timediff(@SystemTime) <= {millisecondsInOneYear}]]]";
+                    var eventQuery = new EventLogQuery(es.LogName, PathType.LogName, query)
+                    {
+                        ReverseDirection = true
+                    };
+
+                    using (var reader = new EventLogReader(eventQuery))
+                    {
+                        EventRecord record;
+                        while ((record = reader.ReadEvent()) != null)
+                        {
+                            if (record.TimeCreated != null && record.TimeCreated.Value > oneYearAgo && Counts[record.Id] < countLimit)
+                            {
+                                string message = record.FormatDescription() ?? "(설명 없음)";
+
+                                Counts[record.Id]++;
+
+                                logEntries.Add(new ChangeLogEntry
+                                {
+                                    EventId = record.Id,
+                                    Date = record.TimeCreated.Value,
+                                    ProgramName = es.ProgramName,
+                                    Reason = AnalyzeReason(message, record.Id)
+                                });
+                            }
+                        }
+                    }
+                    if (Counts[es.Id] == 0)
+                    {
+                        logEntries.Add(new ChangeLogEntry
+                        {
+                            EventId = es.Id,
+                            Date = DateTime.Now,
+                            ProgramName = es.ProgramName,
+                            Reason = "해당 이벤트 코드가 발생하지 않았습니다."
+                        });
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logEntries.Add(new ChangeLogEntry
+                    {
+                        EventId = es.Id,
+                        Date = DateTime.Now,
+                        ProgramName = es.ProgramName,
+                        Reason = $"로그 읽기 실패: {ex.Message}"
+                    });
+                }
+            }
+            logEntries = logEntries
+                .GroupBy(entry => new { entry.EventId, entry.Date })  // EventId와 Date 기준으로 그룹화
+                .Select(group => group.First())  // 그룹 내 첫 번째 항목만 선택
+                .ToList();
+
+            // DataGrid에 표시
+            logsDataGrid.ItemsSource = logEntries;
+            foreach(var sc in SecurityCheck)
+            {
+                try
+                {
+                    long millisecondsInOneYear = 365L * 24 * 60 * 60 * 1000;
+                    string query = $"*[System[(EventID={sc.Id}) and TimeCreated[timediff(@SystemTime) <= {millisecondsInOneYear}]]]";
+                    using (var reader = new EventLogReader(query))
+                    {
+                        EventRecord record;
+                        while ((record = reader.ReadEvent()) != null)
+                        {
+                            if (record.TimeCreated != null && record.TimeCreated.Value > oneYearAgo)
+                            {
+                                if (ChangeLogEntry.InstallDate.ContainsKey(record.TimeCreated.Value)) ChangeLogEntry.InstallDate[record.TimeCreated.Value] += sc.score;
+                                else ChangeLogEntry.InstallDate[record.TimeCreated.Value] = sc.score;
+                            }
+                        }
+                    }
+                }
+                catch { }
+            }
+        }
+        private void SidebarPrograms_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new Page1());
+        }
+        private void SidebarModification_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new Page2());
+        }
+        private void SidebarLog_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new Log());
+        }
+        private void SidebarRecovery_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new Recovery());
+        }
+        private void NavigateToPage(Page page)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            mainWindow?.NavigateToPage(page);
+        }
+
+
+        private bool isEventChecked = true;
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender == chkExternalLog)
+            {
+                chkEventLog.IsChecked = false;
+                isEventChecked = false;
+            }
+            else if (sender == chkEventLog)
+            {
+                chkExternalLog.IsChecked = false;
+                isEventChecked = true;
+            }
         }
         private string AnalyzeReason(string reason, int eventcode)
         {
@@ -287,120 +461,81 @@ namespace WindowsSentinel
                 else
                     return "정의된 차단 이벤트 유형에 해당하지 않습니다.";
             }
+            else if(eventcode == 4624)
+            {
+                // 1. 직접 로그인 (콘솔 로그온)
+                if (r.Contains("logon type:  2") || r.Contains("로그온 유형:  2"))
+                    return "직접 로그인 (콘솔 로그온)";
+
+                // 2. 원격 로그인 (Remote Desktop)
+                else if (r.Contains("logon type:  10") || r.Contains("로그온 유형:  10"))
+                    return "원격 로그인 (Remote Desktop)";
+
+                // 3. 네트워크 로그인 (공유 폴더 접근 등)
+                else if (r.Contains("logon type:  3") || r.Contains("로그온 유형:  3"))
+                    return "네트워크 로그인 (공유 폴더 접근 등)";
+
+                // 4. 서비스 계정 로그인
+                else if (r.Contains("logon type:  5") || r.Contains("로그온 유형:  5"))
+                    return "서비스 계정 로그인";
+
+                // 5. 배치 작업 또는 예약된 작업에 의한 로그인
+                else if (r.Contains("logon type:  4") || r.Contains("로그온 유형:  4"))
+                    return "배치 작업 또는 예약된 작업에 의한 로그인";
+
+                else
+                    return "기타 로그인 유형 (확인 필요)";
+            }
+
+            else if(eventcode == 4625)
+            {
+                // 1. 원격 데스크톱 로그인 실패 (RDP)
+                if (r.Contains("logon type:  10") || r.Contains("로그온 유형:  10"))
+                    return "원격 데스크톱 로그인 실패 (RDP)";
+
+                // 2. 네트워크 로그인 실패 (공유 접근)
+                else if (r.Contains("logon type:  3") || r.Contains("로그온 유형:  3"))
+                    return "네트워크 로그인 실패 (공유 접근)";
+
+                // 3. 인증 실패 (계정 정보 오류)
+                else if (r.Contains("failure reason: unknown user name or bad password") ||
+                         r.Contains("잘못된 사용자 이름 또는 암호"))
+                    return "인증 실패 (계정 정보 오류)";
+
+                // 4. 계정 비활성화로 인한 로그인 실패
+                else if (r.Contains("account currently disabled") || r.Contains("사용자 계정이 사용 중지됨"))
+                    return "계정 비활성화로 인한 로그인 실패";
+
+                // 5. 계정 잠김 (로그인 시도 초과)
+                else if (r.Contains("account locked out") || r.Contains("계정 잠김"))
+                    return "계정 잠김 (로그인 시도 초과)";
+
+                else
+                    return "기타 로그인 실패 (추가 분석 필요)";
+            }
+            else if(eventcode == 4672)
+            {
+                // 1. 디버깅 권한 포함 (SeDebugPrivilege) – 시스템 제어 가능
+                if (r.Contains("sedebugPpivilege"))
+                    return "디버깅 권한 포함 (SeDebugPrivilege) – 시스템 제어 가능";
+
+                // 2.운영 체제 수준 권한 포함 (SeTcbPrivilege)
+                else if (r.Contains("setcbprivilege"))
+                    return "운영 체제 수준 권한 포함 (setcbprivilege)";
+
+                // 3. 백업/복원 권한 포함 – 데이터 접근 가능
+                else if (r.Contains("sebackupprivilege") || r.Contains("serestoreprivilege"))
+                    return "백업/복원 권한 포함 – 데이터 접근 가능";
+
+                // 4. 관리자 계정 로그인 (특권 포함)
+                else if (r.Contains("administrator") || r.Contains("관리자"))
+                    return "관리자 계정 로그인 (특권 포함)";
+
+                else
+                    return "특권 계정 로그인 (상세 권한 분석 필요)";
+            }
             else
                 return "알 수 없는 이유";
-        }
-
-        private void BtnShowChangeLogs_Click(object sender, RoutedEventArgs e)
-        {
-            logsSection.Visibility = Visibility.Visible;
-            logsDataGrid.ItemsSource = null;
-
-            int countLimit = 30;
-
-            var logEntries = new List<ChangeLogEntry>();
-            var eventCounts = new Dictionary<int, int>();
-
-            eventCounts[5007] = 0;
-            eventCounts[2004] = 0;
-            eventCounts[2006] = 0;
-            eventCounts[2033] = 0;
-            eventCounts[775] = 0;
-
-            var eventSources = new (int Id, string LogName, string ProgramName)[]
-            {
-                (5007, "Microsoft-Windows-Windows Defender/Operational", "Windows Defender"),
-                (2004, "Microsoft-Windows-Windows Firewall With Advanced Security/Firewall", "Windows Firewall"),
-                (2006, "Microsoft-Windows-Windows Firewall With Advanced Security/Firewall", "Windows Firewall"),
-                (2033, "Microsoft-Windows-Windows Firewall With Advanced Security/Firewall", "Windows Firewall"),
-                (775,  "Microsoft-Windows-BitLocker/Operational", "BitLocker")
-            };
-
-            DateTime oneYearAgo = DateTime.Now.AddYears(-1);
-
-            foreach (var es in eventSources)
-            {
-                try
-                {
-                    long millisecondsInOneYear = 365L * 24 * 60 * 60 * 1000;
-                    string query = $"*[System[(EventID={es.Id}) and TimeCreated[timediff(@SystemTime) <= {millisecondsInOneYear}]]]";
-                    var eventQuery = new EventLogQuery(es.LogName, PathType.LogName, query)
-                    {
-                        ReverseDirection = true
-                    };
-
-                    using (var reader = new EventLogReader(eventQuery))
-                    {
-                        EventRecord record;
-                        while ((record = reader.ReadEvent()) != null)
-                        {
-                            if (record.TimeCreated != null && record.TimeCreated.Value > oneYearAgo && eventCounts[record.Id] < countLimit)
-                            {
-                                string message = record.FormatDescription() ?? "(설명 없음)";
-
-                                eventCounts[record.Id]++;
-
-                                logEntries.Add(new ChangeLogEntry
-                                {
-                                    EventId = record.Id,
-                                    Date = record.TimeCreated.Value,
-                                    ProgramName = es.ProgramName,
-                                    Reason = AnalyzeReason(message, record.Id)
-                                });
-                            }
-                        }
-                    }
-                    if (eventCounts[es.Id] == 0)
-                    {
-                        logEntries.Add(new ChangeLogEntry
-                        {
-                            EventId = es.Id,
-                            Date = DateTime.Now,
-                            ProgramName = es.ProgramName,
-                            Reason = "해당 이벤트 코드가 발생하지 않았습니다."
-                        });
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    logEntries.Add(new ChangeLogEntry
-                    {
-                        EventId = es.Id,
-                        Date = DateTime.Now,
-                        ProgramName = es.ProgramName,
-                        Reason = $"로그 읽기 실패: {ex.Message}"
-                    });
-                }
-            }
-            logEntries = logEntries
-                .GroupBy(entry => new { entry.EventId, entry.Date })  // EventId와 Date 기준으로 그룹화
-                .Select(group => group.First())  // 그룹 내 첫 번째 항목만 선택
-                .ToList();
-
-            // DataGrid에 표시
-            logsDataGrid.ItemsSource = logEntries;
-        }
-        private void SidebarPrograms_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Page1());
-        }
-        private void SidebarModification_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Page2());
-        }
-        private void SidebarLog_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Log());
-        }
-        private void SidebarRecovery_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("보안 프로그램 복구 기능이 곧 구현될 예정입니다.", "알림", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-        private void NavigateToPage(Page page)
-        {
-            var mainWindow = Window.GetWindow(this) as MainWindow;
-            mainWindow?.NavigateToPage(page);
         }
     }
 }

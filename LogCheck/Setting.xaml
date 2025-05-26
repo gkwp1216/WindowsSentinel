@@ -32,14 +32,15 @@
 
                     <Border Grid.Column="1" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,10,0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button x:Name="LightMode" Content="라이트 모드" Background="{DynamicResource ButtonBackgroundColor}" Foreground="{DynamicResource ButtonForegroundColor}"
-                                    BorderThickness="0" Width="120" Height="30" Margin="0,0,20,0"
-                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                            <Button x:Name="LightMode" Content="라이트 모드"
+                                    Style="{DynamicResource ModeButtonStyle}"
+                                    Margin="0,0,20,0"
+                                    Cursor="Hand"
                                     Click="SwitchToLightMode_Click"/>
 
-                            <Button x:Name="DarkMode" Content="다크 모드" Background="{DynamicResource ButtonBackgroundColor}" Foreground="{DynamicResource ButtonForegroundColor}"
-                                    BorderThickness="0" Width="120" Height="30"
-                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                            <Button x:Name="DarkMode" Content="다크 모드"
+                                    Style="{DynamicResource ModeButtonStyle}"
+                                    Cursor="Hand"
                                     Click="SwitchToDarkMode_Click"/>
                         </StackPanel>
                     </Border>

@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\herok\OneDrive\문서\!My_Project\WindowsSentinel\obj\Debug\net8.0-windows\
+C:\My_Project\LogCheck-0525_수정\obj\Debug\net8.0-windows\
 WindowsSentinel
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-C:\Users\herok\OneDrive\문서\!My_Project\WindowsSentinel\App.xaml
-11407045341
+C:\My_Project\LogCheck-0525_수정\App.xaml
+27-1224942650
 
-6-1828935840
-198-344842731
-MainWindow.xaml;
+105-1632222173
+198-537775612
+LogCheck\App.xaml;LogCheck\DarkTheme.xaml;LogCheck\LightTheme.xaml;LogCheck\Log.xaml;LogCheck\LogCheck\App.xaml;LogCheck\LogCheck\DarkTheme.xaml;LogCheck\LogCheck\LightTheme.xaml;LogCheck\LogCheck\Log.xaml;LogCheck\LogCheck\LogCheck\App.xaml;LogCheck\LogCheck\LogCheck\DarkTheme.xaml;LogCheck\LogCheck\LogCheck\LightTheme.xaml;LogCheck\LogCheck\LogCheck\Log.xaml;LogCheck\LogCheck\LogCheck\MainWindow.xaml;LogCheck\LogCheck\LogCheck\Page1.xaml;LogCheck\LogCheck\LogCheck\Page2.xaml;LogCheck\LogCheck\LogCheck\Recovery.xaml;LogCheck\LogCheck\LogCheck\Setting.xaml;LogCheck\LogCheck\MainWindow.xaml;LogCheck\LogCheck\Page1.xaml;LogCheck\LogCheck\Page2.xaml;LogCheck\LogCheck\Recovery.xaml;LogCheck\LogCheck\Setting.xaml;LogCheck\MainWindow.xaml;LogCheck\Page1.xaml;LogCheck\Page2.xaml;LogCheck\Setting.xaml;MainWindow.xaml;
 
 False
 

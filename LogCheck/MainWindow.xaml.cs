@@ -103,8 +103,8 @@ namespace WindowsSentinel
 
         private void SecurityRecovery_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: PowerShell 명령어를 통한 보안 프로그램 복구 기능 구현
-            MessageBox.Show("보안 프로그램 복구 기능이 곧 구현될 예정입니다.", "알림", MessageBoxButton.OK, MessageBoxImage.Information);
+            // Recovery 페이지로 네비게이션
+            NavigateToPage(new Recovery());
         }
     }
 }

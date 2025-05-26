@@ -24,6 +24,8 @@ using WindowsSentinel;
 using System.Windows.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Animation;
+using System.Runtime.InteropServices.ComTypes;
+using static WindowsSentinel.Log;
 
 namespace WindowsSentinel
 {
@@ -276,7 +278,7 @@ namespace WindowsSentinel
                             };
 
                             // 보안 정보 분석
-                            var securityInfo = GetSecurityInfo(program.InstallPath);
+                            var securityInfo = GetSecurityInfo(program.InstallPath, SecurityCheck(installDate));
                             program.SecurityLevel = securityInfo.SecurityLevel;
                             program.SecurityDetails = securityInfo.Details;
 
@@ -412,7 +414,7 @@ namespace WindowsSentinel
         /// 프로그램 보안 정보 분석
         /// [변경] Defender 예외 검사 제거된 버전
         /// </summary>
-        private SecurityInfo GetSecurityInfo(string installLocation)
+        private SecurityInfo GetSecurityInfo(string installLocation, int score)
         {
             var info = new SecurityInfo();
             try
@@ -426,16 +428,28 @@ namespace WindowsSentinel
                         try
                         {
                             var cert = X509Certificate.CreateFromSignedFile(exe);
-                            info.Details += $"{Path.GetFileName(exe)}: 서명 있음\n";
+                            var cert2 = new X509Certificate2(cert);
+
+                            bool isValid = cert2.Verify();
+
+                            if (isValid)
+                                info.Details += $"{Path.GetFileName(exe)}: 서명 있음 (유효)\n";
+                            else
+                                info.Details += $"{Path.GetFileName(exe)}: 서명 있음 (⚠ 유효하지 않음)\n";
                         }
                         catch
                         {
                             info.Details += $"{Path.GetFileName(exe)}: 서명 없음\n";
                         }
                     }
+
                 }
 
-                info.SecurityLevel = info.Details.Contains("서명 있음") ? "중간" : "낮음";
+                score += info.Details.Contains("서명 있음") ? 0 : -20;
+                score += info.Details.Contains("유효하지 않음") ? -30 : 0;
+                if (score >= 80) info.SecurityLevel = "정상";
+                else if(score >= 50) info.SecurityLevel = "주의";
+                else info.SecurityLevel = "위험";
             }
             catch (Exception ex)
             {
@@ -609,13 +623,25 @@ namespace WindowsSentinel
 
         private void SidebarRecovery_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("보안 프로그램 복구 기능이 곧 구현될 예정입니다.", "알림", MessageBoxButton.OK, MessageBoxImage.Information);
+            NavigateToPage(new Recovery());
         }
 
         private void NavigateToPage(Page page)
         {
             var mainWindow = Window.GetWindow(this) as MainWindow;
             mainWindow?.NavigateToPage(page);
+        }
+        private int SecurityCheck(DateTime time)
+        {
+            int secuScore = 100;
+            foreach (var insD in ChangeLogEntry.InstallDate)
+            {
+                if (insD.Key >= time && insD.Key <= time.AddMinutes(5))
+                    secuScore += insD.Value; //Log.xaml.cs에서 설정한 보안점수
+                else secuScore += (-15); //로그는 발생하지 않았으나 설치된 경우
+            }
+            if (time.Date == new DateTime(0001, 01, 01)) secuScore -= 100;
+            return secuScore;
         }
     }
 }

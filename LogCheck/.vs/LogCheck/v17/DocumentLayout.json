@@ -1,12 +1,96 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\\uAE40\uAE30\uC6D0\\Documents\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\LogCheck\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\My_Project\\WindowsSentinel\\LogCheck\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\my_project\\windowssentinel\\logcheck\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\my_project\\windowssentinel\\logcheck\\page1.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:page1.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\my_project\\windowssentinel\\logcheck\\page2.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:page2.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\my_project\\windowssentinel\\logcheck\\recovery.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:recovery.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\my_project\\windowssentinel\\logcheck\\log.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:log.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Page2.xaml",
+              "DocumentMoniker": "C:\\My_Project\\WindowsSentinel\\LogCheck\\Page2.xaml",
+              "RelativeDocumentMoniker": "Page2.xaml",
+              "ToolTip": "C:\\My_Project\\WindowsSentinel\\LogCheck\\Page2.xaml",
+              "RelativeToolTip": "Page2.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-25T06:24:59.795Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Log.xaml",
+              "DocumentMoniker": "C:\\My_Project\\WindowsSentinel\\LogCheck\\Log.xaml",
+              "RelativeDocumentMoniker": "Log.xaml",
+              "ToolTip": "C:\\My_Project\\WindowsSentinel\\LogCheck\\Log.xaml",
+              "RelativeToolTip": "Log.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-25T05:56:49.075Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Recovery.xaml",
+              "DocumentMoniker": "C:\\My_Project\\WindowsSentinel\\LogCheck\\Recovery.xaml",
+              "RelativeDocumentMoniker": "Recovery.xaml",
+              "ToolTip": "C:\\My_Project\\WindowsSentinel\\LogCheck\\Recovery.xaml",
+              "RelativeToolTip": "Recovery.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-24T18:23:09.714Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\My_Project\\WindowsSentinel\\LogCheck\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "MainWindow.xaml",
+              "ToolTip": "C:\\My_Project\\WindowsSentinel\\LogCheck\\MainWindow.xaml",
+              "RelativeToolTip": "MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-24T18:21:11.8Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Page1.xaml",
+              "DocumentMoniker": "C:\\My_Project\\WindowsSentinel\\LogCheck\\Page1.xaml",
+              "RelativeDocumentMoniker": "Page1.xaml",
+              "ToolTip": "C:\\My_Project\\WindowsSentinel\\LogCheck\\Page1.xaml",
+              "RelativeToolTip": "Page1.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-24T23:11:35.126Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

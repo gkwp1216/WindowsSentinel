@@ -8,40 +8,7 @@
         Title="Windows Sentinel" Height="800" Width="1200"
         Background="{DynamicResource BackgroundColor}">
     <Window.Resources>
-        <!-- 메인 버튼 스타일 -->
-        <Style x:Key="MainButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="{DynamicResource ButtonBackgroundColor}"/>
-            <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundColor}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="#E0E0E0"/>
-            <Setter Property="Margin" Value="10"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="15"
-                                Effect="{TemplateBinding Effect}">
-                            <Grid>
-                                <ContentPresenter HorizontalAlignment="Center" 
-                                                VerticalAlignment="Center"/>
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Effect">
-                                    <Setter.Value>
-                                        <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="#CCCCCC"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        
+
         <!-- Material 아이콘 스타일 -->
         <Style x:Key="MaterialIconStyle" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
@@ -50,37 +17,6 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0,0,0,20"/>
-        </Style>
-
-        <!-- 네비게이션 아이콘 버튼 스타일 -->
-        <Style x:Key="NavIconButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="{DynamicResource ButtonBackgroundColor}"/>
-            <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundColor}"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Width" Value="40"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Margin" Value="5,0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="8">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Effect">
-                        <Setter.Value>
-                            <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="#CCCCCC"/>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
         <!-- 네비게이션 아이콘 스타일 -->
@@ -106,12 +42,13 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <StackPanel Grid.Column="0" 
-                           Orientation="Horizontal" 
-                           Margin="10,10,0,10" 
-                           HorizontalAlignment="Left">
-                    <Button Style="{StaticResource NavIconButtonStyle}"                           
+                            Orientation="Horizontal" 
+                            Margin="10,10,0,10" 
+                            HorizontalAlignment="Left">
+                    <Button Style="{DynamicResource NavIconButtonStyle}"
+                            Cursor="Hand"
                             Click="BtnHome_click" 
                             ToolTip="홈">
                         <TextBlock Text="&#xE80F;" 
@@ -120,10 +57,11 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" 
-                           Orientation="Horizontal" 
-                           Margin="0,10,10,10" 
-                           HorizontalAlignment="Right">
-                    <Button Style="{StaticResource NavIconButtonStyle}" 
+                            Orientation="Horizontal" 
+                            Margin="0,10,10,10" 
+                            HorizontalAlignment="Right">
+                    <Button Style="{DynamicResource NavIconButtonStyle}" 
+                            Cursor="Hand"
                             Click="BtnSetting_Click"
                             ToolTip="설정">
                         <TextBlock Text="&#xE713;" 
@@ -168,9 +106,10 @@
 
             <!-- 설치된 프로그램 버튼 -->
             <Button Grid.Row="0" Grid.Column="0" 
-                    Style="{StaticResource MainButtonStyle}" 
+                    Style="{DynamicResource MainButtonStyle}" 
+                    Cursor="Hand"
                     Click="InstalledPrograms_Click">
-                <StackPanel>
+                <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
                     <TextBlock Text="&#xE71D;" 
                              Style="{StaticResource MaterialIconStyle}"/>
                     <TextBlock Text="설치된 프로그램"                               
@@ -188,9 +127,10 @@
 
             <!-- 수정/변경 내역 버튼 -->
             <Button Grid.Row="0" Grid.Column="1" 
-                    Style="{StaticResource MainButtonStyle}" 
+                    Style="{DynamicResource MainButtonStyle}" 
+                    Cursor="Hand"
                     Click="ModificationHistory_Click">
-                <StackPanel>
+                <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
                     <TextBlock Text="&#xE81C;" 
                                Style="{StaticResource MaterialIconStyle}"/>
                     <TextBlock Text="수정/변경 내역" 
@@ -208,9 +148,10 @@
 
             <!-- 보안 로그 버튼 -->
             <Button Grid.Row="1" Grid.Column="0" 
-                    Style="{StaticResource MainButtonStyle}" 
+                    Style="{DynamicResource MainButtonStyle}" 
+                    Cursor="Hand"
                     Click="BtnLog_Click">
-                <StackPanel>
+                <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
                     <TextBlock Text="&#xE72E;" 
                                Style="{StaticResource MaterialIconStyle}"/>
                     <TextBlock Text="보안 로그" 
@@ -228,9 +169,10 @@
 
             <!-- 보안 복구 버튼 -->
             <Button Grid.Row="1" Grid.Column="1" 
-                    Style="{StaticResource MainButtonStyle}" 
+                    Style="{DynamicResource MainButtonStyle}" 
+                    Cursor="Hand"
                     Click="SecurityRecovery_Click">
-                <StackPanel>
+                <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
                     <TextBlock Text="&#xE946;" 
                                Style="{StaticResource MaterialIconStyle}"/>
                     <TextBlock Text="보안 프로그램 복구" 

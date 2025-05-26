@@ -515,7 +515,7 @@ namespace WindowsSentinel
         private class ProgramInfo
         {
             public string Name { get; set; } = "알 수 없음";
-            public DateTime InstallDate { get; set; } = DateTime.MinValue;
+            public DateTime? InstallDate { get; set; } = DateTime.MinValue;
             public string InstallPath { get; set; } = "";
             public string Version { get; set; } = "";
             public string Publisher { get; set; } = "";
@@ -565,7 +565,7 @@ namespace WindowsSentinel
 
         private void SidebarRecovery_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("보안 프로그램 복구 기능이 곧 구현될 예정입니다.", "알림", MessageBoxButton.OK, MessageBoxImage.Information);
+            NavigateToPage(new Recovery());
         }
 
         private void NavigateToPage(Page page)

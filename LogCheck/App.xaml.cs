@@ -5,6 +5,9 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace LogCheck
 {
@@ -13,23 +16,42 @@ namespace LogCheck
     /// </summary>
     public partial class App : Application
     {
-        public void ChangeTheme(string theme)
+        public App()
         {
-            ResourceDictionary newTheme = new ResourceDictionary();
-            switch (theme)
+            InitializeComponent();
+        }
+
+        // 테마를 변경하는 메서드
+        public void ApplyTheme(string themeName)
+        {
+            var newTheme = new ResourceDictionary();
+
+            switch (themeName)
             {
                 case "Light":
-                    newTheme.Source = new Uri("LightTheme.xaml", UriKind.Relative);
+                    newTheme.Source = new Uri("pack://application:,,,/LightTheme.xaml", UriKind.Absolute);
                     break;
                 case "Dark":
-                    newTheme.Source = new Uri("DarkTheme.xaml", UriKind.Relative);
+                    newTheme.Source = new Uri("pack://application:,,,/DarkTheme.xaml", UriKind.Absolute);
                     break;
+                default:
+                    throw new ArgumentException("Unknown theme");
             }
 
-            // 기존 리소스 제거 및 새 리소스 추가
-            Application.Current.Resources.MergedDictionaries.Clear();
+            // 기존 테마 제거
+            var existingThemes = Application.Current.Resources.MergedDictionaries
+                .Where(dict => dict.Source != null &&
+                               (dict.Source.OriginalString.Contains("LightTheme.xaml") ||
+                                dict.Source.OriginalString.Contains("DarkTheme.xaml")))
+                .ToList();
+
+            foreach (var theme in existingThemes)
+            {
+                Application.Current.Resources.MergedDictionaries.Remove(theme);
+            }
+
+            // 새 테마 적용
             Application.Current.Resources.MergedDictionaries.Add(newTheme);
         }
     }
-
 }
