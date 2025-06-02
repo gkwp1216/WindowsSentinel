@@ -131,146 +131,248 @@ C:\Users\User\OneDrive\바탕 화면\LogCheck-0525_수정\obj\Debug\net8.0-windo
 C:\Users\User\OneDrive\바탕 화면\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
 C:\Users\User\OneDrive\바탕 화면\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
 C:\Users\User\OneDrive\바탕 화면\LogCheck-0525_수정\obj\Debug\net8.0-windows\ref\Logcheck.dll
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.exe
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.dll.config
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.deps.json
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.runtimeconfig.json
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.dll
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.pdb
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\MaterialDesignColors.dll
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\MaterialDesignThemes.Wpf.dll
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Microsoft.Win32.SystemEvents.dll
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Microsoft.Xaml.Behaviors.dll
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\System.CodeDom.dll
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\System.Drawing.Common.dll
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\System.Private.Windows.Core.dll
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\System.Management.dll
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.csproj.AssemblyReference.cache
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\DarkTheme.baml
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LightTheme.baml
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Log.g.cs
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\MainWindow.g.cs
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Page1.g.cs
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Page2.g.cs
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Recovery.g.cs
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Setting.g.cs
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\App.g.cs
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.cache
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.lref
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\App.baml
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Log.baml
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\MainWindow.baml
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Page1.baml
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Page2.baml
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Recovery.baml
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Setting.baml
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck.g.resources
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.Properties.Resources.resources
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.Resources.Resources.resources
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.csproj.GenerateResource.cache
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.csproj.CoreCompileInputs.cache
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck.dll
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\refint\Logcheck.dll
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck.pdb
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
-C:\Users\admin\Downloads\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\ref\Logcheck.dll
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\Logcheck.exe
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\Logcheck.dll.config
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\Logcheck.deps.json
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\Logcheck.runtimeconfig.json
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\Logcheck.dll
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\Logcheck.pdb
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\MaterialDesignColors.dll
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\MaterialDesignThemes.Wpf.dll
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\Microsoft.Win32.SystemEvents.dll
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\Microsoft.Xaml.Behaviors.dll
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\System.CodeDom.dll
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\System.Drawing.Common.dll
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\System.Private.Windows.Core.dll
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\System.Management.dll
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
-C:\My_Project\LogCheck-0525_수정\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.AssemblyReference.cache
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\DarkTheme.baml
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\LightTheme.baml
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Log.g.cs
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\MainWindow.g.cs
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Page1.g.cs
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Page2.g.cs
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Recovery.g.cs
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Setting.g.cs
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\App.g.cs
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.cache
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.lref
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\App.baml
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Log.baml
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\MainWindow.baml
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Page1.baml
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Page2.baml
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Recovery.baml
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Setting.baml
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Logcheck.g.resources
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\LogCheck.Properties.Resources.resources
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\LogCheck.Resources.Resources.resources
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.GenerateResource.cache
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\LogCheck.GeneratedMSBuildEditorConfig.editorconfig
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.CoreCompileInputs.cache
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\LogCheck.sourcelink.json
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Logcheck.dll
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\refint\Logcheck.dll
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\Logcheck.pdb
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
-C:\My_Project\LogCheck-0525_수정\LogCheck\obj\Debug\net8.0-windows\ref\Logcheck.dll
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.exe
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.dll.config
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.deps.json
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.runtimeconfig.json
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.dll
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.pdb
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\MaterialDesignColors.dll
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\MaterialDesignThemes.Wpf.dll
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Microsoft.Win32.SystemEvents.dll
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Microsoft.Xaml.Behaviors.dll
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.CodeDom.dll
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.Drawing.Common.dll
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.Private.Windows.Core.dll
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.Management.dll
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
-C:\My_Project\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.AssemblyReference.cache
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\DarkTheme.baml
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LightTheme.baml
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Log.g.cs
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\MainWindow.g.cs
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Page1.g.cs
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Page2.g.cs
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Recovery.g.cs
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Setting.g.cs
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\App.g.cs
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.cache
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.lref
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\App.baml
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Log.baml
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\MainWindow.baml
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Page1.baml
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Page2.baml
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Recovery.baml
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Setting.baml
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck.g.resources
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.Properties.Resources.resources
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.Resources.Resources.resources
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.GenerateResource.cache
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.GeneratedMSBuildEditorConfig.editorconfig
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.CoreCompileInputs.cache
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.sourcelink.json
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck.dll
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\refint\Logcheck.dll
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck.pdb
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\ref\Logcheck.dll
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.exe
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.dll.config
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.deps.json
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.runtimeconfig.json
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.dll
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\MaterialDesignColors.dll
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\MaterialDesignThemes.Wpf.dll
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Microsoft.Win32.SystemEvents.dll
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\Microsoft.Xaml.Behaviors.dll
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\System.CodeDom.dll
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\System.Drawing.Common.dll
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\System.Private.Windows.Core.dll
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\System.Management.dll
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.csproj.AssemblyReference.cache
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\DarkTheme.baml
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LightTheme.baml
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Log.g.cs
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\MainWindow.g.cs
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Page1.g.cs
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Page2.g.cs
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Recovery.g.cs
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Setting.g.cs
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\App.g.cs
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.cache
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.lref
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\App.baml
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Log.baml
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\MainWindow.baml
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Page1.baml
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Page2.baml
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Recovery.baml
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Setting.baml
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck.g.resources
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.Properties.Resources.resources
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.Resources.Resources.resources
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.csproj.GenerateResource.cache
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck.dll
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\refint\Logcheck.dll
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
+C:\Users\admin\Documents\카카오톡 받은 파일\LogCheck-0525_수정\LogCheck-0525_수정\obj\Debug\net8.0-windows\ref\Logcheck.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.exe
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.dll.config
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.deps.json
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.runtimeconfig.json
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\MaterialDesignColors.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\MaterialDesignThemes.Wpf.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\Microsoft.Win32.SystemEvents.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\Microsoft.Xaml.Behaviors.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\System.CodeDom.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\System.Drawing.Common.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\System.Private.Windows.Core.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\System.Management.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.csproj.AssemblyReference.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\DarkTheme.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\LightTheme.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Log.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\MainWindow.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Page1.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Page2.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Recovery.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Setting.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\App.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.lref
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\App.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Log.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\MainWindow.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Page1.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Page2.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Recovery.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Setting.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck.g.resources
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.Properties.Resources.resources
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.Resources.Resources.resources
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.csproj.GenerateResource.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\refint\Logcheck.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck-0525_수정\obj\Debug\net8.0-windows\ref\Logcheck.dll
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\Logcheck.exe
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\Logcheck.dll.config
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\Logcheck.deps.json
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\Logcheck.runtimeconfig.json
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\Logcheck.dll
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\MaterialDesignColors.dll
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\MaterialDesignThemes.Wpf.dll
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\Microsoft.Win32.SystemEvents.dll
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\Microsoft.Xaml.Behaviors.dll
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\System.CodeDom.dll
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\System.Drawing.Common.dll
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\System.Private.Windows.Core.dll
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\System.Management.dll
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\ajh58\Desktop\LogCheck-0601\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\LogCheck.csproj.AssemblyReference.cache
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\DarkTheme.baml
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\LightTheme.baml
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Log.g.cs
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\MainWindow.g.cs
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Page1.g.cs
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Page2.g.cs
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Recovery.g.cs
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Setting.g.cs
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\App.g.cs
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.cache
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.lref
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\App.baml
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Log.baml
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\MainWindow.baml
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Page1.baml
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Page2.baml
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Recovery.baml
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Setting.baml
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Logcheck.g.resources
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\LogCheck.Properties.Resources.resources
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\LogCheck.Resources.Resources.resources
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\LogCheck.csproj.GenerateResource.cache
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\LogCheck.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Logcheck.dll
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\refint\Logcheck.dll
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
+C:\Users\ajh58\Desktop\LogCheck-0601\obj\Debug\net8.0-windows\ref\Logcheck.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.csproj.AssemblyReference.cache
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\DarkTheme.baml
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\LightTheme.baml
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Log.g.cs
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\MainWindow.g.cs
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Page1.g.cs
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Page2.g.cs
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Recovery.g.cs
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Setting.g.cs
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\App.g.cs
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.cache
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.lref
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Logcheck.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\refint\Logcheck.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\Logcheck.exe
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\Logcheck.dll.config
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\Logcheck.deps.json
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\Logcheck.runtimeconfig.json
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\Logcheck.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\MaterialDesignColors.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\MaterialDesignThemes.Wpf.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\Microsoft.Win32.SystemEvents.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\Microsoft.Xaml.Behaviors.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\System.CodeDom.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\System.Diagnostics.EventLog.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\System.Drawing.Common.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\System.Private.Windows.Core.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\System.Management.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\System.ServiceProcess.ServiceController.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.ServiceProcess.ServiceController.dll
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\App.baml
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Log.baml
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\MainWindow.baml
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Page1.baml
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Page2.baml
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Recovery.baml
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Setting.baml
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\Logcheck.g.resources
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.Properties.Resources.resources
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.Resources.Resources.resources
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.csproj.GenerateResource.cache
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
+C:\Users\admin\Downloads\LogCheck-0526_수정의수정\LogCheck-0526_수정의수정\LogCheck-0526_수정\obj\Debug\net8.0-windows\ref\Logcheck.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.csproj.AssemblyReference.cache
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\DarkTheme.baml
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\LightTheme.baml
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Log.g.cs
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\MainWindow.g.cs
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Page1.g.cs
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Page2.g.cs
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Recovery.g.cs
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Setting.g.cs
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\App.g.cs
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.cache
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.lref
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\App.baml
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Log.baml
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\MainWindow.baml
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Page1.baml
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Page2.baml
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Recovery.baml
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Setting.baml
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Logcheck.g.resources
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.Properties.Resources.resources
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.Resources.Resources.resources
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.csproj.GenerateResource.cache
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Logcheck.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\refint\Logcheck.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\Logcheck.exe
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\Logcheck.dll.config
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\Logcheck.deps.json
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\Logcheck.runtimeconfig.json
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\Logcheck.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\MaterialDesignColors.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\MaterialDesignThemes.Wpf.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\Microsoft.Win32.SystemEvents.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\Microsoft.Xaml.Behaviors.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\System.CodeDom.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\System.Diagnostics.EventLog.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\System.Drawing.Common.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\System.Private.Windows.Core.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\System.Management.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\System.ServiceProcess.ServiceController.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.ServiceProcess.ServiceController.dll
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\ref\Logcheck.dll

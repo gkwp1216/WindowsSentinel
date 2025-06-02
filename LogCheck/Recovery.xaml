@@ -62,9 +62,24 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0" Orientation="Vertical">
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                                 <TextBlock Text="보안 프로그램 복구" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource ForegroundColor}"/>
                                 <!-- <TextBlock Text="시스템의 보안 프로그램을 확인하고 필요한 경우 복구를 진행합니다." FontSize="16" Foreground="{DynamicResource ForegroundColor}"/> -->
+                                <!-- 도움말 아이콘 -->
+                                <Border Width="30" Height="30" 
+                                        Background="Transparent"
+                                        Cursor="Hand"
+                                        Margin="10,0,0,0">
+                                    <materialDesign:PackIcon Kind="HelpCircleOutline"
+                                                         Width="30" Height="30"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center" />
+                                    <Border.ToolTip>
+                                        <ToolTip Content="시스템의 보안 프로그램을 확인하고 필요한 경우 복구를 진행합니다."
+                                                 Placement="MousePoint"
+                                                 HorizontalOffset="465" VerticalOffset="10"/>
+                                    </Border.ToolTip>
+                                </Border>
                             </StackPanel>
 
                             <!-- 기능 버튼 섹션 -->
@@ -104,13 +119,7 @@
                                         </ControlTemplate>
                                     </Button.Template>
                                 </Button>
-                                <!-- 도움말 아이콘 -->
-                                <materialDesign:PackIcon Kind="HelpCircleOutline"
-                                                         Width="20" Height="20"
-                                                         Margin="10,0,0,0"
-                                                         VerticalAlignment="Center"
-                                                         Cursor="Hand"
-                                                         ToolTip="시스템의 보안 프로그램을 확인하고 필요한 경우 복구를 진행합니다."/>
+
                             </StackPanel>
                         </Grid>
                     </Grid>

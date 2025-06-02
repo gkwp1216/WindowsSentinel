@@ -58,6 +58,28 @@
           }
         }
       },
+      "System.Diagnostics.EventLog/9.0.5": {
+        "runtime": {
+          "lib/net8.0/System.Diagnostics.EventLog.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.525.21509"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net8.0/System.Diagnostics.EventLog.Messages.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win/lib/net8.0/System.Diagnostics.EventLog.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.525.21509"
+          }
+        }
+      },
       "System.Drawing.Common/9.0.5": {
         "dependencies": {
           "Microsoft.Win32.SystemEvents": "9.0.5"
@@ -85,6 +107,25 @@
         },
         "runtimeTargets": {
           "runtimes/win/lib/net8.0/System.Management.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "9.0.0.5",
+            "fileVersion": "9.0.525.21509"
+          }
+        }
+      },
+      "System.ServiceProcess.ServiceController/9.0.5": {
+        "dependencies": {
+          "System.Diagnostics.EventLog": "9.0.5"
+        },
+        "runtime": {
+          "lib/net8.0/System.ServiceProcess.ServiceController.dll": {
+            "assemblyVersion": "9.0.0.5",
+            "fileVersion": "9.0.525.21509"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net8.0/System.ServiceProcess.ServiceController.dll": {
             "rid": "win",
             "assetType": "runtime",
             "assemblyVersion": "9.0.0.5",
@@ -130,6 +171,13 @@
       "path": "system.codedom/9.0.5",
       "hashPath": "system.codedom.9.0.5.nupkg.sha512"
     },
+    "System.Diagnostics.EventLog/9.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nhtTvAgKTD7f6t0bkOb4/hNv0PShb8GHs5Fhn7PvYhwhyWiVyVBvL2vTGH0Hlw5jOZQmWkzQxjY6M/h4tl8M6Q==",
+      "path": "system.diagnostics.eventlog/9.0.5",
+      "hashPath": "system.diagnostics.eventlog.9.0.5.nupkg.sha512"
+    },
     "System.Drawing.Common/9.0.5": {
       "type": "package",
       "serviceable": true,
@@ -143,6 +191,13 @@
       "sha512": "sha512-n6o9PZm9p25+zAzC3/48K0oHnaPKTInRrxqFq1fi/5TPbMLjuoCm/h//mS3cUmSy+9AO1Z+qsC/Ilt/ZFatv5Q==",
       "path": "system.management/9.0.5",
       "hashPath": "system.management.9.0.5.nupkg.sha512"
+    },
+    "System.ServiceProcess.ServiceController/9.0.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3mOK5BIwcBHAWzrH9oHCEgwmHecIgoW/P0B42MB8UgG3TqH5K68MBt1/4Mn7znexNP2o6AniDJIXfg04+feELA==",
+      "path": "system.serviceprocess.servicecontroller/9.0.5",
+      "hashPath": "system.serviceprocess.servicecontroller.9.0.5.nupkg.sha512"
     }
   }
 }

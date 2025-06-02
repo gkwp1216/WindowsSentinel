@@ -8,6 +8,29 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="LightTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="ToolTip">
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToolTip">
+                            <Grid>
+                                <Border Background="#FFE2F4F5"
+                                        BorderBrush="#888"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        Padding="10"
+                                        SnapsToDevicePixels="True">
+                                    <TextBlock Text="{TemplateBinding Content}" 
+                                               Foreground="Black"
+                                               TextWrapping="Wrap"
+                                               FontSize="14"/>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

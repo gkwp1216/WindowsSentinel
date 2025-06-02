@@ -1,16 +1,18 @@
 {
   "version": 2,
-  "dgSpecHash": "ZUe90GpMpgI=",
+  "dgSpecHash": "GUFNDGBFTxo=",
   "success": true,
-  "projectFilePath": "C:\\My_Project\\WindowsSentinel\\LogCheck\\LogCheck.csproj",
+  "projectFilePath": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_수정\\LogCheck.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\admin\\.nuget\\packages\\materialdesigncolors\\5.2.1\\materialdesigncolors.5.2.1.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\materialdesignthemes\\5.2.1\\materialdesignthemes.5.2.1.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.win32.systemevents\\9.0.5\\microsoft.win32.systemevents.9.0.5.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\system.codedom\\9.0.5\\system.codedom.9.0.5.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\system.diagnostics.eventlog\\9.0.5\\system.diagnostics.eventlog.9.0.5.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\system.drawing.common\\9.0.5\\system.drawing.common.9.0.5.nupkg.sha512",
-    "C:\\Users\\admin\\.nuget\\packages\\system.management\\9.0.5\\system.management.9.0.5.nupkg.sha512"
+    "C:\\Users\\admin\\.nuget\\packages\\system.management\\9.0.5\\system.management.9.0.5.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\system.serviceprocess.servicecontroller\\9.0.5\\system.serviceprocess.servicecontroller.9.0.5.nupkg.sha512"
   ],
   "logs": []
 }

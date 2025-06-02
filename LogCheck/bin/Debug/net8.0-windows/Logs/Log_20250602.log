@@ -1,0 +1,45 @@
+[2025-06-02 05:47:08.711] [INFO] WmiHelper: Windows Defender 상태 확인 시도
+[2025-06-02 05:47:08.717] [INFO] WmiHelper: WMI를 통한 Defender 상태 확인 시작
+[2025-06-02 05:47:08.718] [INFO] WmiHelper: WMI 쿼리 시도 - \\\.\root\Microsoft\Windows\Defender\MSFT_MpComputerStatus
+[2025-06-02 05:47:08.752] [WARN] WmiHelper: WMI 쿼리 실패 - \\\.\root\Microsoft\Windows\Defender\MSFT_MpComputerStatus, 오류: 잘못된 매개 변수입니다. 
+[2025-06-02 05:47:08.754] [INFO] WmiHelper: WMI 쿼리 시도 - \\\.\root\Microsoft\Windows\WindowsDefender\MSFT_MpComputerStatus
+[2025-06-02 05:47:08.761] [WARN] WmiHelper: WMI 쿼리 실패 - \\\.\root\Microsoft\Windows\WindowsDefender\MSFT_MpComputerStatus, 오류: 잘못된 매개 변수입니다. 
+[2025-06-02 05:47:08.763] [INFO] WmiHelper: WMI 쿼리 시도 - \\\.\root\SecurityCenter\AntiVirusProduct
+[2025-06-02 05:47:08.770] [WARN] WmiHelper: WMI 쿼리 실패 - \\\.\root\SecurityCenter\AntiVirusProduct, 오류: 잘못된 매개 변수입니다. 
+[2025-06-02 05:47:08.771] [INFO] WmiHelper: WMI 쿼리 시도 - \\\.\root\SecurityCenter2\AntiVirusProduct
+[2025-06-02 05:47:08.778] [WARN] WmiHelper: WMI 쿼리 실패 - \\\.\root\SecurityCenter2\AntiVirusProduct, 오류: 잘못된 매개 변수입니다. 
+[2025-06-02 05:47:08.779] [INFO] WmiHelper: WMI 쿼리 시도 - \\\.\root\CIMV2\Win32_ComputerSystem
+[2025-06-02 05:47:08.788] [WARN] WmiHelper: WMI 쿼리 실패 - \\\.\root\CIMV2\Win32_ComputerSystem, 오류: 잘못된 매개 변수입니다. 
+[2025-06-02 05:47:08.789] [WARN] WmiHelper: Windows Defender 상태를 확인할 수 없습니다. 지원되지 않는 시스템이거나 Defender가 설치되어 있지 않을 수 있습니다.
+[2025-06-02 05:47:10.489] [ERROR] Windows Defender 복구 실패
+예외: 실시간 보호 활성화에 실패했습니다.
+스택 추적:    at WindowsSentinel.Recovery.RecoverDefender() in C:\Users\김기원\Documents\카카오톡 받은 파일\LogCheck-0526_수정의수정\LogCheck-0526_수정\Recovery.xaml.cs:line 353
+[2025-06-02 05:47:10.605] [INFO] WmiHelper: 방화벽 프로필 'Domain' 활성화 완료
+[2025-06-02 05:47:10.620] [INFO] WmiHelper: 방화벽 프로필 'Private' 활성화 완료
+[2025-06-02 05:47:10.633] [INFO] WmiHelper: 방화벽 프로필 'Public' 활성화 완료
+[2025-06-02 05:47:10.649] [ERROR] WmiHelper: 보안 센터 서비스 재시작 중 오류
+예외: Cannot open 'wscsvc' service on computer '.'.
+스택 추적:    at System.ServiceProcess.ServiceController.GetServiceHandle(Int32 desiredAccess)
+   at System.ServiceProcess.ServiceController.Stop(Boolean stopDependentServices)
+   at System.ServiceProcess.ServiceController.Stop()
+   at WindowsSentinel.WmiHelper.RestartSecurityCenter() in C:\Users\김기원\Documents\카카오톡 받은 파일\LogCheck-0526_수정의수정\LogCheck-0526_수정\WmiHelper.cs:line 596
+[2025-06-02 05:47:10.671] [ERROR] Windows 보안 센터 복구 실패
+예외: 보안 센터 서비스 재시작에 실패했습니다.
+스택 추적:    at WindowsSentinel.Recovery.RecoverSecurityCenter() in C:\Users\김기원\Documents\카카오톡 받은 파일\LogCheck-0526_수정의수정\LogCheck-0526_수정\Recovery.xaml.cs:line 509
+[2025-06-02 05:47:10.797] [WARN] WmiHelper: BitLocker TPM 보호기 추가 실패 - 반환 코드: 2150694961
+[2025-06-02 05:47:10.811] [ERROR] BitLocker 복구 실패
+예외: BitLocker 보호기 추가에 실패했습니다. 관리자 권한이 필요할 수 있습니다.
+스택 추적:    at WindowsSentinel.Recovery.RecoverBitLocker() in C:\Users\김기원\Documents\카카오톡 받은 파일\LogCheck-0526_수정의수정\LogCheck-0526_수정\Recovery.xaml.cs:line 622
+[2025-06-02 05:47:12.026] [INFO] WmiHelper: Windows Defender 상태 확인 시도
+[2025-06-02 05:47:12.028] [INFO] WmiHelper: WMI를 통한 Defender 상태 확인 시작
+[2025-06-02 05:47:12.029] [INFO] WmiHelper: WMI 쿼리 시도 - \\\.\root\Microsoft\Windows\Defender\MSFT_MpComputerStatus
+[2025-06-02 05:47:12.037] [WARN] WmiHelper: WMI 쿼리 실패 - \\\.\root\Microsoft\Windows\Defender\MSFT_MpComputerStatus, 오류: 잘못된 매개 변수입니다. 
+[2025-06-02 05:47:12.038] [INFO] WmiHelper: WMI 쿼리 시도 - \\\.\root\Microsoft\Windows\WindowsDefender\MSFT_MpComputerStatus
+[2025-06-02 05:47:12.049] [WARN] WmiHelper: WMI 쿼리 실패 - \\\.\root\Microsoft\Windows\WindowsDefender\MSFT_MpComputerStatus, 오류: 잘못된 매개 변수입니다. 
+[2025-06-02 05:47:12.050] [INFO] WmiHelper: WMI 쿼리 시도 - \\\.\root\SecurityCenter\AntiVirusProduct
+[2025-06-02 05:47:12.058] [WARN] WmiHelper: WMI 쿼리 실패 - \\\.\root\SecurityCenter\AntiVirusProduct, 오류: 잘못된 매개 변수입니다. 
+[2025-06-02 05:47:12.059] [INFO] WmiHelper: WMI 쿼리 시도 - \\\.\root\SecurityCenter2\AntiVirusProduct
+[2025-06-02 05:47:12.067] [WARN] WmiHelper: WMI 쿼리 실패 - \\\.\root\SecurityCenter2\AntiVirusProduct, 오류: 잘못된 매개 변수입니다. 
+[2025-06-02 05:47:12.069] [INFO] WmiHelper: WMI 쿼리 시도 - \\\.\root\CIMV2\Win32_ComputerSystem
+[2025-06-02 05:47:12.077] [WARN] WmiHelper: WMI 쿼리 실패 - \\\.\root\CIMV2\Win32_ComputerSystem, 오류: 잘못된 매개 변수입니다. 
+[2025-06-02 05:47:12.078] [WARN] WmiHelper: Windows Defender 상태를 확인할 수 없습니다. 지원되지 않는 시스템이거나 Defender가 설치되어 있지 않을 수 있습니다.

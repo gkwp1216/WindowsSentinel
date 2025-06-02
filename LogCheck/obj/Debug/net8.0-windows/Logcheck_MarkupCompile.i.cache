@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\
 LogCheck
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-C:\My_Project\WindowsSentinel\LogCheck\App.xaml
+C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\App.xaml
 81507888498
 
-11-1450470949
-2041090644646
+13613004248
+205612030150
 DarkTheme.xaml;LightTheme.xaml;Log.xaml;MainWindow.xaml;Page1.xaml;Page2.xaml;Recovery.xaml;Setting.xaml;
 
 False

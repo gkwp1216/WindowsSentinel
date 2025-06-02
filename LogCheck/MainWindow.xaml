@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="Windows Sentinel" Height="800" Width="1200"
         Background="{DynamicResource BackgroundColor}">
+    
     <Window.Resources>
-
         <!-- Material 아이콘 스타일 -->
         <Style x:Key="MaterialIconStyle" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
@@ -26,6 +26,8 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
+
+        <DropShadowEffect x:Key="ShadowEffect" ShadowDepth="3" BlurRadius="10" Opacity="0.5" />
     </Window.Resources>
 
     <Grid x:Name="mainGrid">
@@ -34,6 +36,32 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
+        <Canvas x:Name="GuideOverlay" Background="#80000000" Visibility="Collapsed" Panel.ZIndex="999">
+            <Canvas x:Name="MaskLayer"/>
+
+            <Border x:Name="GuideBubble"
+                    Background="White"
+                    CornerRadius="12"
+                    Padding="15"
+                    Width="300"
+                    Panel.ZIndex="1000"
+                    Effect="{StaticResource ShadowEffect}">
+                <StackPanel>
+                    <TextBlock x:Name="GuideText"
+                               Text="설명 텍스트"
+                               FontSize="16"
+                               TextWrapping="Wrap"
+                               Foreground="Black"
+                               Margin="0,0,0,10"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="GuidePrevButton" Content="이전" Click="GuidePrev_Click" Margin="0,0,5,0"/>
+                        <Button x:Name="GuideSkipButton" Content="건너뛰기" Click="GuideSkip_Click" Margin="0,0,5,0"/>
+                        <Button x:Name="GuideNextButton" Content="다음" Click="GuideNext_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Canvas>
 
         <!-- Top Navigation Menu -->
         <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="10" BorderBrush="#C2C2C2" BorderThickness="1">
@@ -47,6 +75,7 @@
                             Orientation="Horizontal" 
                             Margin="10,10,0,10" 
                             HorizontalAlignment="Left">
+                    
                     <Button Style="{DynamicResource NavIconButtonStyle}"
                             Cursor="Hand"
                             Click="BtnHome_click" 
@@ -60,6 +89,15 @@
                             Orientation="Horizontal" 
                             Margin="0,10,10,10" 
                             HorizontalAlignment="Right">
+
+                    <Button x:Name="HelpButton"
+                            Style="{DynamicResource NavIconButtonStyle}" 
+                            Cursor="Hand"
+                            Click="HelpButton_Click"
+                            ToolTip="프로그램 안내">
+                        <TextBlock Text="&#xE897;" Style="{StaticResource NavIconStyle}"/>
+                    </Button>
+                    
                     <Button Style="{DynamicResource NavIconButtonStyle}" 
                             Cursor="Hand"
                             Click="BtnSetting_Click"
@@ -105,28 +143,25 @@
             </Grid.ColumnDefinitions>
 
             <!-- 설치된 프로그램 버튼 -->
-            <Button Grid.Row="0" Grid.Column="0" 
+            <Button x:Name="InstalledProgramsButton"
+                    Grid.Row="0" Grid.Column="0" 
                     Style="{DynamicResource MainButtonStyle}" 
                     Cursor="Hand"
                     Click="InstalledPrograms_Click">
                 <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
                     <TextBlock Text="&#xE71D;" 
                              Style="{StaticResource MaterialIconStyle}"/>
-                    <TextBlock Text="설치된 프로그램"                               
+                    <TextBlock Text="설치된 프로그램 목록"                               
                                TextAlignment="Center"
-                               FontSize="20"
+                               FontSize="25"
                                FontWeight="SemiBold"/>
-                    <TextBlock Text="시스템에 설치된 프로그램 목록 확인"
-                               TextAlignment="Center"
-                               TextWrapping="Wrap"
-                               FontSize="14" 
-                               Foreground="#666666"                                                         
-                               Margin="0,10,0,0"/>
+                    
                 </StackPanel>
             </Button>
 
             <!-- 수정/변경 내역 버튼 -->
-            <Button Grid.Row="0" Grid.Column="1" 
+            <Button x:Name="ModificationHistoryButton"
+                    Grid.Row="0" Grid.Column="1" 
                     Style="{DynamicResource MainButtonStyle}" 
                     Cursor="Hand"
                     Click="ModificationHistory_Click">
@@ -135,19 +170,15 @@
                                Style="{StaticResource MaterialIconStyle}"/>
                     <TextBlock Text="수정/변경 내역" 
                                TextAlignment="Center"
-                               FontSize="20" 
+                               FontSize="25" 
                                FontWeight="SemiBold"/>
-                    <TextBlock Text="시스템 변경 사항 이력 확인" 
-                               FontSize="14" 
-                               Foreground="#666666" 
-                               TextWrapping="Wrap" 
-                               TextAlignment="Center"
-                               Margin="0,10,0,0"/>
+                    
                 </StackPanel>
             </Button>
 
             <!-- 보안 로그 버튼 -->
-            <Button Grid.Row="1" Grid.Column="0" 
+            <Button x:Name="SecurityLogButton"
+                    Grid.Row="1" Grid.Column="0" 
                     Style="{DynamicResource MainButtonStyle}" 
                     Cursor="Hand"
                     Click="BtnLog_Click">
@@ -156,19 +187,14 @@
                                Style="{StaticResource MaterialIconStyle}"/>
                     <TextBlock Text="보안 로그" 
                                TextAlignment="Center"
-                               FontSize="20" 
+                               FontSize="25" 
                                FontWeight="SemiBold"/>
-                    <TextBlock Text="시스템 보안 관련 로그 확인" 
-                               FontSize="14" 
-                               Foreground="#666666" 
-                               TextWrapping="Wrap" 
-                               TextAlignment="Center"
-                               Margin="0,10,0,0"/>
                 </StackPanel>
             </Button>
 
             <!-- 보안 복구 버튼 -->
-            <Button Grid.Row="1" Grid.Column="1" 
+            <Button x:Name="SecurityRecoveryButton"
+                    Grid.Row="1" Grid.Column="1" 
                     Style="{DynamicResource MainButtonStyle}" 
                     Cursor="Hand"
                     Click="SecurityRecovery_Click">
@@ -177,14 +203,8 @@
                                Style="{StaticResource MaterialIconStyle}"/>
                     <TextBlock Text="보안 프로그램 복구" 
                                TextAlignment="Center"
-                               FontSize="20" 
+                               FontSize="25" 
                                FontWeight="SemiBold"/>
-                    <TextBlock Text="안티바이러스, 방화벽 등 보안 프로그램 정상화" 
-                               FontSize="14" 
-                               Foreground="#666666" 
-                               TextWrapping="Wrap" 
-                               TextAlignment="Center"
-                               Margin="0,10,0,0"/>
                 </StackPanel>
             </Button>
         </Grid>

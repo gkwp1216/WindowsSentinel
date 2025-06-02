@@ -21,8 +21,7 @@ namespace WindowsSentinel
             public string ProgramName { get; set; }
             public string Reason { get; set; }
 
-            public static Dictionary<DateTime, int> InstallDate = new Dictionary<DateTime, int>();
-            public static Dictionary<DateTime, int> SecurityDate = new Dictionary<DateTime, int>();
+            public static Dictionary<DateTime, int> Install_Date = new Dictionary<DateTime, int>();
         }
 
 
@@ -62,15 +61,7 @@ namespace WindowsSentinel
                 (4672, "Security", "Windows Security (특권 할당)")
             };
 
-            var SecurityCheck = new (int Id, int score)[]
-            {
-                (11707, 0),
-                (7045, -10),
-                (6, -15),
-                (5156, -10),
-                (5158, -10),
-                (4688, -5)
-            };
+
 
             DateTime oneYearAgo = DateTime.Now.AddYears(-1);
 
@@ -136,27 +127,6 @@ namespace WindowsSentinel
 
             // DataGrid에 표시
             logsDataGrid.ItemsSource = logEntries;
-            foreach(var sc in SecurityCheck)
-            {
-                try
-                {
-                    long millisecondsInOneYear = 365L * 24 * 60 * 60 * 1000;
-                    string query = $"*[System[(EventID={sc.Id}) and TimeCreated[timediff(@SystemTime) <= {millisecondsInOneYear}]]]";
-                    using (var reader = new EventLogReader(query))
-                    {
-                        EventRecord record;
-                        while ((record = reader.ReadEvent()) != null)
-                        {
-                            if (record.TimeCreated != null && record.TimeCreated.Value > oneYearAgo)
-                            {
-                                if (ChangeLogEntry.InstallDate.ContainsKey(record.TimeCreated.Value)) ChangeLogEntry.InstallDate[record.TimeCreated.Value] += sc.score;
-                                else ChangeLogEntry.InstallDate[record.TimeCreated.Value] = sc.score;
-                            }
-                        }
-                    }
-                }
-                catch { }
-            }
         }
         private void SidebarPrograms_Click(object sender, RoutedEventArgs e)
         {
@@ -461,7 +431,7 @@ namespace WindowsSentinel
                 else
                     return "정의된 차단 이벤트 유형에 해당하지 않습니다.";
             }
-            else if(eventcode == 4624)
+            else if (eventcode == 4624)
             {
                 // 1. 직접 로그인 (콘솔 로그온)
                 if (r.Contains("logon type:  2") || r.Contains("로그온 유형:  2"))
@@ -487,7 +457,7 @@ namespace WindowsSentinel
                     return "기타 로그인 유형 (확인 필요)";
             }
 
-            else if(eventcode == 4625)
+            else if (eventcode == 4625)
             {
                 // 1. 원격 데스크톱 로그인 실패 (RDP)
                 if (r.Contains("logon type:  10") || r.Contains("로그온 유형:  10"))
@@ -513,7 +483,7 @@ namespace WindowsSentinel
                 else
                     return "기타 로그인 실패 (추가 분석 필요)";
             }
-            else if(eventcode == 4672)
+            else if (eventcode == 4672)
             {
                 // 1. 디버깅 권한 포함 (SeDebugPrivilege) – 시스템 제어 가능
                 if (r.Contains("sedebugPpivilege"))

@@ -26,6 +26,9 @@ using System.Threading.Tasks;
 using System.Windows.Media.Animation;
 using System.Runtime.InteropServices.ComTypes;
 using static WindowsSentinel.Log;
+using System.Diagnostics.Eventing.Reader;
+using System.Security.Policy;
+using System.Text.RegularExpressions;
 
 namespace WindowsSentinel
 {
@@ -199,19 +202,72 @@ namespace WindowsSentinel
             }
 
             return oneYearAgo;
-        }       
+        }
 
         /// <summary>
         /// 레지스트리에서 설치된 프로그램 정보 수집
         /// [변경] Defender 예외 검사 제거로 성능 개선
         /// </summary>
+        /// 
         private void CollectInstalledPrograms()
         {
+
+            var Security_Check = new (int Id, int score)[]
+            {
+                (11707, 0),
+                (7045, -10),
+                (6, -15),
+                (5156, -10),
+                (5158, -10),
+                (4688, -5),
+                (3, 1) //로그확인 필요
+            };
+
+            DateTime oneYearAgo = DateTime.Now.AddYears(-1);
+
+            foreach (var sc in Security_Check)
+            {
+                try
+                {
+                    long millisecondsInOneYear = 365L * 24 * 60 * 60 * 1000;
+                    string query = $"*[System[(EventID={sc.Id}) and TimeCreated[timediff(@SystemTime) <= {millisecondsInOneYear}]]]";
+                    using (var reader = new EventLogReader(query))
+                    {
+                        EventRecord record;
+                        while ((record = reader.ReadEvent()) != null)
+                        {
+                            if (record.TimeCreated != null && record.TimeCreated.Value > oneYearAgo)
+                            {
+                                if (sc.score > 0)
+                                {
+                                    var r = (record.FormatDescription()).ToLower();
+                                    //DCE 접속 흔적 시간대
+                                    if (r.Contains("destination port: 135") || r.Contains("destination port: 445")) 
+                                        ChangeLogEntry.Install_Date[record.TimeCreated.Value] = -25;
+
+                                    //비표준 포트 외부접속
+                                    Match port = Regex.Match(r, @"destinationport: (\d+)");
+                                    if (int.Parse(port.Groups[1].Value) >= 49576)
+                                        ChangeLogEntry.Install_Date[record.TimeCreated.Value] = -10;
+                                }
+                                else
+                                {
+                                    if (ChangeLogEntry.Install_Date.ContainsKey(record.TimeCreated.Value))
+                                        ChangeLogEntry.Install_Date[record.TimeCreated.Value] += sc.score;
+
+                                    else ChangeLogEntry.Install_Date[record.TimeCreated.Value] = sc.score;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch { }
+            }
+
             programList = new List<ProgramInfo>();
             processedPrograms = new HashSet<string>();
 
             DateTime today = DateTime.Now;
-            DateTime oneYearAgo = today.AddYears(-1);
 
             string[] registryPaths = new string[]
             {
@@ -278,7 +334,9 @@ namespace WindowsSentinel
                             };
 
                             // 보안 정보 분석
-                            var securityInfo = GetSecurityInfo(program.InstallPath, SecurityCheck(installDate));
+                            int score = 100 + SecurityCheck(installDate) + InstallPath_Check(installLocation)
+                                        + (program.Publisher == "" ? -5 : 0);
+                            var securityInfo = GetSecurityInfo(program.InstallPath, score);
                             program.SecurityLevel = securityInfo.SecurityLevel;
                             program.SecurityDetails = securityInfo.Details;
 
@@ -633,8 +691,8 @@ namespace WindowsSentinel
         }
         private int SecurityCheck(DateTime time)
         {
-            int secuScore = 100;
-            foreach (var insD in ChangeLogEntry.InstallDate)
+            int secuScore = 0;
+            foreach (var insD in ChangeLogEntry.Install_Date)
             {
                 if (insD.Key >= time && insD.Key <= time.AddMinutes(5))
                     secuScore += insD.Value; //Log.xaml.cs에서 설정한 보안점수
@@ -642,6 +700,11 @@ namespace WindowsSentinel
             }
             if (time.Date == new DateTime(0001, 01, 01)) secuScore -= 100;
             return secuScore;
+        }
+        private int InstallPath_Check(string InstallLocation) {
+            string lnsLo = InstallLocation.ToLower();
+            if (lnsLo.Contains("programfiles") || string.IsNullOrEmpty(lnsLo)) return 0;
+            else return -10;
         }
     }
 }
