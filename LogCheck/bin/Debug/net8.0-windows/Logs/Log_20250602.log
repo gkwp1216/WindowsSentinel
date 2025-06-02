@@ -43,3 +43,11 @@
 [2025-06-02 05:47:12.069] [INFO] WmiHelper: WMI 쿼리 시도 - \\\.\root\CIMV2\Win32_ComputerSystem
 [2025-06-02 05:47:12.077] [WARN] WmiHelper: WMI 쿼리 실패 - \\\.\root\CIMV2\Win32_ComputerSystem, 오류: 잘못된 매개 변수입니다. 
 [2025-06-02 05:47:12.078] [WARN] WmiHelper: Windows Defender 상태를 확인할 수 없습니다. 지원되지 않는 시스템이거나 Defender가 설치되어 있지 않을 수 있습니다.
+[2025-06-02 15:12:04.678] [INFO] WmiHelper: Windows Defender 상태 확인 시도
+[2025-06-02 15:12:04.690] [INFO] WmiHelper: 레지스트리에서 Defender 비활성화 상태 확인
+[2025-06-02 15:14:23.770] [INFO] WmiHelper: Windows Defender 상태 확인 시도
+[2025-06-02 15:14:23.779] [INFO] WmiHelper: 레지스트리에서 Defender 비활성화 상태 확인
+[2025-06-02 15:15:27.042] [INFO] WmiHelper: Windows Defender 상태 확인 시도
+[2025-06-02 15:15:27.047] [INFO] WmiHelper: 레지스트리에서 Defender 비활성화 상태 확인
+[2025-06-02 15:16:04.020] [INFO] WmiHelper: Windows Defender 상태 확인 시도
+[2025-06-02 15:16:04.022] [INFO] WmiHelper: 레지스트리에서 Defender 비활성화 상태 확인

@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_\uC218\uC815\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\documents\\logcheck-0602\\logcheck-0526_\uC218\uC815\\wmihelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:wmihelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\documents\\logcheck-0602\\logcheck-0526_\uC218\uC815\\recovery.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:recovery.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -17,10 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\documents\\logcheck-0602\\logcheck-0526_\uC218\uC815\\recovery.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:recovery.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\documents\\logcheck-0602\\logcheck-0526_\uC218\uC815\\wmihelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:wmihelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\documents\\logcheck-0602\\logcheck-0526_\uC218\uC815\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
@@ -46,11 +46,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Page1.xaml.cs",
               "DocumentMoniker": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_\uC218\uC815\\Page1.xaml.cs",
               "RelativeDocumentMoniker": "Page1.xaml.cs",
@@ -58,31 +58,30 @@
               "RelativeToolTip": "Page1.xaml.cs",
               "ViewState": "AgIAAOAAAAAAAAAAAAAqwPcAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-02T04:42:58.624Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-02T04:42:58.624Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Recovery.xaml.cs",
               "DocumentMoniker": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_\uC218\uC815\\Recovery.xaml.cs",
               "RelativeDocumentMoniker": "Recovery.xaml.cs",
               "ToolTip": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_\uC218\uC815\\Recovery.xaml.cs",
               "RelativeToolTip": "Recovery.xaml.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAACIAAAA4AAAAAAAAAA==",
+              "ViewState": "AgIAABAAAAAAAAAAAAAAADIAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-02T03:54:43.23Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "WmiHelper.cs",
               "DocumentMoniker": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_\uC218\uC815\\WmiHelper.cs",
               "RelativeDocumentMoniker": "WmiHelper.cs",
               "ToolTip": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_\uC218\uC815\\WmiHelper.cs",
               "RelativeToolTip": "WmiHelper.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEACAAASAAAAAAAAAA==",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAIwH8AAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-02T02:39:37.412Z",
               "EditorCaption": ""
@@ -107,32 +106,29 @@
               "ToolTip": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_\uC218\uC815\\Page2.xaml",
               "RelativeToolTip": "Page2.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-05-31T09:26:21.878Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-31T09:26:21.878Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Page1.xaml",
               "DocumentMoniker": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_\uC218\uC815\\Page1.xaml",
               "RelativeDocumentMoniker": "Page1.xaml",
               "ToolTip": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_\uC218\uC815\\Page1.xaml",
               "RelativeToolTip": "Page1.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-05-31T08:26:41.919Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-31T08:26:41.919Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Recovery.xaml",
               "DocumentMoniker": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_\uC218\uC815\\Recovery.xaml",
               "RelativeDocumentMoniker": "Recovery.xaml",
               "ToolTip": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_\uC218\uC815\\Recovery.xaml",
               "RelativeToolTip": "Recovery.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-05-26T05:03:59.586Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-26T05:03:59.586Z"
             },
             {
               "$type": "Document",

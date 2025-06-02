@@ -22,28 +22,32 @@ using System.Windows.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Animation;
 using System.Windows.Input;
+using System.Runtime.Versioning;
+using System.Diagnostics.Eventing.Reader;
 
 namespace WindowsSentinel
 {
     /// <summary>
     /// Page2.xaml에 대한 상호 작용 논리
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public partial class Page2 : Page
     {
         // 분석된 프로그램 목록 캐시
-        private List<ProgramInfo> programList;
+        private List<ProgramInfo> programList = new();
 
         // 중복 프로그램 검사 방지용 집합
-        private HashSet<string> processedPrograms;
+        private HashSet<string> processedPrograms = new();
 
         // 보안 프로그램(Defender/Firewall/BitLocker) 최신 동작 날짜
         public static SecurityDate[] SD = new SecurityDate[3];
 
-        private DispatcherTimer loadingTextTimer;
+        private DispatcherTimer? loadingTextTimer;
         private int dotCount = 0;
         private const int maxDots = 3;
         private string baseText = "검사 중";
 
+        [SupportedOSPlatform("windows")]
         public Page2()
         {
             // [변경] 레지스트리 접근 전 관리자 권한 확인
@@ -95,7 +99,7 @@ namespace WindowsSentinel
             loadingTextTimer.Tick += LoadingTextTimer_Tick;
         }
 
-        private void LoadingTextTimer_Tick(object sender, EventArgs e)
+        private void LoadingTextTimer_Tick(object? sender, EventArgs e)
         {
             dotCount = (dotCount + 1) % (maxDots + 1);
             LoadingText.Text = baseText + new string('.', dotCount);
@@ -119,16 +123,27 @@ namespace WindowsSentinel
         /// [신규 추가] 보안 강화를 위해 추가됨
         /// </summary>
         /// <returns>관리자 권한 여부</returns>
+        [SupportedOSPlatform("windows")]
         private bool IsRunningAsAdmin()
         {
-            var identity = WindowsIdentity.GetCurrent();
-            var principal = new WindowsPrincipal(identity);
-            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            try
+            {
+                using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+                {
+                    WindowsPrincipal principal = new WindowsPrincipal(identity);
+                    return principal.IsInRole(WindowsBuiltInRole.Administrator);
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
         /// Windows 보안 로그 분석 (Defender/Firewall/BitLocker)
         /// </summary>
+        [SupportedOSPlatform("windows")]
         public void CheckLogs()
         {
             DateTime oneYearAgo = DateTime.Now.AddYears(-1);
@@ -152,6 +167,7 @@ namespace WindowsSentinel
         /// <summary>
         /// 특정 이벤트 로그에서 최신 기록 날짜 조회
         /// </summary>
+        [SupportedOSPlatform("windows")]
         private static DateTime GetLatestLogDate(string logName, int[] eventIds, DateTime oneYearAgo, String Program_name)
         {
             try
@@ -164,7 +180,7 @@ namespace WindowsSentinel
 
                 var recentLog = eventLog.Entries
                     .Cast<EventLogEntry>()
-                    .Where(e => eventIds.Contains(e.EventID) && e.TimeGenerated > oneYearAgo)
+                    .Where(e => eventIds.Contains((int)e.InstanceId) && e.TimeGenerated > oneYearAgo)
                     .OrderByDescending(e => e.TimeGenerated)
                     .FirstOrDefault();
 
@@ -220,6 +236,7 @@ namespace WindowsSentinel
         /// 레지스트리에서 설치된 프로그램 정보 수집
         /// [변경] Defender 예외 검사 제거로 성능 개선
         /// </summary>
+        [SupportedOSPlatform("windows")]
         private void CollectInstalledPrograms()
         {
             programList = new List<ProgramInfo>();
@@ -244,7 +261,9 @@ namespace WindowsSentinel
                     {
                         using (RegistryKey subkey = key.OpenSubKey(subkeyName))
                         {
-                            string displayName = subkey?.GetValue("DisplayName")?.ToString();
+                            if (subkey == null) continue;
+
+                            string? displayName = subkey.GetValue("DisplayName")?.ToString();
                             if (string.IsNullOrEmpty(displayName) || processedPrograms.Contains(displayName))
                                 continue;
 
@@ -258,7 +277,7 @@ namespace WindowsSentinel
                             DateTime installDate = DateTime.MinValue;
 
                             // 1. 레지스트리의 InstallDate 키 값 확인
-                            string installDateStr = subkey.GetValue("InstallDate")?.ToString();
+                            string? installDateStr = subkey.GetValue("InstallDate")?.ToString();
                             if (!string.IsNullOrEmpty(installDateStr))
                             {
                                 installDate = ParseInstallDate(installDateStr) ?? DateTime.MinValue;
@@ -283,7 +302,7 @@ namespace WindowsSentinel
 
                             var program = new ProgramInfo
                             {
-                                Name = displayName,
+                                Name = displayName ?? "알 수 없음",
                                 InstallDate = installDate,
                                 InstallPath = installLocation,
                                 Version = subkey.GetValue("DisplayVersion")?.ToString() ?? "",
@@ -308,28 +327,34 @@ namespace WindowsSentinel
         /// <summary>
         /// 프로그램의 설치 경로를 가져옵니다.
         /// </summary>
+        [SupportedOSPlatform("windows")]
         private string GetInstallLocation(RegistryKey subkey)
         {
+            if (subkey == null)
+            {
+                return string.Empty;
+            }
+
             // 모든 가능한 경로 수집
             List<string> paths = new List<string>();
 
             // 1. InstallLocation (우선순위 1)
-            string installLocation = subkey.GetValue("InstallLocation")?.ToString() ?? "";
+            string? installLocation = subkey.GetValue("InstallLocation")?.ToString();
             if (!string.IsNullOrEmpty(installLocation) && Directory.Exists(installLocation))
                 paths.Add(installLocation);
 
             // 2. InstallPath (우선순위 2)
-            string installPath = subkey.GetValue("InstallPath")?.ToString() ?? "";
+            string? installPath = subkey.GetValue("InstallPath")?.ToString();
             if (!string.IsNullOrEmpty(installPath) && Directory.Exists(installPath))
                 paths.Add(installPath);
 
             // 3. InstallDir (우선순위 3)
-            string installDir = subkey.GetValue("InstallDir")?.ToString() ?? "";
+            string? installDir = subkey.GetValue("InstallDir")?.ToString();
             if (!string.IsNullOrEmpty(installDir) && Directory.Exists(installDir))
                 paths.Add(installDir);
 
             // 4. UninstallString에서 경로 추출 (우선순위 4)
-            string uninstallString = subkey.GetValue("UninstallString")?.ToString() ?? "";
+            string? uninstallString = subkey.GetValue("UninstallString")?.ToString();
             if (!string.IsNullOrEmpty(uninstallString))
             {
                 string path = ExtractPathFromUninstallString(uninstallString);
@@ -338,7 +363,7 @@ namespace WindowsSentinel
             }
 
             // 5. DisplayIcon에서 경로 추출 (우선순위 5)
-            string displayIcon = subkey.GetValue("DisplayIcon")?.ToString() ?? "";
+            string? displayIcon = subkey.GetValue("DisplayIcon")?.ToString();
             if (!string.IsNullOrEmpty(displayIcon))
             {
                 string path = ExtractPathFromDisplayIcon(displayIcon);
@@ -350,7 +375,7 @@ namespace WindowsSentinel
             paths = paths.Distinct().ToList();
 
             // 우선순위에 따라 첫 번째 경로 반환
-            return paths.FirstOrDefault() ?? "";
+            return paths.FirstOrDefault() ?? string.Empty;
         }
 
         /// <summary>
@@ -368,7 +393,7 @@ namespace WindowsSentinel
                     if (end > start)
                     {
                         string path = uninstallString.Substring(start, end - start);
-                        return Path.GetDirectoryName(path);
+                        return Path.GetDirectoryName(path) ?? string.Empty;
                     }
                 }
 
@@ -378,7 +403,7 @@ namespace WindowsSentinel
                 {
                     string path = parts[0];
                     if (File.Exists(path) || Directory.Exists(path))
-                        return Path.GetDirectoryName(path);
+                        return Path.GetDirectoryName(path) ?? string.Empty;
                 }
             }
             catch (Exception)
@@ -386,7 +411,7 @@ namespace WindowsSentinel
                 // 경로 추출 중 오류 발생
             }
 
-            return "";
+            return string.Empty;
         }
 
         /// <summary>
@@ -404,7 +429,7 @@ namespace WindowsSentinel
                     if (end > start)
                     {
                         string path = displayIcon.Substring(start, end - start);
-                        return Path.GetDirectoryName(path);
+                        return Path.GetDirectoryName(path) ?? string.Empty;
                     }
                 }
 
@@ -414,7 +439,7 @@ namespace WindowsSentinel
                 {
                     string path = parts[0].Trim();
                     if (File.Exists(path) || Directory.Exists(path))
-                        return Path.GetDirectoryName(path);
+                        return Path.GetDirectoryName(path) ?? string.Empty;
                 }
             }
             catch (Exception)
@@ -422,7 +447,7 @@ namespace WindowsSentinel
                 // 경로 추출 중 오류 발생
             }
 
-            return "";
+            return string.Empty;
         }
 
         /// <summary>
@@ -572,6 +597,16 @@ namespace WindowsSentinel
         {
             var mainWindow = Window.GetWindow(this) as MainWindow;
             mainWindow?.NavigateToPage(page);
+        }
+
+        [SupportedOSPlatform("windows")]
+        private void BtnShowChangeLogs_Click(object sender, RoutedEventArgs e)
+        {
+            DateTime oneYearAgo = DateTime.Now.AddYears(-1);
+            // 로그 업데이트 및 각 프로그램에 적합한 메시지 설정
+            SD[0] = new SecurityDate(GetLatestLogDate("Microsoft-Windows-Windows Defender/Operational", new int[] { 5007 }, oneYearAgo, "Windows Defender"), "Defender");
+            SD[1] = new SecurityDate(GetLatestLogDate("Microsoft-Windows-Windows Firewall With Advanced Security/Firewall", new int[] { 2004, 2006, 2033 }, oneYearAgo, "Windows Firewall"), "Firewall");
+            SD[2] = new SecurityDate(GetLatestLogDate("Microsoft-Windows-BitLocker/Operational", new int[] { 775 }, oneYearAgo, "Windows BitLocker"), "BitLocker");
         }
     }
 }

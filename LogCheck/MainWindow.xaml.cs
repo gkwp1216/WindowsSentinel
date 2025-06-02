@@ -8,14 +8,15 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Windows.Navigation;
+using System.Runtime.Versioning;
 
 namespace WindowsSentinel
 {
     public partial class MainWindow : Window
     {
         private int guideStep = 0;
-        private List<FrameworkElement> guideElements;
-        private List<string> guideDescriptions;
+        private List<FrameworkElement> guideElements = new();
+        private List<string> guideDescriptions = new();
 
         public MainWindow()
         {
@@ -178,49 +179,65 @@ namespace WindowsSentinel
             GuideOverlay.Visibility = Visibility.Collapsed;
         }
 
+        [SupportedOSPlatform("windows")]
         public void NavigateToPage(Page page)
         {
+            if (page == null)
+            {
+                throw new ArgumentNullException(nameof(page));
+            }
+
             var mainGrid = FindName("mainGrid") as Grid;
             var mainButtonsGrid = FindName("mainButtonsGrid") as Grid;
             var securityStatusSection = FindName("securityStatusSection") as Border;
             
-            if (mainGrid != null && mainButtonsGrid != null && securityStatusSection != null)
+            if (mainGrid == null || mainButtonsGrid == null || securityStatusSection == null)
             {
-                // 메인 버튼 그리드와 보안 상태 섹션 숨기기
-                mainButtonsGrid.Visibility = Visibility.Collapsed;
-                securityStatusSection.Visibility = Visibility.Collapsed;
-
-                // 기존 Frame 제거
-                UIElement uiChildToRemove = null;
-                foreach (UIElement child in mainGrid.Children)
-                {
-                    if (child is Frame)
-                    {
-                        uiChildToRemove = child;
-                        break;
-                    }
-                }
-                
-                if (uiChildToRemove != null)
-                {
-                    mainGrid.Children.Remove(uiChildToRemove);
-                }
-                
-                // 새로운 페이지 추가
-                var frame = new Frame();
-                frame.Content = page;
-                mainGrid.Children.Add(frame);
-                Grid.SetRow(frame, 2);  // 버튼 그리드와 같은 Row에 배치
-                Grid.SetColumn(frame, 0);
+                throw new InvalidOperationException("필수 UI 요소를 찾을 수 없습니다.");
             }
+
+            // 메인 버튼 그리드와 보안 상태 섹션 숨기기
+            mainButtonsGrid.Visibility = Visibility.Collapsed;
+            securityStatusSection.Visibility = Visibility.Collapsed;
+
+            // 기존 Frame 제거
+            UIElement? uiChildToRemove = null;
+            foreach (UIElement child in mainGrid.Children)
+            {
+                if (child is Frame)
+                {
+                    uiChildToRemove = child;
+                    break;
+                }
+            }
+            
+            if (uiChildToRemove != null)
+            {
+                mainGrid.Children.Remove(uiChildToRemove);
+            }
+            
+            // 새로운 페이지 추가
+            var frame = new Frame();
+            frame.Content = page;
+            mainGrid.Children.Add(frame);
+            Grid.SetRow(frame, 2);  // 버튼 그리드와 같은 Row에 배치
+            Grid.SetColumn(frame, 0);
         }
 
-        private void InstalledPrograms_Click(object sender, RoutedEventArgs e)
+        [SupportedOSPlatform("windows")]
+        private void SidebarPrograms_Click(object sender, RoutedEventArgs e)
         {
             NavigateToPage(new Page1());
+        }
+
+        [SupportedOSPlatform("windows")]
+        private void InstalledPrograms_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new Page2());
             HelpButton.Visibility = Visibility.Collapsed;
         }
 
+        [SupportedOSPlatform("windows")]
         private void ModificationHistory_Click(object sender, RoutedEventArgs e)
         {
             NavigateToPage(new Page2());
@@ -233,43 +250,48 @@ namespace WindowsSentinel
             var mainButtonsGrid = FindName("mainButtonsGrid") as Grid;
             var securityStatusSection = FindName("securityStatusSection") as Border;
             
-            if (mainGrid != null && mainButtonsGrid != null && securityStatusSection != null)
+            if (mainGrid == null || mainButtonsGrid == null || securityStatusSection == null)
             {
-                // 기존 Frame 제거
-                UIElement uiChildToRemove = null;
-                foreach (UIElement child in mainGrid.Children)
-                {
-                    if (child is Frame)
-                    {
-                        uiChildToRemove = child;
-                        break;
-                    }
-                }
-                
-                if (uiChildToRemove != null)
-                {
-                    mainGrid.Children.Remove(uiChildToRemove);
-                }
-
-                // 메인 버튼 그리드와 보안 상태 섹션 다시 보이기
-                mainButtonsGrid.Visibility = Visibility.Visible;
-                securityStatusSection.Visibility = Visibility.Visible;
-                HelpButton.Visibility = Visibility.Visible;
+                throw new InvalidOperationException("필수 UI 요소를 찾을 수 없습니다.");
             }
+
+            // 기존 Frame 제거
+            UIElement? uiChildToRemove = null;
+            foreach (UIElement child in mainGrid.Children)
+            {
+                if (child is Frame)
+                {
+                    uiChildToRemove = child;
+                    break;
+                }
+            }
+            
+            if (uiChildToRemove != null)
+            {
+                mainGrid.Children.Remove(uiChildToRemove);
+            }
+
+            // 메인 버튼 그리드와 보안 상태 섹션 다시 보이기
+            mainButtonsGrid.Visibility = Visibility.Visible;
+            securityStatusSection.Visibility = Visibility.Visible;
+            HelpButton.Visibility = Visibility.Visible;
         }
 
+        [SupportedOSPlatform("windows")]
         private void BtnLog_Click(object sender, RoutedEventArgs e)
         {
             NavigateToPage(new Log());
             HelpButton.Visibility = Visibility.Collapsed;
         }
 
+        [SupportedOSPlatform("windows")]
         private void BtnSetting_Click(object sender, RoutedEventArgs e)
         {
             NavigateToPage(new Setting());
             HelpButton.Visibility = Visibility.Collapsed;
         }
 
+        [SupportedOSPlatform("windows")]
         private void SecurityRecovery_Click(object sender, RoutedEventArgs e)
         {
             // Recovery 페이지로 네비게이션

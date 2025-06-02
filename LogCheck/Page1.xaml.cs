@@ -29,28 +29,30 @@ using static WindowsSentinel.Log;
 using System.Diagnostics.Eventing.Reader;
 using System.Security.Policy;
 using System.Text.RegularExpressions;
+using System.Runtime.Versioning;
 
 namespace WindowsSentinel
 {
     /// <summary>
     /// Page1.xaml에 대한 상호 작용 논리
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public partial class Page1 : Page
     {
         // 프로그램 목록 관리를 위한 변수
-        private List<ProgramInfo> programList;
-        private CollectionViewSource viewSource;
+        private List<ProgramInfo> programList = new();
+        private CollectionViewSource viewSource = new();
 
         // 중복 프로그램 검사 방지용 집합
-        private HashSet<string> processedPrograms;
+        private HashSet<string> processedPrograms = new();
 
         // 보안 프로그램(Defender/Firewall/BitLocker) 최신 동작 날짜
         public static SecurityDate[] SD = new SecurityDate[3];
 
-        private DispatcherTimer loadingTextTimer;
         private int dotCount = 0;
         private const int maxDots = 3;
         private string baseText = "검사 중";
+        private DispatcherTimer? loadingTextTimer;
 
         public Page1()
         {
@@ -66,17 +68,13 @@ namespace WindowsSentinel
             }
 
             InitializeComponent();
-
-            // 초기화
-            programList = new List<ProgramInfo>();
-            processedPrograms = new HashSet<string>();
-            viewSource = new CollectionViewSource();
-            viewSource.Source = programList;
+            loadingTextTimer = new DispatcherTimer();
 
             // DataGrid 초기화
             var dataGrid = this.FindName("programDataGrid") as DataGrid;
             if (dataGrid != null)
             {
+                viewSource.Source = programList;
                 dataGrid.ItemsSource = viewSource.View;
             }
 
@@ -118,7 +116,7 @@ namespace WindowsSentinel
             loadingTextTimer.Tick += LoadingTextTimer_Tick;
         }
 
-        private void LoadingTextTimer_Tick(object sender, EventArgs e)
+        private void LoadingTextTimer_Tick(object? sender, EventArgs e)
         {
             dotCount = (dotCount + 1) % (maxDots + 1);
             LoadingText.Text = baseText + new string('.', dotCount);
@@ -127,12 +125,12 @@ namespace WindowsSentinel
         private void ShowLoadingOverlay()
         {
             LoadingOverlay.Visibility = Visibility.Visible;
-            loadingTextTimer.Start();
+            loadingTextTimer?.Start();
         }
 
         private void HideLoadingOverlay()
         {
-            loadingTextTimer.Stop();
+            loadingTextTimer?.Stop();
             LoadingOverlay.Visibility = Visibility.Collapsed;
             LoadingText.Text = baseText; // 텍스트 초기화
         }
@@ -142,16 +140,20 @@ namespace WindowsSentinel
         /// [신규 추가] 보안 강화를 위해 추가됨
         /// </summary>
         /// <returns>관리자 권한 여부</returns>
+        [SupportedOSPlatform("windows")]
         private bool IsRunningAsAdmin()
         {
-            var identity = WindowsIdentity.GetCurrent();
-            var principal = new WindowsPrincipal(identity);
-            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+            {
+                WindowsPrincipal principal = new WindowsPrincipal(identity);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
         }
 
         /// <summary>
         /// Windows 보안 로그 분석 (Defender/Firewall/BitLocker)
         /// </summary>
+        [SupportedOSPlatform("windows")]
         public void CheckLogs()
         {
             DateTime oneYearAgo = DateTime.Now.AddYears(-1);
@@ -175,6 +177,7 @@ namespace WindowsSentinel
         /// <summary>
         /// 특정 이벤트 로그에서 최신 기록 날짜 조회
         /// </summary>
+        [SupportedOSPlatform("windows")]
         private static DateTime GetLatestLogDate(string logName, int[] eventIds, DateTime oneYearAgo, String Program_name)
         {
             try
@@ -187,7 +190,7 @@ namespace WindowsSentinel
 
                 var recentLog = eventLog.Entries
                     .Cast<EventLogEntry>()
-                    .Where(e => eventIds.Contains(e.EventID) && e.TimeGenerated > oneYearAgo)
+                    .Where(e => eventIds.Contains((int)e.InstanceId) && e.TimeGenerated > oneYearAgo)
                     .OrderByDescending(e => e.TimeGenerated)
                     .FirstOrDefault();
 
@@ -209,6 +212,7 @@ namespace WindowsSentinel
         /// [변경] Defender 예외 검사 제거로 성능 개선
         /// </summary>
         /// 
+        [SupportedOSPlatform("windows")]
         private void CollectInstalledPrograms()
         {
 
@@ -285,7 +289,9 @@ namespace WindowsSentinel
                     {
                         using (RegistryKey subkey = key.OpenSubKey(subkeyName))
                         {
-                            string displayName = subkey?.GetValue("DisplayName")?.ToString();
+                            if (subkey == null) continue;
+
+                            string? displayName = subkey.GetValue("DisplayName")?.ToString();
                             if (string.IsNullOrEmpty(displayName) || processedPrograms.Contains(displayName))
                                 continue;
 
@@ -299,7 +305,7 @@ namespace WindowsSentinel
                             DateTime installDate = DateTime.MinValue;
 
                             // 1. 레지스트리의 InstallDate 키 값 확인
-                            string installDateStr = subkey.GetValue("InstallDate")?.ToString();
+                            string? installDateStr = subkey.GetValue("InstallDate")?.ToString();
                             if (!string.IsNullOrEmpty(installDateStr))
                             {
                                 installDate = ParseInstallDate(installDateStr) ?? DateTime.MinValue;
@@ -351,28 +357,34 @@ namespace WindowsSentinel
         /// <summary>
         /// 프로그램의 설치 경로를 가져옵니다.
         /// </summary>
+        [SupportedOSPlatform("windows")]
         private string GetInstallLocation(RegistryKey subkey)
         {
+            if (subkey == null)
+            {
+                return string.Empty;
+            }
+
             // 모든 가능한 경로 수집
             List<string> paths = new List<string>();
 
             // 1. InstallLocation (우선순위 1)
-            string installLocation = subkey.GetValue("InstallLocation")?.ToString() ?? "";
+            string? installLocation = subkey.GetValue("InstallLocation")?.ToString();
             if (!string.IsNullOrEmpty(installLocation) && Directory.Exists(installLocation))
                 paths.Add(installLocation);
 
             // 2. InstallPath (우선순위 2)
-            string installPath = subkey.GetValue("InstallPath")?.ToString() ?? "";
+            string? installPath = subkey.GetValue("InstallPath")?.ToString();
             if (!string.IsNullOrEmpty(installPath) && Directory.Exists(installPath))
                 paths.Add(installPath);
 
             // 3. InstallDir (우선순위 3)
-            string installDir = subkey.GetValue("InstallDir")?.ToString() ?? "";
+            string? installDir = subkey.GetValue("InstallDir")?.ToString();
             if (!string.IsNullOrEmpty(installDir) && Directory.Exists(installDir))
                 paths.Add(installDir);
 
             // 4. UninstallString에서 경로 추출 (우선순위 4)
-            string uninstallString = subkey.GetValue("UninstallString")?.ToString() ?? "";
+            string? uninstallString = subkey.GetValue("UninstallString")?.ToString();
             if (!string.IsNullOrEmpty(uninstallString))
             {
                 string path = ExtractPathFromUninstallString(uninstallString);
@@ -381,7 +393,7 @@ namespace WindowsSentinel
             }
 
             // 5. DisplayIcon에서 경로 추출 (우선순위 5)
-            string displayIcon = subkey.GetValue("DisplayIcon")?.ToString() ?? "";
+            string? displayIcon = subkey.GetValue("DisplayIcon")?.ToString();
             if (!string.IsNullOrEmpty(displayIcon))
             {
                 string path = ExtractPathFromDisplayIcon(displayIcon);
@@ -393,14 +405,20 @@ namespace WindowsSentinel
             paths = paths.Distinct().ToList();
 
             // 우선순위에 따라 첫 번째 경로 반환
-            return paths.FirstOrDefault() ?? "";
+            return paths.FirstOrDefault() ?? string.Empty;
         }
 
         /// <summary>
         /// UninstallString에서 설치 경로를 추출합니다.
         /// </summary>
+        [SupportedOSPlatform("windows")]
         private string ExtractPathFromUninstallString(string uninstallString)
         {
+            if (string.IsNullOrEmpty(uninstallString))
+            {
+                return string.Empty;
+            }
+
             try
             {
                 // 따옴표로 묶인 경로 추출
@@ -411,7 +429,7 @@ namespace WindowsSentinel
                     if (end > start)
                     {
                         string path = uninstallString.Substring(start, end - start);
-                        return Path.GetDirectoryName(path);
+                        return Path.GetDirectoryName(path) ?? string.Empty;
                     }
                 }
 
@@ -421,7 +439,7 @@ namespace WindowsSentinel
                 {
                     string path = parts[0];
                     if (File.Exists(path) || Directory.Exists(path))
-                        return Path.GetDirectoryName(path);
+                        return Path.GetDirectoryName(path) ?? string.Empty;
                 }
             }
             catch (Exception)
@@ -429,14 +447,20 @@ namespace WindowsSentinel
                 // 경로 추출 중 오류 발생
             }
 
-            return "";
+            return string.Empty;
         }
 
         /// <summary>
         /// DisplayIcon에서 설치 경로를 추출합니다.
         /// </summary>
+        [SupportedOSPlatform("windows")]
         private string ExtractPathFromDisplayIcon(string displayIcon)
         {
+            if (string.IsNullOrEmpty(displayIcon))
+            {
+                return string.Empty;
+            }
+
             try
             {
                 // 따옴표로 묶인 경로 추출
@@ -447,7 +471,7 @@ namespace WindowsSentinel
                     if (end > start)
                     {
                         string path = displayIcon.Substring(start, end - start);
-                        return Path.GetDirectoryName(path);
+                        return Path.GetDirectoryName(path) ?? string.Empty;
                     }
                 }
 
@@ -457,7 +481,7 @@ namespace WindowsSentinel
                 {
                     string path = parts[0].Trim();
                     if (File.Exists(path) || Directory.Exists(path))
-                        return Path.GetDirectoryName(path);
+                        return Path.GetDirectoryName(path) ?? string.Empty;
                 }
             }
             catch (Exception)
@@ -465,13 +489,14 @@ namespace WindowsSentinel
                 // 경로 추출 중 오류 발생
             }
 
-            return "";
+            return string.Empty;
         }
 
         /// <summary>
         /// 프로그램 보안 정보 분석
         /// [변경] Defender 예외 검사 제거된 버전
         /// </summary>
+        [SupportedOSPlatform("windows")]
         private SecurityInfo GetSecurityInfo(string installLocation, int score)
         {
             var info = new SecurityInfo();
