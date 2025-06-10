@@ -15,7 +15,10 @@ using System.Windows.Input;
 using System.Threading;
 using System.Windows.Navigation;
 using System.Runtime.Versioning;
+<<<<<<< HEAD
 using System.Windows.Media;
+=======
+>>>>>>> 49e2b708e5ff54a30997ae87530edb8ccbed04d8
 
 namespace WindowsSentinel
 {
@@ -43,9 +46,15 @@ namespace WindowsSentinel
 
         private class RecoveryProgress
         {
+<<<<<<< HEAD
             public string Operation { get; set; }
             public string Status { get; set; }
             public int Progress { get; set; }
+=======
+            public string Operation { get; set; } = "";
+            public double Progress { get; set; }
+            public string Status { get; set; } = "";
+>>>>>>> 49e2b708e5ff54a30997ae87530edb8ccbed04d8
         }
 
         [SupportedOSPlatform("windows")]
@@ -171,7 +180,11 @@ namespace WindowsSentinel
                 var defenderStatus = await CheckDefenderStatus();
                 await Dispatcher.InvokeAsync(() =>
                 {
+<<<<<<< HEAD
                     securityStatusItems.Add(new RecoverySecurityStatusItem
+=======
+                    securityStatusItems.Add(new SecurityStatusItem
+>>>>>>> 49e2b708e5ff54a30997ae87530edb8ccbed04d8
                     {
                         Icon = "\uE72E",
                         Title = "Windows Defender",
@@ -197,7 +210,11 @@ namespace WindowsSentinel
                 var firewallStatus = await CheckFirewallStatus();
                 await Dispatcher.InvokeAsync(() =>
                 {
+<<<<<<< HEAD
                     securityStatusItems.Add(new RecoverySecurityStatusItem
+=======
+                    securityStatusItems.Add(new SecurityStatusItem
+>>>>>>> 49e2b708e5ff54a30997ae87530edb8ccbed04d8
                     {
                         Icon = "\uE8FD",
                         Title = "Windows Firewall",
@@ -223,7 +240,11 @@ namespace WindowsSentinel
                 var securityCenterStatus = await CheckSecurityCenterStatus();
                 await Dispatcher.InvokeAsync(() =>
                 {
+<<<<<<< HEAD
                     securityStatusItems.Add(new RecoverySecurityStatusItem
+=======
+                    securityStatusItems.Add(new SecurityStatusItem
+>>>>>>> 49e2b708e5ff54a30997ae87530edb8ccbed04d8
                     {
                         Icon = "\uEA0B",
                         Title = "Windows Security Center",
@@ -249,7 +270,11 @@ namespace WindowsSentinel
                 var bitLockerStatus = await CheckBitLockerStatus();
                 await Dispatcher.InvokeAsync(() =>
                 {
+<<<<<<< HEAD
                     securityStatusItems.Add(new RecoverySecurityStatusItem
+=======
+                    securityStatusItems.Add(new SecurityStatusItem
+>>>>>>> 49e2b708e5ff54a30997ae87530edb8ccbed04d8
                     {
                         Icon = "\uEDE1",
                         Title = "BitLocker",
@@ -449,6 +474,7 @@ namespace WindowsSentinel
 
         // Windows Defender 복구
         [SupportedOSPlatform("windows")]
+<<<<<<< HEAD
         private async Task RecoverDefender(IProgress<RecoveryProgress> progress = null)
         {
             try
@@ -526,10 +552,60 @@ namespace WindowsSentinel
             finally
             {
                 UpdateResultReport();
+=======
+        private async Task RecoverDefender(IProgress<RecoveryProgress>? progress = null)
+        {
+            try
+            {
+                if (_cancellationTokenSource == null)
+                {
+                    _cancellationTokenSource = new CancellationTokenSource();
+                }
+
+                ShowLoadingOverlay("Windows Defender 복구 중...");
+                var startTime = DateTime.Now;
+
+                progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Progress = 0, Status = "복구 시작" });
+
+                // WMIHelper를 사용하여 Windows Defender 활성화
+                bool success = await WmiHelper.EnableDefenderAsync();
+                
+                defenderRecoveryDuration = DateTime.Now - startTime;
+                
+                if (success)
+                {
+                    progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Progress = 100, Status = "완료" });
+                    AddUserFriendlyMessage("Windows Defender가 성공적으로 활성화되었습니다.", MessageType.Success);
+                    defenderRecoveryError = "";
+                }
+                else
+                {
+                    progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Progress = 100, Status = "실패" });
+                    AddUserFriendlyMessage("Windows Defender 활성화에 실패했습니다.", MessageType.Error);
+                    defenderRecoveryError = "Windows Defender 활성화 실패";
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Progress = 0, Status = "취소됨" });
+                AddUserFriendlyMessage("Windows Defender 복구가 취소되었습니다.", MessageType.Warning);
+                defenderRecoveryError = "작업 취소됨";
+            }
+            catch (Exception ex)
+            {
+                progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Progress = 0, Status = "오류" });
+                defenderRecoveryError = ex.Message;
+                AddUserFriendlyMessage($"Windows Defender 복구 중 오류 발생: {ex.Message}", MessageType.Error);
+            }
+            finally
+            {
+                HideLoadingOverlay();
+>>>>>>> 49e2b708e5ff54a30997ae87530edb8ccbed04d8
             }
         }
 
         // Windows Firewall 복구
+<<<<<<< HEAD
         private async Task RecoverFirewall(IProgress<RecoveryProgress> progress = null)
         {
             try
@@ -605,10 +681,60 @@ namespace WindowsSentinel
             finally
             {
                 UpdateResultReport();
+=======
+        private async Task RecoverFirewall(IProgress<RecoveryProgress>? progress = null)
+        {
+            try
+            {
+                if (_cancellationTokenSource == null)
+                {
+                    _cancellationTokenSource = new CancellationTokenSource();
+                }
+
+                ShowLoadingOverlay("Windows Firewall 복구 중...");
+                var startTime = DateTime.Now;
+
+                progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Progress = 0, Status = "복구 시작" });
+
+                // WMIHelper를 사용하여 Windows Firewall 활성화
+                bool success = await WmiHelper.EnableFirewallAsync();
+                
+                firewallRecoveryDuration = DateTime.Now - startTime;
+                
+                if (success)
+                {
+                    progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Progress = 100, Status = "완료" });
+                    AddUserFriendlyMessage("Windows Firewall이 성공적으로 활성화되었습니다.", MessageType.Success);
+                    firewallRecoveryError = "";
+                }
+                else
+                {
+                    progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Progress = 100, Status = "실패" });
+                    AddUserFriendlyMessage("Windows Firewall 활성화에 실패했습니다.", MessageType.Error);
+                    firewallRecoveryError = "Windows Firewall 활성화 실패";
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Progress = 0, Status = "취소됨" });
+                AddUserFriendlyMessage("Windows Firewall 복구가 취소되었습니다.", MessageType.Warning);
+                firewallRecoveryError = "작업 취소됨";
+            }
+            catch (Exception ex)
+            {
+                progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Progress = 0, Status = "오류" });
+                firewallRecoveryError = ex.Message;
+                AddUserFriendlyMessage($"Windows Firewall 복구 중 오류 발생: {ex.Message}", MessageType.Error);
+            }
+            finally
+            {
+                HideLoadingOverlay();
+>>>>>>> 49e2b708e5ff54a30997ae87530edb8ccbed04d8
             }
         }
 
         // Windows Security Center 복구
+<<<<<<< HEAD
         private async Task RecoverSecurityCenter(IProgress<RecoveryProgress> progress = null)
         {
             try
@@ -686,10 +812,60 @@ namespace WindowsSentinel
             finally
             {
                 UpdateResultReport();
+=======
+        private async Task RecoverSecurityCenter(IProgress<RecoveryProgress>? progress = null)
+        {
+            try
+            {
+                if (_cancellationTokenSource == null)
+                {
+                    _cancellationTokenSource = new CancellationTokenSource();
+                }
+
+                ShowLoadingOverlay("Windows Security Center 복구 중...");
+                var startTime = DateTime.Now;
+
+                progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Progress = 0, Status = "복구 시작" });
+
+                // WMIHelper를 사용하여 Windows Security Center 활성화
+                bool success = await WmiHelper.EnableSecurityCenterAsync();
+                
+                securityCenterRecoveryDuration = DateTime.Now - startTime;
+                
+                if (success)
+                {
+                    progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Progress = 100, Status = "완료" });
+                    AddUserFriendlyMessage("Windows Security Center가 성공적으로 활성화되었습니다.", MessageType.Success);
+                    securityCenterRecoveryError = "";
+                }
+                else
+                {
+                    progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Progress = 100, Status = "실패" });
+                    AddUserFriendlyMessage("Windows Security Center 활성화에 실패했습니다.", MessageType.Error);
+                    securityCenterRecoveryError = "Windows Security Center 활성화 실패";
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Progress = 0, Status = "취소됨" });
+                AddUserFriendlyMessage("Windows Security Center 복구가 취소되었습니다.", MessageType.Warning);
+                securityCenterRecoveryError = "작업 취소됨";
+            }
+            catch (Exception ex)
+            {
+                progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Progress = 0, Status = "오류" });
+                securityCenterRecoveryError = ex.Message;
+                AddUserFriendlyMessage($"Windows Security Center 복구 중 오류 발생: {ex.Message}", MessageType.Error);
+            }
+            finally
+            {
+                HideLoadingOverlay();
+>>>>>>> 49e2b708e5ff54a30997ae87530edb8ccbed04d8
             }
         }
 
         // BitLocker 복구
+<<<<<<< HEAD
         private async Task RecoverBitLocker(IProgress<RecoveryProgress> progress = null)
         {
             try
@@ -767,6 +943,55 @@ namespace WindowsSentinel
             finally
             {
                 UpdateResultReport();
+=======
+        private async Task RecoverBitLocker(IProgress<RecoveryProgress>? progress = null)
+        {
+            try
+            {
+                if (_cancellationTokenSource == null)
+                {
+                    _cancellationTokenSource = new CancellationTokenSource();
+                }
+
+                ShowLoadingOverlay("BitLocker 복구 중...");
+                var startTime = DateTime.Now;
+
+                progress?.Report(new RecoveryProgress { Operation = "BitLocker", Progress = 0, Status = "복구 시작" });
+
+                // WMIHelper를 사용하여 BitLocker 활성화
+                bool success = await WmiHelper.EnableBitLockerAsync();
+                
+                bitLockerRecoveryDuration = DateTime.Now - startTime;
+                
+                if (success)
+                {
+                    progress?.Report(new RecoveryProgress { Operation = "BitLocker", Progress = 100, Status = "완료" });
+                    AddUserFriendlyMessage("BitLocker가 성공적으로 활성화되었습니다.", MessageType.Success);
+                    bitLockerRecoveryError = "";
+                }
+                else
+                {
+                    progress?.Report(new RecoveryProgress { Operation = "BitLocker", Progress = 100, Status = "실패" });
+                    AddUserFriendlyMessage("BitLocker 활성화에 실패했습니다.", MessageType.Error);
+                    bitLockerRecoveryError = "BitLocker 활성화 실패";
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                progress?.Report(new RecoveryProgress { Operation = "BitLocker", Progress = 0, Status = "취소됨" });
+                AddUserFriendlyMessage("BitLocker 복구가 취소되었습니다.", MessageType.Warning);
+                bitLockerRecoveryError = "작업 취소됨";
+            }
+            catch (Exception ex)
+            {
+                progress?.Report(new RecoveryProgress { Operation = "BitLocker", Progress = 0, Status = "오류" });
+                bitLockerRecoveryError = ex.Message;
+                AddUserFriendlyMessage($"BitLocker 복구 중 오류 발생: {ex.Message}", MessageType.Error);
+            }
+            finally
+            {
+                HideLoadingOverlay();
+>>>>>>> 49e2b708e5ff54a30997ae87530edb8ccbed04d8
             }
         }
 
