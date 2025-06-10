@@ -53,6 +53,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -124,8 +125,98 @@
                     </Grid>
                 </Grid>
             </Border>
+
+            <!-- 현재 접속 상태 및 기간별 조회 컨트롤 -->
+            <Border Grid.Row="1" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20" Margin="0,0,0,10" BorderBrush="#C2C2C2" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- 현재 접속 상태 -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button x:Name="BtnCurrentConnections" 
+                                Content="현재 접속 상태 보기" 
+                                Click="BtnCurrentConnections_Click"
+                                Style="{DynamicResource CheckButtonStyle}"
+                                Padding="15,10"
+                                Height="40"
+                                Margin="0,0,10,0"/>
+                    </StackPanel>
+
+                    <!-- 기간별 조회 -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <DatePicker x:Name="StartDatePicker" 
+                                  Width="120" 
+                                  Margin="0,0,5,0"
+                                  materialDesign:HintAssist.Hint="시작일"/>
+                        <TextBlock Text="~" 
+                                 VerticalAlignment="Center" 
+                                 Margin="0,0,5,0"/>
+                        <DatePicker x:Name="EndDatePicker" 
+                                  Width="120" 
+                                  Margin="0,0,5,0"
+                                  materialDesign:HintAssist.Hint="종료일"/>
+                        <Button x:Name="BtnPeriodSearch" 
+                              Content="기간별 기록 조회" 
+                              Click="BtnPeriodSearch_Click"
+                              Style="{DynamicResource CheckButtonStyle}"
+                              Padding="15,10"
+                              Height="40"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 현재 접속 상태 DataGrid -->
+            <Border Grid.Row="2" 
+                    Background="{DynamicResource ButtonBackgroundColor}" 
+                    CornerRadius="12" 
+                    Padding="20" 
+                    Margin="0,0,0,10" 
+                    BorderBrush="#C2C2C2" 
+                    BorderThickness="1">
+                <DataGrid x:Name="currentConnectionsDataGrid" 
+                         AutoGenerateColumns="False"
+                         IsReadOnly="True"
+                         Background="{DynamicResource DataGridBackgroundColor}"
+                         Foreground="{DynamicResource DataGridForegroundColor}"
+                         BorderThickness="0"
+                         GridLinesVisibility="None"
+                         RowBackground="{DynamicResource DataGridRowBackgroundColor}"
+                         AlternatingRowBackground="{DynamicResource DataGridAlternatingRowBackgroundColor}"
+                         RowHeight="40"
+                         HeadersVisibility="Column"
+                         CanUserResizeRows="False"
+                         Height="200">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="프로토콜" Binding="{Binding Protocol}" Width="100"/>
+                        <DataGridTextColumn Header="로컬 주소" Binding="{Binding LocalAddress}" Width="*"/>
+                        <DataGridTextColumn Header="원격 주소" Binding="{Binding ForeignAddress}" Width="*"/>
+                        <DataGridTextColumn Header="상태" Binding="{Binding State}" Width="100"/>
+                        <DataGridTextColumn Header="PID" Binding="{Binding PID}" Width="80"/>
+                    </DataGrid.Columns>
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="10,10"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FF969393"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                </DataGrid>
+            </Border>
+
             <!-- Programs DataGrid -->
-            <Border Grid.Row="2" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20" BorderBrush="#C2C2C2" BorderThickness="1" Visibility="Visible">
+            <Border Grid.Row="3" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20" BorderBrush="#C2C2C2" BorderThickness="1" Visibility="Visible">
                 <Grid>
                     <DataGrid x:Name="eventDataGrid" 
           AutoGenerateColumns="False" 

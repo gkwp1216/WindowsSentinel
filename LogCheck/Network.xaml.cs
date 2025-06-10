@@ -29,6 +29,27 @@ namespace WindowsSentinel
         public int EventId { get; set; }
     }
 
+    public class CurrentConnectionModel
+    {
+        public string Protocol { get; set; }
+        public string LocalAddress { get; set; }
+        public string ForeignAddress { get; set; }
+        public string State { get; set; }
+        public int? PID { get; set; }
+    }
+
+    internal static class NetworkLogConstants
+    {
+        public const string ProtocolTcp = "TCP";
+        public const string ProtocolUdp = "UDP";
+        public const string DirectionInbound = "Inbound";
+        public const string DirectionOutbound = "Outbound";
+        public const string ResultAllowed = "허용";
+        public const string ResultBlocked = "차단";
+        public const string ResultListenAllowed = "수신 허용";
+        public const string Unknown = "알 수 없음";
+    }
+
     [SupportedOSPlatform("windows")]
     public partial class Network : Page
     {
@@ -37,6 +58,7 @@ namespace WindowsSentinel
         private const int maxDots = 3;
         private string baseText = "검사 중";
         private ObservableCollection<EventLogEntryModel> eventLogEntries = new ObservableCollection<EventLogEntryModel>();
+        private bool auditPolicyJustEnabled = false;
 
         public Network()
         {
@@ -50,19 +72,28 @@ namespace WindowsSentinel
                 return;
             }
 
+            InitializeComponent(); // InitializeComponent를 먼저 호출
+
+            // DatePicker 기본값 설정
+            EndDatePicker.SelectedDate = DateTime.Today;
+
             if (!IsAuditPolicyEnabled())
             {
                 EnableAuditPolicy();
+                auditPolicyJustEnabled = true; // 플래그 설정
+            }
+
+            SetupLoadingTextAnimation();
+            SpinnerItems.ItemsSource = CreateSpinnerPoints(40, 50, 50);
+            StartRotation();
+
+            if (auditPolicyJustEnabled) // UI 초기화 후 메시지 박스 표시
+            {
                 MessageBox.Show("TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.\n이 설정은 시스템에 영향을 줄 수 있습니다.",
                                 "감사 정책 활성화됨",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Information);
             }
-
-            InitializeComponent();
-            SetupLoadingTextAnimation();
-            SpinnerItems.ItemsSource = CreateSpinnerPoints(40, 50, 50);
-            StartRotation();
         }
 
         private bool IsRunningAsAdmin()
@@ -134,7 +165,7 @@ namespace WindowsSentinel
 
                 await Dispatcher.InvokeAsync(() => { }, DispatcherPriority.Render);
 
-                await Task.Run(() => { LoadFirewallEventLogs(); });
+                await LoadFirewallEventLogsAsync();
 
                 Dispatcher.Invoke(() =>
                 {
@@ -158,10 +189,11 @@ namespace WindowsSentinel
             }
         }
 
-        private void LoadFirewallEventLogs()
+        private async Task LoadFirewallEventLogsAsync()
         {
             string query = "*[System[(EventID=5156 or EventID=5157 or EventID=5158)]]";
             var logQuery = new EventLogQuery("Security", PathType.LogName, query) { ReverseDirection = true };
+            var newEntries = new List<EventLogEntryModel>(); // 임시 컬렉션
 
             try
             {
@@ -172,18 +204,25 @@ namespace WindowsSentinel
                     using (record)
                     {
                         string xml = record.ToXml();
-                        var parsed = ParseEventRecord(record, xml);
+                        var parsed = await Task.Run(() => ParseEventRecord(record, xml)); // 백그라운드에서 파싱
                         if (parsed != null)
-                            eventLogEntries.Add(parsed);
+                            newEntries.Add(parsed);
                     }
                 }
+
+                // UI 스레드에서 ObservableCollection 업데이트
+                await Dispatcher.InvokeAsync(() =>
+                {
+                    eventLogEntries.Clear();
+                    foreach (var entry in newEntries)
+                    {
+                        eventLogEntries.Add(entry);
+                    }
+                });
             }
             catch (Exception ex)
             {
-                Dispatcher.Invoke(() =>
-                {
-                    MessageBox.Show($"이벤트 로그 수집 중 오류 발생: {ex.Message}", "로그 오류", MessageBoxButton.OK, MessageBoxImage.Error);
-                });
+                await Dispatcher.InvokeAsync(() => MessageBox.Show($"이벤트 로그 수집 중 오류 발생: {ex.Message}", "로그 오류", MessageBoxButton.OK, MessageBoxImage.Error));
             }
         }
 
@@ -191,15 +230,15 @@ namespace WindowsSentinel
         {
             try
             {
-                string app = GetXmlValue(xml, "ApplicationName");
-                string pidStr = GetXmlValue(xml, "ProcessId");
-                string proto = GetProtocol(GetXmlValue(xml, "Protocol"));
-                string srcIp = GetXmlValue(xml, "SourceAddress");
-                string srcPort = GetXmlValue(xml, "SourcePort");
-                string dstIp = GetXmlValue(xml, "DestinationAddress");
-                string dstPort = GetXmlValue(xml, "DestinationPort");
-                string direction = GetDirection(GetXmlValue(xml, "Direction"));
-                string result = GetResultFromId(record.Id);
+                string app = GetXmlValue(xml, "Application") ?? GetXmlValue(xml, "ApplicationName"); // Application 태그도 확인
+                string pidStr = GetXmlValue(xml, "ProcessID") ?? GetXmlValue(xml, "ProcessId"); // ProcessID 태그도 확인
+                string proto = GetProtocol(GetXmlValue(xml, "Protocol") ?? string.Empty);
+                string srcIp = GetXmlValue(xml, "SourceAddress") ?? string.Empty;
+                string srcPort = GetXmlValue(xml, "SourcePort") ?? string.Empty;
+                string dstIp = GetXmlValue(xml, "DestAddress") ?? GetXmlValue(xml, "DestinationAddress"); // DestAddress 태그도 확인
+                string dstPort = GetXmlValue(xml, "DestPort") ?? GetXmlValue(xml, "DestinationPort"); // DestPort 태그도 확인
+                string direction = GetDirection(GetXmlValue(xml, "Direction") ?? string.Empty);
+                string result = GetResultFromId(record.Id); // Id는 null이 될 수 없음
 
                 return new EventLogEntryModel
                 {
@@ -217,32 +256,32 @@ namespace WindowsSentinel
             catch { return null; }
         }
 
-        private string GetXmlValue(string xml, string tag)
+        private string? GetXmlValue(string xml, string tag)
         {
             var match = Regex.Match(xml, $"<{tag}>(.*?)</{tag}>");
-            return match.Success ? match.Groups[1].Value : string.Empty;
+            return match.Success ? match.Groups[1].Value : null;
         }
 
         private string GetProtocol(string code) => code switch
         {
-            "6" => "TCP",
-            "17" => "UDP",
-            _ => code
+            "6" => NetworkLogConstants.ProtocolTcp,
+            "17" => NetworkLogConstants.ProtocolUdp,
+            _ => string.IsNullOrEmpty(code) ? NetworkLogConstants.Unknown : code
         };
 
         private string GetDirection(string code) => code switch
         {
-            "%%14592" => "Inbound",
-            "%%14593" => "Outbound",
-            _ => "Unknown"
+            "%%14592" => NetworkLogConstants.DirectionInbound,
+            "%%14593" => NetworkLogConstants.DirectionOutbound,
+            _ => NetworkLogConstants.Unknown
         };
 
         private string GetResultFromId(int eventId) => eventId switch
         {
-            5156 => "허용",
-            5157 => "차단",
-            5158 => "수신 허용",
-            _ => "알 수 없음"
+            5156 => NetworkLogConstants.ResultAllowed,
+            5157 => NetworkLogConstants.ResultBlocked,
+            5158 => NetworkLogConstants.ResultListenAllowed,
+            _ => NetworkLogConstants.Unknown
         };
 
         private void SetupLoadingTextAnimation()
@@ -321,5 +360,178 @@ namespace WindowsSentinel
             var mainWindow = Window.GetWindow(this) as MainWindow;
             mainWindow?.NavigateToPage(page);
         }
+
+        // 현재 접속 상태 조회
+        private async Task<List<CurrentConnectionModel>> GetCurrentConnectionsAsync()
+        {
+            var connections = new List<CurrentConnectionModel>();
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "netstat",
+                    Arguments = "-ano",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    Verb = "runas" // 관리자 권한으로 실행
+                };
+
+                using var process = Process.Start(psi);
+                if (process == null)
+                {
+                    throw new Exception("netstat 프로세스를 시작할 수 없습니다.");
+                }
+
+                string output = await process.StandardOutput.ReadToEndAsync();
+                await process.WaitForExitAsync();
+
+                if (process.ExitCode != 0)
+                {
+                    throw new Exception($"netstat 명령어 실행 실패 (종료 코드: {process.ExitCode})");
+                }
+
+                var lines = output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                bool isHeaderFound = false;
+
+                foreach (var line in lines)
+                {
+                    // 헤더 라인 찾기
+                    if (line.Contains("Proto") && line.Contains("Local Address") && line.Contains("Foreign Address"))
+                    {
+                        isHeaderFound = true;
+                        continue;
+                    }
+
+                    // 헤더를 찾은 후에만 데이터 처리
+                    if (isHeaderFound)
+                    {
+                        var trimmedLine = line.Trim();
+                        if (trimmedLine.StartsWith("TCP", StringComparison.OrdinalIgnoreCase) || 
+                            trimmedLine.StartsWith("UDP", StringComparison.OrdinalIgnoreCase))
+                        {
+                            var tokens = System.Text.RegularExpressions.Regex.Split(trimmedLine, @"\s+");
+                            if (tokens.Length >= 4)
+                            {
+                                try
+                                {
+                                    var model = new CurrentConnectionModel
+                                    {
+                                        Protocol = tokens[0],
+                                        LocalAddress = tokens[1],
+                                        ForeignAddress = tokens[2],
+                                        State = tokens[0].Equals("UDP", StringComparison.OrdinalIgnoreCase) ? "" : tokens[3],
+                                        PID = int.TryParse(tokens[^1], out int pid) ? pid : (int?)null
+                                    };
+                                    connections.Add(model);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Debug.WriteLine($"라인 파싱 오류: {line}, 오류: {ex.Message}");
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (!isHeaderFound)
+                {
+                    throw new Exception("netstat 출력에서 헤더를 찾을 수 없습니다.");
+                }
+
+                if (connections.Count == 0)
+                {
+                    Debug.WriteLine("현재 활성화된 네트워크 연결이 없습니다.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"현재 접속 상태 조회 중 오류 발생: {ex.Message}");
+                MessageBox.Show($"현재 접속 상태 조회 중 오류가 발생했습니다: {ex.Message}", 
+                              "오류", 
+                              MessageBoxButton.OK, 
+                              MessageBoxImage.Error);
+            }
+            return connections;
+        }
+
+        // 기간별 조회 버튼 클릭 이벤트 핸들러 (XAML에서 연결 필요)
+        private async void BtnPeriodSearch_Click(object sender, RoutedEventArgs e)
+        {
+            DateTime? start = StartDatePicker.SelectedDate;
+            DateTime? end = EndDatePicker.SelectedDate?.AddDays(1).AddSeconds(-1); // 종료일의 23:59:59까지 포함
+
+            if (start == null || end == null)
+            {
+                MessageBox.Show("시작일과 종료일을 모두 선택하세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            await LoadFirewallEventLogsAsync(start.Value, end.Value);
+        }
+
+        // 기간별 이벤트 로그 조회 (오버로드)
+        private async Task LoadFirewallEventLogsAsync(DateTime start, DateTime end)
+        {
+            string query = $"*[System[(EventID=5156 or EventID=5157 or EventID=5158) and TimeCreated[@SystemTime>='{start.ToUniversalTime():o}' and @SystemTime<='{end.ToUniversalTime():o}']]]";
+            var logQuery = new EventLogQuery("Security", PathType.LogName, query) { ReverseDirection = true };
+            var newEntries = new List<EventLogEntryModel>();
+            try
+            {
+                using var reader = new EventLogReader(logQuery);
+                EventRecord record;
+                while ((record = reader.ReadEvent()) != null)
+                {
+                    using (record)
+                    {
+                        string xml = record.ToXml();
+                        var parsed = await Task.Run(() => ParseEventRecord(record, xml));
+                        if (parsed != null)
+                            newEntries.Add(parsed);
+                    }
+                }
+                await Dispatcher.InvokeAsync(() =>
+                {
+                    eventLogEntries.Clear();
+                    foreach (var entry in newEntries)
+                        eventLogEntries.Add(entry);
+                });
+            }
+            catch (Exception ex)
+            {
+                await Dispatcher.InvokeAsync(() => MessageBox.Show($"이벤트 로그 수집 중 오류 발생: {ex.Message}", "로그 오류", MessageBoxButton.OK, MessageBoxImage.Error));
+            }
+        }
+
+        // 현재 접속 상태 보기 버튼 클릭 이벤트 핸들러 (XAML에서 연결 필요)
+        private async void BtnCurrentConnections_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                ShowLoadingOverlay();
+                await Dispatcher.InvokeAsync(() => { }, DispatcherPriority.Render);
+                var connections = await GetCurrentConnectionsAsync();
+                Dispatcher.Invoke(() =>
+                {
+                    currentConnectionsDataGrid.ItemsSource = null;
+                    currentConnectionsDataGrid.ItemsSource = connections;
+                    if (connections.Count == 0)
+                    {
+                        MessageBox.Show("현재 네트워크 연결이 없습니다.", "알림", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"현재 접속 상태 조회 중 오류 발생: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+                HideLoadingOverlay();
+            }
+        }
     }
 }
+
