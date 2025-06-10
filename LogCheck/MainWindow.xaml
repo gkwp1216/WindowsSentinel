@@ -27,7 +27,7 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
 
-        <DropShadowEffect x:Key="ShadowEffect" ShadowDepth="3" BlurRadius="10" Opacity="0.5" />
+        <DropShadowEffect x:Key="ShadowEffect" BlurRadius="10" Color="Black" ShadowDepth="4" Opacity="0.3" />
     </Window.Resources>
 
     <Grid x:Name="mainGrid">
@@ -40,6 +40,18 @@
         <Canvas x:Name="GuideOverlay" Background="#80000000" Visibility="Collapsed" Panel.ZIndex="999">
             <Canvas x:Name="MaskLayer"/>
 
+            <!-- 건너뛰기 버튼 -->
+            <Button x:Name="GuideSkipButton"
+                    Content="SKIP"
+                    Click="GuideSkip_Click"    
+                    Foreground="Black"
+                    FontWeight="Bold"
+                    Padding="8,4"         
+                    Cursor="Hand"
+                    Visibility="Collapsed"
+                    Panel.ZIndex="1001"/>
+
+            <!-- 말풍선 -->
             <Border x:Name="GuideBubble"
                     Background="White"
                     CornerRadius="12"
@@ -48,19 +60,29 @@
                     Panel.ZIndex="1000"
                     Effect="{StaticResource ShadowEffect}">
                 <StackPanel>
+                    <!-- 설명 텍스트 -->
                     <TextBlock x:Name="GuideText"
                                Text="설명 텍스트"
                                FontSize="16"
                                TextWrapping="Wrap"
                                Foreground="Black"
                                Margin="0,0,0,10"/>
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="GuidePrevButton" Content="이전" Click="GuidePrev_Click" Margin="0,0,5,0"/>
-                        <Button x:Name="GuideSkipButton" Content="건너뛰기" Click="GuideSkip_Click" Margin="0,0,5,0"/>
+
+                    <!-- 이전/다음 버튼 영역 -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="GuidePrevButton" Content="이전" Click="GuidePrev_Click" Margin="0,0,5,0" Cursor=""/>
                         <Button x:Name="GuideNextButton" Content="다음" Click="GuideNext_Click"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
+
+            <Path x:Name="GuideTail"                 
+                  Fill="White"
+                  Data="M 0 0 L 10 10 L 20 0 Z"
+                  Width="20" Height="10"
+                  Stretch="Fill"
+                  RenderTransformOrigin="0.5,0.5"
+                  Panel.ZIndex="1002"/>
         </Canvas>
 
         <!-- Top Navigation Menu -->
@@ -168,7 +190,7 @@
                 <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
                     <TextBlock Text="&#xE81C;" 
                                Style="{StaticResource MaterialIconStyle}"/>
-                    <TextBlock Text="수정/변경 내역" 
+                    <TextBlock Text="네트워크 접속 내역" 
                                TextAlignment="Center"
                                FontSize="25" 
                                FontWeight="SemiBold"/>

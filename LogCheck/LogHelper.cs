@@ -15,7 +15,12 @@ namespace WindowsSentinel
         {
             try
             {
-                string logDir = Path.GetDirectoryName(LogFilePath);
+                string? logDir = Path.GetDirectoryName(LogFilePath);
+                if (string.IsNullOrEmpty(logDir))
+                {
+                    throw new InvalidOperationException("로그 디렉토리 경로를 가져올 수 없습니다.");
+                }
+
                 if (!Directory.Exists(logDir))
                 {
                     Directory.CreateDirectory(logDir);
@@ -29,16 +34,29 @@ namespace WindowsSentinel
 
         public static void LogInfo(string message)
         {
+            if (string.IsNullOrEmpty(message))
+            {
+                throw new ArgumentNullException(nameof(message), "로그 메시지는 null이거나 비어있을 수 없습니다.");
+            }
             Log("INFO", message);
         }
 
         public static void LogWarning(string message)
         {
+            if (string.IsNullOrEmpty(message))
+            {
+                throw new ArgumentNullException(nameof(message), "로그 메시지는 null이거나 비어있을 수 없습니다.");
+            }
             Log("WARN", message);
         }
 
         public static void LogError(string message, Exception? ex = null)
         {
+            if (string.IsNullOrEmpty(message))
+            {
+                throw new ArgumentNullException(nameof(message), "로그 메시지는 null이거나 비어있을 수 없습니다.");
+            }
+
             string errorMessage = ex != null 
                 ? $"{message}\n예외: {ex.Message}\n스택 추적: {ex.StackTrace}" 
                 : message;
@@ -47,6 +65,15 @@ namespace WindowsSentinel
 
         private static void Log(string level, string message)
         {
+            if (string.IsNullOrEmpty(level))
+            {
+                throw new ArgumentNullException(nameof(level), "로그 레벨은 null이거나 비어있을 수 없습니다.");
+            }
+            if (string.IsNullOrEmpty(message))
+            {
+                throw new ArgumentNullException(nameof(message), "로그 메시지는 null이거나 비어있을 수 없습니다.");
+            }
+
             try
             {
                 string logMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] [{level}] {message}\n";

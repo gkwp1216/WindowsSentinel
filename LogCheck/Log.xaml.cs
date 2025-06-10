@@ -4,6 +4,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Runtime.Versioning;
 
 namespace WindowsSentinel
 {
@@ -18,13 +19,13 @@ namespace WindowsSentinel
         {
             public int EventId { get; set; }
             public DateTime Date { get; set; }
-            public string ProgramName { get; set; }
-            public string Reason { get; set; }
+            public required string ProgramName { get; set; }
+            public string? Reason { get; set; }
 
             public static Dictionary<DateTime, int> Install_Date = new Dictionary<DateTime, int>();
         }
 
-
+        [SupportedOSPlatform("windows")]
         private void BtnShowChangeLogs_Click(object sender, RoutedEventArgs e)
         {
             logsSection.Visibility = Visibility.Visible;
@@ -60,8 +61,6 @@ namespace WindowsSentinel
                 (4625, "Security", "Windows Security (로그인 실패)"),
                 (4672, "Security", "Windows Security (특권 할당)")
             };
-
-
 
             DateTime oneYearAgo = DateTime.Now.AddYears(-1);
 
@@ -106,7 +105,6 @@ namespace WindowsSentinel
                             ProgramName = es.ProgramName,
                             Reason = "해당 이벤트 코드가 발생하지 않았습니다."
                         });
-
                     }
                 }
                 catch (Exception ex)
@@ -128,22 +126,27 @@ namespace WindowsSentinel
             // DataGrid에 표시
             logsDataGrid.ItemsSource = logEntries;
         }
+        [SupportedOSPlatform("windows")]
         private void SidebarPrograms_Click(object sender, RoutedEventArgs e)
         {
-            NavigateToPage(new Page1());
+            NavigateToPage(new InstalledPrograms());
         }
+        [SupportedOSPlatform("windows")]
         private void SidebarModification_Click(object sender, RoutedEventArgs e)
         {
-            NavigateToPage(new Page2());
+            NavigateToPage(new Network());
         }
+        [SupportedOSPlatform("windows")]
         private void SidebarLog_Click(object sender, RoutedEventArgs e)
         {
             NavigateToPage(new Log());
         }
+        [SupportedOSPlatform("windows")]
         private void SidebarRecovery_Click(object sender, RoutedEventArgs e)
         {
             NavigateToPage(new Recovery());
         }
+        [SupportedOSPlatform("windows")]
         private void NavigateToPage(Page page)
         {
             var mainWindow = Window.GetWindow(this) as MainWindow;

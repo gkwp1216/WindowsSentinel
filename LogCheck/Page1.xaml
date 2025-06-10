@@ -91,9 +91,11 @@
                                                          HorizontalAlignment="Center"
                                                          VerticalAlignment="Center" />
                                 <Border.ToolTip>
-                                    <ToolTip Content="시스템에 설치된 모든 프로그램을 확인하고 관리할 수 있습니다."
-                                             Placement="MousePoint"
-                                             HorizontalOffset="440" VerticalOffset="5"/>
+                                    <ToolTip x:Name="ProgramListToolTip"
+                                             Content="시스템에 설치된 모든 프로그램을 확인하고 관리할 수 있습니다."
+                                             Placement="Custom"
+                                             CustomPopupPlacementCallback="OnCustomToolTipPlacement"
+                                             MaxWidth="300"/>
                                 </Border.ToolTip>
                             </Border>
                         </StackPanel>

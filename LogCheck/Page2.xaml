@@ -91,8 +91,8 @@
                                                          VerticalAlignment="Center" />
                                 <Border.ToolTip>
                                     <ToolTip Content="설치된 프로그램의 수정 / 변경 내역을 확인하고 관리할 수 있습니다."
-                                             Placement="MousePoint"
-                                             HorizontalOffset="465" VerticalOffset="10"/>
+                                             Placement="Bottom"
+                                             HorizontalOffset="0" VerticalOffset="5"/>
                                 </Border.ToolTip>
                             </Border>
                         </StackPanel>

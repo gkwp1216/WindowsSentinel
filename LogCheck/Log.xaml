@@ -24,7 +24,7 @@
                         Click="SidebarPrograms_Click"/>
                 <Button Style="{DynamicResource SidebarButtonStyle}"
                         Tag="&#xE81C;"
-                        Content="수정/변경 내역"
+                        Content="네트워크 접속 내역"
                         Click="SidebarModification_Click"/>
                 <Button Style="{DynamicResource SidebarButtonStyle}"
                         Tag="&#xE72E;"
@@ -76,8 +76,8 @@
                                                      VerticalAlignment="Center" />
                             <Border.ToolTip>
                                 <ToolTip Content="외부 접속 내역과 로그 이벤트 발생 내역을 확인하고 관리할 수 있습니다."
-                                         Placement="MousePoint"
-                                         HorizontalOffset="490" VerticalOffset="15"/>
+                                         Placement="Bottom"
+                                         HorizontalOffset="0" VerticalOffset="5"/>
                             </Border.ToolTip>
                         </Border>
                     </StackPanel>

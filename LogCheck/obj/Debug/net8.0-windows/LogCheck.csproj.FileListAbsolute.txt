@@ -376,3 +376,216 @@ C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\bin\Debug\net8.0-win
 C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
 C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
 C:\Users\admin\Documents\LogCheck-0602\LogCheck-0526_수정\obj\Debug\net8.0-windows\ref\Logcheck.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.exe
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.dll.config
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.deps.json
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.runtimeconfig.json
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\MaterialDesignColors.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\MaterialDesignThemes.Wpf.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Microsoft.Win32.SystemEvents.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Microsoft.Xaml.Behaviors.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.CodeDom.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.Diagnostics.EventLog.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.Drawing.Common.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.Private.Windows.Core.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.Management.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.ServiceProcess.ServiceController.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.ServiceProcess.ServiceController.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.AssemblyReference.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\DarkTheme.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LightTheme.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Log.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\MainWindow.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Recovery.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Setting.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\App.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.lref
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\App.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Log.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\MainWindow.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Recovery.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Setting.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck.g.resources
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.Properties.Resources.resources
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.Resources.Resources.resources
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.GenerateResource.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\refint\Logcheck.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\ref\Logcheck.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\InstalledPrograms.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\InstalledPrograms.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\ModifiedList.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\ModifiedList.baml
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\Logcheck.exe
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\Logcheck.dll.config
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\Logcheck.deps.json
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\Logcheck.runtimeconfig.json
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\Logcheck.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\MaterialDesignColors.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\MaterialDesignThemes.Wpf.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\Microsoft.Win32.SystemEvents.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\Microsoft.Xaml.Behaviors.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\System.CodeDom.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\System.Diagnostics.EventLog.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\System.Drawing.Common.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\System.Private.Windows.Core.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\System.Management.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\System.ServiceProcess.ServiceController.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.ServiceProcess.ServiceController.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.AssemblyReference.cache
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\DarkTheme.baml
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\LightTheme.baml
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\InstalledPrograms.g.cs
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\Log.g.cs
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\MainWindow.g.cs
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\ModifiedList.g.cs
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\Recovery.g.cs
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\Setting.g.cs
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\App.g.cs
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.cache
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.lref
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\App.baml
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\InstalledPrograms.baml
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\Log.baml
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\MainWindow.baml
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\ModifiedList.baml
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\Recovery.baml
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\Setting.baml
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\Logcheck.g.resources
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.Properties.Resources.resources
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.Resources.Resources.resources
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.GenerateResource.cache
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\Logcheck.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\refint\Logcheck.dll
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
+C:\Users\User\OneDrive\바탕 화면\LogCheck\LogCheck\obj\Debug\net8.0-windows\ref\Logcheck.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\Logcheck.exe
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\Logcheck.dll.config
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\Logcheck.deps.json
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\Logcheck.runtimeconfig.json
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\Logcheck.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\MaterialDesignColors.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\MaterialDesignThemes.Wpf.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\Microsoft.Win32.SystemEvents.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\Microsoft.Xaml.Behaviors.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\System.CodeDom.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\System.Diagnostics.EventLog.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\System.Drawing.Common.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\System.Private.Windows.Core.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\System.Management.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\System.ServiceProcess.ServiceController.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.ServiceProcess.ServiceController.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.AssemblyReference.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\DarkTheme.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\LightTheme.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\InstalledPrograms.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\Log.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\MainWindow.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\Network.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\Recovery.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\Setting.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\App.g.cs
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.lref
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\App.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\InstalledPrograms.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\Log.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\MainWindow.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\Network.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\Recovery.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\Setting.baml
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\Logcheck.g.resources
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.Properties.Resources.resources
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.Resources.Resources.resources
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.GenerateResource.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\Logcheck.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\refint\Logcheck.dll
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
+C:\Users\ajh58\Documents\카카오톡 받은 파일\LogCheck\LogCheck\obj\Debug\net8.0-windows\ref\Logcheck.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.AssemblyReference.cache
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\DarkTheme.baml
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LightTheme.baml
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\InstalledPrograms.g.cs
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Log.g.cs
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\MainWindow.g.cs
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Network.g.cs
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Page1.g.cs
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Page2.g.cs
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Recovery.g.cs
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Setting.g.cs
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\App.g.cs
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.cache
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck_MarkupCompile.lref
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\refint\Logcheck.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.exe
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.dll.config
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.deps.json
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.runtimeconfig.json
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Logcheck.pdb
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\MaterialDesignColors.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\MaterialDesignThemes.Wpf.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Microsoft.Win32.SystemEvents.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\Microsoft.Xaml.Behaviors.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.CodeDom.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.Diagnostics.EventLog.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.Drawing.Common.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.Private.Windows.Core.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.Management.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\System.ServiceProcess.ServiceController.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Management.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.ServiceProcess.ServiceController.dll
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\App.baml
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\InstalledPrograms.baml
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Log.baml
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\MainWindow.baml
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Network.baml
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Page1.baml
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Page2.baml
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Recovery.baml
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Setting.baml
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\Logcheck.g.resources
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.Properties.Resources.resources
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.Resources.Resources.resources
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.GenerateResource.cache
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.CoreCompileInputs.cache
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.sourcelink.json
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\ref\Logcheck.dll

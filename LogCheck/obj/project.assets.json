@@ -2,32 +2,32 @@
   "version": 3,
   "targets": {
     "net8.0-windows7.0": {
-      "MaterialDesignColors/5.2.1": {
+      "MaterialDesignColors/2.1.4": {
         "type": "package",
         "compile": {
-          "lib/net8.0/MaterialDesignColors.dll": {
+          "lib/net7.0/MaterialDesignColors.dll": {
             "related": ".pdb"
           }
         },
         "runtime": {
-          "lib/net8.0/MaterialDesignColors.dll": {
+          "lib/net7.0/MaterialDesignColors.dll": {
             "related": ".pdb"
           }
         }
       },
-      "MaterialDesignThemes/5.2.1": {
+      "MaterialDesignThemes/4.9.0": {
         "type": "package",
         "dependencies": {
-          "MaterialDesignColors": "5.2.1",
+          "MaterialDesignColors": "2.1.4",
           "Microsoft.Xaml.Behaviors.Wpf": "1.1.39"
         },
         "compile": {
-          "lib/net8.0/MaterialDesignThemes.Wpf.dll": {
+          "lib/net7.0/MaterialDesignThemes.Wpf.dll": {
             "related": ".pdb;.xml"
           }
         },
         "runtime": {
-          "lib/net8.0/MaterialDesignThemes.Wpf.dll": {
+          "lib/net7.0/MaterialDesignThemes.Wpf.dll": {
             "related": ".pdb;.xml"
           }
         },
@@ -193,29 +193,30 @@
     }
   },
   "libraries": {
-    "MaterialDesignColors/5.2.1": {
-      "sha512": "D0HW6E2/kzsnEWCh1KDG/K09Fpkvs9mR3n91Y8YSOsEAoQmGZbVAj58ssyAxGTiIPj2zB4ZVnwxkizwO35/v8A==",
+    "MaterialDesignColors/2.1.4": {
+      "sha512": "C4Oy+qkjMoMPoZKyqYdCnIYtK8c0OSIHmNP73Vgc69NjiUG093xTkE7W/Ks54cTDS7fmWOtUHfwISTVTtb/YKg==",
       "type": "package",
-      "path": "materialdesigncolors/5.2.1",
+      "path": "materialdesigncolors/2.1.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "docs/README.md",
         "images/MaterialDesignColors.Icon.png",
         "lib/net462/MaterialDesignColors.dll",
         "lib/net462/MaterialDesignColors.pdb",
         "lib/net6.0/MaterialDesignColors.dll",
         "lib/net6.0/MaterialDesignColors.pdb",
-        "lib/net8.0/MaterialDesignColors.dll",
-        "lib/net8.0/MaterialDesignColors.pdb",
-        "materialdesigncolors.5.2.1.nupkg.sha512",
+        "lib/net7.0/MaterialDesignColors.dll",
+        "lib/net7.0/MaterialDesignColors.pdb",
+        "lib/netcoreapp3.1/MaterialDesignColors.dll",
+        "lib/netcoreapp3.1/MaterialDesignColors.pdb",
+        "materialdesigncolors.2.1.4.nupkg.sha512",
         "materialdesigncolors.nuspec"
       ]
     },
-    "MaterialDesignThemes/5.2.1": {
-      "sha512": "x8JDqNHJcTLLxIoVts3w7AbSq5Zo0FXTw89XqPN7+n0EKqLXFwWsywiUn08HDyTGAmZVJqbQsWKxKWCI8qfWsQ==",
+    "MaterialDesignThemes/4.9.0": {
+      "sha512": "Bp9Auw70j+9V7WsUMT4pc8ulVzfL0Eav/tyGgICDirxxhKJwhqtC/6PRkTUm+R1t9611xiDuk5pSUNdDV6vfOQ==",
       "type": "package",
-      "path": "materialdesignthemes/5.2.1",
+      "path": "materialdesignthemes/4.9.0",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -239,7 +240,6 @@
         "build/Resources/Roboto/RobotoCondensed-Light.ttf",
         "build/Resources/Roboto/RobotoCondensed-LightItalic.ttf",
         "build/Resources/Roboto/RobotoCondensed-Regular.ttf",
-        "docs/README.md",
         "images/MaterialDesignThemes.Icon.png",
         "lib/net462/MaterialDesignThemes.Wpf.dll",
         "lib/net462/MaterialDesignThemes.Wpf.pdb",
@@ -247,10 +247,13 @@
         "lib/net6.0/MaterialDesignThemes.Wpf.dll",
         "lib/net6.0/MaterialDesignThemes.Wpf.pdb",
         "lib/net6.0/MaterialDesignThemes.Wpf.xml",
-        "lib/net8.0/MaterialDesignThemes.Wpf.dll",
-        "lib/net8.0/MaterialDesignThemes.Wpf.pdb",
-        "lib/net8.0/MaterialDesignThemes.Wpf.xml",
-        "materialdesignthemes.5.2.1.nupkg.sha512",
+        "lib/net7.0/MaterialDesignThemes.Wpf.dll",
+        "lib/net7.0/MaterialDesignThemes.Wpf.pdb",
+        "lib/net7.0/MaterialDesignThemes.Wpf.xml",
+        "lib/netcoreapp3.1/MaterialDesignThemes.Wpf.dll",
+        "lib/netcoreapp3.1/MaterialDesignThemes.Wpf.pdb",
+        "lib/netcoreapp3.1/MaterialDesignThemes.Wpf.xml",
+        "materialdesignthemes.4.9.0.nupkg.sha512",
         "materialdesignthemes.nuspec",
         "tools/VisualStudioToolsManifest.xml"
       ]
@@ -480,30 +483,31 @@
   },
   "projectFileDependencyGroups": {
     "net8.0-windows7.0": [
-      "MaterialDesignThemes >= 5.2.1",
+      "MaterialDesignColors >= 2.1.4",
+      "MaterialDesignThemes >= 4.9.0",
       "System.Drawing.Common >= 9.0.5",
       "System.Management >= 9.0.5",
       "System.ServiceProcess.ServiceController >= 9.0.5"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\admin\\.nuget\\packages\\": {},
+    "C:\\Users\\김기원\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_수정\\LogCheck.csproj",
+      "projectUniqueName": "C:\\Users\\김기원\\Documents\\카카오톡 받은 파일\\WindowsSentinel\\LogCheck\\LogCheck.csproj",
       "projectName": "Logcheck",
-      "projectPath": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_수정\\LogCheck.csproj",
-      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\admin\\Documents\\LogCheck-0602\\LogCheck-0526_수정\\obj\\",
+      "projectPath": "C:\\Users\\김기원\\Documents\\카카오톡 받은 파일\\WindowsSentinel\\LogCheck\\LogCheck.csproj",
+      "packagesPath": "C:\\Users\\김기원\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\김기원\\Documents\\카카오톡 받은 파일\\WindowsSentinel\\LogCheck\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\김기원\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -536,9 +540,13 @@
       "net8.0-windows7.0": {
         "targetAlias": "net8.0-windows",
         "dependencies": {
+          "MaterialDesignColors": {
+            "target": "Package",
+            "version": "[2.1.4, )"
+          },
           "MaterialDesignThemes": {
             "target": "Package",
-            "version": "[5.2.1, )"
+            "version": "[4.9.0, )"
           },
           "System.Drawing.Common": {
             "target": "Package",
