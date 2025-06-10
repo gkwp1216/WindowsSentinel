@@ -228,7 +228,6 @@ namespace WindowsSentinel
             EndGuide();
         }
 
-<<<<<<< HEAD
         private void EndGuide()
         {
             GuideOverlay.Visibility = Visibility.Collapsed;
@@ -238,8 +237,6 @@ namespace WindowsSentinel
             MaskLayer.Children.Clear();
         }
 
-=======
->>>>>>> 49e2b708e5ff54a30997ae87530edb8ccbed04d8
         [SupportedOSPlatform("windows")]
         public void NavigateToPage(Page page)
         {
@@ -287,7 +284,6 @@ namespace WindowsSentinel
 
         [SupportedOSPlatform("windows")]
         private void SidebarPrograms_Click(object sender, RoutedEventArgs e)
-<<<<<<< HEAD
         {
             NavigateToPage(new InstalledPrograms());
         }
@@ -296,16 +292,6 @@ namespace WindowsSentinel
         private void InstalledPrograms_Click(object sender, RoutedEventArgs e)
         {
             NavigateToPage(new InstalledPrograms());
-=======
-        {
-            NavigateToPage(new Page1());
-        }
-
-        [SupportedOSPlatform("windows")]
-        private void InstalledPrograms_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Page2());
->>>>>>> 49e2b708e5ff54a30997ae87530edb8ccbed04d8
             HelpButton.Visibility = Visibility.Collapsed;
         }
 

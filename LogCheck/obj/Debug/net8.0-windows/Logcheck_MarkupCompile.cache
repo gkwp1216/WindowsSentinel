@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-c:\My_Project\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\obj\Debug\net8.0-windows\
 LogCheck
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-c:\My_Project\WindowsSentinel\LogCheck\App.xaml
+C:\Users\김기원\Documents\카카오톡 받은 파일\WindowsSentinel\LogCheck\App.xaml
 10965136889
 
-191800981085
+18278271757
 2051423800022
 DarkTheme.xaml;InstalledPrograms.xaml;LightTheme.xaml;Log.xaml;MainWindow.xaml;Network.xaml;Page1.xaml;Page2.xaml;Recovery.xaml;Setting.xaml;
 
-True
+False
 
