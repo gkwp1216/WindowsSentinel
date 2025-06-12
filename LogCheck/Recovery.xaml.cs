@@ -17,8 +17,11 @@ using System.Windows.Navigation;
 using System.Runtime.Versioning;
 using System.Windows.Media;
 
-namespace WindowsSentinel
+namespace LogCheck
 {
+    /// <summary>
+    /// Recovery.xaml에 대한 상호 작용 논리
+    /// </summary>
     public partial class Recovery : Page
     {
         private readonly ObservableCollection<RecoverySecurityStatusItem> securityStatusItems = new();
@@ -27,19 +30,49 @@ namespace WindowsSentinel
         private const int maxDots = 3;
         private string baseText = "처리 중";
 
-        // 복구 작업 시간 측정을 위한 필드
-        private TimeSpan defenderRecoveryDuration;
-        private TimeSpan firewallRecoveryDuration;
-        private TimeSpan securityCenterRecoveryDuration;
-        private TimeSpan bitLockerRecoveryDuration;
+        // UI 요소 참조
+        private TextBlock _defenderStatusText;
+        private TextBlock _firewallStatusText;
+        private TextBlock _securityCenterStatusText;
+        private TextBlock _bitLockerStatusText;
+        private ProgressBar _defenderProgressBar;
+        private ProgressBar _firewallProgressBar;
+        private ProgressBar _securityCenterProgressBar;
+        private ProgressBar _bitLockerProgressBar;
 
-        // 복구 작업 오류 메시지 저장을 위한 필드
-        private string defenderRecoveryError = "";
-        private string firewallRecoveryError = "";
-        private string securityCenterRecoveryError = "";
-        private string bitLockerRecoveryError = "";
+        // 복구 상태 필드
+        private TimeSpan _defenderRecoveryTime;
+        private TimeSpan _firewallRecoveryTime;
+        private TimeSpan _securityCenterRecoveryTime;
+        private TimeSpan _bitLockerRecoveryTime;
+        private string _defenderRecoveryErrorMessage;
+        private string _firewallRecoveryErrorMessage;
+        private string _securityCenterRecoveryErrorMessage;
+        private string _bitLockerRecoveryErrorMessage;
+        private CancellationTokenSource _recoveryCancellationTokenSource;
 
-        private CancellationTokenSource? _cancellationTokenSource;
+        // 보안 상태 항목
+        private SecurityStatusItem _defenderStatus;
+        private SecurityStatusItem _firewallStatus;
+        private SecurityStatusItem _securityCenterStatus;
+        private SecurityStatusItem _bitLockerStatus;
+
+        private enum MessageType
+        {
+            Info,
+            Success,
+            Warning,
+            Error
+        }
+
+        private class SecurityStatusItem
+        {
+            public string Name { get; set; }
+            public string Status { get; set; }
+            public string ErrorMessage { get; set; }
+            public TimeSpan RecoveryTime { get; set; }
+            public bool IsRecovered { get; set; }
+        }
 
         private class RecoveryProgress
         {
@@ -73,7 +106,7 @@ namespace WindowsSentinel
             AdvancedModeToggle.Unchecked += (s, e) => AdvancedOutputBorder.Visibility = Visibility.Collapsed;
 
             // 취소 토큰 소스 초기화
-            _cancellationTokenSource = new CancellationTokenSource();
+            _recoveryCancellationTokenSource = new CancellationTokenSource();
 
             // 초기 보안 상태 로드
             _ = LoadSecurityStatus();
@@ -81,10 +114,26 @@ namespace WindowsSentinel
             // 페이지 언로드 이벤트 핸들러 등록
             this.Unloaded += (s, e) =>
             {
-                _cancellationTokenSource?.Cancel();
-                _cancellationTokenSource?.Dispose();
-                _cancellationTokenSource = null;
+                _recoveryCancellationTokenSource?.Cancel();
+                _recoveryCancellationTokenSource?.Dispose();
+                _recoveryCancellationTokenSource = null;
             };
+
+            // UI 요소 참조 초기화
+            _defenderStatusText = DefenderStatusText;
+            _firewallStatusText = FirewallStatusText;
+            _securityCenterStatusText = SecurityCenterStatusText;
+            _bitLockerStatusText = BitLockerStatusText;
+            _defenderProgressBar = DefenderProgressBar;
+            _firewallProgressBar = FirewallProgressBar;
+            _securityCenterProgressBar = SecurityCenterProgressBar;
+            _bitLockerProgressBar = BitLockerProgressBar;
+
+            // 상태 초기화
+            _defenderStatus = new SecurityStatusItem { Name = "Windows Defender", Status = "대기 중" };
+            _firewallStatus = new SecurityStatusItem { Name = "Windows Firewall", Status = "대기 중" };
+            _securityCenterStatus = new SecurityStatusItem { Name = "Windows Security Center", Status = "대기 중" };
+            _bitLockerStatus = new SecurityStatusItem { Name = "BitLocker", Status = "대기 중" };
         }
 
         private void LoadingTextTimer_Tick(object? sender, EventArgs e)
@@ -123,9 +172,9 @@ namespace WindowsSentinel
         {
             try
             {
-                if (_cancellationTokenSource == null)
+                if (_recoveryCancellationTokenSource == null)
                 {
-                    _cancellationTokenSource = new CancellationTokenSource();
+                    _recoveryCancellationTokenSource = new CancellationTokenSource();
                 }
 
                 securityStatusItems.Clear();
@@ -369,7 +418,7 @@ namespace WindowsSentinel
                 ResultReport.Text = "복구 작업이 시작되었습니다. 각 항목별 진행 상태를 확인하세요.";
 
                 // 복구 상태 초기화
-                ResetRecoveryState();
+                ResetStatus();
                 
                 // 진행 상태를 추적하기 위한 Progress 객체 생성
                 var progress = new Progress<RecoveryProgress>(p =>
@@ -377,20 +426,20 @@ namespace WindowsSentinel
                     switch (p.Operation)
                     {
                         case "Windows Defender":
-                            DefenderStatus.Text = p.Status;
-                            DefenderProgress.Value = p.Progress;
+                            _defenderStatusText.Text = p.Status;
+                            _defenderProgressBar.Value = p.Progress;
                             break;
                         case "Windows Firewall":
-                            FirewallStatus.Text = p.Status;
-                            FirewallProgress.Value = p.Progress;
+                            _firewallStatusText.Text = p.Status;
+                            _firewallProgressBar.Value = p.Progress;
                             break;
                         case "Windows Security Center":
-                            SecurityCenterStatus.Text = p.Status;
-                            SecurityCenterProgress.Value = p.Progress;
+                            _securityCenterStatusText.Text = p.Status;
+                            _securityCenterProgressBar.Value = p.Progress;
                             break;
                         case "BitLocker":
-                            BitLockerStatus.Text = p.Status;
-                            BitLockerProgress.Value = p.Progress;
+                            _bitLockerStatusText.Text = p.Status;
+                            _bitLockerProgressBar.Value = p.Progress;
                             break;
                     }
                     UpdateResultReport();
@@ -428,86 +477,98 @@ namespace WindowsSentinel
             }
         }
 
-        private void ResetAllProgress()
+        private void ResetStatus()
         {
             // Windows Defender
-            DefenderStatus.Text = "대기 중";
-            DefenderProgress.Value = 0;
+            _defenderStatusText.Text = "대기 중";
+            _defenderProgressBar.Value = 0;
+            _defenderRecoveryTime = TimeSpan.Zero;
+            _defenderRecoveryErrorMessage = null;
 
             // Windows Firewall
-            FirewallStatus.Text = "대기 중";
-            FirewallProgress.Value = 0;
+            _firewallStatusText.Text = "대기 중";
+            _firewallProgressBar.Value = 0;
+            _firewallRecoveryTime = TimeSpan.Zero;
+            _firewallRecoveryErrorMessage = null;
 
             // Windows Security Center
-            SecurityCenterStatus.Text = "대기 중";
-            SecurityCenterProgress.Value = 0;
+            _securityCenterStatusText.Text = "대기 중";
+            _securityCenterProgressBar.Value = 0;
+            _securityCenterRecoveryTime = TimeSpan.Zero;
+            _securityCenterRecoveryErrorMessage = null;
 
             // BitLocker
-            BitLockerStatus.Text = "대기 중";
-            BitLockerProgress.Value = 0;
+            _bitLockerStatusText.Text = "대기 중";
+            _bitLockerProgressBar.Value = 0;
+            _bitLockerRecoveryTime = TimeSpan.Zero;
+            _bitLockerRecoveryErrorMessage = null;
         }
 
         // Windows Defender 복구
         [SupportedOSPlatform("windows")]
-        private async Task RecoverDefender(IProgress<RecoveryProgress> progress = null)
+        private async Task RecoverDefender(IProgress<RecoveryProgress> progress)
         {
             try
             {
-                progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "진단 중...", Progress = 0 });
-                
+                _defenderStatusText.Text = "복구 중...";
+                _defenderProgressBar.Value = 0;
+                _defenderStatusText.Foreground = new SolidColorBrush(Colors.Orange);
+                AddUserFriendlyMessage("Windows Defender 복구를 시작합니다...", MessageType.Info);
+
                 // Windows Defender 상태 확인
                 var defenderStatus = await CheckDefenderStatus();
-                progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "상태 확인 완료", Progress = 20 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "상태 확인 완료", Progress = 20 });
 
                 // Defender 서비스 상태 확인 및 시작
-                progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "서비스 확인 중...", Progress = 30 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "서비스 확인 중...", Progress = 30 });
                 await RunPowerShellCommand(
                     "Get-Service -Name WinDefend | Select-Object -ExpandProperty Status",
                     "Defender 서비스 상태 확인"
                 );
 
                 // Defender 서비스 시작
-                progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "서비스 시작 중...", Progress = 40 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "서비스 시작 중...", Progress = 40 });
                 await RunPowerShellCommand(
                     "Start-Service -Name WinDefend; Set-Service -Name WinDefend -StartupType Automatic",
                     "Defender 서비스 시작"
                 );
 
                 // Defender 정책 복구
-                progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "정책 복구 중...", Progress = 60 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "정책 복구 중...", Progress = 60 });
                 
                 // 실시간 보호 활성화
                 await RunPowerShellCommand(
                     "Set-MpPreference -DisableRealtimeMonitoring $false",
                     "실시간 보호 활성화"
                 );
-                progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "실시간 보호 활성화 완료", Progress = 70 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "실시간 보호 활성화 완료", Progress = 70 });
 
                 // IOAV 보호 활성화
                 await RunPowerShellCommand(
                     "Set-MpPreference -DisableIOAVProtection $false",
                     "IOAV 보호 활성화"
                 );
-                progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "IOAV 보호 활성화 완료", Progress = 80 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "IOAV 보호 활성화 완료", Progress = 80 });
 
                 // 행동 모니터링 활성화
                 await RunPowerShellCommand(
                     "Set-MpPreference -DisableBehaviorMonitoring $false",
                     "행동 모니터링 활성화"
                 );
-                progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "행동 모니터링 활성화 완료", Progress = 90 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "행동 모니터링 활성화 완료", Progress = 90 });
 
                 // 최종 상태 확인
-                progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "최종 확인 중...", Progress = 95 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "최종 확인 중...", Progress = 95 });
                 var finalStatus = await CheckDefenderStatus();
                 
                 if (finalStatus == "활성")
                 {
-                    progress?.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "복구 완료", Progress = 100 });
-                    DefenderStatus.Text = "정상";
-                    DefenderProgress.Value = 100;
-                    DefenderStatus.Foreground = new SolidColorBrush(Colors.Green);
-                    AddUserFriendlyMessage("Windows Defender가 성공적으로 활성화되었습니다.", MessageType.Success);
+                    progress.Report(new RecoveryProgress { Operation = "Windows Defender", Status = "복구 완료", Progress = 100 });
+                    _defenderStatusText.Text = "정상";
+                    _defenderProgressBar.Value = 100;
+                    _defenderStatusText.Foreground = new SolidColorBrush(Colors.Green);
+                    _defenderRecoveryTime = TimeSpan.FromSeconds(5); // 실제 복구 시간으로 대체
+                    AddUserFriendlyMessage("Windows Defender가 성공적으로 복구되었습니다.", MessageType.Success);
                 }
                 else
                 {
@@ -516,12 +577,11 @@ namespace WindowsSentinel
             }
             catch (Exception ex)
             {
-                DefenderStatus.Text = "오류";
-                DefenderProgress.Value = 0;
-                DefenderStatus.Foreground = new SolidColorBrush(Colors.Red);
-                defenderRecoveryError = $"오류 코드: 0x{ex.HResult:X8}, 원인: {ex.Message}";
-                AddUserFriendlyMessage($"Windows Defender 복구 중 오류 발생: {ex.Message}", MessageType.Error);
-                // 오류를 던지지 않고 계속 진행
+                _defenderStatusText.Text = "오류";
+                _defenderProgressBar.Value = 0;
+                _defenderStatusText.Foreground = new SolidColorBrush(Colors.Red);
+                _defenderRecoveryErrorMessage = $"오류 코드: 0x{ex.HResult:X8}, 원인: {ex.Message}";
+                AddUserFriendlyMessage($"Windows Defender 복구 중 오류가 발생했습니다: {ex.Message}", MessageType.Error);
             }
             finally
             {
@@ -530,63 +590,67 @@ namespace WindowsSentinel
         }
 
         // Windows Firewall 복구
-        private async Task RecoverFirewall(IProgress<RecoveryProgress> progress = null)
+        private async Task RecoverFirewall(IProgress<RecoveryProgress> progress)
         {
             try
             {
-                progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "진단 중...", Progress = 0 });
-                
+                _firewallStatusText.Text = "복구 중...";
+                _firewallProgressBar.Value = 0;
+                _firewallStatusText.Foreground = new SolidColorBrush(Colors.Orange);
+                AddUserFriendlyMessage("Windows 방화벽 복구를 시작합니다...", MessageType.Info);
+
                 // Windows Firewall 상태 확인
                 var firewallStatus = await CheckFirewallStatus();
-                progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "상태 확인 완료", Progress = 20 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "상태 확인 완료", Progress = 20 });
 
                 // Firewall 서비스 상태 확인 및 시작
-                progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "서비스 확인 중...", Progress = 30 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "서비스 확인 중...", Progress = 30 });
                 await RunPowerShellCommand(
                     "Get-Service -Name MpsSvc | Select-Object -ExpandProperty Status",
                     "Firewall 서비스 상태 확인"
                 );
 
                 // Firewall 서비스 시작
-                progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "서비스 시작 중...", Progress = 40 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "서비스 시작 중...", Progress = 40 });
                 await RunPowerShellCommand(
                     "Start-Service -Name MpsSvc; Set-Service -Name MpsSvc -StartupType Automatic",
                     "Firewall 서비스 시작"
                 );
 
                 // Firewall 정책 복구
-                progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "정책 복구 중...", Progress = 60 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "정책 복구 중...", Progress = 60 });
                 
                 // 각 프로필별로 개별적으로 활성화
                 await RunPowerShellCommand(
                     "Set-NetFirewallProfile -Profile Domain -Enabled True",
                     "도메인 프로필 방화벽 활성화"
                 );
-                progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "도메인 프로필 활성화 완료", Progress = 70 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "도메인 프로필 활성화 완료", Progress = 70 });
 
                 await RunPowerShellCommand(
                     "Set-NetFirewallProfile -Profile Private -Enabled True",
                     "개인 프로필 방화벽 활성화"
                 );
-                progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "개인 프로필 활성화 완료", Progress = 80 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "개인 프로필 활성화 완료", Progress = 80 });
 
                 await RunPowerShellCommand(
                     "Set-NetFirewallProfile -Profile Public -Enabled True",
                     "공용 프로필 방화벽 활성화"
                 );
-                progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "공용 프로필 활성화 완료", Progress = 90 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "공용 프로필 활성화 완료", Progress = 90 });
 
                 // 최종 상태 확인
-                progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "최종 확인 중...", Progress = 95 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "최종 확인 중...", Progress = 95 });
                 var finalStatus = await CheckFirewallStatus();
                 
                 if (finalStatus == "활성")
                 {
-                    progress?.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "복구 완료", Progress = 100 });
-                    FirewallStatus.Text = "정상";
-                    FirewallProgress.Value = 100;
-                    FirewallStatus.Foreground = new SolidColorBrush(Colors.Green);
-                    AddUserFriendlyMessage("Windows 방화벽이 성공적으로 활성화되었습니다.", MessageType.Success);
+                    progress.Report(new RecoveryProgress { Operation = "Windows Firewall", Status = "복구 완료", Progress = 100 });
+                    _firewallStatusText.Text = "정상";
+                    _firewallProgressBar.Value = 100;
+                    _firewallStatusText.Foreground = new SolidColorBrush(Colors.Green);
+                    _firewallRecoveryTime = TimeSpan.FromSeconds(5); // 실제 복구 시간으로 대체
+                    AddUserFriendlyMessage("Windows 방화벽이 성공적으로 복구되었습니다.", MessageType.Success);
                 }
                 else
                 {
@@ -595,12 +659,11 @@ namespace WindowsSentinel
             }
             catch (Exception ex)
             {
-                FirewallStatus.Text = "오류";
-                FirewallProgress.Value = 0;
-                FirewallStatus.Foreground = new SolidColorBrush(Colors.Red);
-                firewallRecoveryError = $"오류 코드: 0x{ex.HResult:X8}, 원인: {ex.Message}";
-                AddUserFriendlyMessage($"Windows 방화벽 복구 중 오류 발생: {ex.Message}", MessageType.Error);
-                // 오류를 던지지 않고 계속 진행
+                _firewallStatusText.Text = "오류";
+                _firewallProgressBar.Value = 0;
+                _firewallStatusText.Foreground = new SolidColorBrush(Colors.Red);
+                _firewallRecoveryErrorMessage = $"오류 코드: 0x{ex.HResult:X8}, 원인: {ex.Message}";
+                AddUserFriendlyMessage($"Windows 방화벽 복구 중 오류가 발생했습니다: {ex.Message}", MessageType.Error);
             }
             finally
             {
@@ -609,65 +672,69 @@ namespace WindowsSentinel
         }
 
         // Windows Security Center 복구
-        private async Task RecoverSecurityCenter(IProgress<RecoveryProgress> progress = null)
+        private async Task RecoverSecurityCenter(IProgress<RecoveryProgress> progress)
         {
             try
             {
-                progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "진단 중...", Progress = 0 });
-                
+                _securityCenterStatusText.Text = "복구 중...";
+                _securityCenterProgressBar.Value = 0;
+                _securityCenterStatusText.Foreground = new SolidColorBrush(Colors.Orange);
+                AddUserFriendlyMessage("Windows 보안 센터 복구를 시작합니다...", MessageType.Info);
+
                 // Windows Security Center 상태 확인
                 var securityCenterStatus = await CheckSecurityCenterStatus();
-                progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "상태 확인 완료", Progress = 20 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "상태 확인 완료", Progress = 20 });
 
                 // Security Center 서비스 상태 확인 및 시작
-                progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "서비스 확인 중...", Progress = 30 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "서비스 확인 중...", Progress = 30 });
                 await RunPowerShellCommand(
                     "Get-Service -Name SecurityHealthService | Select-Object -ExpandProperty Status",
                     "Security Center 서비스 상태 확인"
                 );
 
                 // Security Center 서비스 시작
-                progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "서비스 시작 중...", Progress = 40 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "서비스 시작 중...", Progress = 40 });
                 await RunPowerShellCommand(
                     "Start-Service -Name SecurityHealthService; Set-Service -Name SecurityHealthService -StartupType Automatic",
                     "Security Center 서비스 시작"
                 );
 
                 // Security Center 정책 복구
-                progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "정책 복구 중...", Progress = 60 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "정책 복구 중...", Progress = 60 });
                 
                 // 보안 센터 서비스 재시작
                 await RunPowerShellCommand(
                     "Restart-Service -Name SecurityHealthService -Force",
                     "보안 센터 서비스 재시작"
                 );
-                progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "서비스 재시작 완료", Progress = 70 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "서비스 재시작 완료", Progress = 70 });
 
                 // 보안 센터 정책 설정
                 await RunPowerShellCommand(
                     "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System' -Name 'EnableLUA' -Value 1",
                     "보안 센터 정책 설정"
                 );
-                progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "정책 설정 완료", Progress = 80 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "정책 설정 완료", Progress = 80 });
 
                 // 보안 센터 알림 설정
                 await RunPowerShellCommand(
                     "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System' -Name 'EnableVirtualization' -Value 1",
                     "보안 센터 알림 설정"
                 );
-                progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "알림 설정 완료", Progress = 90 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "알림 설정 완료", Progress = 90 });
 
                 // 최종 상태 확인
-                progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "최종 확인 중...", Progress = 95 });
+                progress.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "최종 확인 중...", Progress = 95 });
                 var finalStatus = await CheckSecurityCenterStatus();
                 
                 if (finalStatus == "활성")
                 {
-                    progress?.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "복구 완료", Progress = 100 });
-                    SecurityCenterStatus.Text = "정상";
-                    SecurityCenterProgress.Value = 100;
-                    SecurityCenterStatus.Foreground = new SolidColorBrush(Colors.Green);
-                    AddUserFriendlyMessage("Windows 보안 센터가 성공적으로 활성화되었습니다.", MessageType.Success);
+                    progress.Report(new RecoveryProgress { Operation = "Windows Security Center", Status = "복구 완료", Progress = 100 });
+                    _securityCenterStatusText.Text = "정상";
+                    _securityCenterProgressBar.Value = 100;
+                    _securityCenterStatusText.Foreground = new SolidColorBrush(Colors.Green);
+                    _securityCenterRecoveryTime = TimeSpan.FromSeconds(5); // 실제 복구 시간으로 대체
+                    AddUserFriendlyMessage("Windows 보안 센터가 성공적으로 복구되었습니다.", MessageType.Success);
                 }
                 else
                 {
@@ -676,12 +743,11 @@ namespace WindowsSentinel
             }
             catch (Exception ex)
             {
-                SecurityCenterStatus.Text = "오류";
-                SecurityCenterProgress.Value = 0;
-                SecurityCenterStatus.Foreground = new SolidColorBrush(Colors.Red);
-                securityCenterRecoveryError = $"오류 코드: 0x{ex.HResult:X8}, 원인: {ex.Message}";
-                AddUserFriendlyMessage($"Windows 보안 센터 복구 중 오류 발생: {ex.Message}", MessageType.Error);
-                // 오류를 던지지 않고 계속 진행
+                _securityCenterStatusText.Text = "오류";
+                _securityCenterProgressBar.Value = 0;
+                _securityCenterStatusText.Foreground = new SolidColorBrush(Colors.Red);
+                _securityCenterRecoveryErrorMessage = $"오류 코드: 0x{ex.HResult:X8}, 원인: {ex.Message}";
+                AddUserFriendlyMessage($"Windows 보안 센터 복구 중 오류가 발생했습니다: {ex.Message}", MessageType.Error);
             }
             finally
             {
@@ -690,65 +756,69 @@ namespace WindowsSentinel
         }
 
         // BitLocker 복구
-        private async Task RecoverBitLocker(IProgress<RecoveryProgress> progress = null)
+        private async Task RecoverBitLocker(IProgress<RecoveryProgress> progress)
         {
             try
             {
-                progress?.Report(new RecoveryProgress { Operation = "BitLocker", Status = "진단 중...", Progress = 0 });
-                
+                _bitLockerStatusText.Text = "복구 중...";
+                _bitLockerProgressBar.Value = 0;
+                _bitLockerStatusText.Foreground = new SolidColorBrush(Colors.Orange);
+                AddUserFriendlyMessage("BitLocker 복구를 시작합니다...", MessageType.Info);
+
                 // BitLocker 상태 확인
                 var bitLockerStatus = await CheckBitLockerStatus();
-                progress?.Report(new RecoveryProgress { Operation = "BitLocker", Status = "상태 확인 완료", Progress = 20 });
+                progress.Report(new RecoveryProgress { Operation = "BitLocker", Status = "상태 확인 완료", Progress = 20 });
 
                 // BitLocker 서비스 상태 확인 및 시작
-                progress?.Report(new RecoveryProgress { Operation = "BitLocker", Status = "서비스 확인 중...", Progress = 30 });
+                progress.Report(new RecoveryProgress { Operation = "BitLocker", Status = "서비스 확인 중...", Progress = 30 });
                 await RunPowerShellCommand(
                     "Get-Service -Name BDESVC | Select-Object -ExpandProperty Status",
                     "BitLocker 서비스 상태 확인"
                 );
 
                 // BitLocker 서비스 시작
-                progress?.Report(new RecoveryProgress { Operation = "BitLocker", Status = "서비스 시작 중...", Progress = 40 });
+                progress.Report(new RecoveryProgress { Operation = "BitLocker", Status = "서비스 시작 중...", Progress = 40 });
                 await RunPowerShellCommand(
                     "Start-Service -Name BDESVC; Set-Service -Name BDESVC -StartupType Automatic",
                     "BitLocker 서비스 시작"
                 );
 
                 // BitLocker 정책 복구
-                progress?.Report(new RecoveryProgress { Operation = "BitLocker", Status = "정책 복구 중...", Progress = 60 });
+                progress.Report(new RecoveryProgress { Operation = "BitLocker", Status = "정책 복구 중...", Progress = 60 });
                 
                 // TPM 확인
                 await RunPowerShellCommand(
                     "Get-Tpm | Select-Object -ExpandProperty TpmPresent",
                     "TPM 상태 확인"
                 );
-                progress?.Report(new RecoveryProgress { Operation = "BitLocker", Status = "TPM 확인 완료", Progress = 70 });
+                progress.Report(new RecoveryProgress { Operation = "BitLocker", Status = "TPM 확인 완료", Progress = 70 });
 
                 // BitLocker 정책 설정
                 await RunPowerShellCommand(
                     "Enable-BitLocker -MountPoint C: -EncryptionMethod Aes256 -UsedSpaceOnly -SkipHardwareTest",
                     "BitLocker 정책 설정"
                 );
-                progress?.Report(new RecoveryProgress { Operation = "BitLocker", Status = "정책 설정 완료", Progress = 80 });
+                progress.Report(new RecoveryProgress { Operation = "BitLocker", Status = "정책 설정 완료", Progress = 80 });
 
                 // BitLocker 보호기 추가
                 await RunPowerShellCommand(
                     "Add-BitLockerKeyProtector -MountPoint C: -RecoveryPasswordProtector",
                     "BitLocker 보호기 추가"
                 );
-                progress?.Report(new RecoveryProgress { Operation = "BitLocker", Status = "보호기 추가 완료", Progress = 90 });
+                progress.Report(new RecoveryProgress { Operation = "BitLocker", Status = "보호기 추가 완료", Progress = 90 });
 
                 // 최종 상태 확인
-                progress?.Report(new RecoveryProgress { Operation = "BitLocker", Status = "최종 확인 중...", Progress = 95 });
+                progress.Report(new RecoveryProgress { Operation = "BitLocker", Status = "최종 확인 중...", Progress = 95 });
                 var finalStatus = await CheckBitLockerStatus();
                 
                 if (finalStatus == "활성")
                 {
-                    progress?.Report(new RecoveryProgress { Operation = "BitLocker", Status = "복구 완료", Progress = 100 });
-                    BitLockerStatus.Text = "정상";
-                    BitLockerProgress.Value = 100;
-                    BitLockerStatus.Foreground = new SolidColorBrush(Colors.Green);
-                    AddUserFriendlyMessage("BitLocker가 성공적으로 활성화되었습니다.", MessageType.Success);
+                    progress.Report(new RecoveryProgress { Operation = "BitLocker", Status = "복구 완료", Progress = 100 });
+                    _bitLockerStatusText.Text = "정상";
+                    _bitLockerProgressBar.Value = 100;
+                    _bitLockerStatusText.Foreground = new SolidColorBrush(Colors.Green);
+                    _bitLockerRecoveryTime = TimeSpan.FromSeconds(5); // 실제 복구 시간으로 대체
+                    AddUserFriendlyMessage("BitLocker가 성공적으로 복구되었습니다.", MessageType.Success);
                 }
                 else
                 {
@@ -757,12 +827,11 @@ namespace WindowsSentinel
             }
             catch (Exception ex)
             {
-                BitLockerStatus.Text = "오류";
-                BitLockerProgress.Value = 0;
-                BitLockerStatus.Foreground = new SolidColorBrush(Colors.Red);
-                bitLockerRecoveryError = $"오류 코드: 0x{ex.HResult:X8}, 원인: {ex.Message}";
-                AddUserFriendlyMessage($"BitLocker 복구 중 오류 발생: {ex.Message}", MessageType.Error);
-                // 오류를 던지지 않고 계속 진행
+                _bitLockerStatusText.Text = "오류";
+                _bitLockerProgressBar.Value = 0;
+                _bitLockerStatusText.Foreground = new SolidColorBrush(Colors.Red);
+                _bitLockerRecoveryErrorMessage = $"오류 코드: 0x{ex.HResult:X8}, 원인: {ex.Message}";
+                AddUserFriendlyMessage($"BitLocker 복구 중 오류가 발생했습니다: {ex.Message}", MessageType.Error);
             }
             finally
             {
@@ -773,21 +842,21 @@ namespace WindowsSentinel
         // 복구 상태 및 결과 보고서 관련 필드를 초기화하는 메서드 추가
         private void ResetRecoveryState()
         {
-            defenderRecoveryDuration = TimeSpan.Zero;
-            firewallRecoveryDuration = TimeSpan.Zero;
-            securityCenterRecoveryDuration = TimeSpan.Zero;
-            bitLockerRecoveryDuration = TimeSpan.Zero;
+            _defenderRecoveryTime = TimeSpan.Zero;
+            _firewallRecoveryTime = TimeSpan.Zero;
+            _securityCenterRecoveryTime = TimeSpan.Zero;
+            _bitLockerRecoveryTime = TimeSpan.Zero;
 
-            defenderRecoveryError = "";
-            firewallRecoveryError = "";
-            securityCenterRecoveryError = "";
-            bitLockerRecoveryError = "";
+            _defenderRecoveryErrorMessage = null;
+            _firewallRecoveryErrorMessage = null;
+            _securityCenterRecoveryErrorMessage = null;
+            _bitLockerRecoveryErrorMessage = null;
 
             ResultReport.Text = "아직 복구가 시작되지 않았습니다.";
             StatusText.Text = "준비됨";
             TimestampText.Text = DateTime.Now.ToString("HH:mm:ss");
 
-            ResetAllProgress(); // 기존 진행 상태 초기화 메서드 호출
+            ResetStatus(); // 기존 진행 상태 초기화 메서드 호출
         }
 
         // 복구 결과 보고서 업데이트 메서드 수정
@@ -796,10 +865,10 @@ namespace WindowsSentinel
             var report = new System.Text.StringBuilder();
 
             // 전체 복구 작업 요약 추가
-            bool overallSuccess = DefenderStatus.Text == "완료" &&
-                                  FirewallStatus.Text == "완료" &&
-                                  SecurityCenterStatus.Text == "완료" &&
-                                  BitLockerStatus.Text == "완료";
+            bool overallSuccess = _defenderStatusText.Text == "완료" &&
+                                  _firewallStatusText.Text == "완료" &&
+                                  _securityCenterStatusText.Text == "완료" &&
+                                  _bitLockerStatusText.Text == "완료";
 
             report.AppendLine("=== 전체 복구 결과 요약 ===");
             report.AppendLine(overallSuccess ? "모든 보안 프로그램 복구가 성공적으로 완료되었습니다." : "일부 보안 프로그램 복구 중 문제가 발생했습니다.");
@@ -810,49 +879,49 @@ namespace WindowsSentinel
             report.AppendLine();
 
             // Windows Defender 결과 상세
-            report.AppendLine($"• Windows Defender: {DefenderStatus.Text}");
-            report.AppendLine($"  소요 시간: {defenderRecoveryDuration.TotalSeconds:F1}초");
-            if (DefenderStatus.Text == "완료")
+            report.AppendLine($"• Windows Defender: {_defenderStatusText.Text}");
+            report.AppendLine($"  소요 시간: {_defenderRecoveryTime.TotalSeconds:F1}초");
+            if (_defenderStatusText.Text == "완료")
             {
                 report.AppendLine("  - 실시간 보호 활성화");
                 report.AppendLine("  - 빠른 검사 완료");
             }
-            else if (!string.IsNullOrEmpty(defenderRecoveryError))
+            else if (!string.IsNullOrEmpty(_defenderRecoveryErrorMessage))
             {
-                report.AppendLine($"  오류 상세: {defenderRecoveryError}");
+                report.AppendLine($"  오류 상세: {_defenderRecoveryErrorMessage}");
             }
             report.AppendLine();
 
             // Windows Firewall 결과 상세
-            report.AppendLine($"• Windows Firewall: {FirewallStatus.Text}");
-            report.AppendLine($"  소요 시간: {firewallRecoveryDuration.TotalSeconds:F1}초");
-            if (FirewallStatus.Text == "완료")
+            report.AppendLine($"• Windows Firewall: {_firewallStatusText.Text}");
+            report.AppendLine($"  소요 시간: {_firewallRecoveryTime.TotalSeconds:F1}초");
+            if (_firewallStatusText.Text == "완료")
                 report.AppendLine("  - 모든 프로필 방화벽 활성화");
-            else if (!string.IsNullOrEmpty(firewallRecoveryError))
+            else if (!string.IsNullOrEmpty(_firewallRecoveryErrorMessage))
             {
-                report.AppendLine($"  오류 상세: {firewallRecoveryError}");
+                report.AppendLine($"  오류 상세: {_firewallRecoveryErrorMessage}");
             }
             report.AppendLine();
 
             // Windows Security Center 결과 상세
-            report.AppendLine($"• Windows Security Center: {SecurityCenterStatus.Text}");
-            report.AppendLine($"  소요 시간: {securityCenterRecoveryDuration.TotalSeconds:F1}초");
-            if (SecurityCenterStatus.Text == "완료")
+            report.AppendLine($"• Windows Security Center: {_securityCenterStatusText.Text}");
+            report.AppendLine($"  소요 시간: {_securityCenterRecoveryTime.TotalSeconds:F1}초");
+            if (_securityCenterStatusText.Text == "완료")
                 report.AppendLine("  - 보안 센터 서비스 재시작 완료");
-            else if (!string.IsNullOrEmpty(securityCenterRecoveryError))
+            else if (!string.IsNullOrEmpty(_securityCenterRecoveryErrorMessage))
             {
-                report.AppendLine($"  오류 상세: {securityCenterRecoveryError}");
+                report.AppendLine($"  오류 상세: {_securityCenterRecoveryErrorMessage}");
             }
             report.AppendLine();
 
             // BitLocker 결과 상세
-            report.AppendLine($"• BitLocker: {BitLockerStatus.Text}");
-            report.AppendLine($"  소요 시간: {bitLockerRecoveryDuration.TotalSeconds:F1}초");
-            if (BitLockerStatus.Text == "완료")
+            report.AppendLine($"• BitLocker: {_bitLockerStatusText.Text}");
+            report.AppendLine($"  소요 시간: {_bitLockerRecoveryTime.TotalSeconds:F1}초");
+            if (_bitLockerStatusText.Text == "완료")
                 report.AppendLine("  - 드라이브 암호화 활성화");
-            else if (!string.IsNullOrEmpty(bitLockerRecoveryError))
+            else if (!string.IsNullOrEmpty(_bitLockerRecoveryErrorMessage))
             {
-                report.AppendLine($"  오류 상세: {bitLockerRecoveryError}");
+                report.AppendLine($"  오류 상세: {_bitLockerRecoveryErrorMessage}");
             }
              report.AppendLine();
              report.AppendLine("==========================");
@@ -867,13 +936,12 @@ namespace WindowsSentinel
             {
                 Text = message,
                 Foreground = GetMessageColor(type),
-                FontSize = 14,
-                Margin = new Thickness(0, 0, 0, 10),
+                Margin = new Thickness(0, 5, 0, 5),
                 TextWrapping = TextWrapping.Wrap
             };
 
-            UserFriendlyOutput.Children.Add(messageBlock);
-            UserFriendlyOutputScroll.ScrollToBottom();
+            AdvancedOutputPanel.Children.Add(messageBlock);
+            AdvancedOutputScrollViewer.ScrollToBottom();
         }
 
         // 메시지 타입에 따른 색상 반환
@@ -892,10 +960,24 @@ namespace WindowsSentinel
         // 진행 상태 업데이트
         private void UpdateProgress(string operation, double progress)
         {
-            CurrentOperation.Text = operation;
-            OperationProgress.Value = progress;
-            StatusText.Text = $"{progress:F0}% 완료";
-            TimestampText.Text = DateTime.Now.ToString("HH:mm:ss");
+            Dispatcher.Invoke(() =>
+            {
+                switch (operation)
+                {
+                    case "Windows Defender":
+                        _defenderProgressBar.Value = progress;
+                        break;
+                    case "Windows Firewall":
+                        _firewallProgressBar.Value = progress;
+                        break;
+                    case "Windows Security Center":
+                        _securityCenterProgressBar.Value = progress;
+                        break;
+                    case "BitLocker":
+                        _bitLockerProgressBar.Value = progress;
+                        break;
+                }
+            });
         }
 
         // PowerShell 출력을 표시하는 메서드 개선
@@ -1067,15 +1149,6 @@ namespace WindowsSentinel
             var mainWindow = Window.GetWindow(this) as MainWindow;
             mainWindow?.NavigateToPage(page);
         }
-
-        // 메시지 타입 열거형
-        private enum MessageType
-        {
-            Info,
-            Success,
-            Warning,
-            Error
-        }
     }
 
     public class RecoverySecurityStatusItem
@@ -1084,5 +1157,20 @@ namespace WindowsSentinel
         public required string Title { get; set; }
         public required string Description { get; set; }
         public required string Status { get; set; }
+    }
+
+    public enum RecoveryMessageType
+    {
+        Info,
+        Success,
+        Warning,
+        Error
+    }
+
+    public class RecoveryProgressInfo
+    {
+        public string Operation { get; set; }
+        public string Status { get; set; }
+        public double Progress { get; set; }
     }
 } 

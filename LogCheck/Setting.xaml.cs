@@ -27,12 +27,12 @@ namespace LogCheck
 
         private void SwitchToLightMode_Click(object sender, RoutedEventArgs e)
         {
-            (Application.Current as App)?.ApplyTheme("Light");
+            ((App)Application.Current).ApplyTheme("Light");
         }
 
         private void SwitchToDarkMode_Click(object sender, RoutedEventArgs e)
         {
-            (Application.Current as App)?.ApplyTheme("Dark");
+            ((App)Application.Current).ApplyTheme("Dark");
         }
 
     }

@@ -707,3 +707,5 @@ C:\Users\admin\Documents\KKW\LogCheck\bin\Debug\net8.0-windows\PacketDotNet.dll
 C:\Users\admin\Documents\KKW\LogCheck\bin\Debug\net8.0-windows\SharpPcap.dll
 C:\Users\admin\Documents\KKW\LogCheck\bin\Debug\net8.0-windows\System.Text.Encoding.CodePages.dll
 C:\Users\admin\Documents\KKW\LogCheck\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Text.Encoding.CodePages.dll
+C:\Users\admin\Documents\KKW\LogCheck\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Users\admin\Documents\KKW\LogCheck\obj\Debug\net8.0-windows\LogCheck.g.cs

@@ -1,10 +1,10 @@
-<Page x:Class="WindowsSentinel.Recovery"
+<Page x:Class="LogCheck.Recovery"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      xmlns:local="clr-namespace:WindowsSentinel"
+      xmlns:local="clr-namespace:LogCheck"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="1200"
       Title="Recovery" Background="{DynamicResource BackgroundColor}">
@@ -212,29 +212,29 @@
                             <StackPanel Width="200" Margin="10,0">
                                 <TextBlock Text="🛡️" FontSize="24" HorizontalAlignment="Center"/>
                                 <TextBlock Text="Windows Defender" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="DefenderStatus" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
-                                <ProgressBar x:Name="DefenderProgress" Height="4" Margin="0,10,0,0" Value="0"/>
+                                <TextBlock x:Name="DefenderStatusText" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
+                                <ProgressBar x:Name="DefenderProgressBar" Height="4" Margin="0,10,0,0" Value="0"/>
                             </StackPanel>
                             <!-- Firewall -->
                             <StackPanel Width="200" Margin="10,0">
                                 <TextBlock Text="🧱" FontSize="24" HorizontalAlignment="Center"/>
                                 <TextBlock Text="Windows Firewall" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="FirewallStatus" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
-                                <ProgressBar x:Name="FirewallProgress" Height="4" Margin="0,10,0,0" Value="0"/>
+                                <TextBlock x:Name="FirewallStatusText" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
+                                <ProgressBar x:Name="FirewallProgressBar" Height="4" Margin="0,10,0,0" Value="0"/>
                             </StackPanel>
                             <!-- Security Center -->
                             <StackPanel Width="200" Margin="10,0">
                                 <TextBlock Text="🛡️" FontSize="24" HorizontalAlignment="Center"/>
                                 <TextBlock Text="Windows Security Center" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="SecurityCenterStatus" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
-                                <ProgressBar x:Name="SecurityCenterProgress" Height="4" Margin="0,10,0,0" Value="0"/>
+                                <TextBlock x:Name="SecurityCenterStatusText" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
+                                <ProgressBar x:Name="SecurityCenterProgressBar" Height="4" Margin="0,10,0,0" Value="0"/>
                             </StackPanel>
                             <!-- BitLocker -->
                             <StackPanel Width="200" Margin="10,0">
                                 <TextBlock Text="🔒" FontSize="24" HorizontalAlignment="Center"/>
                                 <TextBlock Text="BitLocker" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="BitLockerStatus" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
-                                <ProgressBar x:Name="BitLockerProgress" Height="4" Margin="0,10,0,0" Value="0"/>
+                                <TextBlock x:Name="BitLockerStatusText" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
+                                <ProgressBar x:Name="BitLockerProgressBar" Height="4" Margin="0,10,0,0" Value="0"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

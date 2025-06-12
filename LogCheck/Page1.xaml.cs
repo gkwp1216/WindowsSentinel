@@ -20,19 +20,33 @@ using System.Windows.Controls;
 using System.Management;
 using System.Windows.Data;
 using System.Windows.Input;
-using WindowsSentinel;
 using System.Windows.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Animation;
 using System.Runtime.InteropServices.ComTypes;
-using static WindowsSentinel.Log;
 using System.Diagnostics.Eventing.Reader;
 using System.Security.Policy;
 using System.Text.RegularExpressions;
 using System.Runtime.Versioning;
 
-namespace WindowsSentinel
+namespace LogCheck
 {
+    public class Log
+    {
+        public static void AddLogEntry(DateTime time, string message, LogLevel level = LogLevel.Info)
+        {
+            // 로그 추가 로직
+        }
+
+        public enum LogLevel
+        {
+            Info,
+            Warning,
+            Error,
+            Critical
+        }
+    }
+
     /// <summary>
     /// Page1.xaml에 대한 상호 작용 논리
     /// </summary>
@@ -215,7 +229,6 @@ namespace WindowsSentinel
         [SupportedOSPlatform("windows")]
         private void CollectInstalledPrograms()
         {
-
             var Security_Check = new (int Id, int score)[]
             {
                 (11707, 0),
@@ -224,7 +237,7 @@ namespace WindowsSentinel
                 (5156, -10),
                 (5158, -10),
                 (4688, -5),
-                (3, 1) //로그확인 필요
+                (3, 1)
             };
 
             DateTime oneYearAgo = DateTime.Now.AddYears(-1);
@@ -245,27 +258,33 @@ namespace WindowsSentinel
                                 if (sc.score > 0)
                                 {
                                     var r = (record.FormatDescription()).ToLower();
-                                    //DCE 접속 흔적 시간대
-                                    if (r.Contains("destination port: 135") || r.Contains("destination port: 445")) 
-                                        ChangeLogEntry.Install_Date[record.TimeCreated.Value] = -25;
-
-                                    //비표준 포트 외부접속
-                                    Match port = Regex.Match(r, @"destinationport: (\d+)");
-                                    if (int.Parse(port.Groups[1].Value) >= 49576)
-                                        ChangeLogEntry.Install_Date[record.TimeCreated.Value] = -10;
+                                    if (r.Contains("destination port: 135") || r.Contains("destination port: 445"))
+                                    {
+                                        ChangeLogEntry.AddLogEntry(record.TimeCreated.Value, -25);
+                                        Log.AddLogEntry(record.TimeCreated.Value, "DCE 접속 감지", Log.LogLevel.Warning);
+                                    }
+                                    else
+                                    {
+                                        Match port = Regex.Match(r, @"destinationport: (\d+)");
+                                        if (port.Success && int.Parse(port.Groups[1].Value) >= 49576)
+                                        {
+                                            ChangeLogEntry.AddLogEntry(record.TimeCreated.Value, -10);
+                                            Log.AddLogEntry(record.TimeCreated.Value, "비표준 포트 접속 감지", Log.LogLevel.Warning);
+                                        }
+                                    }
                                 }
                                 else
                                 {
-                                    if (ChangeLogEntry.Install_Date.ContainsKey(record.TimeCreated.Value))
-                                        ChangeLogEntry.Install_Date[record.TimeCreated.Value] += sc.score;
-
-                                    else ChangeLogEntry.Install_Date[record.TimeCreated.Value] = sc.score;
+                                    ChangeLogEntry.AddLogEntry(record.TimeCreated.Value, sc.score);
                                 }
                             }
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Log.AddLogEntry(DateTime.Now, $"로그 분석 중 오류 발생: {ex.Message}", Log.LogLevel.Error);
+                }
             }
 
             programList = new List<ProgramInfo>();

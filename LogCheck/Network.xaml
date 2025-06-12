@@ -1,11 +1,11 @@
-﻿<Page x:Class="WindowsSentinel.Network"
+﻿<Page x:Class="LogCheck.Network"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:easing="clr-namespace:System.Windows.Media.Animation;assembly=PresentationCore"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      xmlns:local="clr-namespace:WindowsSentinel"
+      xmlns:local="clr-namespace:LogCheck"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="1200"
       Title="Network" Background="{DynamicResource BackgroundColor}">
@@ -121,7 +121,132 @@
                     BorderBrush="#C2C2C2" 
                     BorderThickness="1">
                 <Grid>
-                    <DataGrid x:Name="eventDataGrid" 
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- 필터 설정 패널 -->
+                    <Border Grid.Row="0" 
+                            Background="{DynamicResource DataGridBackgroundColor}"
+                            CornerRadius="8"
+                            Padding="15"
+                            Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- 프로토콜 필터 -->
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,20,0">
+                                <TextBlock Text="프로토콜:" 
+                                         VerticalAlignment="Center"
+                                         Margin="0,0,10,0"/>
+                                <ComboBox x:Name="ProtocolFilter" 
+                                        Width="100"
+                                        SelectionChanged="ProtocolFilter_SelectionChanged">
+                                    <ComboBoxItem Content="모두" IsSelected="True"/>
+                                    <ComboBoxItem Content="TCP"/>
+                                    <ComboBoxItem Content="UDP"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- IP 및 포트 필터 -->
+                            <Grid Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- 소스 IP -->
+                                <StackPanel Grid.Row="0" Grid.Column="0" 
+                                          Orientation="Horizontal" 
+                                          Margin="0,0,10,5">
+                                    <TextBlock Text="소스 IP:" 
+                                             VerticalAlignment="Center"
+                                             Margin="0,0,10,0"/>
+                                    <TextBox x:Name="SourceIPFilter" 
+                                           Width="150"
+                                           TextChanged="IPFilter_TextChanged"/>
+                                </StackPanel>
+
+                                <!-- 목적지 IP -->
+                                <StackPanel Grid.Row="0" Grid.Column="1" 
+                                          Orientation="Horizontal" 
+                                          Margin="10,0,0,5">
+                                    <TextBlock Text="목적지 IP:" 
+                                             VerticalAlignment="Center"
+                                             Margin="0,0,10,0"/>
+                                    <TextBox x:Name="DestinationIPFilter" 
+                                           Width="150"
+                                           TextChanged="IPFilter_TextChanged"/>
+                                </StackPanel>
+
+                                <!-- 소스 포트 -->
+                                <StackPanel Grid.Row="1" Grid.Column="0" 
+                                          Orientation="Horizontal" 
+                                          Margin="0,5,10,0">
+                                    <TextBlock Text="소스 포트:" 
+                                             VerticalAlignment="Center"
+                                             Margin="0,0,10,0"/>
+                                    <TextBox x:Name="SourcePortFilter" 
+                                           Width="100"
+                                           TextChanged="PortFilter_TextChanged"/>
+                                </StackPanel>
+
+                                <!-- 목적지 포트 -->
+                                <StackPanel Grid.Row="1" Grid.Column="1" 
+                                          Orientation="Horizontal" 
+                                          Margin="10,5,0,0">
+                                    <TextBlock Text="목적지 포트:" 
+                                             VerticalAlignment="Center"
+                                             Margin="0,0,10,0"/>
+                                    <TextBox x:Name="DestinationPortFilter" 
+                                           Width="100"
+                                           TextChanged="PortFilter_TextChanged"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- 필터 버튼 -->
+                            <StackPanel Grid.Column="2" 
+                                      Orientation="Horizontal" 
+                                      HorizontalAlignment="Right">
+                                <Button x:Name="ApplyFilterButton"
+                                      Content="필터 적용"
+                                      Click="ApplyFilter_Click"
+                                      Style="{DynamicResource CheckButtonStyle}"
+                                      Margin="0,0,10,0"
+                                      Padding="15,5"/>
+                                <Button x:Name="ResetFilterButton"
+                                      Content="필터 초기화"
+                                      Click="ResetFilter_Click"
+                                      Style="{DynamicResource CheckButtonStyle}"
+                                      Padding="15,5"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- 필터 상태 표시 -->
+                    <Border Grid.Row="0" 
+                            Background="{DynamicResource DataGridBackgroundColor}"
+                            CornerRadius="8"
+                            Padding="10"
+                            Margin="0,0,0,10"
+                            x:Name="FilterStatusBorder"
+                            Visibility="Collapsed">
+                        <TextBlock x:Name="FilterStatusText"
+                                 TextWrapping="Wrap"/>
+                    </Border>
+
+                    <!-- 기존 DataGrid -->
+                    <DataGrid Grid.Row="1"
+                             x:Name="eventDataGrid" 
                              AutoGenerateColumns="False"
                              IsReadOnly="True"
                              Background="{DynamicResource DataGridBackgroundColor}"

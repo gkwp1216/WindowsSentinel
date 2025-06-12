@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\admin\Documents\KKW\LogCheck\App.xaml
-10965136889
+111259580053
 
-191800981085
+20-1630627262
 207618164972
-DarkTheme.xaml;InstalledPrograms.xaml;LightTheme.xaml;Log.xaml;MainWindow.xaml;Network.xaml;Page1.xaml;Page2.xaml;Recovery.xaml;Setting.xaml;
+DarkTheme.xaml;InstalledPrograms.xaml;LightTheme.xaml;Log.xaml;LogCheck.xaml;MainWindow.xaml;Network.xaml;Page1.xaml;Page2.xaml;Recovery.xaml;Setting.xaml;
 
-False
+True
 
