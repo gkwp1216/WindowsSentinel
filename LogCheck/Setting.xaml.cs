@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LogCheck
+namespace WindowsSentinel
 {
     /// <summary>
     /// Setting.xaml에 대한 상호 작용 논리
@@ -27,12 +27,12 @@ namespace LogCheck
 
         private void SwitchToLightMode_Click(object sender, RoutedEventArgs e)
         {
-            (Application.Current as App)?.ApplyTheme("Light");
+            ((App)Application.Current).ApplyTheme("Light");
         }
 
         private void SwitchToDarkMode_Click(object sender, RoutedEventArgs e)
         {
-            (Application.Current as App)?.ApplyTheme("Dark");
+            ((App)Application.Current).ApplyTheme("Dark");
         }
 
     }

@@ -105,7 +105,9 @@
                                     Padding="15,10"                               
                                     BorderThickness="0"
                                     Cursor="Hand"
-                                    Height="40">
+                                    Height="40"
+                                    Background="#4CAF50"
+                                    Foreground="White">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <Border Background="{TemplateBinding Background}"

@@ -88,7 +88,9 @@
                                         Click="OptimizeSecuritySettings_Click"
                                         Style="{DynamicResource CheckButtonStyle}"
                                         BorderThickness="0"
-                                        Padding="10,5">
+                                        Padding="10,5"
+                                        Background="#4CAF50"
+                                        Foreground="White">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <Border Background="{TemplateBinding Background}"
@@ -106,7 +108,9 @@
                                         Click="StartDiagnosticWizard_Click"
                                         Style="{DynamicResource CheckButtonStyle}"
                                         BorderThickness="0"
-                                        Padding="10,5">
+                                        Padding="10,5"
+                                        Background="#4CAF50"
+                                        Foreground="White">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <Border Background="{TemplateBinding Background}"
@@ -212,29 +216,29 @@
                             <StackPanel Width="200" Margin="10,0">
                                 <TextBlock Text="🛡️" FontSize="24" HorizontalAlignment="Center"/>
                                 <TextBlock Text="Windows Defender" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="DefenderStatus" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
-                                <ProgressBar x:Name="DefenderProgress" Height="4" Margin="0,10,0,0" Value="0"/>
+                                <TextBlock x:Name="DefenderStatusText" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
+                                <ProgressBar x:Name="DefenderProgressBar" Height="4" Margin="0,10,0,0" Value="0"/>
                             </StackPanel>
                             <!-- Firewall -->
                             <StackPanel Width="200" Margin="10,0">
                                 <TextBlock Text="🧱" FontSize="24" HorizontalAlignment="Center"/>
                                 <TextBlock Text="Windows Firewall" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="FirewallStatus" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
-                                <ProgressBar x:Name="FirewallProgress" Height="4" Margin="0,10,0,0" Value="0"/>
+                                <TextBlock x:Name="FirewallStatusText" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
+                                <ProgressBar x:Name="FirewallProgressBar" Height="4" Margin="0,10,0,0" Value="0"/>
                             </StackPanel>
                             <!-- Security Center -->
                             <StackPanel Width="200" Margin="10,0">
                                 <TextBlock Text="🛡️" FontSize="24" HorizontalAlignment="Center"/>
                                 <TextBlock Text="Windows Security Center" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="SecurityCenterStatus" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
-                                <ProgressBar x:Name="SecurityCenterProgress" Height="4" Margin="0,10,0,0" Value="0"/>
+                                <TextBlock x:Name="SecurityCenterStatusText" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
+                                <ProgressBar x:Name="SecurityCenterProgressBar" Height="4" Margin="0,10,0,0" Value="0"/>
                             </StackPanel>
                             <!-- BitLocker -->
                             <StackPanel Width="200" Margin="10,0">
                                 <TextBlock Text="🔒" FontSize="24" HorizontalAlignment="Center"/>
                                 <TextBlock Text="BitLocker" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor}" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="BitLockerStatus" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
-                                <ProgressBar x:Name="BitLockerProgress" Height="4" Margin="0,10,0,0" Value="0"/>
+                                <TextBlock x:Name="BitLockerStatusText" Text="대기 중" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
+                                <ProgressBar x:Name="BitLockerProgressBar" Height="4" Margin="0,10,0,0" Value="0"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

@@ -83,10 +83,16 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button x:Name="btnShowChangeLogs" Content="내역 확인"
+                        <Button x:Name="btnShowChangeLogs" 
+                                Content="내역 확인"
                                 Style="{DynamicResource CheckButtonStyle}"
-                                BorderThickness="0" Width="300" Height="30" Click="BtnShowChangeLogs_Click"
-                                HorizontalAlignment="Right">
+                                BorderThickness="0" 
+                                Width="300" 
+                                Height="30" 
+                                Click="BtnShowChangeLogs_Click"
+                                HorizontalAlignment="Right"
+                                Background="#4CAF50"
+                                Foreground="White">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Background="{TemplateBinding Background}"

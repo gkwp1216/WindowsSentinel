@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WindowsSentinel"
         mc:Ignorable="d"
         Title="Windows Sentinel" Height="800" Width="1200"
-        Background="{DynamicResource BackgroundColor}">
+        Background="White">
     
     <Window.Resources>
         <!-- Material 아이콘 스타일 -->
@@ -23,6 +23,7 @@
         <Style x:Key="NavIconStyle" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
             <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="#4CAF50"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
@@ -37,56 +38,55 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Canvas x:Name="GuideOverlay" Background="#80000000" Visibility="Collapsed" Panel.ZIndex="999">
+        
+
+        <!-- 가이드 오버레이 -->
+        <Canvas x:Name="GuideOverlay" 
+                Background="#80000000" 
+                Visibility="Collapsed" 
+                Panel.ZIndex="999"
+                MouseLeftButtonDown="GuideOverlay_MouseLeftButtonDown"
+                Grid.RowSpan="3">
             <Canvas x:Name="MaskLayer"/>
-
-            <!-- 건너뛰기 버튼 -->
-            <Button x:Name="GuideSkipButton"
-                    Content="SKIP"
-                    Click="GuideSkip_Click"    
-                    Foreground="Black"
-                    FontWeight="Bold"
-                    Padding="8,4"         
-                    Cursor="Hand"
-                    Visibility="Collapsed"
-                    Panel.ZIndex="1001"/>
-
-            <!-- 말풍선 -->
-            <Border x:Name="GuideBubble"
-                    Background="White"
-                    CornerRadius="12"
-                    Padding="15"
-                    Width="300"
-                    Panel.ZIndex="1000"
-                    Effect="{StaticResource ShadowEffect}">
+            
+            <!-- 가이드 컨트롤 -->
+            <Border Background="{DynamicResource MaterialDesignPaper}"
+                    CornerRadius="8"
+                    Padding="20"
+                    Width="400"
+                    Canvas.Left="400"
+                    Canvas.Top="200">
                 <StackPanel>
-                    <!-- 설명 텍스트 -->
                     <TextBlock x:Name="GuideText"
-                               Text="설명 텍스트"
-                               FontSize="16"
-                               TextWrapping="Wrap"
-                               Foreground="Black"
-                               Margin="0,0,0,10"/>
-
-                    <!-- 이전/다음 버튼 영역 -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button x:Name="GuidePrevButton" Content="이전" Click="GuidePrev_Click" Margin="0,0,5,0" Cursor=""/>
-                        <Button x:Name="GuideNextButton" Content="다음" Click="GuideNext_Click"/>
+                             TextWrapping="Wrap"
+                             Margin="0,0,0,20"
+                             FontSize="16"/>
+                    
+                    <StackPanel Orientation="Horizontal" 
+                              HorizontalAlignment="Right">
+                        <Button x:Name="PrevButton"
+                                Content="이전"
+                                Click="PrevButton_Click"
+                                Margin="0,0,10,0"
+                                Style="{StaticResource FlatButtonStyle}"/>
+                        
+                        <Button x:Name="NextButton"
+                                Content="다음"
+                                Click="NextButton_Click"
+                                Margin="0,0,10,0"
+                                Style="{StaticResource FlatButtonStyle}"/>
+                        
+                        <Button x:Name="SkipButton"
+                                Content="건너뛰기"
+                                Click="SkipButton_Click"
+                                Style="{StaticResource FlatButtonStyle}"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
-
-            <Path x:Name="GuideTail"                 
-                  Fill="White"
-                  Data="M 0 0 L 10 10 L 20 0 Z"
-                  Width="20" Height="10"
-                  Stretch="Fill"
-                  RenderTransformOrigin="0.5,0.5"
-                  Panel.ZIndex="1002"/>
         </Canvas>
 
         <!-- Top Navigation Menu -->
-        <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="10" BorderBrush="#C2C2C2" BorderThickness="1">
+        <Border Grid.Row="0" Background="White" CornerRadius="12" Margin="10" BorderBrush="#C2C2C2" BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -98,7 +98,7 @@
                             Margin="10,10,0,10" 
                             HorizontalAlignment="Left">
                     
-                    <Button Style="{DynamicResource NavIconButtonStyle}"
+                    <Button Style="{StaticResource NavIconButtonStyle}"
                             Cursor="Hand"
                             Click="BtnHome_click" 
                             ToolTip="홈">
@@ -113,14 +113,14 @@
                             HorizontalAlignment="Right">
 
                     <Button x:Name="HelpButton"
-                            Style="{DynamicResource NavIconButtonStyle}" 
+                            Style="{StaticResource NavIconButtonStyle}" 
                             Cursor="Hand"
                             Click="HelpButton_Click"
                             ToolTip="프로그램 안내">
                         <TextBlock Text="&#xE897;" Style="{StaticResource NavIconStyle}"/>
                     </Button>
                     
-                    <Button Style="{DynamicResource NavIconButtonStyle}" 
+                    <Button Style="{StaticResource NavIconButtonStyle}" 
                             Cursor="Hand"
                             Click="BtnSetting_Click"
                             ToolTip="설정">
@@ -132,9 +132,9 @@
         </Border>
 
         <!-- Security Status Section -->
-        <Border x:Name="securityStatusSection" Grid.Row="1" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20" Margin="10" BorderBrush="#C2C2C2" BorderThickness="1">
+        <Border x:Name="securityStatusSection" Grid.Row="1" Background="White" CornerRadius="12" Padding="20" Margin="10" BorderBrush="#C2C2C2" BorderThickness="1">
             <StackPanel>
-                <TextBlock Text="보안 상태" Foreground="{DynamicResource ForegroundColor}" FontSize="24" Margin="0,0,0,20"/>
+                <TextBlock Text="보안 상태" Foreground="#FF333333" FontSize="24" Margin="0,0,0,20"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -143,9 +143,9 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Windows Defender Status -->
-                    <Border Grid.Column="0" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                    <Border Grid.Column="0" Background="White" CornerRadius="8" Padding="15" Margin="0,0,10,0">
                         <StackPanel>
-                            <TextBlock Text="Windows Defender" Foreground="{DynamicResource ForegroundColor}" FontSize="16"/>
+                            <TextBlock Text="Windows Defender" Foreground="#FF333333" FontSize="16"/>
                             <TextBlock Text="정상" Foreground="#4CAF50" FontSize="14" Margin="0,5,0,0"/>
                         </StackPanel>
                     </Border>
@@ -153,82 +153,130 @@
             </StackPanel>
         </Border>
 
-        <!-- Main Buttons Grid -->
-        <Grid x:Name="mainButtonsGrid" Grid.Row="2" Margin="10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <!-- Main Content Area -->
+        <Grid Grid.Row="2">
+            <!-- Main Buttons Grid -->
+            <Grid x:Name="mainButtonsGrid" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <!-- 설치된 프로그램 버튼 -->
-            <Button x:Name="InstalledProgramsButton"
-                    Grid.Row="0" Grid.Column="0" 
-                    Style="{DynamicResource MainButtonStyle}" 
-                    Cursor="Hand"
-                    Click="InstalledPrograms_Click">
-                <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
-                    <TextBlock Text="&#xE71D;" 
-                             Style="{StaticResource MaterialIconStyle}"/>
-                    <TextBlock Text="설치된 프로그램 목록"                               
-                               TextAlignment="Center"
-                               FontSize="25"
-                               FontWeight="SemiBold"/>
-                    
-                </StackPanel>
-            </Button>
+                <!-- 설치된 프로그램 버튼 -->
+                <Button x:Name="InstalledProgramsButton"
+                        Grid.Row="0" Grid.Column="0" 
+                        Style="{DynamicResource MainButtonStyle}" 
+                        Cursor="Hand"
+                        Click="InstalledPrograms_Click"
+                        Margin="5"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="&#xE71D;" 
+                                 Style="{StaticResource MaterialIconStyle}"
+                                 Grid.Row="0"
+                                 VerticalAlignment="Center"/>
+                        <TextBlock Text="설치된 프로그램 목록"                               
+                                   Grid.Row="1"
+                                   TextAlignment="Center"
+                                   FontSize="25"
+                                   FontWeight="SemiBold"
+                                   Margin="0,20,0,0"/>
+                    </Grid>
+                </Button>
 
-            <!-- 수정/변경 내역 버튼 -->
-            <Button x:Name="ModificationHistoryButton"
-                    Grid.Row="0" Grid.Column="1" 
-                    Style="{DynamicResource MainButtonStyle}" 
-                    Cursor="Hand"
-                    Click="ModificationHistory_Click">
-                <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
-                    <TextBlock Text="&#xE81C;" 
-                               Style="{StaticResource MaterialIconStyle}"/>
-                    <TextBlock Text="네트워크 접속 내역" 
-                               TextAlignment="Center"
-                               FontSize="25" 
-                               FontWeight="SemiBold"/>
-                    
-                </StackPanel>
-            </Button>
+                <!-- 수정/변경 내역 버튼 -->
+                <Button x:Name="ModificationHistoryButton"
+                        Grid.Row="0" Grid.Column="1" 
+                        Style="{DynamicResource MainButtonStyle}" 
+                        Cursor="Hand"
+                        Click="ModificationHistory_Click"
+                        Margin="5"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="&#xE81C;" 
+                                   Style="{StaticResource MaterialIconStyle}"
+                                   Grid.Row="0"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="네트워크 접속 내역" 
+                                   Grid.Row="1"
+                                   TextAlignment="Center"
+                                   FontSize="25" 
+                                   FontWeight="SemiBold"
+                                   Margin="0,20,0,0"/>
+                    </Grid>
+                </Button>
 
-            <!-- 보안 로그 버튼 -->
-            <Button x:Name="SecurityLogButton"
-                    Grid.Row="1" Grid.Column="0" 
-                    Style="{DynamicResource MainButtonStyle}" 
-                    Cursor="Hand"
-                    Click="BtnLog_Click">
-                <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
-                    <TextBlock Text="&#xE72E;" 
-                               Style="{StaticResource MaterialIconStyle}"/>
-                    <TextBlock Text="보안 로그" 
-                               TextAlignment="Center"
-                               FontSize="25" 
-                               FontWeight="SemiBold"/>
-                </StackPanel>
-            </Button>
+                <!-- 보안 로그 버튼 -->
+                <Button x:Name="SecurityLogButton"
+                        Grid.Row="1" Grid.Column="0" 
+                        Style="{DynamicResource MainButtonStyle}" 
+                        Cursor="Hand"
+                        Click="BtnLog_Click"
+                        Margin="5"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="&#xE72E;" 
+                                   Style="{StaticResource MaterialIconStyle}"
+                                   Grid.Row="0"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="보안 로그" 
+                                   Grid.Row="1"
+                                   TextAlignment="Center"
+                                   FontSize="25" 
+                                   FontWeight="SemiBold"
+                                   Margin="0,20,0,0"/>
+                    </Grid>
+                </Button>
 
-            <!-- 보안 복구 버튼 -->
-            <Button x:Name="SecurityRecoveryButton"
-                    Grid.Row="1" Grid.Column="1" 
-                    Style="{DynamicResource MainButtonStyle}" 
-                    Cursor="Hand"
-                    Click="SecurityRecovery_Click">
-                <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
-                    <TextBlock Text="&#xE946;" 
-                               Style="{StaticResource MaterialIconStyle}"/>
-                    <TextBlock Text="보안 프로그램 복구" 
-                               TextAlignment="Center"
-                               FontSize="25" 
-                               FontWeight="SemiBold"/>
-                </StackPanel>
-            </Button>
+                <!-- 보안 복구 버튼 -->
+                <Button x:Name="SecurityRecoveryButton"
+                        Grid.Row="1" Grid.Column="1" 
+                        Style="{DynamicResource MainButtonStyle}" 
+                        Cursor="Hand"
+                        Click="SecurityRecovery_Click"
+                        Margin="5"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="&#xE946;" 
+                                   Style="{StaticResource MaterialIconStyle}"
+                                   Grid.Row="0"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="보안 프로그램 복구" 
+                                   Grid.Row="1"
+                                   TextAlignment="Center"
+                                   FontSize="25" 
+                                   FontWeight="SemiBold"
+                                   Margin="0,20,0,0"/>
+                    </Grid>
+                </Button>
+            </Grid>
+
+            <!-- Hidden Frame for Page Navigation -->
+            <Frame x:Name="MainFrame" Visibility="Collapsed" NavigationUIVisibility="Hidden"/>
         </Grid>
     </Grid>
 </Window>

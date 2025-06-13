@@ -137,14 +137,17 @@
     <!-- 검사 / 내역 버튼 스타일 -->
     <Style x:Key="CheckButtonStyle" TargetType="Button">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="Background" Value="#FF282626"/>
+        <Setter Property="Background" Value="#4CAF50"/>
         <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderBrush" Value="#4CAF50"/>
-        <Setter Property="BorderThickness" Value="0.5"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="#4CAF50"/>
-                <Setter Property="Effect" Value="{x:Null}"/>
+                <Setter Property="Background" Value="#45A049"/>
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="#CCCCCC"/>
+                    </Setter.Value>
+                </Setter>
             </Trigger>
         </Style.Triggers>
     </Style>

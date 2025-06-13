@@ -9,7 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace LogCheck
+namespace WindowsSentinel
 {
     /// <summary>
     /// App.xaml에 대한 상호 작용 논리
