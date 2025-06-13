@@ -3,12 +3,26 @@
   "WorkspaceRootPath": "C:\\Users\\admin\\Documents\\KKW\\LogCheck\\",
   "Documents": [
     {
+<<<<<<< HEAD
+=======
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\documents\\kkw\\logcheck\\page1.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:page1.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+>>>>>>> origin/main
       "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\documents\\kkw\\logcheck\\network.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:network.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\documents\\kkw\\logcheck\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+<<<<<<< HEAD
+=======
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\documents\\kkw\\logcheck\\network.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:network.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+>>>>>>> origin/main
     },
     {
       "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\documents\\kkw\\logcheck\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
@@ -34,6 +48,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
+<<<<<<< HEAD
           "SelectedChildIndex": 4,
           "Children": [
             {
@@ -61,6 +76,26 @@
             {
               "$type": "Document",
               "DocumentIndex": 5,
+=======
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Page1.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Documents\\KKW\\LogCheck\\Page1.xaml.cs",
+              "RelativeDocumentMoniker": "Page1.xaml.cs",
+              "ToolTip": "C:\\Users\\admin\\Documents\\KKW\\LogCheck\\Page1.xaml.cs",
+              "RelativeToolTip": "Page1.xaml.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAADgvyIAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-12T08:15:03.248Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+>>>>>>> origin/main
               "Title": "Network.xaml",
               "DocumentMoniker": "C:\\Users\\admin\\Documents\\KKW\\LogCheck\\Network.xaml",
               "RelativeDocumentMoniker": "Network.xaml",
@@ -71,13 +106,21 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 1,
+=======
+              "DocumentIndex": 2,
+>>>>>>> origin/main
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\admin\\Documents\\KKW\\LogCheck\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\admin\\Documents\\KKW\\LogCheck\\MainWindow.xaml.cs",
               "RelativeToolTip": "MainWindow.xaml.cs",
+<<<<<<< HEAD
               "ViewState": "AgIAACUAAAAAAAAAAAAtwEAAAAAtAAAAAAAAAA==",
+=======
+              "ViewState": "AgIAABwAAAAAAAAAAAAUwC0AAAAJAAAAAAAAAA==",
+>>>>>>> origin/main
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-08T12:35:20.677Z"
             },
@@ -89,14 +132,22 @@
               "RelativeDocumentMoniker": "Network.xaml.cs",
               "ToolTip": "C:\\Users\\admin\\Documents\\KKW\\LogCheck\\Network.xaml.cs",
               "RelativeToolTip": "Network.xaml.cs",
+<<<<<<< HEAD
               "ViewState": "AgIAAKYBAAAAAAAAAAAEwLMBAAANAAAAAAAAAA==",
+=======
+              "ViewState": "AgIAAJkBAAAAAAAAAIAxwLIBAAA3AAAAAAAAAA==",
+>>>>>>> origin/main
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-08T20:42:36.896Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 2,
+=======
+              "DocumentIndex": 4,
+>>>>>>> origin/main
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\admin\\Documents\\KKW\\LogCheck\\MainWindow.xaml",
               "RelativeDocumentMoniker": "MainWindow.xaml",

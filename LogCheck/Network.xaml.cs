@@ -24,7 +24,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Net.NetworkInformation;
 
-namespace WindowsSentinel
+namespace LogCheck
 {
     public class PacketConnectionModel
     {
@@ -409,6 +409,7 @@ namespace WindowsSentinel
 
         private void UpdateFilterStatus()
         {
+<<<<<<< HEAD
             if (FilterStatusText == null || FilterStatusBorder == null) return;
 
             var filterConditions = new List<string>();
@@ -443,6 +444,33 @@ namespace WindowsSentinel
             // 필터링된 패킷 수 업데이트
             filteredPackets = filteredConnections.Count;
             totalPackets = packetConnections.Count;
+=======
+            var filterConditions = new List<string>();
+            
+            if (!string.IsNullOrEmpty(protocolFilter))
+                filterConditions.Add($"프로토콜: {protocolFilter}");
+            if (!string.IsNullOrEmpty(sourceIPFilter))
+                filterConditions.Add($"소스 IP: {sourceIPFilter}");
+            if (!string.IsNullOrEmpty(destinationIPFilter))
+                filterConditions.Add($"목적지 IP: {destinationIPFilter}");
+            if (!string.IsNullOrEmpty(sourcePortFilter))
+                filterConditions.Add($"소스 포트: {sourcePortFilter}");
+            if (!string.IsNullOrEmpty(destinationPortFilter))
+                filterConditions.Add($"목적지 포트: {destinationPortFilter}");
+
+            if (filterConditions.Any())
+            {
+                FilterStatusText.Text = $"현재 필터: {string.Join(", ", filterConditions)}\n" +
+                                      $"총 패킷: {totalPackets}, 필터링된 패킷: {filteredPackets} " +
+                                      $"({(totalPackets > 0 ? (filteredPackets * 100.0 / totalPackets).ToString("F1") : "0")}%)";
+                FilterStatusBorder.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                FilterStatusText.Text = string.Empty;
+                FilterStatusBorder.Visibility = Visibility.Collapsed;
+            }
+>>>>>>> origin/main
         }
 
         private void ApplyFilter_Click(object sender, RoutedEventArgs e)

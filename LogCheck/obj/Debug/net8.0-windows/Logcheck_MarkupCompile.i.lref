@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿C:\Users\admin\Documents\KKW\LogCheck\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.i.cs
 FC:\Users\admin\Documents\KKW\LogCheck\App.xaml;;
 FC:\Users\admin\Documents\KKW\LogCheck\HomePage.xaml;;
@@ -9,4 +10,10 @@ FC:\Users\admin\Documents\KKW\LogCheck\Network.xaml;;
 FC:\Users\admin\Documents\KKW\LogCheck\Page1.xaml;;
 FC:\Users\admin\Documents\KKW\LogCheck\Recovery.xaml;;
 FC:\Users\admin\Documents\KKW\LogCheck\Setting.xaml;;
+=======
+﻿
+
+FC:\Users\admin\Documents\KKW\LogCheck\Log.xaml;;
+FC:\Users\admin\Documents\KKW\LogCheck\Recovery.xaml;;
+>>>>>>> origin/main
 

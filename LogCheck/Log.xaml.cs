@@ -15,7 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.Versioning;
 
-namespace WindowsSentinel
+namespace LogCheck
 {
     /// <summary>
     /// Log.xaml에 대한 상호 작용 논리

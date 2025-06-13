@@ -29,7 +29,7 @@ using System.Security.Policy;
 using System.Text.RegularExpressions;
 using System.Runtime.Versioning;
 
-namespace WindowsSentinel
+namespace LogCheck
 {
     /// <summary>
     /// Page1.xaml에 대한 상호 작용 논리
@@ -732,6 +732,23 @@ namespace WindowsSentinel
             string lnsLo = InstallLocation.ToLower();
             if (lnsLo.Contains("programfiles") || string.IsNullOrEmpty(lnsLo)) return 0;
             else return -10;
+        }
+    }
+
+    public class ChangeLogEntry
+    {
+        public static Dictionary<DateTime, int> Install_Date { get; } = new Dictionary<DateTime, int>();
+
+        public static void AddLogEntry(DateTime time, int score)
+        {
+            if (Install_Date.ContainsKey(time))
+            {
+                Install_Date[time] += score;
+            }
+            else
+            {
+                Install_Date[time] = score;
+            }
         }
     }
 }

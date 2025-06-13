@@ -16,7 +16,7 @@ using System.Windows.Threading;
 using System.Runtime.Versioning;
 using System.Windows.Media.Animation;
 
-namespace WindowsSentinel
+namespace LogCheck
 {
     /// <summary>
     /// MainWindow.xaml에 대한 상호 작용 논리
