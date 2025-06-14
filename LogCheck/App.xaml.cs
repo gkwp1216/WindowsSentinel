@@ -14,7 +14,7 @@ namespace WindowsSentinel
     /// <summary>
     /// App.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class App : Application
+    public partial class App : System.Windows.Application
     {
         public App()
         {
@@ -39,7 +39,7 @@ namespace WindowsSentinel
             }
 
             // 기존 테마 제거
-            var existingThemes = Application.Current.Resources.MergedDictionaries
+            var existingThemes = Current.Resources.MergedDictionaries
                 .Where(dict => dict.Source != null &&
                                (dict.Source.OriginalString.Contains("LightTheme.xaml") ||
                                 dict.Source.OriginalString.Contains("DarkTheme.xaml")))
@@ -47,11 +47,11 @@ namespace WindowsSentinel
 
             foreach (var theme in existingThemes)
             {
-                Application.Current.Resources.MergedDictionaries.Remove(theme);
+                Current.Resources.MergedDictionaries.Remove(theme);
             }
 
             // 새 테마 적용
-            Application.Current.Resources.MergedDictionaries.Add(newTheme);
+            Current.Resources.MergedDictionaries.Add(newTheme);
         }
     }
 }

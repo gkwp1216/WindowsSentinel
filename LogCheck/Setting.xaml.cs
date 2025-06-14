@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApplication = System.Windows.Application;
 
 namespace WindowsSentinel
 {
@@ -27,12 +28,12 @@ namespace WindowsSentinel
 
         private void SwitchToLightMode_Click(object sender, RoutedEventArgs e)
         {
-            ((App)Application.Current).ApplyTheme("Light");
+            (WpfApplication.Current as App)?.ApplyTheme("Light");
         }
 
         private void SwitchToDarkMode_Click(object sender, RoutedEventArgs e)
         {
-            ((App)Application.Current).ApplyTheme("Dark");
+            (WpfApplication.Current as App)?.ApplyTheme("Dark");
         }
 
     }
