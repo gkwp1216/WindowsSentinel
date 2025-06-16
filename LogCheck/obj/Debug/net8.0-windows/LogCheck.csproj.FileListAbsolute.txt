@@ -834,3 +834,5 @@ C:\Users\admin\Documents\KKW\LogCheck\obj\Debug\net8.0-windows\refint\Logcheck.d
 C:\Users\admin\Documents\KKW\LogCheck\obj\Debug\net8.0-windows\Logcheck.pdb
 C:\Users\admin\Documents\KKW\LogCheck\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
 C:\Users\admin\Documents\KKW\LogCheck\obj\Debug\net8.0-windows\ref\Logcheck.dll
+C:\Users\admin\Documents\KKW\LogCheck\obj\Debug\net8.0-windows\Vaccine.baml
+C:\Users\admin\Documents\KKW\LogCheck\obj\Debug\net8.0-windows\Vaccine.g.cs

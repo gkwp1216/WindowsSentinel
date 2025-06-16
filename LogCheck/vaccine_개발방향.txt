@@ -1,0 +1,108 @@
+# 백신(안티멀웨어) 기능 개발방향
+
+## 🔥 우선순위: MalwareBazaar API 기반 수동 검사 시스템 구현 (Phase 1 완료 목표)
+
+---
+
+### Phase 1: 요구사항 분석 & 설계 ⏳ (진행 중)
+- [ ] MalwareBazaar API 사양 파악 (인증, 요청∙응답 형식, Rate-Limit)
+- [x] 검사 시나리오 정의 ✅  
+  ‑ 선택 파일/폴더 → SHA-256 계산 → API 조회 → 악성 여부 표시 **확정**
+- [x] UI 변경 설계 ✅  
+  ‑ MainWindows '보안 로그' → '백신 검사' 버튼 교체 **완료**  
+  ‑ 결과 표시 화면(VaccineWindow) 와이어프레임 및 기본 XAML 구현 **완료**
+
+### Phase 2: API 연동 모듈 구현 (예상 2주)
+- [ ] `MalwareBazaarClient` 클래스 (HttpClient 래퍼)
+  - [ ] 단일 해시 조회 메서드
+  - [ ] 배치 요청 처리 & 1 req/sec 지연
+  - [ ] 오류/Timeout 예외 처리
+- [ ] 유틸리티
+  - [ ] SHA-256 계산 Helper
+  - [ ] 결과 캐시(Dictionary<hash, verdict>) + 임시 파일 저장
+
+### Phase 3: 검사 엔진 구축 (예상 2주)
+- [ ] `ScanManager` 비동기 워커(Task) & 검사 큐(BlockingCollection)
+- [ ] 이벤트 기반 결과 통지(`ScanCompleted`)
+- [ ] 기본 대응 로직
+  - [ ] 악성 ⇒ 격리 폴더 이동 & 사용자 알림
+  - [ ] 정상 ⇒ 결과 로그만 기록
+
+### Phase 4: UI 통합 (예상 1주)
+- [ ] `VaccineWindow` 구현
+  - [ ] 검사 대상 선택(파일/폴더)  
+  - [ ] 진행률 ProgressBar & 로그 TextBox  
+  - [ ] 결과 요약 DataGrid
+- [ ] 메인 창 버튼 및 아이콘 교체
+
+### Phase 5: 부가 기능 & 최적화 (예상 2주)
+- [ ] 병렬 해시 계산(PLINQ)
+- [ ] 검사 취소 기능(CancellationToken)
+- [ ] 검사 기록 내보내기(CSV)
+- [ ] 다국어 지원(영/한)
+
+### Phase 6: 실시간 감시(선택) (예상 3주)
+- [ ] `FileSystemWatcher` 기반 신규 파일 트리거
+- [ ] 리소스 사용량 모니터링 & 자동 일시중단
+
+---
+
+## 🎯 현재 상태 요약
+
+### ✅ **완료된 선행 작업**
+1. MalwareBazaar 계정 및 API Key 발급
+2. 기본 SHA-256 해시 계산 코드 스니펫 검증
+3. 기본 Vaccine UI 및 네비게이션 구현
+4. 검사 시나리오 확정 및 문서화
+
+### 🚀 **예상 기술적 성과**
+- 해시 기반 악성 탐지 기능 제공
+- 모듈화된 API 클라이언트로 타 인텔리전스 서비스 확장 용이
+- 비동기 검사 엔진을 통한 UI 블로킹 최소화
+
+---
+
+## 1. API 연동 세부 계획
+- POST `https://mb-api.abuse.ch/api/v1/`  
+  **파라미터**: `query=hashes`, `hash=SHA256`  
+- JSON 응답 파싱: `status`, `data[] {sha256, first_seen, malware_family, tags}`
+- 실패 시 재시도(최대 3, 지수 백오프) & 사용자 친화 오류 메시지
+
+## 2. 검사 엔진 세부 계획
+- 검사 큐에 (경로, SHA-256) 투입 → 워커에서 API 호출
+- 결과 모델: `ScanResult { Path, Sha256, Verdict, Family, FirstSeen }`
+- 위험도 매핑:  
+  `malicious` → Critical, `suspicious` → High, `unknown` → Low
+
+## 3. UI/UX 계획
+- 진행률 막대(애니메이션) + 남은 파일 수 표시
+- 탐지 결과 리스트박스 Color-Coding (정상=녹색, 악성=빨강)
+- 격리/복원 버튼 제공 (악성 파일 선택 시 활성화)
+
+## 4. 테스트 & 품질 관리
+- NUnit 단위 테스트: 해시 계산, API 응답 파싱, Verdict 매핑
+- 모의 API 서버(MockHttp)로 Rate-Limit 시나리오 재현
+- 10 개 샘플 악성 해시 + 50 개 정상 해시로 회귀 테스트
+
+## 5. 보안 고려사항
+- 악성 샘플 다운로드 금지, 해시 정보만 사용
+- HTTPS 인증서 유효성 검사 및 TLS 1.2 이상 강제
+- 격리 폴더: `%ProgramData%\LogCheck\Quarantine` (ACL 제한)
+
+## 6. 일정 요약 (총 11주)
+| 주차 | 단계 | 목표 |
+| ---- | ---- | ---- |
+| 1 | Phase 1 완료 | 요구사항 & 설계 승인 |
+| 2-3 | Phase 2 | API 모듈 완성 & 단위 테스트 |
+| 4-5 | Phase 3 | 검사 엔진 통합 |
+| 6 | Phase 4 | UI 기능 릴리스 |
+| 7-8 | Phase 5 | 성능 최적화 & 부가 기능 |
+| 9-11 | Phase 6(선택) | 실시간 감시 프로토타입 |
+
+---
+
+## 7. 향후 개선 방향
+- VirusTotal, Hybrid-Analysis 등 멀티 인텔리전스 연동
+- YARA 룰 기반 검사 확장
+- 클라우드 샌드박스(동적 분석) 결과 통합
+- 머신러닝 기반 행위 분석 엔진 연구 

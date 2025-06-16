@@ -37,6 +37,8 @@ using Application = System.Windows.Application;
 using Cursors = System.Windows.Input.Cursors;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace LogCheck
 {
@@ -81,6 +83,7 @@ namespace LogCheck
         private string baseText = "검사 중";
         private ObservableCollection<EventLogEntryModel> eventLogEntries = new ObservableCollection<EventLogEntryModel>();
         private readonly ObservableCollection<PacketInfo> _packets = new ObservableCollection<PacketInfo>();
+        private ICollectionView _packetsView;
         private Models.PacketCapture? _packetCapture;
         private bool _isCapturing;
         private readonly ObservableCollection<NetworkUsageRecord> _historyRecords = new ObservableCollection<NetworkUsageRecord>();
@@ -92,6 +95,10 @@ namespace LogCheck
         // 보안 분석 관련 변수들
         private SecurityAnalyzer _securityAnalyzer = new SecurityAnalyzer();
         private readonly ObservableCollection<SecurityAlert> _securityAlerts = new ObservableCollection<SecurityAlert>();
+
+        // 대안 모니터링 관련 변수들
+        private DispatcherTimer? _alternativeMonitoringTimer;
+        private bool _isAlternativeMonitoring = false;
 
         public NetWorks()
         {
@@ -119,6 +126,8 @@ namespace LogCheck
             SetupLoadingTextAnimation();
             StartRotation();
             PacketDataGrid.ItemsSource = _packets;
+            _packetsView = CollectionViewSource.GetDefaultView(_packets);
+            PacketDataGrid.ItemsSource = _packetsView;
             HistoryDataGrid.ItemsSource = _historyRecords;
 
             LoadNetworkInterfaces();
@@ -925,7 +934,7 @@ namespace LogCheck
             }
         }
 
-        private void StartCapture_Click(object sender, RoutedEventArgs e)
+        private async void StartCapture_Click(object sender, RoutedEventArgs e)
         {
             if (NetworkInterfaceComboBox.SelectedItem == null)
             {
@@ -940,6 +949,7 @@ namespace LogCheck
             {
                 var selectedComboItem = NetworkInterfaceComboBox.SelectedItem as ComboBoxItem;
                 var selectedDevice = selectedComboItem?.Tag as ICaptureDevice;
+                var interfaceName = selectedComboItem.Content.ToString() ?? "Unknown Interface";
 
                 if (selectedDevice == null)
                 {
@@ -950,127 +960,130 @@ namespace LogCheck
                     return;
                 }
 
-                // 선택된 인터페이스 정보 표시
-                var interfaceName = selectedComboItem.Content.ToString() ?? "Unknown Interface";
-                LogHelper.LogInfo($"패킷 캡처 시작 시도: {interfaceName}");
+                LogHelper.LogInfo($"네트워크 모니터링 시작 시도: {interfaceName}");
 
-                // 먼저 장치 접근 가능성을 테스트
-                if (!TestDeviceAccessForCapture(selectedDevice))
+                // 1단계: 패킷 캡처 시도
+                bool packetCaptureSuccess = await TryStartPacketCapture(selectedDevice, interfaceName);
+                
+                if (!packetCaptureSuccess)
                 {
-                    // Realtek Gaming 어댑터 특별 처리
-                    bool isRealtekGaming = interfaceName.ToLower().Contains("realtek") &&
-                                         (interfaceName.ToLower().Contains("gaming") || interfaceName.ToLower().Contains("2.5g"));
+                    // 2단계: 대안 모니터링 방법 사용
+                    var result = MessageBox.Show(
+                        $"패킷 캡처를 시작할 수 없습니다.\n\n" +
+                        $"대신 다음 방법으로 네트워크 모니터링을 계속하시겠습니까?\n\n" +
+                        $"✅ Windows 이벤트 로그 분석\n" +
+                        $"✅ 활성 연결 상태 모니터링 (netstat)\n" +
+                        $"✅ 네트워크 통계 수집 (WMI)\n" +
+                        $"✅ 실시간 연결 추적\n\n" +
+                        $"이 방법들은 보안 설정을 변경하지 않고도\n" +
+                        $"효과적인 네트워크 모니터링을 제공합니다.",
+                        "대안 모니터링 방법 사용",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
 
-                    string errorMessage;
-                    if (isRealtekGaming)
+                    if (result == MessageBoxResult.Yes)
                     {
-                        errorMessage = $"🚨 Realtek Gaming 2.5GbE 어댑터 호환성 문제 감지!\n\n" +
-                                     $"어댑터: {interfaceName}\n\n" +
-                                     $"🔧 해결 방법 (우선순위 순):\n\n" +
-                                     $"1. ⭐ Npcap 최신 버전 설치 (권장)\n" +
-                                     $"   • 현재 Npcap 제거 → 시스템 재부팅\n" +
-                                     $"   • https://npcap.com 에서 최신 버전 다운로드\n" +
-                                     $"   • 'WinPcap API-compatible Mode' 체크하여 설치\n\n" +
-                                     $"2. 🔄 네트워크 어댑터 드라이버 업데이트\n" +
-                                     $"   • Realtek 공식 사이트에서 최신 드라이버 다운로드\n\n" +
-                                     $"3. 🛡️ Windows Defender 방화벽 예외 설정\n" +
-                                     $"   • 이 프로그램을 방화벽 예외에 추가\n\n" +
-                                     $"4. 🔧 시스템 재부팅 후 재시도\n\n" +
-                                     $"⚠️ 이 문제는 Npcap 1.71 버전의 알려진 버그입니다.\n" +
-                                     $"Npcap 1.74 이상에서 해결되었습니다.";
+                        await StartAlternativeMonitoring(interfaceName);
                     }
-                    else
-                    {
-                        errorMessage = $"선택된 네트워크 어댑터에 접근할 수 없습니다.\n\n" +
-                                     $"어댑터: {interfaceName}\n\n" +
-                                     $"해결 방법:\n" +
-                                     $"1. 다른 네트워크 어댑터를 선택하세요\n" +
-                                     $"2. Npcap을 재설치하세요 (WinPcap 호환 모드)\n" +
-                                     $"3. Windows Defender 방화벽 설정을 확인하세요\n" +
-                                     $"4. 시스템을 재부팅해보세요";
-                    }
-
-                    var result = MessageBox.Show($"{errorMessage}\n\n그래도 시도하시겠습니까?",
-                                               "네트워크 어댑터 접근 오류",
-                                               MessageBoxButton.YesNo,
-                                               MessageBoxImage.Warning);
-
-                    if (result == MessageBoxResult.No)
-                    {
-                        return;
-                    }
+                    return;
                 }
 
-                // 인터페이스 이름을 포함하여 PacketCapture 생성
-                _packetCapture = new Models.PacketCapture(selectedDevice, interfaceName);
+                // 패킷 캡처 성공시 UI 업데이트
+                UpdateCaptureUI(true, interfaceName);
+                LogHelper.LogInfo($"패킷 캡처가 시작되었습니다: {interfaceName}");
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"네트워크 모니터링 시작 실패: {ex.Message}");
+                
+                // 예외 발생시에도 대안 방법 제공
+                var result = MessageBox.Show(
+                    $"네트워크 모니터링 시작 중 오류가 발생했습니다:\n\n{ex.Message}\n\n" +
+                    $"대안 모니터링 방법을 사용하시겠습니까?\n" +
+                    $"(보안 설정 변경 없이 네트워크 활동 추적 가능)",
+                    "대안 모니터링 방법",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
 
+                if (result == MessageBoxResult.Yes)
+                {
+                    await StartAlternativeMonitoring("시스템 전체");
+                }
+            }
+        }
+
+        private async Task<bool> TryStartPacketCapture(ICaptureDevice device, string interfaceName)
+        {
+            try
+            {
+                // 장치 접근 테스트
+                if (!TestDeviceAccessForCapture(device))
+                {
+                    LogHelper.LogInfo($"장치 접근 테스트 실패: {interfaceName}");
+                    return false;
+                }
+
+                // PacketCapture 인스턴스 생성 시도
+                _packetCapture = new Models.PacketCapture(device, interfaceName);
+
+                // 이벤트 핸들러 설정
                 _packetCapture.PacketCaptured += (s, packet) =>
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         _packets.Add(packet);
-                        if (_packets.Count > 1000) // 최대 1000개 패킷만 유지
+                        if (_packets.Count > 1000)
                         {
                             _packets.RemoveAt(0);
                         }
-
-                        // 상태 표시 업데이트
                         UpdateCaptureStatus();
                     });
                 };
 
                 _packetCapture.ErrorOccurred += (s, error) =>
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
+                    Application.Current.Dispatcher.Invoke(async () =>
                     {
-                        // 오류 메시지에 따른 구체적인 해결 방법 제공
-                        string detailedError = error;
-                        if (error.Contains("Unable to open") || error.Contains("adapter"))
-                        {
-                            detailedError = $"패킷 캡처 중 오류발생합니다. {error}\n\n" +
-                                          $"🔧 해결 방법:\n" +
-                                          $"1. Npcap 최신 버전으로 업데이트 (https://npcap.com)\n" +
-                                          $"2. 프로그램을 관리자 권한으로 재실행\n" +
-                                          $"3. 다른 네트워크 인터페이스 선택\n" +
-                                          $"4. 시스템 재부팅 후 재시도\n\n" +
-                                          $"📋 참고: 'Npcap_Fix_Guide.txt' 파인하세요.";
-                        }
-
-                        MessageBox.Show(detailedError,
-                                      "패킷 캡처 오류",
-                                      MessageBoxButton.OK,
-                                      MessageBoxImage.Error);
+                        LogHelper.LogError($"패킷 캡처 오류: {error}");
                         StopCapture();
+                        
+                        // 오류 발생시 대안 모니터링으로 전환
+                        var result = MessageBox.Show(
+                            $"패킷 캡처 중 오류가 발생했습니다:\n{error}\n\n" +
+                            $"대안 모니터링 방법으로 전환하시겠습니까?",
+                            "대안 모니터링 전환",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Warning);
+
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            await StartAlternativeMonitoring(interfaceName);
+                        }
                     });
                 };
 
-                _packetCapture.StartCapture();
+                // 캡처 시작
+                await Task.Run(() => _packetCapture.StartCapture());
                 _isCapturing = true;
-
-                StartCaptureButton.Visibility = Visibility.Collapsed;
-                StopCaptureButton.Visibility = Visibility.Visible;
-                NetworkInterfaceComboBox.IsEnabled = false;
-
-                // 캡처 상태 표시
-                ShowCaptureStatus(interfaceName);
-
-                LogHelper.LogInfo($"네트워크 패킷 캡처가 시작되었습니다: {interfaceName}");
+                
+                return true;
             }
             catch (Exception ex)
             {
-                string errorDetails = $"패킷 캡처를 시작하는 중 오류가 발생했습니다:\n\n{ex.Message}\n\n" +
-                                    $"🔧 해결 방법:\n" +
-                                    $"1. Npcap 최신 버전 설치 (https://npcap.com)\n" +
-                                    $"2. 관리자 권한으로 프로그램 실행\n" +
-                                    $"3. 다른 네트워크 인터페이스 선택\n" +
-                                    $"4. Windows Defender 방화벽 예외 설정\n" +
-                                    $"5. 시스템 재부팅 후 재시도\n\n" +
-                                    $"📋 자세한 해결 방법은 'Npcap_Fix_Guide.txt' 파인하세요.";
-
-                MessageBox.Show(errorDetails,
-                              "패킷 캡처 오류",
-                              MessageBoxButton.OK,
-                              MessageBoxImage.Error);
+                LogHelper.LogError($"패킷 캡처 시작 실패: {ex.Message}");
+                
+                // 리소스 정리
+                if (_packetCapture != null)
+                {
+                    try
+                    {
+                        _packetCapture.Dispose();
+                        _packetCapture = null;
+                    }
+                    catch { }
+                }
+                
+                return false;
             }
         }
 
@@ -1130,10 +1143,51 @@ namespace LogCheck
             }
         }
 
+        private void UpdateCaptureUI(bool isCapturing, string interfaceName, bool isAlternativeMode = false)
+        {
+            if (isCapturing)
+            {
+                StartCaptureButton.Visibility = Visibility.Collapsed;
+                StopCaptureButton.Visibility = Visibility.Visible;
+                NetworkInterfaceComboBox.IsEnabled = false;
+                
+                // 상태 표시 업데이트
+                var statusText = isAlternativeMode 
+                    ? $"대안 모니터링 중: {interfaceName}"
+                    : $"패킷 캡처 중: {interfaceName}";
+                
+                ShowCaptureStatus(statusText);
+                
+                // 상태 표시를 위한 추가 UI 업데이트
+                if (isAlternativeMode)
+                {
+                    // 대안 모니터링임을 시각적으로 표시
+                    LoadingText.Text = "대안 모니터링 활성";
+                    LoadingText.Foreground = new SolidColorBrush(Colors.Orange);
+                }
+
+                if (CaptureStatusText != null)
+                {
+                    CaptureStatusText.Text = statusText;
+                }
+            }
+            else
+            {
+                StartCaptureButton.Visibility = Visibility.Visible;
+                StopCaptureButton.Visibility = Visibility.Collapsed;
+                NetworkInterfaceComboBox.IsEnabled = true;
+                LoadingOverlay.Visibility = Visibility.Collapsed;
+                
+                // 기본 상태로 복원
+                LoadingText.Text = baseText;
+                LoadingText.Foreground = new SolidColorBrush(Colors.White);
+            }
+        }
+
         private void ShowCaptureStatus(string interfaceName)
         {
             // 상태 표시 UI 업데이트 (필요시 구현)
-            this.Title = $"Network - 캡처 중: {interfaceName}";
+            this.Title = $"Network - {interfaceName}";
         }
 
         private void UpdateCaptureStatus()
@@ -1148,18 +1202,34 @@ namespace LogCheck
 
         private void StopCapture()
         {
-            if (_packetCapture != null)
+            try
             {
-                _packetCapture.StopCapture();
-                _packetCapture.Dispose();
-                _packetCapture = null;
-            }
+                // 패킷 캡처 정지
+                if (_packetCapture != null)
+                {
+                    _packetCapture.StopCapture();
+                    _packetCapture.Dispose();
+                    _packetCapture = null;
+                }
 
-            _isCapturing = false;
-            StartCaptureButton.Visibility = Visibility.Visible;
-            StopCaptureButton.Visibility = Visibility.Collapsed;
-            NetworkInterfaceComboBox.IsEnabled = true;
-            LoadingOverlay.Visibility = Visibility.Collapsed;
+                // 대안 모니터링 정지
+                if (_alternativeMonitoringTimer != null)
+                {
+                    _alternativeMonitoringTimer.Stop();
+                    _alternativeMonitoringTimer = null;
+                }
+
+                _isCapturing = false;
+                _isAlternativeMonitoring = false;
+                
+                UpdateCaptureUI(false, "");
+                
+                LogHelper.LogInfo("네트워크 모니터링이 정지되었습니다.");
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"모니터링 정지 중 오류: {ex.Message}");
+            }
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)
@@ -1176,25 +1246,28 @@ namespace LogCheck
             _packets.Clear();
         }
 
+        private bool PacketFilter(object? obj)
+        {
+            if (obj is not PacketInfo p) return false;
+
+            var filterText = FilterTextBox.Text.ToLower();
+            var protocolFilter = (ProtocolFilterComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString();
+
+            bool matchesText = string.IsNullOrEmpty(filterText) ||
+                               p.SourceIP.ToLower().Contains(filterText) ||
+                               p.DestinationIP.ToLower().Contains(filterText) ||
+                               p.Protocol.ToLower().Contains(filterText);
+
+            bool matchesProto = protocolFilter == "모든 프로토콜" || p.Protocol == protocolFilter;
+
+            return matchesText && matchesProto;
+        }
+
         private void Filter_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var filterText = FilterTextBox.Text.ToLower();
-            var protocolFilter = (ProtocolFilterComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
-
-            var filteredPackets = _packets.ToList().Where(p =>
-            {
-                var matchesText = string.IsNullOrEmpty(filterText) ||
-                                p.SourceIP.ToLower().Contains(filterText) ||
-                                p.DestinationIP.ToLower().Contains(filterText) ||
-                                p.Protocol.ToLower().Contains(filterText);
-
-                var matchesProtocol = protocolFilter == "모든 프로토콜" ||
-                                    p.Protocol == protocolFilter;
-
-                return matchesText && matchesProtocol;
-            });
-
-            PacketDataGrid.ItemsSource = filteredPackets;
+            if (_packetsView == null) return;
+            _packetsView.Filter = PacketFilter;
+            _packetsView.Refresh();
         }
 
         private void ProtocolFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2286,6 +2359,200 @@ namespace LogCheck
         {
             var mainWindow = System.Windows.Window.GetWindow(this) as MainWindows;
             mainWindow?.NavigateToPage(page);
+        }
+
+        private async Task StartAlternativeMonitoring(string interfaceName)
+        {
+            try
+            {
+                LogHelper.LogInfo($"대안 네트워크 모니터링 시작: {interfaceName}");
+                
+                // UI 상태 변경
+                UpdateCaptureUI(true, interfaceName, isAlternativeMode: true);
+                
+                // 대안 모니터링 타이머 시작
+                StartAlternativeMonitoringTimer();
+                
+                // 초기 데이터 로드
+                await LoadInitialNetworkData();
+                
+                MessageBox.Show(
+                    $"대안 네트워크 모니터링이 시작되었습니다!\n\n" +
+                    $"📊 모니터링 기능:\n" +
+                    $"• Windows 방화벽 이벤트 로그 분석\n" +
+                    $"• 실시간 네트워크 연결 상태 추적\n" +
+                    $"• 네트워크 인터페이스 통계 수집\n" +
+                    $"• 프로세스별 네트워크 사용량 분석\n\n" +
+                    $"💡 보안 설정을 변경하지 않고도\n" +
+                    $"효과적인 네트워크 보안 모니터링을 제공합니다.",
+                    "대안 모니터링 시작",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"대안 모니터링 시작 실패: {ex.Message}");
+                MessageBox.Show($"네트워크 모니터링 시작에 실패했습니다: {ex.Message}",
+                               "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void StartAlternativeMonitoringTimer()
+        {
+            _alternativeMonitoringTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(5) // 5초마다 업데이트
+            };
+            
+            _alternativeMonitoringTimer.Tick += async (s, e) =>
+            {
+                try
+                {
+                    await UpdateAlternativeMonitoringData();
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.LogError($"대안 모니터링 업데이트 실패: {ex.Message}");
+                }
+            };
+            
+            _isAlternativeMonitoring = true;
+            _alternativeMonitoringTimer.Start();
+            LogHelper.LogInfo("대안 모니터링 타이머 시작됨");
+        }
+
+        private async Task UpdateAlternativeMonitoringData()
+        {
+            try
+            {
+                // 1. 현재 네트워크 연결 상태 조회
+                var currentConnections = await GetCurrentNetworkConnections();
+                
+                // 2. 새로운 연결들을 패킷 목록에 추가 (패킷 형태로 변환)
+                foreach (var connection in currentConnections.Take(10)) // 최신 10개만
+                {
+                    var packetInfo = ConvertConnectionToPacketInfo(connection);
+                    if (packetInfo != null)
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            _packets.Add(packetInfo);
+                            if (_packets.Count > 1000)
+                            {
+                                _packets.RemoveAt(0);
+                            }
+                        });
+                    }
+                }
+                
+                // 3. 상태 업데이트
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    UpdateCaptureStatus();
+                });
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"대안 모니터링 데이터 업데이트 실패: {ex.Message}");
+            }
+        }
+
+        private PacketInfo? ConvertConnectionToPacketInfo(NetworkUsageRecord connection)
+        {
+            try
+            {
+                return new PacketInfo
+                {
+                    Timestamp = connection.Timestamp,
+                    SourceIP = connection.SourceIP,
+                    DestinationIP = connection.DestinationIP,
+                    SourcePort = (ushort)Math.Max(0, Math.Min(connection.SourcePort, ushort.MaxValue)),
+                    DestinationPort = (ushort)Math.Max(0, Math.Min(connection.DestinationPort, ushort.MaxValue)),
+                    Protocol = connection.Protocol,
+                    PacketSize = connection.PacketSize,
+                    Direction = connection.Direction,
+                    ProcessName = connection.ProcessName ?? "Unknown",
+                    Description = $"연결 모니터링: {connection.Description}"
+                };
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"연결 정보 변환 실패: {ex.Message}");
+                return null;
+            }
+        }
+
+        private async Task LoadInitialNetworkData()
+        {
+            try
+            {
+                ShowLoadingOverlay();
+                
+                // 병렬로 데이터 수집
+                var tasks = new[]
+                {
+                    LoadFirewallEventLogsAsync(),
+                    GetCurrentNetworkConnections(),
+                    GetNetworkStatisticsFromWMI()
+                };
+                
+                await Task.WhenAll(tasks);
+                
+                // 방화벽 이벤트 로그를 패킷 목록에 추가
+                var eventLogPackets = ConvertEventLogsToPackets();
+                foreach (var packet in eventLogPackets.Take(50)) // 최신 50개
+                {
+                    _packets.Add(packet);
+                }
+                
+                LogHelper.LogInfo("초기 네트워크 데이터 로드 완료");
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"초기 데이터 로드 실패: {ex.Message}");
+            }
+            finally
+            {
+                HideLoadingOverlay();
+            }
+        }
+
+        private async Task LoadFirewallEventLogsAsync()
+        {
+            await Task.Run(() => LoadFirewallEventLogs());
+        }
+
+        private List<PacketInfo> ConvertEventLogsToPackets()
+        {
+            var packets = new List<PacketInfo>();
+            
+            foreach (var logEntry in eventLogEntries.Take(50))
+            {
+                try
+                {
+                    var packet = new PacketInfo
+                    {
+                        Timestamp = logEntry.TimeGenerated,
+                        SourceIP = logEntry.Source.Split(':')[0],
+                        DestinationIP = logEntry.Destination.Split(':')[0],
+                        SourcePort = (ushort)Math.Max(0, Math.Min(int.TryParse(logEntry.Source.Split(':').LastOrDefault(), out int srcPort) ? srcPort : 0, ushort.MaxValue)),
+                        DestinationPort = (ushort)Math.Max(0, Math.Min(int.TryParse(logEntry.Destination.Split(':').LastOrDefault(), out int dstPort) ? dstPort : 0, ushort.MaxValue)),
+                        Protocol = logEntry.Protocol,
+                        PacketSize = 0, // 이벤트 로그에는 패킷 크기 정보 없음
+                        Direction = logEntry.Direction,
+                        ProcessName = logEntry.ApplicationName,
+                        Description = $"방화벽 로그: {logEntry.Result}"
+                    };
+                    
+                    packets.Add(packet);
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.LogError($"이벤트 로그 변환 실패: {ex.Message}");
+                }
+            }
+            
+            return packets;
         }
     }
 }

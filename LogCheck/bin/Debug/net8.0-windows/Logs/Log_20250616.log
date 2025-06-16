@@ -2785,3 +2785,947 @@
 [2025-06-16 11:10:40.381] [INFO] 탭 변경됨: RealtimeTab
 [2025-06-16 11:10:40.442] [INFO] Network 페이지 로드 완료
 [2025-06-16 11:10:40.444] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 11:13:08.769] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 11:13:09.013] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 11:13:09.023] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 11:13:09.264] [INFO] 발견된 캡처 장치 수: 5
+[2025-06-16 11:13:09.266] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{707A6856-71C1-49F8-B8F4-C00E823053C4}
+[2025-06-16 11:13:09.269] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{35A632B0-E696-45BB-830E-DA060CB444E2}
+[2025-06-16 11:13:09.271] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{3A942451-150A-4334-B699-36CEA0C9527A}
+[2025-06-16 11:13:09.272] [INFO] 장치 3: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{A906DC0A-0A94-460A-B139-011428D9C6E8}
+[2025-06-16 11:13:09.274] [INFO] 장치 4: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 11:13:09.282] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 11:13:09.285] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 11:13:09.287] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 11:13:09.288] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 11:13:09.290] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 11:13:09.291] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 11:13:09.293] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 11:13:09.591] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 11:13:09.595] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 11:13:09.597] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 11:13:09.599] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 11:13:09.601] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 11:13:09.613] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 11:13:09.623] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 11:13:09.625] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 11:13:09.663] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 11:13:09.731] [INFO] Network 페이지 로드 완료
+[2025-06-16 11:13:09.733] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 11:13:12.093] [INFO] 패킷 캡처 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:13:12.155] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 11:40:57.665] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 11:40:57.949] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 11:40:57.953] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 11:40:58.115] [INFO] 발견된 캡처 장치 수: 5
+[2025-06-16 11:40:58.118] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{707A6856-71C1-49F8-B8F4-C00E823053C4}
+[2025-06-16 11:40:58.120] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{35A632B0-E696-45BB-830E-DA060CB444E2}
+[2025-06-16 11:40:58.122] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{3A942451-150A-4334-B699-36CEA0C9527A}
+[2025-06-16 11:40:58.123] [INFO] 장치 3: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{A906DC0A-0A94-460A-B139-011428D9C6E8}
+[2025-06-16 11:40:58.125] [INFO] 장치 4: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 11:40:58.133] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 11:40:58.135] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 11:40:58.137] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 11:40:58.139] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 11:40:58.140] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 11:40:58.142] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 11:40:58.144] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 11:40:58.439] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 11:40:58.444] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 11:40:58.447] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 11:40:58.449] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 11:40:58.451] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 11:40:58.471] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 11:40:58.482] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 11:40:58.484] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 11:40:58.534] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 11:40:58.607] [INFO] Network 페이지 로드 완료
+[2025-06-16 11:40:58.609] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 11:40:59.907] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:40:59.963] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 11:40:59.965] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:41:03.126] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:41:03.129] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 11:41:04.095] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 11:41:24.337] [INFO] 네트워크 모니터링이 정지되었습니다.
+[2025-06-16 11:43:36.944] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 11:43:37.133] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 11:43:37.137] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 11:43:37.281] [INFO] 발견된 캡처 장치 수: 5
+[2025-06-16 11:43:37.284] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{707A6856-71C1-49F8-B8F4-C00E823053C4}
+[2025-06-16 11:43:37.286] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{35A632B0-E696-45BB-830E-DA060CB444E2}
+[2025-06-16 11:43:37.287] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{3A942451-150A-4334-B699-36CEA0C9527A}
+[2025-06-16 11:43:37.289] [INFO] 장치 3: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{A906DC0A-0A94-460A-B139-011428D9C6E8}
+[2025-06-16 11:43:37.291] [INFO] 장치 4: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 11:43:37.300] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 11:43:37.303] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 11:43:37.305] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 11:43:37.306] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 11:43:37.307] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 11:43:37.309] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 11:43:37.310] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 11:43:37.628] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 11:43:37.632] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 11:43:37.635] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 11:43:37.637] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 11:43:37.640] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 11:43:37.654] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 11:43:37.664] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 11:43:37.666] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 11:43:37.702] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 11:43:37.763] [INFO] Network 페이지 로드 완료
+[2025-06-16 11:43:37.765] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 11:43:38.448] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:43:38.499] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 11:43:38.501] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:43:39.580] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:43:39.583] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 11:43:40.535] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 11:43:45.877] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 11:43:58.166] [INFO] 네트워크 모니터링이 정지되었습니다.
+[2025-06-16 11:43:58.742] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:43:58.790] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 11:43:58.793] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:43:59.988] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:43:59.991] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 11:44:00.778] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 11:44:02.114] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 11:51:33.876] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 11:51:34.160] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 11:51:34.165] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 11:51:34.322] [INFO] 발견된 캡처 장치 수: 5
+[2025-06-16 11:51:34.325] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{707A6856-71C1-49F8-B8F4-C00E823053C4}
+[2025-06-16 11:51:34.327] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{35A632B0-E696-45BB-830E-DA060CB444E2}
+[2025-06-16 11:51:34.329] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{3A942451-150A-4334-B699-36CEA0C9527A}
+[2025-06-16 11:51:34.331] [INFO] 장치 3: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{A906DC0A-0A94-460A-B139-011428D9C6E8}
+[2025-06-16 11:51:34.333] [INFO] 장치 4: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 11:51:34.341] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 11:51:34.344] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 11:51:34.346] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 11:51:34.348] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 11:51:34.349] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 11:51:34.351] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 11:51:34.353] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 11:51:34.642] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 11:51:34.646] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 11:51:34.648] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 11:51:34.650] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 11:51:34.653] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 11:51:34.667] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 11:51:34.677] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 11:51:34.679] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 11:51:34.726] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 11:51:34.801] [INFO] Network 페이지 로드 완료
+[2025-06-16 11:51:34.803] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 11:51:39.682] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:51:39.743] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 11:51:39.746] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:51:46.230] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:51:46.234] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 11:51:47.095] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 11:51:49.610] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 11:57:22.877] [INFO] 네트워크 모니터링이 정지되었습니다.
+[2025-06-16 11:57:23.955] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:57:23.992] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 11:57:23.993] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:57:24.889] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:57:24.891] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 11:57:26.214] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 11:57:32.701] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 11:57:33.755] [INFO] 네트워크 모니터링이 정지되었습니다.
+[2025-06-16 11:57:50.507] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:57:50.540] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 11:57:50.542] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:57:51.255] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 11:57:51.257] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 11:57:52.048] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 12:02:41.367] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 12:02:41.536] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 12:02:41.541] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 12:02:42.017] [INFO] 발견된 캡처 장치 수: 5
+[2025-06-16 12:02:42.019] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{707A6856-71C1-49F8-B8F4-C00E823053C4}
+[2025-06-16 12:02:42.022] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{35A632B0-E696-45BB-830E-DA060CB444E2}
+[2025-06-16 12:02:42.024] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{3A942451-150A-4334-B699-36CEA0C9527A}
+[2025-06-16 12:02:42.026] [INFO] 장치 3: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{A906DC0A-0A94-460A-B139-011428D9C6E8}
+[2025-06-16 12:02:42.028] [INFO] 장치 4: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 12:02:42.039] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 12:02:42.042] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 12:02:42.044] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 12:02:42.046] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 12:02:42.047] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 12:02:42.050] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 12:02:42.053] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 12:02:42.342] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 12:02:42.345] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 12:02:42.347] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 12:02:42.350] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 12:02:42.352] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 12:02:42.365] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 12:02:42.373] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 12:02:42.376] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 12:02:42.421] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 12:02:42.490] [INFO] Network 페이지 로드 완료
+[2025-06-16 12:02:42.492] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 12:02:43.866] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 12:02:43.922] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 12:02:43.924] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 12:02:45.197] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 12:02:45.201] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 12:02:46.119] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 12:02:48.300] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 12:11:33.664] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 12:11:33.835] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 12:11:33.840] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 12:11:33.982] [INFO] 발견된 캡처 장치 수: 5
+[2025-06-16 12:11:33.985] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{707A6856-71C1-49F8-B8F4-C00E823053C4}
+[2025-06-16 12:11:33.987] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{35A632B0-E696-45BB-830E-DA060CB444E2}
+[2025-06-16 12:11:33.989] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{3A942451-150A-4334-B699-36CEA0C9527A}
+[2025-06-16 12:11:33.991] [INFO] 장치 3: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{A906DC0A-0A94-460A-B139-011428D9C6E8}
+[2025-06-16 12:11:33.993] [INFO] 장치 4: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 12:11:34.002] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 12:11:34.005] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 12:11:34.007] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 12:11:34.009] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 12:11:34.011] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 12:11:34.013] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 12:11:34.014] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 12:11:34.304] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 12:11:34.308] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 12:11:34.310] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 12:11:34.312] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 12:11:34.315] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 12:11:34.328] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 12:11:34.336] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 12:11:34.339] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 12:11:34.351] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 12:11:34.411] [INFO] Network 페이지 로드 완료
+[2025-06-16 12:11:34.413] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 12:11:35.196] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 12:11:35.247] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 12:11:35.249] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 12:11:36.056] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 12:11:36.060] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 12:11:37.005] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 12:12:05.478] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 12:12:06.163] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 12:12:07.331] [INFO] 네트워크 모니터링이 정지되었습니다.
+[2025-06-16 12:12:09.482] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 12:12:09.514] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 12:12:09.516] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 12:12:10.690] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 12:12:10.692] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 12:12:11.434] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 12:13:53.932] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 12:13:54.121] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 12:13:54.126] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 12:13:54.258] [INFO] 발견된 캡처 장치 수: 5
+[2025-06-16 12:13:54.260] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{707A6856-71C1-49F8-B8F4-C00E823053C4}
+[2025-06-16 12:13:54.262] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{35A632B0-E696-45BB-830E-DA060CB444E2}
+[2025-06-16 12:13:54.263] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{3A942451-150A-4334-B699-36CEA0C9527A}
+[2025-06-16 12:13:54.265] [INFO] 장치 3: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{A906DC0A-0A94-460A-B139-011428D9C6E8}
+[2025-06-16 12:13:54.267] [INFO] 장치 4: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 12:13:54.276] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 12:13:54.278] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 12:13:54.280] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 12:13:54.282] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 12:13:54.283] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 12:13:54.285] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 12:13:54.286] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 12:13:54.581] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 12:13:54.584] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 12:13:54.586] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 12:13:54.588] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 12:13:54.590] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 12:13:54.608] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 12:13:54.618] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 12:13:54.620] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 12:13:54.657] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 12:13:54.730] [INFO] Network 페이지 로드 완료
+[2025-06-16 12:13:54.735] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 12:13:56.876] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 12:13:56.878] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-16 12:13:56.882] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-16 12:13:56.884] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-16 12:13:57.681] [INFO] 테스트 보안 경고 생성 시작
+[2025-06-16 12:13:57.685] [INFO] 보안 통계 업데이트: 총 8개, 24시간 8개, 고위험 4개, 미해결 8개
+[2025-06-16 12:13:57.690] [INFO] 보안 필터 적용 완료: 8개 경고 표시
+[2025-06-16 12:14:01.398] [INFO] 테스트 보안 경고 8개 생성 완료
+[2025-06-16 12:14:03.142] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 12:14:03.218] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 12:14:05.003] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 12:14:13.074] [INFO] 보안 스캔 시작
+[2025-06-16 12:14:13.076] [INFO] 기존 보안 경고 목록 초기화 완료
+[2025-06-16 12:14:13.081] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-16 12:14:13.088] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 12:14:13.090] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-16 12:14:13.092] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-16 12:14:13.094] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-16 12:14:13.096] [INFO] 보안 필터 적용 완료: 0개 경고 표시
+[2025-06-16 12:14:15.725] [INFO] 실시간 보안 스캔 완료: 0개 경고 발견
+[2025-06-16 12:14:26.325] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 12:14:28.988] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 12:14:31.449] [INFO] 네트워크 사용 기록 조회 버튼 클릭됨
+[2025-06-16 12:14:31.452] [INFO] LoadNetworkHistory 메서드 시작
+[2025-06-16 12:14:31.454] [INFO] 사용 기록 조회 시작 - 시작일: 2025-06-09, 종료일: 2025-06-16, 인터페이스: ''
+[2025-06-16 12:14:31.460] [INFO] 기존 기록 클리어 완료
+[2025-06-16 12:14:31.462] [INFO] 이벤트 로그 조회 시작
+[2025-06-16 12:14:31.493] [INFO] 이벤트 로그 조회 완료: 100개
+[2025-06-16 12:14:31.495] [INFO] netstat 조회 시작
+[2025-06-16 12:14:31.525] [INFO] netstat 조회 완료: 64개
+[2025-06-16 12:14:31.527] [INFO] WMI 조회 시작
+[2025-06-16 12:14:32.298] [INFO] WMI 조회 완료: 1개
+[2025-06-16 12:14:32.301] [INFO] 전체 기록 합계: 165개
+[2025-06-16 12:14:32.302] [INFO] 날짜 필터링 완료: 165개 → 165개
+[2025-06-16 12:14:32.304] [INFO] 시간순 정렬 완료
+[2025-06-16 12:14:32.306] [INFO] ObservableCollection에 165개 기록 추가 완료
+[2025-06-16 12:14:32.308] [INFO] HistoryDataGrid ItemsSource 업데이트 완료
+[2025-06-16 12:14:32.309] [INFO] 통계 업데이트 완료
+[2025-06-16 12:14:32.310] [INFO] 네트워크 사용 기록 로드 완료: 165개
+[2025-06-16 13:01:42.109] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 13:01:42.384] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 13:01:42.389] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 13:01:43.021] [INFO] 발견된 캡처 장치 수: 5
+[2025-06-16 13:01:43.024] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{707A6856-71C1-49F8-B8F4-C00E823053C4}
+[2025-06-16 13:01:43.026] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{35A632B0-E696-45BB-830E-DA060CB444E2}
+[2025-06-16 13:01:43.029] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{3A942451-150A-4334-B699-36CEA0C9527A}
+[2025-06-16 13:01:43.031] [INFO] 장치 3: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{A906DC0A-0A94-460A-B139-011428D9C6E8}
+[2025-06-16 13:01:43.033] [INFO] 장치 4: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 13:01:43.043] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 13:01:43.047] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 13:01:43.049] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 13:01:43.051] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 13:01:43.054] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 13:01:43.056] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 13:01:43.058] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 13:01:43.372] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 13:01:43.377] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 13:01:43.379] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 13:01:43.381] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 13:01:43.383] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 13:01:43.403] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 13:01:43.418] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 13:01:43.420] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 13:01:43.480] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:01:43.565] [INFO] Network 페이지 로드 완료
+[2025-06-16 13:01:43.568] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 13:01:47.347] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:01:47.411] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 13:01:47.414] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:01:50.621] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:01:50.625] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 13:01:52.326] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 13:02:21.491] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:23.313] [INFO] 네트워크 사용 기록 조회 버튼 클릭됨
+[2025-06-16 13:02:23.316] [INFO] LoadNetworkHistory 메서드 시작
+[2025-06-16 13:02:23.319] [INFO] 사용 기록 조회 시작 - 시작일: 2025-06-09, 종료일: 2025-06-16, 인터페이스: ''
+[2025-06-16 13:02:23.325] [INFO] 기존 기록 클리어 완료
+[2025-06-16 13:02:23.327] [INFO] 이벤트 로그 조회 시작
+[2025-06-16 13:02:23.337] [INFO] 이벤트 로그 조회 완료: 100개
+[2025-06-16 13:02:23.340] [INFO] netstat 조회 시작
+[2025-06-16 13:02:23.364] [INFO] netstat 조회 완료: 112개
+[2025-06-16 13:02:23.366] [INFO] WMI 조회 시작
+[2025-06-16 13:02:23.374] [INFO] WMI 조회 완료: 1개
+[2025-06-16 13:02:23.377] [INFO] 전체 기록 합계: 213개
+[2025-06-16 13:02:23.379] [INFO] 날짜 필터링 완료: 213개 → 213개
+[2025-06-16 13:02:23.382] [INFO] 시간순 정렬 완료
+[2025-06-16 13:02:23.384] [INFO] ObservableCollection에 213개 기록 추가 완료
+[2025-06-16 13:02:23.387] [INFO] HistoryDataGrid ItemsSource 업데이트 완료
+[2025-06-16 13:02:23.389] [INFO] 통계 업데이트 완료
+[2025-06-16 13:02:23.390] [INFO] 네트워크 사용 기록 로드 완료: 213개
+[2025-06-16 13:02:28.867] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:28.921] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:28.962] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:28.985] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.009] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.033] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.064] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.112] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.177] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.184] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.192] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.205] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.219] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.231] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.245] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.259] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.392] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.400] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.417] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.430] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.444] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.579] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.666] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.720] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.768] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.800] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:29.864] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:30.032] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:30.305] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:30.840] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:30.880] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:30.970] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:36.138] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:02:50.570] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 13:02:50.573] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-16 13:02:50.578] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-16 13:02:50.580] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-16 13:02:57.313] [INFO] 보안 스캔 시작
+[2025-06-16 13:02:57.316] [INFO] 기존 보안 경고 목록 초기화 완료
+[2025-06-16 13:02:57.321] [WARN] 보안 경고 생성: 대용량 데이터 전송 - 대용량 데이터 전송 감지: 1.65 GB
+[2025-06-16 13:02:57.324] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 1433
+[2025-06-16 13:02:57.326] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 445
+[2025-06-16 13:02:57.328] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 135
+[2025-06-16 13:02:57.330] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 139
+[2025-06-16 13:02:57.331] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 1433
+[2025-06-16 13:02:57.333] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 445
+[2025-06-16 13:02:57.334] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 135
+[2025-06-16 13:02:57.337] [INFO] 보안 통계 업데이트: 총 8개, 24시간 8개, 고위험 0개, 미해결 8개
+[2025-06-16 13:02:57.340] [INFO] 보안 필터 적용 완료: 8개 경고 표시
+[2025-06-16 13:02:58.530] [INFO] 실시간 보안 스캔 완료: 8개 경고 발견
+[2025-06-16 13:03:22.380] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 13:22:05.211] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 13:22:05.388] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 13:22:05.394] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 13:22:05.828] [INFO] 발견된 캡처 장치 수: 6
+[2025-06-16 13:22:05.830] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{78C2AB4C-41F2-4F9D-8B24-EA59E8C33B19}
+[2025-06-16 13:22:05.832] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{6A6BE18B-452C-425D-839A-C27A230F45E3}
+[2025-06-16 13:22:05.834] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{11699814-76B6-45EC-984E-BAC08CEBDC96}
+[2025-06-16 13:22:05.836] [INFO] 장치 3: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host - rpcap://\Device\NPF_{F95A1E67-E9AE-4F7C-93A8-D85CD1AEC48C}
+[2025-06-16 13:22:05.838] [INFO] 장치 4: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{8E8A3756-FA76-4402-A156-F11371D22306}
+[2025-06-16 13:22:05.840] [INFO] 장치 5: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 13:22:05.855] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 13:22:05.858] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 13:22:05.860] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 13:22:05.862] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 13:22:05.863] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 13:22:05.865] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 13:22:05.867] [INFO] 처리 중인 장치: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 13:22:05.869] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 13:22:05.871] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 13:22:06.164] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 13:22:06.167] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 13:22:06.169] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 13:22:06.171] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 13:22:06.173] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 13:22:06.187] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 13:22:06.196] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 13:22:06.198] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 13:22:06.264] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:22:06.334] [INFO] Network 페이지 로드 완료
+[2025-06-16 13:22:06.337] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 13:22:08.019] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:22:08.077] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 13:22:08.078] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:22:09.136] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:22:09.139] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 13:22:10.466] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 13:22:14.238] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:22:17.668] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:22:29.100] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:22:31.970] [INFO] 네트워크 사용 기록 조회 버튼 클릭됨
+[2025-06-16 13:22:31.975] [INFO] LoadNetworkHistory 메서드 시작
+[2025-06-16 13:22:31.977] [INFO] 사용 기록 조회 시작 - 시작일: 2025-06-09, 종료일: 2025-06-16, 인터페이스: ''
+[2025-06-16 13:22:31.985] [INFO] 기존 기록 클리어 완료
+[2025-06-16 13:22:31.988] [INFO] 이벤트 로그 조회 시작
+[2025-06-16 13:22:32.087] [INFO] 이벤트 로그 조회 완료: 0개
+[2025-06-16 13:22:32.089] [INFO] netstat 조회 시작
+[2025-06-16 13:22:32.112] [INFO] netstat 조회 완료: 143개
+[2025-06-16 13:22:32.113] [INFO] WMI 조회 시작
+[2025-06-16 13:22:32.122] [INFO] WMI 조회 완료: 1개
+[2025-06-16 13:22:32.124] [INFO] 전체 기록 합계: 144개
+[2025-06-16 13:22:32.127] [INFO] 날짜 필터링 완료: 144개 → 144개
+[2025-06-16 13:22:32.130] [INFO] 시간순 정렬 완료
+[2025-06-16 13:22:32.132] [INFO] ObservableCollection에 144개 기록 추가 완료
+[2025-06-16 13:22:32.135] [INFO] HistoryDataGrid ItemsSource 업데이트 완료
+[2025-06-16 13:22:32.137] [INFO] 통계 업데이트 완료
+[2025-06-16 13:22:32.138] [INFO] 네트워크 사용 기록 로드 완료: 144개
+[2025-06-16 13:22:49.160] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 13:22:49.163] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-16 13:22:49.168] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-16 13:22:49.171] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-16 13:22:50.523] [INFO] 보안 스캔 시작
+[2025-06-16 13:22:50.526] [INFO] 기존 보안 경고 목록 초기화 완료
+[2025-06-16 13:22:50.531] [WARN] 보안 경고 생성: 대용량 데이터 전송 - 대용량 데이터 전송 감지: 137.23 MB
+[2025-06-16 13:22:50.534] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 445
+[2025-06-16 13:22:50.536] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 135
+[2025-06-16 13:22:50.538] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 139
+[2025-06-16 13:22:50.540] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 139
+[2025-06-16 13:22:50.542] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 445
+[2025-06-16 13:22:50.544] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 135
+[2025-06-16 13:22:50.546] [INFO] 보안 통계 업데이트: 총 7개, 24시간 7개, 고위험 0개, 미해결 7개
+[2025-06-16 13:22:50.549] [INFO] 보안 필터 적용 완료: 7개 경고 표시
+[2025-06-16 13:22:51.924] [INFO] 실시간 보안 스캔 완료: 7개 경고 발견
+[2025-06-16 13:23:22.316] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:23:23.160] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:23:24.800] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 13:24:01.024] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:24:17.739] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:25:04.490] [INFO] 네트워크 모니터링이 정지되었습니다.
+[2025-06-16 13:25:12.370] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:25:12.414] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 13:25:12.416] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:25:13.379] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:25:13.381] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 13:25:13.588] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 13:25:19.182] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:25:20.074] [INFO] 네트워크 모니터링이 정지되었습니다.
+[2025-06-16 13:25:21.618] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:25:21.649] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 13:25:21.650] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:25:22.609] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:25:22.611] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 13:25:22.698] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 13:27:47.608] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:33:49.737] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:33:50.625] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:33:53.325] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 13:33:55.698] [INFO] 보안 스캔 시작
+[2025-06-16 13:33:55.700] [INFO] 기존 보안 경고 목록 초기화 완료
+[2025-06-16 13:33:55.702] [WARN] 보안 경고 생성: 대용량 데이터 전송 - 대용량 데이터 전송 감지: 137.23 MB
+[2025-06-16 13:33:55.703] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 445
+[2025-06-16 13:33:55.705] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 135
+[2025-06-16 13:33:55.706] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 139
+[2025-06-16 13:33:55.708] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 139
+[2025-06-16 13:33:55.710] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 445
+[2025-06-16 13:33:55.712] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 135
+[2025-06-16 13:33:55.713] [INFO] 보안 통계 업데이트: 총 7개, 24시간 7개, 고위험 0개, 미해결 7개
+[2025-06-16 13:33:55.718] [INFO] 보안 필터 적용 완료: 7개 경고 표시
+[2025-06-16 13:33:56.809] [INFO] 실시간 보안 스캔 완료: 7개 경고 발견
+[2025-06-16 13:33:58.039] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:34:44.965] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 13:34:44.976] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 13:34:44.979] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 13:34:45.001] [INFO] 발견된 캡처 장치 수: 6
+[2025-06-16 13:34:45.003] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{78C2AB4C-41F2-4F9D-8B24-EA59E8C33B19}
+[2025-06-16 13:34:45.005] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{6A6BE18B-452C-425D-839A-C27A230F45E3}
+[2025-06-16 13:34:45.006] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{11699814-76B6-45EC-984E-BAC08CEBDC96}
+[2025-06-16 13:34:45.007] [INFO] 장치 3: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host - rpcap://\Device\NPF_{F95A1E67-E9AE-4F7C-93A8-D85CD1AEC48C}
+[2025-06-16 13:34:45.009] [INFO] 장치 4: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{8E8A3756-FA76-4402-A156-F11371D22306}
+[2025-06-16 13:34:45.010] [INFO] 장치 5: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 13:34:45.020] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 13:34:45.022] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 13:34:45.024] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 13:34:45.025] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 13:34:45.027] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 13:34:45.029] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 13:34:45.031] [INFO] 처리 중인 장치: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 13:34:45.032] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 13:34:45.035] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 13:34:45.036] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 13:34:45.037] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 13:34:45.039] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 13:34:45.040] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 13:34:45.041] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 13:34:45.043] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 13:34:45.045] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 13:34:45.046] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 13:34:45.059] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:34:45.083] [INFO] Network 페이지 로드 완료
+[2025-06-16 13:34:45.085] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 13:34:45.227] [INFO] InstalledPrograms 초기화 시작
+[2025-06-16 13:34:45.235] [INFO] InitializeComponent 완료
+[2025-06-16 13:34:45.239] [INFO] DataGrid 초기화 완료
+[2025-06-16 13:34:45.309] [INFO] 스피너 초기화 완료
+[2025-06-16 13:34:45.311] [INFO] InstalledPrograms 초기화 완료
+[2025-06-16 13:34:45.891] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 13:34:45.897] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 13:34:45.900] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 13:34:45.922] [INFO] 발견된 캡처 장치 수: 6
+[2025-06-16 13:34:45.924] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{78C2AB4C-41F2-4F9D-8B24-EA59E8C33B19}
+[2025-06-16 13:34:45.925] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{6A6BE18B-452C-425D-839A-C27A230F45E3}
+[2025-06-16 13:34:45.927] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{11699814-76B6-45EC-984E-BAC08CEBDC96}
+[2025-06-16 13:34:45.928] [INFO] 장치 3: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host - rpcap://\Device\NPF_{F95A1E67-E9AE-4F7C-93A8-D85CD1AEC48C}
+[2025-06-16 13:34:45.930] [INFO] 장치 4: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{8E8A3756-FA76-4402-A156-F11371D22306}
+[2025-06-16 13:34:45.931] [INFO] 장치 5: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 13:34:45.943] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 13:34:45.945] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 13:34:45.947] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 13:34:45.948] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 13:34:45.950] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 13:34:45.952] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 13:34:45.953] [INFO] 처리 중인 장치: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 13:34:45.955] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 13:34:45.957] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 13:34:45.958] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 13:34:45.959] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 13:34:45.961] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 13:34:45.962] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 13:34:45.964] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 13:34:45.966] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 13:34:45.968] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 13:34:45.970] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 13:34:45.974] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:34:45.994] [INFO] Network 페이지 로드 완료
+[2025-06-16 13:34:45.996] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 13:34:47.314] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:34:47.346] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 13:34:47.347] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:34:47.998] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 13:34:48.001] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 13:34:48.220] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 13:35:14.082] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 13:35:14.089] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 13:35:14.091] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 13:35:14.113] [INFO] 발견된 캡처 장치 수: 6
+[2025-06-16 13:35:14.115] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{78C2AB4C-41F2-4F9D-8B24-EA59E8C33B19}
+[2025-06-16 13:35:14.117] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{6A6BE18B-452C-425D-839A-C27A230F45E3}
+[2025-06-16 13:35:14.118] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{11699814-76B6-45EC-984E-BAC08CEBDC96}
+[2025-06-16 13:35:14.119] [INFO] 장치 3: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host - rpcap://\Device\NPF_{F95A1E67-E9AE-4F7C-93A8-D85CD1AEC48C}
+[2025-06-16 13:35:14.120] [INFO] 장치 4: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{8E8A3756-FA76-4402-A156-F11371D22306}
+[2025-06-16 13:35:14.122] [INFO] 장치 5: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 13:35:14.132] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 13:35:14.133] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 13:35:14.135] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 13:35:14.137] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 13:35:14.138] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 13:35:14.139] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 13:35:14.140] [INFO] 처리 중인 장치: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 13:35:14.142] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 13:35:14.143] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 13:35:14.144] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 13:35:14.145] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 13:35:14.146] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 13:35:14.147] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 13:35:14.148] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 13:35:14.150] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 13:35:14.152] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 13:35:14.153] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 13:35:14.158] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:35:14.170] [INFO] Network 페이지 로드 완료
+[2025-06-16 13:35:14.172] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 13:35:14.618] [INFO] InstalledPrograms 초기화 시작
+[2025-06-16 13:35:14.626] [INFO] InitializeComponent 완료
+[2025-06-16 13:35:14.629] [INFO] DataGrid 초기화 완료
+[2025-06-16 13:35:14.685] [INFO] 스피너 초기화 완료
+[2025-06-16 13:35:14.687] [INFO] InstalledPrograms 초기화 완료
+[2025-06-16 13:35:16.332] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 13:35:16.339] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 13:35:16.342] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 13:35:16.363] [INFO] 발견된 캡처 장치 수: 6
+[2025-06-16 13:35:16.364] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{78C2AB4C-41F2-4F9D-8B24-EA59E8C33B19}
+[2025-06-16 13:35:16.366] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{6A6BE18B-452C-425D-839A-C27A230F45E3}
+[2025-06-16 13:35:16.367] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{11699814-76B6-45EC-984E-BAC08CEBDC96}
+[2025-06-16 13:35:16.369] [INFO] 장치 3: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host - rpcap://\Device\NPF_{F95A1E67-E9AE-4F7C-93A8-D85CD1AEC48C}
+[2025-06-16 13:35:16.371] [INFO] 장치 4: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{8E8A3756-FA76-4402-A156-F11371D22306}
+[2025-06-16 13:35:16.372] [INFO] 장치 5: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 13:35:16.383] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 13:35:16.386] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 13:35:16.388] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 13:35:16.391] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 13:35:16.393] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 13:35:16.395] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 13:35:16.397] [INFO] 처리 중인 장치: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 13:35:16.399] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 13:35:16.401] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 13:35:16.403] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 13:35:16.405] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 13:35:16.407] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 13:35:16.409] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 13:35:16.411] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 13:35:16.414] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 13:35:16.417] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 13:35:16.419] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 13:35:16.429] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:35:16.441] [INFO] Network 페이지 로드 완료
+[2025-06-16 13:35:16.442] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 13:35:21.563] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 13:35:21.565] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-16 13:35:21.568] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-16 13:35:21.571] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-16 13:35:22.474] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:35:22.883] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:35:23.875] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:38:35.824] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 13:38:36.650] [INFO] 보안 스캔 시작
+[2025-06-16 13:38:36.652] [INFO] 기존 보안 경고 목록 초기화 완료
+[2025-06-16 13:38:36.655] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-16 13:38:36.656] [INFO] 보안 필터 적용 완료: 0개 경고 표시
+[2025-06-16 13:38:37.464] [INFO] 실시간 보안 스캔 완료: 0개 경고 발견
+[2025-06-16 13:38:42.769] [INFO] 보안 스캔 시작
+[2025-06-16 13:38:42.772] [INFO] 기존 보안 경고 목록 초기화 완료
+[2025-06-16 13:38:42.774] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-16 13:38:42.775] [INFO] 보안 필터 적용 완료: 0개 경고 표시
+[2025-06-16 13:38:43.887] [INFO] 실시간 보안 스캔 완료: 0개 경고 발견
+[2025-06-16 13:39:36.230] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 13:40:00.914] [INFO] InstalledPrograms 초기화 시작
+[2025-06-16 13:40:00.923] [INFO] InitializeComponent 완료
+[2025-06-16 13:40:00.926] [INFO] DataGrid 초기화 완료
+[2025-06-16 13:40:00.977] [INFO] 스피너 초기화 완료
+[2025-06-16 13:40:00.979] [INFO] InstalledPrograms 초기화 완료
+[2025-06-16 13:41:00.315] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 13:41:00.326] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 13:41:00.329] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 13:41:00.355] [INFO] 발견된 캡처 장치 수: 6
+[2025-06-16 13:41:00.357] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{78C2AB4C-41F2-4F9D-8B24-EA59E8C33B19}
+[2025-06-16 13:41:00.358] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{6A6BE18B-452C-425D-839A-C27A230F45E3}
+[2025-06-16 13:41:00.360] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{11699814-76B6-45EC-984E-BAC08CEBDC96}
+[2025-06-16 13:41:00.362] [INFO] 장치 3: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host - rpcap://\Device\NPF_{F95A1E67-E9AE-4F7C-93A8-D85CD1AEC48C}
+[2025-06-16 13:41:00.363] [INFO] 장치 4: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{8E8A3756-FA76-4402-A156-F11371D22306}
+[2025-06-16 13:41:00.365] [INFO] 장치 5: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 13:41:00.376] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 13:41:00.379] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 13:41:00.380] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 13:41:00.382] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 13:41:00.383] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 13:41:00.385] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 13:41:00.387] [INFO] 처리 중인 장치: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 13:41:00.389] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 13:41:00.391] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 13:41:00.393] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 13:41:00.395] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 13:41:00.396] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 13:41:00.398] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 13:41:00.399] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 13:41:00.402] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 13:41:00.404] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 13:41:00.405] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 13:41:00.412] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 13:41:00.432] [INFO] Network 페이지 로드 완료
+[2025-06-16 13:41:00.434] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 13:41:22.230] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 14:00:58.430] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 14:00:58.594] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 14:00:58.599] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 14:00:58.829] [INFO] 발견된 캡처 장치 수: 6
+[2025-06-16 14:00:58.832] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{78C2AB4C-41F2-4F9D-8B24-EA59E8C33B19}
+[2025-06-16 14:00:58.835] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{6A6BE18B-452C-425D-839A-C27A230F45E3}
+[2025-06-16 14:00:58.840] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{11699814-76B6-45EC-984E-BAC08CEBDC96}
+[2025-06-16 14:00:58.845] [INFO] 장치 3: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host - rpcap://\Device\NPF_{F95A1E67-E9AE-4F7C-93A8-D85CD1AEC48C}
+[2025-06-16 14:00:58.849] [INFO] 장치 4: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{8E8A3756-FA76-4402-A156-F11371D22306}
+[2025-06-16 14:00:58.854] [INFO] 장치 5: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 14:00:58.872] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 14:00:58.875] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 14:00:58.878] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 14:00:58.881] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 14:00:58.884] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 14:00:58.887] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 14:00:58.890] [INFO] 처리 중인 장치: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 14:00:58.894] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 14:00:58.897] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 14:00:59.188] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 14:00:59.193] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 14:00:59.195] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 14:00:59.197] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 14:00:59.200] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 14:00:59.213] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 14:00:59.223] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 14:00:59.226] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 14:00:59.275] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 14:00:59.338] [INFO] Network 페이지 로드 완료
+[2025-06-16 14:00:59.340] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 14:01:35.867] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 14:01:35.931] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 14:01:35.933] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 14:01:39.942] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 14:01:39.946] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 14:01:40.829] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 14:01:56.286] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 14:01:59.745] [INFO] 네트워크 사용 기록 조회 버튼 클릭됨
+[2025-06-16 14:01:59.749] [INFO] LoadNetworkHistory 메서드 시작
+[2025-06-16 14:01:59.752] [INFO] 사용 기록 조회 시작 - 시작일: 2025-06-09, 종료일: 2025-06-16, 인터페이스: ''
+[2025-06-16 14:01:59.759] [INFO] 기존 기록 클리어 완료
+[2025-06-16 14:01:59.761] [INFO] 이벤트 로그 조회 시작
+[2025-06-16 14:01:59.857] [INFO] 이벤트 로그 조회 완료: 0개
+[2025-06-16 14:01:59.860] [INFO] netstat 조회 시작
+[2025-06-16 14:01:59.883] [INFO] netstat 조회 완료: 119개
+[2025-06-16 14:01:59.886] [INFO] WMI 조회 시작
+[2025-06-16 14:01:59.894] [INFO] WMI 조회 완료: 1개
+[2025-06-16 14:01:59.896] [INFO] 전체 기록 합계: 120개
+[2025-06-16 14:01:59.899] [INFO] 날짜 필터링 완료: 120개 → 120개
+[2025-06-16 14:01:59.902] [INFO] 시간순 정렬 완료
+[2025-06-16 14:01:59.905] [INFO] ObservableCollection에 120개 기록 추가 완료
+[2025-06-16 14:01:59.908] [INFO] HistoryDataGrid ItemsSource 업데이트 완료
+[2025-06-16 14:01:59.910] [INFO] 통계 업데이트 완료
+[2025-06-16 14:01:59.912] [INFO] 네트워크 사용 기록 로드 완료: 120개
+[2025-06-16 14:02:58.211] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 14:04:07.770] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 14:04:07.772] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-16 14:04:07.776] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-16 14:04:07.777] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-16 14:04:08.530] [INFO] 보안 스캔 시작
+[2025-06-16 14:04:08.532] [INFO] 기존 보안 경고 목록 초기화 완료
+[2025-06-16 14:04:08.538] [WARN] 보안 경고 생성: 대용량 데이터 전송 - 대용량 데이터 전송 감지: 307.06 MB
+[2025-06-16 14:04:08.540] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 445
+[2025-06-16 14:04:08.542] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 135
+[2025-06-16 14:04:08.544] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 139
+[2025-06-16 14:04:08.545] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 139
+[2025-06-16 14:04:08.547] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 445
+[2025-06-16 14:04:08.549] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 135
+[2025-06-16 14:04:08.552] [INFO] 보안 통계 업데이트: 총 7개, 24시간 7개, 고위험 0개, 미해결 7개
+[2025-06-16 14:04:08.554] [INFO] 보안 필터 적용 완료: 7개 경고 표시
+[2025-06-16 14:04:09.713] [INFO] 실시간 보안 스캔 완료: 7개 경고 발견
+[2025-06-16 14:13:00.549] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 14:13:00.693] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 14:13:00.698] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 14:13:00.892] [INFO] 발견된 캡처 장치 수: 6
+[2025-06-16 14:13:00.895] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{78C2AB4C-41F2-4F9D-8B24-EA59E8C33B19}
+[2025-06-16 14:13:00.897] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{6A6BE18B-452C-425D-839A-C27A230F45E3}
+[2025-06-16 14:13:00.899] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{11699814-76B6-45EC-984E-BAC08CEBDC96}
+[2025-06-16 14:13:00.901] [INFO] 장치 3: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host - rpcap://\Device\NPF_{F95A1E67-E9AE-4F7C-93A8-D85CD1AEC48C}
+[2025-06-16 14:13:00.903] [INFO] 장치 4: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{8E8A3756-FA76-4402-A156-F11371D22306}
+[2025-06-16 14:13:00.904] [INFO] 장치 5: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 14:13:00.916] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 14:13:00.918] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 14:13:00.920] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 14:13:00.922] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 14:13:00.924] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 14:13:00.925] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 14:13:00.927] [INFO] 처리 중인 장치: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 14:13:00.928] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 14:13:00.930] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 14:13:01.226] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 14:13:01.230] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 14:13:01.232] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 14:13:01.234] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 14:13:01.237] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 14:13:01.249] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 14:13:01.257] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 14:13:01.260] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 14:13:01.271] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 14:13:01.322] [INFO] Network 페이지 로드 완료
+[2025-06-16 14:13:01.324] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 14:13:06.770] [INFO] 네트워크 모니터링 시작 시도: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 14:13:06.825] [INFO] 장치 접근 테스트 실패 (하지만 시도 가능): Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 14:13:06.826] [INFO] 장치 접근 테스트 실패: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 14:13:08.142] [INFO] 대안 네트워크 모니터링 시작: Network adapter 'Realtek PCIe GbE Family Contro... 🔌 ✓ [활성]
+[2025-06-16 14:13:08.146] [INFO] 대안 모니터링 타이머 시작됨
+[2025-06-16 14:13:08.460] [INFO] 초기 네트워크 데이터 로드 완료
+[2025-06-16 14:13:20.996] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 14:13:22.377] [INFO] 네트워크 사용 기록 조회 버튼 클릭됨
+[2025-06-16 14:13:22.381] [INFO] LoadNetworkHistory 메서드 시작
+[2025-06-16 14:13:22.384] [INFO] 사용 기록 조회 시작 - 시작일: 2025-06-09, 종료일: 2025-06-16, 인터페이스: ''
+[2025-06-16 14:13:22.390] [INFO] 기존 기록 클리어 완료
+[2025-06-16 14:13:22.393] [INFO] 이벤트 로그 조회 시작
+[2025-06-16 14:13:22.490] [INFO] 이벤트 로그 조회 완료: 0개
+[2025-06-16 14:13:22.493] [INFO] netstat 조회 시작
+[2025-06-16 14:13:22.518] [INFO] netstat 조회 완료: 131개
+[2025-06-16 14:13:22.520] [INFO] WMI 조회 시작
+[2025-06-16 14:13:22.530] [INFO] WMI 조회 완료: 1개
+[2025-06-16 14:13:22.533] [INFO] 전체 기록 합계: 132개
+[2025-06-16 14:13:22.536] [INFO] 날짜 필터링 완료: 132개 → 132개
+[2025-06-16 14:13:22.541] [INFO] 시간순 정렬 완료
+[2025-06-16 14:13:22.544] [INFO] ObservableCollection에 132개 기록 추가 완료
+[2025-06-16 14:13:22.546] [INFO] HistoryDataGrid ItemsSource 업데이트 완료
+[2025-06-16 14:13:22.548] [INFO] 통계 업데이트 완료
+[2025-06-16 14:13:22.550] [INFO] 네트워크 사용 기록 로드 완료: 132개
+[2025-06-16 14:13:25.314] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 14:13:31.931] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 14:13:31.993] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 14:13:32.106] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 14:13:32.265] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 14:13:32.361] [INFO] 탭 변경됨: HistoryTab
+[2025-06-16 14:13:38.827] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 14:13:38.829] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-16 14:13:38.833] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-16 14:13:38.835] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-16 14:13:52.138] [INFO] 보안 스캔 시작
+[2025-06-16 14:13:52.141] [INFO] 기존 보안 경고 목록 초기화 완료
+[2025-06-16 14:13:52.145] [WARN] 보안 경고 생성: 대용량 데이터 전송 - 대용량 데이터 전송 감지: 309.18 MB
+[2025-06-16 14:13:52.148] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 445
+[2025-06-16 14:13:52.150] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 135
+[2025-06-16 14:13:52.151] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 139
+[2025-06-16 14:13:52.153] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 139
+[2025-06-16 14:13:52.154] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 445
+[2025-06-16 14:13:52.155] [WARN] 보안 경고 생성: 의심스러운 포트 사용 - 의심스러운 포트 사용 감지: 135
+[2025-06-16 14:13:52.158] [INFO] 보안 통계 업데이트: 총 7개, 24시간 7개, 고위험 0개, 미해결 7개
+[2025-06-16 14:13:52.160] [INFO] 보안 필터 적용 완료: 7개 경고 표시
+[2025-06-16 14:13:53.498] [INFO] 실시간 보안 스캔 완료: 7개 경고 발견
+[2025-06-16 14:14:13.670] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 14:17:17.791] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 14:17:17.810] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 14:17:17.813] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 14:17:17.836] [INFO] 발견된 캡처 장치 수: 6
+[2025-06-16 14:17:17.838] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{78C2AB4C-41F2-4F9D-8B24-EA59E8C33B19}
+[2025-06-16 14:17:17.840] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{6A6BE18B-452C-425D-839A-C27A230F45E3}
+[2025-06-16 14:17:17.842] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{11699814-76B6-45EC-984E-BAC08CEBDC96}
+[2025-06-16 14:17:17.843] [INFO] 장치 3: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host - rpcap://\Device\NPF_{F95A1E67-E9AE-4F7C-93A8-D85CD1AEC48C}
+[2025-06-16 14:17:17.845] [INFO] 장치 4: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{8E8A3756-FA76-4402-A156-F11371D22306}
+[2025-06-16 14:17:17.847] [INFO] 장치 5: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 14:17:17.857] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 14:17:17.860] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 14:17:17.861] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 14:17:17.863] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 14:17:17.864] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 14:17:17.866] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 14:17:17.867] [INFO] 처리 중인 장치: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 14:17:17.869] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 14:17:17.871] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 14:17:17.872] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 14:17:17.873] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 14:17:17.875] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 14:17:17.876] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 14:17:17.877] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 14:17:17.880] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 14:17:17.882] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 14:17:17.884] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 14:17:17.888] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 14:17:17.906] [INFO] Network 페이지 로드 완료
+[2025-06-16 14:17:17.907] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 14:18:06.114] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 14:18:06.117] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-16 14:18:06.118] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-16 14:18:06.119] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-16 14:19:35.522] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 14:19:35.534] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 14:19:35.537] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 14:19:35.558] [INFO] 발견된 캡처 장치 수: 6
+[2025-06-16 14:19:35.561] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{78C2AB4C-41F2-4F9D-8B24-EA59E8C33B19}
+[2025-06-16 14:19:35.562] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{6A6BE18B-452C-425D-839A-C27A230F45E3}
+[2025-06-16 14:19:35.564] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{11699814-76B6-45EC-984E-BAC08CEBDC96}
+[2025-06-16 14:19:35.565] [INFO] 장치 3: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host - rpcap://\Device\NPF_{F95A1E67-E9AE-4F7C-93A8-D85CD1AEC48C}
+[2025-06-16 14:19:35.566] [INFO] 장치 4: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{8E8A3756-FA76-4402-A156-F11371D22306}
+[2025-06-16 14:19:35.568] [INFO] 장치 5: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 14:19:35.578] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 14:19:35.580] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 14:19:35.582] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 14:19:35.584] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 14:19:35.586] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 14:19:35.587] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 14:19:35.588] [INFO] 처리 중인 장치: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 14:19:35.590] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 14:19:35.591] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 14:19:35.592] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 14:19:35.594] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 14:19:35.595] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 14:19:35.596] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 14:19:35.597] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 14:19:35.600] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 14:19:35.602] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 14:19:35.603] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 14:19:35.607] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 14:19:35.625] [INFO] Network 페이지 로드 완료
+[2025-06-16 14:19:35.627] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 14:22:34.482] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-16 14:22:34.495] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 14:22:34.498] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-16 14:22:34.521] [INFO] 발견된 캡처 장치 수: 6
+[2025-06-16 14:22:34.523] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{78C2AB4C-41F2-4F9D-8B24-EA59E8C33B19}
+[2025-06-16 14:22:34.525] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{6A6BE18B-452C-425D-839A-C27A230F45E3}
+[2025-06-16 14:22:34.526] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{11699814-76B6-45EC-984E-BAC08CEBDC96}
+[2025-06-16 14:22:34.528] [INFO] 장치 3: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host - rpcap://\Device\NPF_{F95A1E67-E9AE-4F7C-93A8-D85CD1AEC48C}
+[2025-06-16 14:22:34.529] [INFO] 장치 4: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - rpcap://\Device\NPF_{8E8A3756-FA76-4402-A156-F11371D22306}
+[2025-06-16 14:22:34.531] [INFO] 장치 5: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-16 14:22:34.541] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 14:22:34.543] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-16 14:22:34.545] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 14:22:34.547] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-16 14:22:34.549] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 14:22:34.551] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-16 14:22:34.552] [INFO] 처리 중인 장치: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 14:22:34.553] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'VirtualBox Host-Only Ethernet Adapter' on local host
+[2025-06-16 14:22:34.555] [INFO] 처리 중인 장치: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host
+[2025-06-16 14:22:34.556] [INFO] 장치 접근 가능성: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host = True
+[2025-06-16 14:22:34.557] [INFO] 장치 상태: Network adapter 'Realtek PCIe GbE Family Controller #6' on local host - 활성: True, IP: True, 우선순위: 110
+[2025-06-16 14:22:34.558] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 14:22:34.559] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-16 14:22:34.561] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-06-16 14:22:34.563] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-16 14:22:34.564] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-16 14:22:34.566] [INFO] 히스토리 탭 초기화 완료
+[2025-06-16 14:22:34.570] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-16 14:22:34.591] [INFO] Network 페이지 로드 완료
+[2025-06-16 14:22:34.593] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-16 14:22:36.259] [INFO] 탭 변경됨: SecurityTab
+[2025-06-16 14:22:36.260] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-16 14:22:36.262] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-16 14:22:36.263] [INFO] 보안 탭 지연 초기화 완료

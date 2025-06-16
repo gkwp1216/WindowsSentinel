@@ -121,6 +121,7 @@ namespace LogCheck.Models
                     Protocol = "TCP",
                     Flags = GetTcpFlags(tcpPacket),
                     Length = rawPacket.Data.Length,
+                    PacketSize = rawPacket.Data.Length,
                     ProcessId = GetProcessId(ipPacket.SourceAddress, tcpPacket.SourcePort)
                 };
 
@@ -410,5 +411,11 @@ namespace LogCheck.Models
         public string Flags { get; set; } = string.Empty;
         public int Length { get; set; }
         public int? ProcessId { get; set; }
+        
+        // 추가된 속성들
+        public string Direction { get; set; } = string.Empty;
+        public long PacketSize { get; set; }
+        public string ProcessName { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
     }
 } 

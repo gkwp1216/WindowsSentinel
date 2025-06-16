@@ -395,5 +395,12 @@ namespace LogCheck
             NavigateToPage(new Recoverys());
             HelpButton.Visibility = Visibility.Collapsed;
         }
+
+        [SupportedOSPlatform("windows")]
+        private void VaccineButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new Vaccine());
+            HelpButton.Visibility = Visibility.Collapsed;
+        }
     }
 }

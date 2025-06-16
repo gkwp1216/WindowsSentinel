@@ -8,13 +8,13 @@ C:\Users\admin\Documents\KKW\LogCheck\obj\Debug\net8.0-windows\
 LogCheck
 none
 false
-TRACE;DEBUG;NET;NET8_0;NETCOREAPP
+TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\admin\Documents\KKW\LogCheck\App.xaml
-8-163147624
+9-1185594976
 
-24-1369827819
-229-564743008
-DarkTheme.xaml;LightTheme.xaml;Logs.xaml;MainWindows.xaml;NetWorks.xaml;ProgramsList.xaml;Recoverys.xaml;Setting.xaml;
+251294715550
+229192507974
+DarkTheme.xaml;LightTheme.xaml;Logs.xaml;MainWindows.xaml;NetWorks.xaml;ProgramsList.xaml;Recoverys.xaml;Setting.xaml;Vaccine.xaml;
 
 False
 

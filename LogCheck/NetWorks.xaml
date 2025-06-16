@@ -182,6 +182,13 @@
                                     <ComboBoxItem Content="UDP"/>
                                     <ComboBoxItem Content="ICMP"/>
                                 </ComboBox>
+
+                                <!-- 상태 표시 -->
+                                <TextBlock x:Name="CaptureStatusText"
+                                           Margin="20,0,0,0"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource ForegroundColor}"
+                                           FontWeight="SemiBold"/>
                             </StackPanel>
                         </Border>
 
@@ -215,7 +222,7 @@
                                     <DataGridTextColumn Header="D포트" Binding="{Binding DestinationPort}" Width="50"/>
                                     <DataGridTextColumn Header="프로토콜" Binding="{Binding Protocol}" Width="55"/>
                                     <DataGridTextColumn Header="프로세스" Binding="{Binding ProcessName}" Width="80"/>
-                                    <DataGridTextColumn Header="크기" Binding="{Binding PacketLength, Converter={StaticResource FileSizeConverter}}" Width="55"/>
+                                    <DataGridTextColumn Header="크기" Binding="{Binding PacketSize, Converter={StaticResource FileSizeConverter}}" Width="55"/>
                                     <DataGridTextColumn Header="플래그" Binding="{Binding Flags}" Width="60"/>
                                 </DataGrid.Columns>
                             </DataGrid>
@@ -482,7 +489,7 @@
                                     <DataGridTextColumn Header="대상 포트" Binding="{Binding DestinationPortDisplay}" Width="100"/>
                                     <DataGridTextColumn Header="프로토콜" Binding="{Binding Protocol}" Width="80"/>
                                     <DataGridTextColumn Header="방향" Binding="{Binding Direction}" Width="0.8*" MinWidth="45"/>
-                                    <DataGridTextColumn Header="크기" Binding="{Binding PacketSize, Converter={StaticResource FileSizeConverter}}" Width="1*" MinWidth="55"/>
+                                    <DataGridTextColumn Header="크기" Binding="{Binding PacketSize, Converter={StaticResource FileSizeConverter}}" Width="55"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Border>

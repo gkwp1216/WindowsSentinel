@@ -1,0 +1,42 @@
+<Page x:Class="LogCheck.Vaccine"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignHeight="800" d:DesignWidth="1200"
+      Title="Vaccine" Background="{DynamicResource BackgroundColor}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,20">
+            <TextBlock Text="백신 검사" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor}"/>
+            <ProgressBar x:Name="scanProgressBar" Width="200" Height="20" Margin="20,0,0,0" Visibility="Collapsed"/>
+        </StackPanel>
+
+        <!-- Controls -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,50,0,10">
+            <TextBox x:Name="pathTextBox" Width="400" Height="30" IsReadOnly="True" Margin="0,0,10,0"/>
+            <Button x:Name="browseButton" Content="Browse" Width="80" Height="30" Click="BrowseButton_Click" Margin="0,0,10,0"/>
+            <Button x:Name="scanButton" Content="Scan" Width="80" Height="30" Click="ScanButton_Click"/>
+        </StackPanel>
+
+        <!-- DataGrid -->
+        <DataGrid x:Name="resultDataGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,10,0,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="파일 경로" Binding="{Binding Path}" Width="*"/>
+                <DataGridTextColumn Header="SHA-256" Binding="{Binding Sha256}" Width="280"/>
+                <DataGridTextColumn Header="판정" Binding="{Binding Verdict}" Width="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Footer -->
+        <TextBlock Grid.Row="2" Text="* MalwareBazaar API를 통해 해시 기반 악성 여부를 확인합니다." FontStyle="Italic" Foreground="{DynamicResource ForegroundColor}"/>
+    </Grid>
+</Page> 
