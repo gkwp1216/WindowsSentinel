@@ -39,12 +39,12 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "LogCheck",
+              "Title": "LogCheck.csproj",
               "DocumentMoniker": "C:\\Users\\admin\\Documents\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel_0616\\WindowsSentinel\\LogCheck\\LogCheck.csproj",
               "RelativeDocumentMoniker": "LogCheck.csproj",
               "ToolTip": "C:\\Users\\admin\\Documents\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel_0616\\WindowsSentinel\\LogCheck\\LogCheck.csproj",
               "RelativeToolTip": "LogCheck.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvw8AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvw0AAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
               "WhenOpened": "2025-06-16T00:17:11.175Z",
               "EditorCaption": ""
@@ -58,8 +58,7 @@
               "ToolTip": "C:\\Users\\admin\\Documents\\\uCE74\uCE74\uC624\uD1A1 \uBC1B\uC740 \uD30C\uC77C\\WindowsSentinel_0616\\WindowsSentinel\\LogCheck\\ProgramsList.xaml",
               "RelativeToolTip": "ProgramsList.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-06-15T17:17:41.716Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-15T17:17:41.716Z"
             },
             {
               "$type": "Document",

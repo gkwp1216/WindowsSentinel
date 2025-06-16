@@ -8,22 +8,14 @@
       d:DesignHeight="800" d:DesignWidth="1200"
       Title="Setting" Background="{DynamicResource BackgroundColor}">
 
-<<<<<<< HEAD
     <Grid Grid.Column="1">
-=======
-    <Grid Grid.Column="1" Margin="10">
->>>>>>> e0a62f76f986c6042a01fc33c90a24d6bb90b903
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-<<<<<<< HEAD
         <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20" Margin="20,0,20,20" BorderBrush="#C2C2C2" BorderThickness="1">
-=======
-        <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20" Margin="0,0,0,10" BorderBrush="#C2C2C2" BorderThickness="1">
->>>>>>> e0a62f76f986c6042a01fc33c90a24d6bb90b903
             <StackPanel>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -32,7 +24,6 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-<<<<<<< HEAD
                     <Border Grid.Column="0" CornerRadius="8" Width="200" Height="50" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" >
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock Foreground="{DynamicResource ForegroundColor}" Text="화면 모드" FontSize="20" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -59,26 +50,6 @@
                                          Style="{DynamicResource CustomRadioButtonStyle}"
                                          GroupName="Theme"
                                          Checked="SwitchToDarkMode_Checked"/>
-=======
-                    <Border Grid.Column="0" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,10,0" VerticalAlignment="Center">
-                        <StackPanel>
-                            <TextBlock Foreground="{DynamicResource ForegroundColor}" Text="화면 모드" FontSize="15" FontFamily="Consolas" TextAlignment="Center" VerticalAlignment="Center" />
-                        </StackPanel>
-                    </Border>
-
-                    <Border Grid.Column="1" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,10,0">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button x:Name="LightMode" Content="라이트 모드"
-                                    Style="{DynamicResource ModeButtonStyle}"
-                                    Margin="0,0,20,0"
-                                    Cursor="Hand"
-                                    Click="SwitchToLightMode_Click"/>
-
-                            <Button x:Name="DarkMode" Content="다크 모드"
-                                    Style="{DynamicResource ModeButtonStyle}"
-                                    Cursor="Hand"
-                                    Click="SwitchToDarkMode_Click"/>
->>>>>>> e0a62f76f986c6042a01fc33c90a24d6bb90b903
                         </StackPanel>
                     </Border>
                 </Grid>
