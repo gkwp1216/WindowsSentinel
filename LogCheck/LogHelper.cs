@@ -1,8 +1,9 @@
 using System;
 using System.IO;
 using System.Windows;
+using WpfMessageBox = System.Windows.MessageBox;
 
-namespace WindowsSentinel
+namespace LogCheck
 {
     public static class LogHelper
     {
@@ -28,7 +29,7 @@ namespace WindowsSentinel
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"로그 디렉토리 생성 실패: {ex.Message}");
+                WpfMessageBox.Show($"로그 디렉토리 생성 실패: {ex.Message}");
             }
         }
 

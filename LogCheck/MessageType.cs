@@ -1,4 +1,4 @@
-namespace WindowsSentinel
+namespace LogCheck
 {
     /// <summary>
     /// 메시지 타입 열거형

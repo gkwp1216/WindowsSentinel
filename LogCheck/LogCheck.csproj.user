@@ -3,4 +3,21 @@
   <PropertyGroup>
     <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="Logs.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="MainWindows.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="NetWorks.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ProgramsList.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Recoverys.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>

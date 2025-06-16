@@ -5,13 +5,16 @@
     <SolidColorBrush x:Key="BackgroundColor" Color="#1E1E1E"/>
     <SolidColorBrush x:Key="ForegroundColor" Color="#F5F5F5"/>
     <SolidColorBrush x:Key="ButtonBackgroundColor" Color="#3A3A3A"/>
-    <SolidColorBrush x:Key="ButtonForegroundColor" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="ButtonForegroundColor" Color="#F5F5F5"/>
     <SolidColorBrush x:Key="DataGridBackgroundColor" Color="#1E1E1E"/>
-    <SolidColorBrush x:Key="DataGridForegroundColor" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="DataGridForegroundColor" Color="#F5F5F5"/>
     <SolidColorBrush x:Key="DataGridRowBackgroundColor" Color="#2E2E2E"/>
     <SolidColorBrush x:Key="DataGridAlternatingRowBackgroundColor" Color="#3A3A3A"/>
     <SolidColorBrush x:Key="ButtonHoverBackgroundColor" Color="#2A2A2A"/>
-    <SolidColorBrush x:Key="ButtonHoverForegroundColor" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="ButtonHoverForegroundColor" Color="#F5F5F5"/>
+    <SolidColorBrush x:Key="BorderBrushColor" Color="White"/>
+    <SolidColorBrush x:Key="CheckedColor" Color="White"/>
+    <SolidColorBrush x:Key="HelpMarkColor" Color="#4CAF50"/>
 
     <!-- 메인 버튼 스타일 -->
     <Style x:Key="MainButtonStyle" TargetType="Button">
@@ -107,17 +110,18 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" 
-                                   Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"
-                                   FontFamily="Segoe MDL2 Assets"
-                                   FontSize="24"
-                                   Foreground="#4CAF50"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,10,0"/>
+                                       Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="22"
+                                       Foreground="#4CAF50"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,0"/>
                             <TextBlock Grid.Column="1" 
-                                   Text="{TemplateBinding Content}"
-                                   FontSize="14"
-                                   TextWrapping="Wrap"
-                                   VerticalAlignment="Center"/>
+                                       Text="{TemplateBinding Content}"
+                                       FontSize="12"
+                                       FontWeight="DemiBold"
+                                       TextWrapping="Wrap"
+                                       VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -139,15 +143,11 @@
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Background" Value="#4CAF50"/>
         <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderThickness" Value="0"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#45A049"/>
-                <Setter Property="Effect">
-                    <Setter.Value>
-                        <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="#CCCCCC"/>
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="BorderBrush" Value="White"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Effect" Value="{x:Null}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -183,5 +183,31 @@
                 </Setter>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <!-- 라디오 버튼 스타일 -->
+    <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+    <Style x:Key="CustomRadioButtonStyle" TargetType="RadioButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <StackPanel Orientation="Horizontal" Cursor="Hand">
+                        <!-- 바깥 원 -->
+                        <Grid Width="24" Height="24" Margin="0,0,8,0">
+                            <Ellipse Stroke="White" StrokeThickness="2" Fill="Transparent"/>
+                            <!-- 가운데 점 -->
+                            <Ellipse Width="12" Height="12" Fill="White"
+                                 Visibility="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}}"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <!-- 텍스트 -->
+                        <ContentPresenter VerticalAlignment="Center"
+                                      RecognizesAccessKey="True"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

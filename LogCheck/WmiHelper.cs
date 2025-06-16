@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
 
-namespace WindowsSentinel
+namespace LogCheck
 {
     [SupportedOSPlatform("windows")]
     public static class WmiHelper

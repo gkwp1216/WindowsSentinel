@@ -2,16 +2,19 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- 색상 리소스 -->
-    <SolidColorBrush x:Key="BackgroundColor" Color="#F5F5F5"/>
+    <SolidColorBrush x:Key="BackgroundColor" Color="#FFE1E5E5"/>
     <SolidColorBrush x:Key="ForegroundColor" Color="#3A3A3A"/>
-    <SolidColorBrush x:Key="ButtonBackgroundColor" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="ButtonBackgroundColor" Color="#F5F5F5"/>
     <SolidColorBrush x:Key="ButtonForegroundColor" Color="#3A3A3A"/>
-    <SolidColorBrush x:Key="DataGridBackgroundColor" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="DataGridBackgroundColor" Color="#F5F5F5"/>
     <SolidColorBrush x:Key="DataGridForegroundColor" Color="#3A3A3A"/>
-    <SolidColorBrush x:Key="DataGridRowBackgroundColor" Color="#F8F9FA"/>
+    <SolidColorBrush x:Key="DataGridRowBackgroundColor" Color="#F5F5F5"/>
     <SolidColorBrush x:Key="DataGridAlternatingRowBackgroundColor" Color="#E0E0E0"/>
-    <SolidColorBrush x:Key="ButtonHoverBackgroundColor" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="ButtonHoverBackgroundColor" Color="#F5F5F5"/>
     <SolidColorBrush x:Key="ButtonHoverForegroundColor" Color="#3A3A3A"/>
+    <SolidColorBrush x:Key="BorderBrushColor" Color="#3A3A3A"/>
+    <SolidColorBrush x:Key="CheckedColor" Color="#4CAF50"/>
+    <SolidColorBrush x:Key="HelpMarkColor" Color="#3A3A3A"/>
 
     <!-- 메인 버튼 스타일 -->
     <Style x:Key="MainButtonStyle" TargetType="Button">
@@ -19,8 +22,7 @@
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundColor}"/>
         <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundColor}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="#E0E0E0"/>
-        <Setter Property="Margin" Value="10"/>
+        <Setter Property="BorderBrush" Value="#C2C2C2"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -29,7 +31,7 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="15">
+                            CornerRadius="12">
                         <ContentPresenter HorizontalAlignment="Center" 
                                         VerticalAlignment="Center"/>
                     </Border>
@@ -106,13 +108,14 @@
                             <TextBlock Grid.Column="0" 
                                        Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"
                                        FontFamily="Segoe MDL2 Assets"
-                                       FontSize="24"
+                                       FontSize="22"
                                        Foreground="#4CAF50"
                                        VerticalAlignment="Center"
                                        Margin="0,0,10,0"/>
                             <TextBlock Grid.Column="1" 
                                        Text="{TemplateBinding Content}"
-                                       FontSize="14"
+                                       FontSize="12"
+                                       FontWeight="DemiBold"
                                        TextWrapping="Wrap"
                                        VerticalAlignment="Center"/>
                         </Grid>
@@ -181,5 +184,31 @@
                 </Setter>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <!-- 라디오 버튼 스타일 -->
+    <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+    <Style x:Key="CustomRadioButtonStyle" TargetType="RadioButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <StackPanel Orientation="Horizontal" Cursor="Hand">
+                        <!-- 바깥 원 -->
+                        <Grid Width="24" Height="24" Margin="0,0,8,0">
+                            <Ellipse Stroke="Black" StrokeThickness="2" Fill="Transparent"/>
+                            <!-- 가운데 점 -->
+                            <Ellipse Width="12" Height="12" Fill="Black"
+                                     Visibility="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}}"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <!-- 텍스트 -->
+                        <ContentPresenter VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>
