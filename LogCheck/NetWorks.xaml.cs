@@ -2554,6 +2554,12 @@ namespace LogCheck
             
             return packets;
         }
+
+        [SupportedOSPlatform("windows")]
+        private void SidebarVaccine_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new Vaccine());
+        }
     }
 }
 

@@ -25,26 +25,36 @@
         <!-- 사이드바 -->
         <Border Grid.Column="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="20,0,10,20" BorderBrush="#C2C2C2" BorderThickness="1">
             <StackPanel Margin="10">
+                <!-- 악성 프로그램 탐지 -->
                 <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE71D;"
-                        Content="설치된 프로그램"
+                        Tag="&#xE721;"
+                        Content="악성 프로그램 탐지"
                         Cursor="Hand"
-                        Click="SidebarPrograms_Click"/>
+                        Click="SidebarVaccine_Click"/>
+                <!-- 네트워크 접속 내역 -->
                 <Button Style="{DynamicResource SidebarButtonStyle}"
                         Tag="&#xE81C;"
                         Content="네트워크 접속 내역"
                         Cursor="Hand"
                         Click="SidebarModification_Click"/>
+                <!-- 설치된 프로그램 목록 -->
                 <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE72E;"
-                        Content="보안 로그"
+                        Tag="&#xE71D;"
+                        Content="설치된 프로그램"
                         Cursor="Hand"
-                        Click="SidebarLog_Click"/>
+                        Click="SidebarPrograms_Click"/>
+                <!-- 보안 프로그램 복구 -->
                 <Button Style="{DynamicResource SidebarButtonStyle}"
                         Tag="&#xE946;"
                         Content="보안 프로그램 복구"
                         Cursor="Hand"
                         Click="SidebarRecovery_Click"/>
+                <!-- 보안 로그 -->
+                <Button Style="{DynamicResource SidebarButtonStyle}"
+                        Tag="&#xE72E;"
+                        Content="보안 로그"
+                        Cursor="Hand"
+                        Click="SidebarLog_Click"/>
             </StackPanel>
         </Border>
 

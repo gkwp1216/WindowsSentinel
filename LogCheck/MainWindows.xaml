@@ -165,7 +165,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- 설치된 프로그램 버튼 -->
+                <!-- 설치된 프로그램 버튼 (행/열 변경) -->
                 <Button x:Name="InstalledProgramsButton"
                         Grid.Row="1" Grid.Column="0" 
                         Margin="0,10,10,0"
@@ -201,17 +201,17 @@
                     </StackPanel>
                 </Button>
 
-                <!-- 보안 로그 버튼 -->
+                <!-- 백신 검사 버튼 (기존 보안 로그 버튼 위치/기능 변경) -->
                 <Button x:Name="SecurityLogButton"
                         Grid.Row="0" Grid.Column="0" 
                         Margin="0,0,10,10"
                         Style="{DynamicResource MainButtonStyle}" 
                         Cursor="Hand"
-                        Click="VaccineButton_Click">
+                        Click="Vaccine_Click">
                     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
-                        <TextBlock Text="&#xE7ED;" 
+                        <TextBlock Text="&#xE721;" 
                                    Style="{StaticResource MaterialIconStyle}"/>
-                        <TextBlock Text="백신 검사" 
+                        <TextBlock Text="악성 프로그램 탐지" 
                                    TextAlignment="Center"
                                    FontSize="25" 
                                    FontWeight="SemiBold"/>

@@ -53,7 +53,7 @@ namespace LogCheck
                 "시스템의 전반적인 보안 상태를\n확인할 수 있습니다.",
                 "시스템에 설치된 프로그램 목록을\n확인하고 관리할 수 있습니다.",
                 "네트워크 접속 내역들을\n확인하고 관리할 수 있습니다.",
-                "시스템 외부 접속 내역과 보안 관련 로그를 확인할 수 있습니다.",
+                "파일 해시 기반 악성 프로그램 검사 결과를\n확인할 수 있습니다.",
                 "Windows Defender, 방화벽 등\n보안 프로그램을 정상화 합니다."
             };
         }
@@ -397,7 +397,7 @@ namespace LogCheck
         }
 
         [SupportedOSPlatform("windows")]
-        private void VaccineButton_Click(object sender, RoutedEventArgs e)
+        private void Vaccine_Click(object sender, RoutedEventArgs e)
         {
             NavigateToPage(new Vaccine());
             HelpButton.Visibility = Visibility.Collapsed;

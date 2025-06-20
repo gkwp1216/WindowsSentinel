@@ -148,6 +148,11 @@ namespace LogCheck
             NavigateToPage(new Recoverys());
         }
         [SupportedOSPlatform("windows")]
+        private void SidebarVaccine_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new Vaccine());
+        }
+        [SupportedOSPlatform("windows")]
         private void NavigateToPage(Page page)
         {
             var mainWindow = Window.GetWindow(this) as MainWindows;

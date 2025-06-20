@@ -28,6 +28,10 @@ using System.Diagnostics.Eventing.Reader;
 using System.Security.Policy;
 using System.Text.RegularExpressions;
 using System.Runtime.Versioning;
+using System.Text; // 해시 계산
+using System.Net.Http; // MalwareBazaar 호출
+using LogCheck.Services; // MalwareBazaarClient
+using System.Security.Cryptography; // SHA256
 
 // Windows Forms와의 충돌을 방지하기 위한 alias 설정
 using WpfMessageBox = System.Windows.MessageBox;
@@ -376,7 +380,8 @@ namespace LogCheck
                                 Version = subkey.GetValue("DisplayVersion")?.ToString() ?? "",
                                 Publisher = subkey.GetValue("Publisher")?.ToString() ?? "",
                                 SecurityLevel = "",
-                                SecurityDetails = ""
+                                SecurityDetails = "",
+                                MalwareVerdict = "Unknown"
                             };
 
                             // 보안 정보 분석
@@ -385,6 +390,19 @@ namespace LogCheck
                             var securityInfo = GetSecurityInfo(program.InstallPath, score);
                             program.SecurityLevel = securityInfo.SecurityLevel;
                             program.SecurityDetails = securityInfo.Details;
+
+                            // MalwareBazaar 검사
+                            try
+                            {
+                                string? exePath = GetRepresentativeExecutable(program.InstallPath, program.Name);
+                                if (!string.IsNullOrEmpty(exePath))
+                                {
+                                    string sha256 = ComputeSha256(exePath);
+                                    string verdict = MalwareBazaarClient.GetVerdictAsync(sha256).GetAwaiter().GetResult();
+                                    program.MalwareVerdict = verdict;
+                                }
+                            }
+                            catch { /* 무시 */ }
 
                             programList.Add(program);
                             processedPrograms.Add(displayName);
@@ -659,6 +677,8 @@ namespace LogCheck
             public string Publisher { get; set; }
             public string SecurityLevel { get; set; }
             public string SecurityDetails { get; set; }
+            // MalwareBazaar 판정 결과 ("Malicious" / "Unknown")
+            public string MalwareVerdict { get; set; }
 
             public ProgramInfo()
             {
@@ -669,6 +689,7 @@ namespace LogCheck
                 Publisher = "";
                 SecurityLevel = "";
                 SecurityDetails = "";
+                MalwareVerdict = "Unknown";
             }
         }
 
@@ -749,6 +770,11 @@ namespace LogCheck
             NavigateToPage(new Recoverys());
         }
 
+        private void SidebarVaccine_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new Vaccine());
+        }
+
         private void NavigateToPage(Page page)
         {
             var mainWindow = Window.GetWindow(this) as MainWindows;
@@ -771,6 +797,39 @@ namespace LogCheck
             string lnsLo = InstallLocation.ToLower();
             if (lnsLo.Contains("programfiles") || string.IsNullOrEmpty(lnsLo)) return 0;
             else return -10;
+        }
+
+        /// <summary>
+        /// 설치 경로에서 대표 실행 파일 추정 (디렉터리 내 가장 큰 exe 또는 이름이 프로그램명과 유사한 파일)
+        /// </summary>
+        private string? GetRepresentativeExecutable(string installPath, string programName)
+        {
+            if (string.IsNullOrEmpty(installPath) || !Directory.Exists(installPath))
+                return null;
+
+            var exeFiles = Directory.GetFiles(installPath, "*.exe", SearchOption.TopDirectoryOnly);
+            if (exeFiles.Length == 0) return null;
+
+            // 프로그램 이름과 유사한 exe 우선
+            var match = exeFiles.FirstOrDefault(f => Path.GetFileNameWithoutExtension(f).Equals(programName, StringComparison.OrdinalIgnoreCase));
+            if (!string.IsNullOrEmpty(match)) return match;
+
+            // 가장 큰 파일 선택
+            return exeFiles.OrderByDescending(f => new FileInfo(f).Length).First();
+        }
+
+        /// <summary>
+        /// SHA-256 해시 계산
+        /// </summary>
+        private static string ComputeSha256(string filePath)
+        {
+            using var sha = SHA256.Create();
+            using var stream = File.OpenRead(filePath);
+            var hash = sha.ComputeHash(stream);
+            var sb = new StringBuilder();
+            foreach (byte b in hash)
+                sb.Append(b.ToString("x2"));
+            return sb.ToString();
         }
     }
 }

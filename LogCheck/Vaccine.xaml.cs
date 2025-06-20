@@ -7,20 +7,120 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
+using System.Linq;
+using System.Collections.Generic;
+using System.Windows.Threading;
+using System.Windows.Media.Animation;
+using System.Runtime.Versioning;
 
 namespace LogCheck
 {
     public partial class Vaccine : Page
     {
-        private ObservableCollection<ScanResult> _results = new();
+        private ObservableCollection<ProgramScanResult> _results = new();
+
+        private DispatcherTimer? loadingTextTimer;
+        private int dotCount = 0;
+        private const int maxDots = 3;
+        private string baseText = "검사 중";
 
         public Vaccine()
         {
             InitializeComponent();
             resultDataGrid.ItemsSource = _results;
+
+            // 로딩 애니메이션 초기화
+            SpinnerItems.ItemsSource = CreateSpinnerPoints(40, 50, 50);
+            StartRotation();
+            SetupLoadingTextAnimation();
         }
 
-        private void BrowseButton_Click(object sender, RoutedEventArgs e)
+        private List<System.Windows.Point> CreateSpinnerPoints(double radius, double centerX, double centerY)
+        {
+            var points = new List<System.Windows.Point>();
+            for (int i = 0; i < 8; i++)
+            {
+                double angle = i * 360.0 / 8 * Math.PI / 180.0;
+                double x = centerX + radius * Math.Cos(angle) - 5;
+                double y = centerY + radius * Math.Sin(angle) - 5;
+                points.Add(new System.Windows.Point(x, y));
+            }
+            return points;
+        }
+
+        private void StartRotation()
+        {
+            var rotateAnimation = new DoubleAnimation
+            {
+                From = 0,
+                To = 360,
+                Duration = new Duration(TimeSpan.FromSeconds(2.0)),
+                RepeatBehavior = RepeatBehavior.Forever
+            };
+            SpinnerRotate.BeginAnimation(System.Windows.Media.RotateTransform.AngleProperty, rotateAnimation);
+        }
+
+        private void SetupLoadingTextAnimation()
+        {
+            loadingTextTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(500)
+            };
+            loadingTextTimer.Tick += LoadingTextTimer_Tick;
+        }
+
+        private void LoadingTextTimer_Tick(object? sender, EventArgs e)
+        {
+            dotCount = (dotCount + 1) % (maxDots + 1);
+            LoadingText.Text = baseText + new string('.', dotCount);
+        }
+
+        private void ShowLoadingOverlay()
+        {
+            LoadingOverlay.Visibility = Visibility.Visible;
+            loadingTextTimer?.Start();
+        }
+
+        private void HideLoadingOverlay()
+        {
+            loadingTextTimer?.Stop();
+            LoadingOverlay.Visibility = Visibility.Collapsed;
+            LoadingText.Text = baseText;
+        }
+
+        private async void FullScanButton_Click(object sender, RoutedEventArgs e)
+        {
+            _results.Clear();
+
+            ShowLoadingOverlay();
+            fullScanButton.IsEnabled = false;
+
+            try
+            {
+                var list = await Task.Run(() => ScanInstalledPrograms());
+
+                foreach (var item in list)
+                {
+                    _results.Add(item);
+                }
+
+                if (!list.Any(r => r.Verdict == "Malicious"))
+                {
+                    System.Windows.MessageBox.Show("악성 프로그램이 발견되지 않았습니다.", "결과", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"검사 중 오류 발생: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                HideLoadingOverlay();
+                fullScanButton.IsEnabled = true;
+            }
+        }
+
+        private async void FileScanButton_Click(object sender, RoutedEventArgs e)
         {
             var ofd = new Microsoft.Win32.OpenFileDialog
             {
@@ -29,36 +129,23 @@ namespace LogCheck
                 Filter = "모든 파일 (*.*)|*.*"
             };
 
-            if (ofd.ShowDialog() == true)
-            {
-                pathTextBox.Text = ofd.FileName;
-            }
-        }
+            if (ofd.ShowDialog() != true) return;
 
-        private async void ScanButton_Click(object sender, RoutedEventArgs e)
-        {
-            var path = pathTextBox.Text;
-            if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
-            {
-                System.Windows.MessageBox.Show("유효한 파일을 선택해주세요.", "오류", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+            string path = ofd.FileName;
 
-            scanProgressBar.Visibility = Visibility.Visible;
-            scanProgressBar.IsIndeterminate = true;
-            scanButton.IsEnabled = false;
+            ShowLoadingOverlay();
 
             try
             {
-                var sha256 = await Task.Run(() => ComputeSha256(path));
+                string sha256 = await Task.Run(() => ComputeSha256(path));
+                string verdict = await LogCheck.Services.MalwareBazaarClient.GetVerdictAsync(sha256);
 
-                // TODO: MalwareBazaar API 연동 – 현재는 Unknown 처리
-                var verdict = "Unknown";
-
-                _results.Add(new ScanResult
+                _results.Add(new ProgramScanResult
                 {
-                    Path = path,
-                    Sha256 = sha256,
+                    Name = Path.GetFileNameWithoutExtension(path),
+                    InstallDate = File.GetCreationTime(path),
+                    Publisher = "",
+                    InstallPath = path,
                     Verdict = verdict
                 });
             }
@@ -68,9 +155,74 @@ namespace LogCheck
             }
             finally
             {
-                scanProgressBar.IsIndeterminate = false;
-                scanProgressBar.Visibility = Visibility.Collapsed;
-                scanButton.IsEnabled = true;
+                HideLoadingOverlay();
+            }
+        }
+
+        private static IEnumerable<ProgramScanResult> ScanInstalledPrograms()
+        {
+            var results = new List<ProgramScanResult>();
+
+            string[] registryPaths = new string[]
+            {
+                @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+                @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
+            };
+
+            foreach (string regPath in registryPaths)
+            {
+                using RegistryKey key = Registry.LocalMachine.OpenSubKey(regPath);
+                if (key == null) continue;
+
+                foreach (string subkeyName in key.GetSubKeyNames())
+                {
+                    using RegistryKey subkey = key.OpenSubKey(subkeyName);
+                    if (subkey == null) continue;
+
+                    string? displayName = subkey.GetValue("DisplayName")?.ToString();
+                    if (string.IsNullOrEmpty(displayName)) continue;
+
+                    string installLocation = subkey.GetValue("InstallLocation")?.ToString() ?? string.Empty;
+                    if (string.IsNullOrEmpty(installLocation) || !Directory.Exists(installLocation))
+                        continue;
+
+                    string? exePath = GetRepresentativeExecutable(installLocation, displayName);
+                    if (string.IsNullOrEmpty(exePath) || !File.Exists(exePath)) continue;
+
+                    string sha256 = ComputeSha256(exePath);
+                    string verdict = LogCheck.Services.MalwareBazaarClient.GetVerdictAsync(sha256).GetAwaiter().GetResult();
+
+                    DateTime installDate = File.GetCreationTime(exePath);
+
+                    results.Add(new ProgramScanResult
+                    {
+                        Name = displayName,
+                        InstallDate = installDate,
+                        Publisher = subkey.GetValue("Publisher")?.ToString() ?? string.Empty,
+                        InstallPath = installLocation,
+                        Verdict = verdict
+                    });
+                }
+            }
+
+            return results;
+        }
+
+        private static string? GetRepresentativeExecutable(string installPath, string programName)
+        {
+            try
+            {
+                var exeFiles = Directory.GetFiles(installPath, "*.exe", SearchOption.TopDirectoryOnly);
+                if (exeFiles.Length == 0) return null;
+
+                var match = exeFiles.FirstOrDefault(f => Path.GetFileNameWithoutExtension(f).Equals(programName, StringComparison.OrdinalIgnoreCase));
+                if (!string.IsNullOrEmpty(match)) return match;
+
+                return exeFiles.OrderByDescending(f => new FileInfo(f).Length).First();
+            }
+            catch
+            {
+                return null;
             }
         }
 
@@ -85,11 +237,52 @@ namespace LogCheck
             return sb.ToString();
         }
 
-        private class ScanResult
+        private class ProgramScanResult
         {
-            public string Path { get; set; } = string.Empty;
-            public string Sha256 { get; set; } = string.Empty;
-            public string Verdict { get; set; } = string.Empty;
+            public string Name { get; set; } = string.Empty;
+            public DateTime? InstallDate { get; set; }
+            public string Publisher { get; set; } = string.Empty;
+            public string InstallPath { get; set; } = string.Empty;
+            public string Verdict { get; set; } = "Unknown";
         }
+
+        #region Sidebar Navigation
+        [SupportedOSPlatform("windows")]
+        private void SidebarPrograms_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new ProgramsList());
+        }
+
+        [SupportedOSPlatform("windows")]
+        private void SidebarModification_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new NetWorks());
+        }
+
+        [SupportedOSPlatform("windows")]
+        private void SidebarLog_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new Logs());
+        }
+
+        [SupportedOSPlatform("windows")]
+        private void SidebarRecovery_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new Recoverys());
+        }
+
+        [SupportedOSPlatform("windows")]
+        private void SidebarVaccine_Click(object sender, RoutedEventArgs e)
+        {
+            // 현재 페이지와 동일하므로 아무 동작 없음
+        }
+
+        [SupportedOSPlatform("windows")]
+        private void NavigateToPage(Page page)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindows;
+            mainWindow?.NavigateToPage(page);
+        }
+        #endregion
     }
 } 

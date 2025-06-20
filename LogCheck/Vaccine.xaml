@@ -7,36 +7,189 @@
       d:DesignHeight="800" d:DesignWidth="1200"
       Title="Vaccine" Background="{DynamicResource BackgroundColor}">
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Page.Resources>
+        <!-- 스피너 점 배치 템플릿 -->
+        <ItemsPanelTemplate x:Key="SpinnerPanelTemplate">
+            <Canvas Width="100" Height="100" />
+        </ItemsPanelTemplate>
+    </Page.Resources>
 
-        <!-- Header -->
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,20">
-            <TextBlock Text="백신 검사" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor}"/>
-            <ProgressBar x:Name="scanProgressBar" Width="200" Height="20" Margin="20,0,0,0" Visibility="Collapsed"/>
-        </StackPanel>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <!-- Controls -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,50,0,10">
-            <TextBox x:Name="pathTextBox" Width="400" Height="30" IsReadOnly="True" Margin="0,0,10,0"/>
-            <Button x:Name="browseButton" Content="Browse" Width="80" Height="30" Click="BrowseButton_Click" Margin="0,0,10,0"/>
-            <Button x:Name="scanButton" Content="Scan" Width="80" Height="30" Click="ScanButton_Click"/>
-        </StackPanel>
+        <!-- 사이드바 -->
+        <Border Grid.Column="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="20,0,10,20" BorderBrush="#C2C2C2" BorderThickness="1">
+            <StackPanel Margin="10">
+                <!-- 악성 프로그램 탐지 -->
+                <Button Style="{DynamicResource SidebarButtonStyle}"
+                        Tag="&#xE721;"
+                        Content="악성 프로그램 탐지"
+                        Cursor="Hand"
+                        Click="SidebarVaccine_Click"/>
+                <!-- 네트워크 접속 내역 -->
+                <Button Style="{DynamicResource SidebarButtonStyle}"
+                        Tag="&#xE81C;"
+                        Content="네트워크 접속 내역"
+                        Cursor="Hand"
+                        Click="SidebarModification_Click"/>
+                <!-- 설치된 프로그램 목록 -->
+                <Button Style="{DynamicResource SidebarButtonStyle}"
+                        Tag="&#xE71D;"
+                        Content="설치된 프로그램"
+                        Cursor="Hand"
+                        Click="SidebarPrograms_Click"/>
+                <!-- 보안 프로그램 복구 -->
+                <Button Style="{DynamicResource SidebarButtonStyle}"
+                        Tag="&#xE946;"
+                        Content="보안 프로그램 복구"
+                        Cursor="Hand"
+                        Click="SidebarRecovery_Click"/>
+                <!-- 보안 로그 -->
+                <Button Style="{DynamicResource SidebarButtonStyle}"
+                        Tag="&#xE72E;"
+                        Content="보안 로그"
+                        Cursor="Hand"
+                        Click="SidebarLog_Click"/>
+            </StackPanel>
+        </Border>
 
-        <!-- DataGrid -->
-        <DataGrid x:Name="resultDataGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,10,0,10">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="파일 경로" Binding="{Binding Path}" Width="*"/>
-                <DataGridTextColumn Header="SHA-256" Binding="{Binding Sha256}" Width="280"/>
-                <DataGridTextColumn Header="판정" Binding="{Binding Verdict}" Width="100"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <!-- Main Content Area -->
+        <Grid Grid.Column="1" Margin="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Footer -->
-        <TextBlock Grid.Row="2" Text="* MalwareBazaar API를 통해 해시 기반 악성 여부를 확인합니다." FontStyle="Italic" Foreground="{DynamicResource ForegroundColor}"/>
+            <!-- Header Section -->
+            <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20" Margin="10,0,20,20" BorderBrush="#C2C2C2" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="악성 프로그램 탐지" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor}" VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="fileScanButton" Content="파일 검사" Width="100" Height="30" Margin="0,0,10,0"
+                                Style="{DynamicResource CheckButtonStyle}" Cursor="Hand" Click="FileScanButton_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="12">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button x:Name="fullScanButton" Content="전체 검사" Width="100" Height="30"
+                                Style="{DynamicResource CheckButtonStyle}" Cursor="Hand" Click="FullScanButton_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="12">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- DataGrid Card -->
+            <Border Grid.Row="1" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="10,0,20,10" Padding="20" BorderBrush="#C2C2C2" BorderThickness="1">
+                <Grid>
+                    <DataGrid x:Name="resultDataGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                              Background="{DynamicResource DataGridBackgroundColor}"
+                              Foreground="{DynamicResource DataGridForegroundColor}" BorderThickness="0" GridLinesVisibility="None"
+                              RowBackground="{DynamicResource DataGridRowBackgroundColor}"
+                              AlternatingRowBackground="{DynamicResource DataGridAlternatingRowBackgroundColor}" RowHeight="40"
+                              HeadersVisibility="Column" CanUserResizeRows="False">
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="10,10"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="프로그램 이름" Binding="{Binding Name}" Width="180"/>
+                            <DataGridTextColumn Header="설치 날짜" Binding="{Binding InstallDate, StringFormat=yyyy-MM-dd}" Width="120"/>
+                            <DataGridTextColumn Header="제조사" Binding="{Binding Publisher}" Width="160"/>
+                            <DataGridTextColumn Header="설치 위치" Binding="{Binding InstallPath}" Width="180"/>
+                            <DataGridTextColumn Header="판정" Binding="{Binding Verdict}" Width="100">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Verdict}" Value="Malicious">
+                                                <Setter Property="Foreground" Value="#DC3545"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Verdict}" Value="Unknown">
+                                                <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Verdict}" Value="Not Found">
+                                                <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Verdict}" Value="Rate Limit">
+                                                <Setter Property="Foreground" Value="#FFC107"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Verdict}" Value="Error">
+                                                <Setter Property="Foreground" Value="#FF8C00"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- 로딩 오버레이 -->
+                    <Border x:Name="LoadingOverlay" Background="#80000000" Visibility="Collapsed" Panel.ZIndex="10" CornerRadius="12" ClipToBounds="True">
+                        <Grid>
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical" Margin="0,0,0,20">
+                                <!-- 스피너 -->
+                                <ItemsControl x:Name="SpinnerItems"
+                                              ItemsPanel="{StaticResource SpinnerPanelTemplate}"
+                                              RenderTransformOrigin="0.5,0.5">
+                                    <ItemsControl.RenderTransform>
+                                        <RotateTransform x:Name="SpinnerRotate" />
+                                    </ItemsControl.RenderTransform>
+
+                                    <ItemsControl.ItemContainerStyle>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="Canvas.Left" Value="{Binding X}" />
+                                            <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                                        </Style>
+                                    </ItemsControl.ItemContainerStyle>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Ellipse Width="10" Height="10" Fill="DarkGray" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!-- 텍스트 -->
+                                <TextBlock x:Name="LoadingText" Text="검사 중" Foreground="White" FontSize="16" Margin="10" HorizontalAlignment="Center" TextAlignment="Center" />
+                                <TextBlock Text="컴퓨터 성능에 따라 검사 시간이 달라질 수 있습니다." Foreground="White" FontSize="12" HorizontalAlignment="Center" TextAlignment="Center" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Footer -->
+            <TextBlock Grid.Row="2" Text="* MalwareBazaar API를 통해 해시 기반 악성 여부를 확인합니다." FontStyle="Italic" Foreground="{DynamicResource ForegroundColor}"/>
+        </Grid>
     </Grid>
 </Page> 
