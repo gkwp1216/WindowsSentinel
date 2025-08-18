@@ -7,7 +7,7 @@
       xmlns:local="clr-namespace:LogCheck"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="1200"
-      Title="Recoverys" Background="{DynamicResource BackgroundColor}">
+      Title="Recoverys" Background="Transparent">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -17,37 +17,53 @@
 
         <!-- 사이드바 -->
         <Border Grid.Column="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="20,0,10,20" BorderBrush="#C2C2C2" BorderThickness="1">
-            <StackPanel Margin="10">
+            <StackPanel x:Name="SidebarPanel" Margin="10">
                 <!-- 악성 프로그램 탐지 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE721;"
-                        Content="악성 프로그램 탐지"
-                        Cursor="Hand"
-                        Click="SidebarVaccine_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              CommandParameter="Vaccine"
+                              Tag="&#xE721;"
+                              Content="악성 프로그램 탐지"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
                 <!-- 네트워크 접속 내역 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE81C;"
-                        Content="네트워크 접속 내역"
-                        Cursor="Hand"
-                        Click="SidebarModification_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              CommandParameter="NetWorks"
+                              Tag="&#xE81C;"
+                              Content="네트워크 접속 내역"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
                 <!-- 설치된 프로그램 목록 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE71D;"
-                        Content="설치된 프로그램"
-                        Cursor="Hand"
-                        Click="SidebarPrograms_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              CommandParameter="ProgramsList"
+                              Tag="&#xE71D;"
+                              Content="설치된 프로그램"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
                 <!-- 보안 프로그램 복구 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE946;"
-                        Content="보안 프로그램 복구"
-                        Cursor="Hand"
-                        Click="SidebarRecovery_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              x:Name="SideRecoveryButton"
+                              CommandParameter="Recoverys"
+                              Tag="&#xE946;"
+                              Content="보안 프로그램 복구"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
                 <!-- 보안 로그 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE72E;"
-                        Content="보안 로그"
-                        Cursor="Hand"
-                        Click="SidebarLog_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              CommandParameter="Logs"
+                              Tag="&#xE72E;"
+                              Content="보안 로그"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
             </StackPanel>
         </Border>
 
@@ -101,7 +117,7 @@
                                     <Border.ToolTip>
                                         <ToolTip Content="시스템의 보안 프로그램을 확인하고 필요한 경우 복구를 진행합니다."
                                                  Placement="MousePoint"
-                                                 HorizontalOffset="460" VerticalOffset="10"/>
+                                                 HorizontalOffset="460" VerticalOffset="15"/>
                                     </Border.ToolTip>
                                 </Border>
                             </StackPanel>

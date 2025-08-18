@@ -3,9 +3,10 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d"
       d:DesignHeight="800" d:DesignWidth="1200"
-      Title="Vaccine" Background="{DynamicResource BackgroundColor}">
+      Title="Vaccine" Background="Transparent">
 
     <Page.Resources>
         <!-- 스피너 점 배치 템플릿 -->
@@ -22,37 +23,53 @@
 
         <!-- 사이드바 -->
         <Border Grid.Column="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="20,0,10,20" BorderBrush="#C2C2C2" BorderThickness="1">
-            <StackPanel Margin="10">
+            <StackPanel x:Name="SidebarPanel" Margin="10">
                 <!-- 악성 프로그램 탐지 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE721;"
-                        Content="악성 프로그램 탐지"
-                        Cursor="Hand"
-                        Click="SidebarVaccine_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              x:Name="SideVaccineButton"
+                              CommandParameter="Vaccine"
+                              Tag="&#xE721;"
+                              Content="악성 프로그램 탐지"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
                 <!-- 네트워크 접속 내역 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE81C;"
-                        Content="네트워크 접속 내역"
-                        Cursor="Hand"
-                        Click="SidebarModification_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              CommandParameter="NetWorks"
+                              Tag="&#xE81C;"
+                              Content="네트워크 접속 내역"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
                 <!-- 설치된 프로그램 목록 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE71D;"
-                        Content="설치된 프로그램"
-                        Cursor="Hand"
-                        Click="SidebarPrograms_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              CommandParameter="ProgramsList"
+                              Tag="&#xE71D;"
+                              Content="설치된 프로그램"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
                 <!-- 보안 프로그램 복구 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE946;"
-                        Content="보안 프로그램 복구"
-                        Cursor="Hand"
-                        Click="SidebarRecovery_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              CommandParameter="Recoverys"
+                              Tag="&#xE946;"
+                              Content="보안 프로그램 복구"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
                 <!-- 보안 로그 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE72E;"
-                        Content="보안 로그"
-                        Cursor="Hand"
-                        Click="SidebarLog_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              CommandParameter="Logs"
+                              Tag="&#xE72E;"
+                              Content="보안 로그"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
             </StackPanel>
         </Border>
 
@@ -65,17 +82,40 @@
             </Grid.RowDefinitions>
 
             <!-- Header Section -->
-            <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20" Margin="10,0,20,20" BorderBrush="#C2C2C2" BorderThickness="1">
+            <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20" Margin="10,0,20,10" BorderBrush="#C2C2C2" BorderThickness="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="악성 프로그램 탐지" FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor}" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="악성 프로그램 탐지" 
+                                   Foreground="{DynamicResource ForegroundColor}" 
+                                   FontSize="20" 
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+
+                        <!-- 도움말 아이콘 -->
+                        <Border Width="25" Height="25" 
+                                Background="Transparent"
+                                Cursor="Hand"
+                                Margin="10,0,0,0" >
+                            <materialDesign:PackIcon Kind="HelpCircleOutline"
+                                                     Width="25" Height="25"
+                                                     Foreground="{DynamicResource HelpMarkColor}"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Center" />
+                            <Border.ToolTip>
+                                <ToolTip Content="MalwareBazaar API를 통해 해시 기반 악성 여부를 확인합니다."
+                                         Placement="MousePoint"
+                                         HorizontalOffset="420" VerticalOffset="15"/>
+                            </Border.ToolTip>
+                        </Border>
+                    </StackPanel>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button x:Name="fileScanButton" Content="파일 검사" Width="100" Height="30" Margin="0,0,10,0"
+                        <Button x:Name="fileScanButton" Content="파일 검사" Width="200" Height="30" Margin="0,0,10,0"
                                 Style="{DynamicResource CheckButtonStyle}" Cursor="Hand" Click="FileScanButton_Click">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
@@ -85,7 +125,7 @@
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
-                        <Button x:Name="fullScanButton" Content="전체 검사" Width="100" Height="30"
+                        <Button x:Name="fullScanButton" Content="전체 검사" Width="200" Height="30"
                                 Style="{DynamicResource CheckButtonStyle}" Cursor="Hand" Click="FullScanButton_Click">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
@@ -100,7 +140,7 @@
             </Border>
 
             <!-- DataGrid Card -->
-            <Border Grid.Row="1" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="10,0,20,10" Padding="20" BorderBrush="#C2C2C2" BorderThickness="1">
+            <Border Grid.Row="1" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="10,10,20,20" Padding="20" BorderBrush="#C2C2C2" BorderThickness="1">
                 <Grid>
                     <DataGrid x:Name="resultDataGrid" AutoGenerateColumns="False" IsReadOnly="True"
                               Background="{DynamicResource DataGridBackgroundColor}"
@@ -188,8 +228,9 @@
                 </Grid>
             </Border>
 
-            <!-- Footer -->
+            <!-- Footer 
             <TextBlock Grid.Row="2" Text="* MalwareBazaar API를 통해 해시 기반 악성 여부를 확인합니다." FontStyle="Italic" Foreground="{DynamicResource ForegroundColor}"/>
+            -->
         </Grid>
     </Grid>
 </Page> 

@@ -15,6 +15,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="IconTexture\texture0.png" />
+    <None Remove="IconTexture\texture1.png" />
+    <None Remove="IconTexture\texture10.png" />
+    <None Remove="IconTexture\texture2.png" />
+    <None Remove="IconTexture\texture3.jpg" />
+    <None Remove="IconTexture\texture4.jpg" />
+    <None Remove="IconTexture\texture5.jpg" />
+    <None Remove="IconTexture\texture6.jpg" />
+    <None Remove="IconTexture\texture7.jpg" />
+    <None Remove="IconTexture\texture8.png" />
+    <None Remove="IconTexture\texture9.png" />
+    <None Remove="IconTexture\WindowsSentinel.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="HarfBuzzSharp" Version="8.3.0.1" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc5.4" />
     <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
@@ -31,6 +46,45 @@
     <None Update="packages.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="IconTexture\texture0.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="IconTexture\texture1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="IconTexture\texture10.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="IconTexture\texture2.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="IconTexture\texture3.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="IconTexture\texture4.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="IconTexture\texture5.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="IconTexture\texture6.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="IconTexture\texture7.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="IconTexture\texture8.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="IconTexture\texture9.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="IconTexture\WindowsSentinel.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

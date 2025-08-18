@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:LogCheck"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="1200"
-      Title="Setting" Background="{DynamicResource BackgroundColor}">
+      Title="Setting" Background="Transparent">
 
     <Grid Grid.Column="1">
         <Grid.RowDefinitions>

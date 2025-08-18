@@ -1,0 +1,18 @@
+[2025-08-18 13:07:24.740] [ERROR] WmiHelper: WMI 방화벽 상태 확인 중 오류
+예외: Unable to cast object of type 'System.UInt16' to type 'System.Boolean'.
+스택 추적:    at LogCheck.WmiHelper.CheckFirewallViaWMI() in C:\Users\admin\Documents\WindowsSentinel_Final\LogCheck_0626\LogCheck\WmiHelper.cs:line 471
+[2025-08-18 13:07:24.772] [INFO] WmiHelper: Security Center 서비스 상태 - Running
+[2025-08-18 13:07:43.364] [ERROR] WmiHelper: WMI 방화벽 상태 확인 중 오류
+예외: Unable to cast object of type 'System.UInt16' to type 'System.Boolean'.
+스택 추적:    at LogCheck.WmiHelper.CheckFirewallViaWMI() in C:\Users\admin\Documents\WindowsSentinel_Final\LogCheck_0626\LogCheck\WmiHelper.cs:line 471
+[2025-08-18 13:07:43.388] [INFO] WmiHelper: Security Center 서비스 상태 - Running
+[2025-08-18 13:07:45.543] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-08-18 13:07:45.769] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-08-18 13:07:45.775] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-08-18 13:07:48.780] [ERROR] 인터페이스 필터 로드 실패: Unable to load DLL 'wpcap' or one of its dependencies: 지정된 모듈을 찾을 수 없습니다. (0x8007007E)
+[2025-08-18 13:07:48.782] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-08-18 13:07:48.794] [INFO] 테스트 데이터 50개 생성 완료
+[2025-08-18 13:07:48.795] [INFO] 히스토리 탭 초기화 완료
+[2025-08-18 13:07:48.810] [INFO] 탭 변경됨: RealtimeTab
+[2025-08-18 13:07:48.883] [INFO] Network 페이지 로드 완료
+[2025-08-18 13:07:48.885] [INFO] Network 페이지 로드 완료 초기화 완료

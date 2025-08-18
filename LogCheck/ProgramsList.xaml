@@ -8,7 +8,7 @@
       xmlns:local="clr-namespace:LogCheck"
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="1200"
-      Title="ProgramsList" Background="{DynamicResource BackgroundColor}">
+      Title="ProgramsList" Background="Transparent">
 
     <Page.Resources>
         <ItemsPanelTemplate x:Key="SpinnerPanelTemplate">
@@ -24,37 +24,53 @@
 
         <!-- 사이드바 -->
         <Border Grid.Column="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="20,0,10,20" BorderBrush="#C2C2C2" BorderThickness="1">
-            <StackPanel Margin="10">
+            <StackPanel x:Name="SidebarPanel" Margin="10">
                 <!-- 악성 프로그램 탐지 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE721;"
-                        Content="악성 프로그램 탐지"
-                        Cursor="Hand"
-                        Click="SidebarVaccine_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              CommandParameter="Vaccine"
+                              Tag="&#xE721;"
+                              Content="악성 프로그램 탐지"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
                 <!-- 네트워크 접속 내역 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE81C;"
-                        Content="네트워크 접속 내역"
-                        Cursor="Hand"
-                        Click="SidebarModification_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              CommandParameter="NetWorks"
+                              Tag="&#xE81C;"
+                              Content="네트워크 접속 내역"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
                 <!-- 설치된 프로그램 목록 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE71D;"
-                        Content="설치된 프로그램"
-                        Cursor="Hand"
-                        Click="SidebarPrograms_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              x:Name="SideProgramsListButton"
+                              CommandParameter="ProgramsList"
+                              Tag="&#xE71D;"
+                              Content="설치된 프로그램"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
                 <!-- 보안 프로그램 복구 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE946;"
-                        Content="보안 프로그램 복구"
-                        Cursor="Hand"
-                        Click="SidebarRecovery_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              CommandParameter="Recoverys"
+                              Tag="&#xE946;"
+                              Content="보안 프로그램 복구"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
                 <!-- 보안 로그 -->
-                <Button Style="{DynamicResource SidebarButtonStyle}"
-                        Tag="&#xE72E;"
-                        Content="보안 로그"
-                        Cursor="Hand"
-                        Click="SidebarLog_Click"/>
+                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
+                              CommandParameter="Logs"
+                              Tag="&#xE72E;"
+                              Content="보안 로그"
+                              Cursor="Hand"
+                              Click="SidebarButton_Click"
+                              IsThreeState="False"
+                              ClickMode="Release"/>
             </StackPanel>
         </Border>
 
@@ -167,7 +183,7 @@
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="프로그램 이름" Binding="{Binding Name}" Width="180">
+                            <DataGridTextColumn Header="프로그램 이름" Binding="{Binding Name}" Width="220">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
@@ -175,16 +191,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="설치 날짜" Binding="{Binding InstallDate, StringFormat=yyyy-MM-dd}" Width="120">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-                                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                                        <Setter Property="VerticalAlignment" Value="Center"/>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Header="제조사" Binding="{Binding Publisher}" Width="160">
+                            <DataGridTextColumn Header="설치 날짜" Binding="{Binding InstallDate, StringFormat=yyyy-MM-dd}" Width="130">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
@@ -193,7 +200,16 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="설치 위치" Binding="{Binding InstallPath}" Width="180">
+                            <DataGridTextColumn Header="제조사" Binding="{Binding Publisher}" Width="180">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="설치 위치" Binding="{Binding InstallPath}" Width="240">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
@@ -201,7 +217,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="보안 수준" Binding="{Binding SecurityLevel}" Width="105">
+                            <DataGridTextColumn Header="보안 수준" Binding="{Binding SecurityLevel}" Width="108">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -219,15 +235,6 @@
                                                 <Setter Property="Foreground" Value="#DC3545"/>
                                             </DataTrigger>
                                         </Style.Triggers>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Header="네트워크" Width="160">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-                                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                                        <Setter Property="VerticalAlignment" Value="Center"/>
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>

@@ -2,18 +2,24 @@
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Controls;
-using System.Runtime.Versioning;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using WpfMessageBox = System.Windows.MessageBox;
 
 namespace LogCheck
 {
     public partial class Logs : Page
     {
+        private ToggleButton _selectedButton;
+
         public Logs()
         {
             InitializeComponent();
+
+            SideLogsButton.IsChecked = true;
         }
 
         public class ChangeLogEntry
@@ -127,38 +133,51 @@ namespace LogCheck
             // DataGrid에 표시
             logsDataGrid.ItemsSource = logEntries;
         }
+
+        #region Sidebar Navigation
+        
+
         [SupportedOSPlatform("windows")]
-        private void SidebarPrograms_Click(object sender, RoutedEventArgs e)
+        private void SidebarButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigateToPage(new ProgramsList());
+            var clicked = sender as ToggleButton;
+            if (clicked == null) return;
+
+            // 이전 선택 해제
+            if (_selectedButton != null && _selectedButton != clicked)
+                _selectedButton.IsChecked = false;
+
+            // 선택 상태 유지
+            clicked.IsChecked = true;
+            _selectedButton = clicked;
+
+            switch (clicked.CommandParameter?.ToString())
+            {
+                case "Vaccine":
+                    NavigateToPage(new Vaccine());
+                    break;
+                case "NetWorks":
+                    NavigateToPage(new NetWorks());
+                    break;
+                case "ProgramsList":
+                    NavigateToPage(new ProgramsList());
+                    break;
+                case "Recoverys":
+                    NavigateToPage(new Recoverys());
+                    break;
+                case "Logs":
+                    NavigateToPage(new Logs());
+                    break;
+            }
         }
-        [SupportedOSPlatform("windows")]
-        private void SidebarModification_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new NetWorks());
-        }
-        [SupportedOSPlatform("windows")]
-        private void SidebarLog_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Logs());
-        }
-        [SupportedOSPlatform("windows")]
-        private void SidebarRecovery_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Recoverys());
-        }
-        [SupportedOSPlatform("windows")]
-        private void SidebarVaccine_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Vaccine());
-        }
+
         [SupportedOSPlatform("windows")]
         private void NavigateToPage(Page page)
         {
             var mainWindow = Window.GetWindow(this) as MainWindows;
             mainWindow?.NavigateToPage(page);
         }
-
+        #endregion
 
         private bool isEventChecked = true;
         private void CheckBox_Checked(object sender, RoutedEventArgs e)

@@ -10,6 +10,7 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
@@ -25,6 +26,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -37,8 +40,6 @@ using Application = System.Windows.Application;
 using Cursors = System.Windows.Input.Cursors;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
-using System.ComponentModel;
-using System.Windows.Data;
 
 namespace LogCheck
 {
@@ -72,11 +73,12 @@ namespace LogCheck
         public string Destination { get; set; } = string.Empty;
         public string Result { get; set; } = string.Empty;
         public int EventId { get; set; }
-    }  
+    }
 
     [SupportedOSPlatform("windows")]
     public partial class NetWorks : Page, INavigable
     {
+        private ToggleButton _selectedButton;
         private DispatcherTimer? loadingTextTimer;
         private int dotCount = 0;
         private const int maxDots = 3;
@@ -100,6 +102,11 @@ namespace LogCheck
         private DispatcherTimer? _alternativeMonitoringTimer;
         private bool _isAlternativeMonitoring = false;
 
+        // 실시간 이벤트 로그 모니터링 관련 변수들
+        private EventLogWatcher? _eventLogWatcher;
+        private readonly Dictionary<string, DateTime> _lastSeenConnections = new Dictionary<string, DateTime>();
+        private readonly object _connectionLock = new object();
+
         public NetWorks()
         {
             if (!IsRunningAsAdmin())
@@ -119,6 +126,8 @@ namespace LogCheck
             }
 
             InitializeComponent();
+
+            SideNetworksButton.IsChecked = true;
 
             // Loaded 이벤트 핸들러 추가 (차트 초기화 보장)
             this.Loaded += Network_Loaded;
@@ -964,7 +973,7 @@ namespace LogCheck
 
                 // 1단계: 패킷 캡처 시도
                 bool packetCaptureSuccess = await TryStartPacketCapture(selectedDevice, interfaceName);
-                
+
                 if (!packetCaptureSuccess)
                 {
                     // 2단계: 대안 모니터링 방법 사용
@@ -995,7 +1004,7 @@ namespace LogCheck
             catch (Exception ex)
             {
                 LogHelper.LogError($"네트워크 모니터링 시작 실패: {ex.Message}");
-                
+
                 // 예외 발생시에도 대안 방법 제공
                 var result = MessageBox.Show(
                     $"네트워크 모니터링 시작 중 오류가 발생했습니다:\n\n{ex.Message}\n\n" +
@@ -1031,10 +1040,10 @@ namespace LogCheck
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        _packets.Add(packet);
+                        _packets.Insert(0, packet); // 상단에 추가
                         if (_packets.Count > 1000)
                         {
-                            _packets.RemoveAt(0);
+                            _packets.RemoveAt(_packets.Count - 1); // 하단에서 제거
                         }
                         UpdateCaptureStatus();
                     });
@@ -1046,7 +1055,7 @@ namespace LogCheck
                     {
                         LogHelper.LogError($"패킷 캡처 오류: {error}");
                         StopCapture();
-                        
+
                         // 오류 발생시 대안 모니터링으로 전환
                         var result = MessageBox.Show(
                             $"패킷 캡처 중 오류가 발생했습니다:\n{error}\n\n" +
@@ -1065,13 +1074,13 @@ namespace LogCheck
                 // 캡처 시작
                 await Task.Run(() => _packetCapture.StartCapture());
                 _isCapturing = true;
-                
+
                 return true;
             }
             catch (Exception ex)
             {
                 LogHelper.LogError($"패킷 캡처 시작 실패: {ex.Message}");
-                
+
                 // 리소스 정리
                 if (_packetCapture != null)
                 {
@@ -1082,7 +1091,7 @@ namespace LogCheck
                     }
                     catch { }
                 }
-                
+
                 return false;
             }
         }
@@ -1150,14 +1159,14 @@ namespace LogCheck
                 StartCaptureButton.Visibility = Visibility.Collapsed;
                 StopCaptureButton.Visibility = Visibility.Visible;
                 NetworkInterfaceComboBox.IsEnabled = false;
-                
+
                 // 상태 표시 업데이트
-                var statusText = isAlternativeMode 
+                var statusText = isAlternativeMode
                     ? $"대안 모니터링 중: {interfaceName}"
                     : $"패킷 캡처 중: {interfaceName}";
-                
+
                 ShowCaptureStatus(statusText);
-                
+
                 // 상태 표시를 위한 추가 UI 업데이트
                 if (isAlternativeMode)
                 {
@@ -1177,7 +1186,7 @@ namespace LogCheck
                 StopCaptureButton.Visibility = Visibility.Collapsed;
                 NetworkInterfaceComboBox.IsEnabled = true;
                 LoadingOverlay.Visibility = Visibility.Collapsed;
-                
+
                 // 기본 상태로 복원
                 LoadingText.Text = baseText;
                 LoadingText.Foreground = new SolidColorBrush(Colors.White);
@@ -1212,6 +1221,16 @@ namespace LogCheck
                     _packetCapture = null;
                 }
 
+                // 실시간 이벤트 로그 모니터링 정지
+                if (_eventLogWatcher != null)
+                {
+                    _eventLogWatcher.Enabled = false;
+                    _eventLogWatcher.EventRecordWritten -= OnNewNetworkEvent;
+                    _eventLogWatcher.Dispose();
+                    _eventLogWatcher = null;
+                    LogHelper.LogInfo("실시간 이벤트 로그 모니터링 정지됨");
+                }
+
                 // 대안 모니터링 정지
                 if (_alternativeMonitoringTimer != null)
                 {
@@ -1219,11 +1238,17 @@ namespace LogCheck
                     _alternativeMonitoringTimer = null;
                 }
 
+                // 연결 기록 정리
+                lock (_connectionLock)
+                {
+                    _lastSeenConnections.Clear();
+                }
+
                 _isCapturing = false;
                 _isAlternativeMonitoring = false;
-                
+
                 UpdateCaptureUI(false, "");
-                
+
                 LogHelper.LogInfo("네트워크 모니터링이 정지되었습니다.");
             }
             catch (Exception ex)
@@ -1979,7 +2004,7 @@ namespace LogCheck
         {
             try
             {
-               LogHelper.LogInfo("보안 스캔 시작");
+                LogHelper.LogInfo("보안 스캔 시작");
 
                 // 기존 경고 목록 초기화 (테스트 경고 및 이전 스캔 결과 제거)
                 _securityAlerts.Clear();
@@ -2330,29 +2355,39 @@ namespace LogCheck
             }
         }
 
-
-
         // 사이드바 네비게이션 (임시)
         [SupportedOSPlatform("windows")]
-        private void SidebarPrograms_Click(object sender, RoutedEventArgs e)
+        private void SidebarButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigateToPage(new ProgramsList());
-        }
+            var clicked = sender as ToggleButton;
+            if (clicked == null) return;
 
-        [SupportedOSPlatform("windows")]
-        private void SidebarModification_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new NetWorks());
-        }
+            // 이전 선택 해제
+            if (_selectedButton != null && _selectedButton != clicked)
+                _selectedButton.IsChecked = false;
 
-        private void SidebarLog_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Logs());
-        }
+            // 선택 상태 유지
+            clicked.IsChecked = true;
+            _selectedButton = clicked;
 
-        private void SidebarRecovery_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Recoverys());
+            switch (clicked.CommandParameter?.ToString())
+            {
+                case "Vaccine":
+                    NavigateToPage(new Vaccine());
+                    break;
+                case "NetWorks":
+                    NavigateToPage(new NetWorks());
+                    break;
+                case "ProgramsList":
+                    NavigateToPage(new ProgramsList());
+                    break;
+                case "Recoverys":
+                    NavigateToPage(new Recoverys());
+                    break;
+                case "Logs":
+                    NavigateToPage(new Logs());
+                    break;
+            }
         }
 
         private void NavigateToPage(System.Windows.Controls.Page page)
@@ -2361,33 +2396,53 @@ namespace LogCheck
             mainWindow?.NavigateToPage(page);
         }
 
+        // 클래스 멤버에 YourMonitoringClass 인스턴스 선언
+        private YourMonitoringClass _monitoringClass = new YourMonitoringClass();
         private async Task StartAlternativeMonitoring(string interfaceName)
         {
             try
             {
                 LogHelper.LogInfo($"대안 네트워크 모니터링 시작: {interfaceName}");
-                
+
+                // 여기에 설치된 프로그램 리스트를 준비 (실제로는 외부에서 가져와야 함)
+                var installedPrograms = new List<string>
+                {
+                    "OldVPN",
+                    "OutdatedBrowser",
+                    "SafeProgram"
+                };
+
+                // 분석 및 저장 — 메시지 박스나 출력은 하지 않음
+                _monitoringClass.AnalyzeAndStoreProgramScores(installedPrograms);
+
                 // UI 상태 변경
                 UpdateCaptureUI(true, interfaceName, isAlternativeMode: true);
-                
+
                 // 대안 모니터링 타이머 시작
                 StartAlternativeMonitoringTimer();
-                
+
                 // 초기 데이터 로드
                 await LoadInitialNetworkData();
-                
+
                 MessageBox.Show(
-                    $"대안 네트워크 모니터링이 시작되었습니다!\n\n" +
-                    $"📊 모니터링 기능:\n" +
-                    $"• Windows 방화벽 이벤트 로그 분석\n" +
-                    $"• 실시간 네트워크 연결 상태 추적\n" +
-                    $"• 네트워크 인터페이스 통계 수집\n" +
+                    $"실시간 네트워크 모니터링이 시작되었습니다!\n\n" +
+                    $"🔥 실시간 모니터링 기능:\n" +
+                    $"• 실시간 방화벽 이벤트 로그 감지 (NEW!)\n" +
+                    $"• Windows 보안 이벤트 즉시 추적\n" +
+                    $"• 네트워크 연결 상태 실시간 업데이트\n" +
+                    $"• 중복 제거를 통한 정확한 데이터 표시\n" +
                     $"• 프로세스별 네트워크 사용량 분석\n\n" +
-                    $"💡 보안 설정을 변경하지 않고도\n" +
-                    $"효과적인 네트워크 보안 모니터링을 제공합니다.",
-                    "대안 모니터링 시작",
+                    $"⚡ 이제 새로운 네트워크 연결이 발생하는 즉시\n" +
+                    $"실시간으로 데이터가 업데이트됩니다!\n\n" +
+                    $"💡 보안 설정 변경 없이 안전하고 효과적인\n" +
+                    $"네트워크 보안 모니터링을 제공합니다.",
+                    "실시간 모니터링 시작",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
+
+                UpdateCaptureUI(true, interfaceName, isAlternativeMode: true);
+                StartAlternativeMonitoringTimer();
+                await LoadInitialNetworkData();
             }
             catch (Exception ex)
             {
@@ -2399,11 +2454,15 @@ namespace LogCheck
 
         private void StartAlternativeMonitoringTimer()
         {
+            // 실시간 이벤트 로그 모니터링 시작
+            StartRealTimeEventLogMonitoring();
+
+            // 기존 타이머 기반 모니터링 (10초 간격으로 설정)
             _alternativeMonitoringTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(5) // 5초마다 업데이트
+                Interval = TimeSpan.FromSeconds(10) // 10초마다 netstat 기반 업데이트
             };
-            
+
             _alternativeMonitoringTimer.Tick += async (s, e) =>
             {
                 try
@@ -2415,36 +2474,148 @@ namespace LogCheck
                     LogHelper.LogError($"대안 모니터링 업데이트 실패: {ex.Message}");
                 }
             };
-            
+
             _isAlternativeMonitoring = true;
             _alternativeMonitoringTimer.Start();
-            LogHelper.LogInfo("대안 모니터링 타이머 시작됨");
+            LogHelper.LogInfo("대안 모니터링 (이벤트 로그 + 10초 타이머) 시작됨");
+        }
+
+        // 실시간 이벤트 로그 모니터링 시작
+        private void StartRealTimeEventLogMonitoring()
+        {
+            try
+            {
+                // Security 로그에서 네트워크 관련 이벤트 실시간 감지
+                var query = new EventLogQuery("Security", PathType.LogName, 
+                    "*[System[(EventID=5156 or EventID=5157)]]");
+
+                _eventLogWatcher = new EventLogWatcher(query);
+                _eventLogWatcher.EventRecordWritten += OnNewNetworkEvent;
+                _eventLogWatcher.Enabled = true;
+
+                LogHelper.LogInfo("실시간 이벤트 로그 모니터링 시작됨");
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"실시간 이벤트 로그 모니터링 시작 실패: {ex.Message}");
+                // 실패해도 기존 타이머 기반 모니터링은 계속 동작
+            }
+        }
+
+        // 새로운 네트워크 이벤트 발생 시 처리
+        private void OnNewNetworkEvent(object? sender, EventRecordWrittenEventArgs e)
+        {
+            try
+            {
+                if (e.EventRecord == null) return;
+
+                using (e.EventRecord)
+                {
+                    var networkRecord = ParseEventLogToNetworkRecord(e.EventRecord);
+                    if (networkRecord != null && IsNewOrChangedConnection(networkRecord))
+                    {
+                        var packetInfo = ConvertNetworkRecordToPacketInfo(networkRecord);
+                        if (packetInfo != null)
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                _packets.Insert(0, packetInfo); // 상단에 추가
+                                if (_packets.Count > 1000)
+                                {
+                                    _packets.RemoveAt(_packets.Count - 1); // 하단에서 제거
+                                }
+                                UpdateCaptureStatus();
+                            });
+
+                            LogHelper.LogInfo($"실시간 네트워크 이벤트 감지: {packetInfo.SourceIP}:{packetInfo.SourcePort} -> {packetInfo.DestinationIP}:{packetInfo.DestinationPort} ({packetInfo.Protocol})");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"네트워크 이벤트 처리 실패: {ex.Message}");
+            }
+        }
+
+        // 새로운 또는 변경된 연결인지 확인
+        private bool IsNewOrChangedConnection(NetworkUsageRecord record)
+        {
+            lock (_connectionLock)
+            {
+                var key = $"{record.SourceIP}:{record.SourcePort}-{record.DestinationIP}:{record.DestinationPort}-{record.Protocol}";
+                
+                if (!_lastSeenConnections.ContainsKey(key) || 
+                    (DateTime.Now - _lastSeenConnections[key]).TotalSeconds > 10) // 10초 이후 재표시 허용
+                {
+                    _lastSeenConnections[key] = DateTime.Now;
+                    
+                    // 딕셔너리 크기 제한 (메모리 누수 방지)
+                    if (_lastSeenConnections.Count > 1000)
+                    {
+                        var oldestKey = _lastSeenConnections.OrderBy(kvp => kvp.Value).First().Key;
+                        _lastSeenConnections.Remove(oldestKey);
+                    }
+                    
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        // NetworkUsageRecord를 PacketInfo로 변환
+        private PacketInfo? ConvertNetworkRecordToPacketInfo(NetworkUsageRecord record)
+        {
+            try
+            {
+                return new PacketInfo
+                {
+                    Timestamp = record.Timestamp,
+                    SourceIP = record.SourceIP,
+                    DestinationIP = record.DestinationIP,
+                    SourcePort = (ushort)Math.Max(0, Math.Min(record.SourcePort, ushort.MaxValue)),
+                    DestinationPort = (ushort)Math.Max(0, Math.Min(record.DestinationPort, ushort.MaxValue)),
+                    Protocol = record.Protocol,
+                    PacketSize = record.PacketSize,
+                    Direction = record.Direction,
+                    ProcessName = record.ProcessName ?? "Unknown",
+                    Description = $"실시간 이벤트: {record.Description}"
+                };
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"네트워크 기록 변환 실패: {ex.Message}");
+                return null;
+            }
         }
 
         private async Task UpdateAlternativeMonitoringData()
         {
             try
             {
-                // 1. 현재 네트워크 연결 상태 조회
+                // 1. 현재 네트워크 연결 상태 조회 (이제 보조적 역할)
                 var currentConnections = await GetCurrentNetworkConnections();
-                
-                // 2. 새로운 연결들을 패킷 목록에 추가 (패킷 형태로 변환)
-                foreach (var connection in currentConnections.Take(10)) // 최신 10개만
+
+                // 2. 새로운 연결들을 패킷 목록에 추가 (중복 필터링 적용)
+                foreach (var connection in currentConnections.Take(5)) // 5개로 줄임
                 {
-                    var packetInfo = ConvertConnectionToPacketInfo(connection);
-                    if (packetInfo != null)
+                    if (IsNewOrChangedConnection(connection))
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
+                        var packetInfo = ConvertConnectionToPacketInfo(connection);
+                        if (packetInfo != null)
                         {
-                            _packets.Add(packetInfo);
-                            if (_packets.Count > 1000)
+                            Application.Current.Dispatcher.Invoke(() =>
                             {
-                                _packets.RemoveAt(0);
-                            }
-                        });
+                                _packets.Insert(0, packetInfo); // 상단에 추가
+                                if (_packets.Count > 1000)
+                                {
+                                    _packets.RemoveAt(_packets.Count - 1); // 하단에서 제거
+                                }
+                            });
+                        }
                     }
                 }
-                
+
                 // 3. 상태 업데이트
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -2487,7 +2658,7 @@ namespace LogCheck
             try
             {
                 ShowLoadingOverlay();
-                
+
                 // 병렬로 데이터 수집
                 var tasks = new[]
                 {
@@ -2495,16 +2666,21 @@ namespace LogCheck
                     GetCurrentNetworkConnections(),
                     GetNetworkStatisticsFromWMI()
                 };
-                
+
                 await Task.WhenAll(tasks);
-                
-                // 방화벽 이벤트 로그를 패킷 목록에 추가
+
+                // 방화벽 이벤트 로그를 패킷 목록에 추가 (최신 것부터 상단에)
                 var eventLogPackets = ConvertEventLogsToPackets();
-                foreach (var packet in eventLogPackets.Take(50)) // 최신 50개
-                {
-                    _packets.Add(packet);
-                }
+                var recentPackets = eventLogPackets.Take(50).ToList(); // 최신 50개
                 
+                // 시간순으로 정렬하여 최신 것이 위에 오도록
+                recentPackets = recentPackets.OrderByDescending(p => p.Timestamp).ToList();
+                
+                foreach (var packet in recentPackets)
+                {
+                    _packets.Insert(0, packet); // 상단에 추가
+                }
+
                 LogHelper.LogInfo("초기 네트워크 데이터 로드 완료");
             }
             catch (Exception ex)
@@ -2525,7 +2701,7 @@ namespace LogCheck
         private List<PacketInfo> ConvertEventLogsToPackets()
         {
             var packets = new List<PacketInfo>();
-            
+
             foreach (var logEntry in eventLogEntries.Take(50))
             {
                 try
@@ -2543,7 +2719,7 @@ namespace LogCheck
                         ProcessName = logEntry.ApplicationName,
                         Description = $"방화벽 로그: {logEntry.Result}"
                     };
-                    
+
                     packets.Add(packet);
                 }
                 catch (Exception ex)
@@ -2551,7 +2727,7 @@ namespace LogCheck
                     LogHelper.LogError($"이벤트 로그 변환 실패: {ex.Message}");
                 }
             }
-            
+
             return packets;
         }
 
@@ -2560,6 +2736,64 @@ namespace LogCheck
         {
             NavigateToPage(new Vaccine());
         }
+        public class YourMonitoringClass
+        {
+            public List<ProgramSecurityScore> ProgramScores { get; private set; } = new List<ProgramSecurityScore>();
+
+            public void AnalyzeAndStoreProgramScores(List<string> installedPrograms)
+            {
+                ProgramScores.Clear();
+
+                foreach (var program in installedPrograms)
+                {
+                    var score = new ProgramSecurityScore(program);
+
+                    if (program.Contains("OldVPN") || program.Contains("UnknownVPN"))
+                        score.AddDeduction(5, "알려지지 않은 VPN 사용");
+
+                    if (program.Contains("OutdatedBrowser"))
+                        score.AddDeduction(3, "구버전 브라우저 사용");
+
+                    if (program.Contains("FileSharingTool"))
+                        score.AddDeduction(5, "파일 공유 프로그램 설치로 인한 보안 위험");
+
+                    if (program.Contains("RemoteAccessTool"))
+                        score.AddDeduction(8, "원격 접속 도구 사용 위험");
+
+                    if (score.DeductionPoints > 0)
+                    {
+                        ProgramScores.Add(score);
+                        ProgramSecurityManager.Name.Add(program);
+                        ProgramSecurityManager.Scores.Add(score.DeductionPoints);
+                    }
+                }
+            }
+        }
+
+        public class ProgramSecurityScore
+        {
+            public string ProgramName { get; set; }
+            public int DeductionPoints { get; set; }
+            public List<string> DeductionReasons { get; set; }
+
+            public ProgramSecurityScore(string programName)
+            {
+                ProgramName = programName;
+                DeductionPoints = 0;
+                DeductionReasons = new List<string>();
+            }
+
+            public void AddDeduction(int points, string reason)
+            {
+                DeductionPoints += points;
+                DeductionReasons.Add(reason);
+            }
+        }
+        public static class ProgramSecurityManager
+        {
+            public static List<String> Name { get; set; } = new List<String>();
+            public static List<int> Scores { get; set; } = new List<int>();
+        }
+
     }
 }
-

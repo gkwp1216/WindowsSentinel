@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -25,6 +26,7 @@ namespace LogCheck
 {
     public partial class Recoverys : System.Windows.Controls.Page
     {
+        private ToggleButton _selectedButton;
         private readonly ObservableCollection<RecoverySecurityStatusItem> securityStatusItems = new();
         private readonly System.Windows.Threading.DispatcherTimer loadingTextTimer = new();
         private int dotCount = 0;
@@ -56,6 +58,8 @@ namespace LogCheck
         public Recoverys()
         {
             InitializeComponent();
+
+            SideRecoveryButton.IsChecked = true;
 
             // 관리자 권한 확인
             if (!IsRunningAsAdmin())
@@ -1157,40 +1161,50 @@ namespace LogCheck
             }
         }
 
-        // 사이드바 네비게이션 (임시)
-        [SupportedOSPlatform("windows")]
-        private void SidebarPrograms_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new ProgramsList());
-        }
+        #region Sidebar Navigation
+        
 
         [SupportedOSPlatform("windows")]
-        private void SidebarModification_Click(object sender, RoutedEventArgs e)
+        private void SidebarButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigateToPage(new NetWorks());
-        }
+            var clicked = sender as ToggleButton;
+            if (clicked == null) return;
 
-        private void SidebarLog_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Logs());
-        }
+            // 이전 선택 해제
+            if (_selectedButton != null && _selectedButton != clicked)
+                _selectedButton.IsChecked = false;
 
-        private void SidebarRecovery_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Recoverys());
+            // 선택 상태 유지
+            clicked.IsChecked = true;
+            _selectedButton = clicked;
+
+            switch (clicked.CommandParameter?.ToString())
+            {
+                case "Vaccine":
+                    NavigateToPage(new Vaccine());
+                    break;
+                case "NetWorks":
+                    NavigateToPage(new NetWorks());
+                    break;
+                case "ProgramsList":
+                    NavigateToPage(new ProgramsList());
+                    break;
+                case "Recoverys":
+                    NavigateToPage(new Recoverys());
+                    break;
+                case "Logs":
+                    NavigateToPage(new Logs());
+                    break;
+            }
         }
 
         [SupportedOSPlatform("windows")]
-        private void SidebarVaccine_Click(object sender, RoutedEventArgs e)
+        private void NavigateToPage(Page page)
         {
-            NavigateToPage(new Vaccine());
-        }
-
-        private void NavigateToPage(System.Windows.Controls.Page page)
-        {
-            var mainWindow = System.Windows.Window.GetWindow(this) as MainWindows;
+            var mainWindow = Window.GetWindow(this) as MainWindows;
             mainWindow?.NavigateToPage(page);
         }
+        #endregion
 
         // 메시지 타입 열거형
         private enum MessageType

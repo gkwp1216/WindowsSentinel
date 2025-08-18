@@ -118,34 +118,206 @@ namespace LogCheck
         // Windows Security Center 관련 메서드들
         #region Windows Security Center
         
-        // Windows Security Center 상태 확인
+        /// <summary>
+        /// Windows Security Center 상태 확인 (개선된 버전)
+        /// </summary>
         [SupportedOSPlatform("windows")]
         public static async Task<string> CheckSecurityCenterStatusAsync()
         {
             try
             {
-                using var searcher = new ManagementObjectSearcher("root\\SecurityCenter2", "SELECT * FROM SecurityCenter");
-                var collection = await Task.Run(() => searcher.Get());
-                return collection.Count > 0 ? "활성" : "비활성";
+                // 1단계: 서비스 상태 확인 (가장 확실한 방법)
+                var serviceStatus = await CheckSecurityCenterService();
+                if (serviceStatus != "확인 불가")
+                {
+                    return serviceStatus;
+                }
+
+                // 2단계: WMI를 통한 Security Center 상태 확인
+                var wmiStatus = await CheckSecurityCenterViaWMI();
+                if (wmiStatus != "확인 불가")
+                {
+                    return wmiStatus;
+                }
+
+                // 3단계: 레지스트리 기반 확인 (최후 수단)
+                return CheckSecurityCenterViaRegistry();
             }
-            catch
+            catch (Exception ex)
             {
+                LogHelper.LogError($"{LOG_SOURCE}: Security Center 상태 확인 중 오류", ex);
                 return "확인 불가";
             }
         }
 
-        // Windows Security Center 활성화 (서비스 재시작)
+        /// <summary>
+        /// Windows Security Center 서비스 상태 확인
+        /// </summary>
+        [SupportedOSPlatform("windows")]
+        private static async Task<string> CheckSecurityCenterService()
+        {
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    using (var service = new ServiceController("wscsvc"))
+                    {
+                        service.Refresh();
+                        bool isRunning = service.Status == ServiceControllerStatus.Running;
+                        
+                        LogHelper.LogInfo($"{LOG_SOURCE}: Security Center 서비스 상태 - {service.Status}");
+                        
+                        return isRunning ? "활성" : "비활성";
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"{LOG_SOURCE}: Security Center 서비스 상태 확인 중 오류", ex);
+                return "확인 불가";
+            }
+        }
+
+        /// <summary>
+        /// WMI를 통한 Security Center 상태 확인
+        /// </summary>
+        [SupportedOSPlatform("windows")]
+        private static async Task<string> CheckSecurityCenterViaWMI()
+        {
+            try
+            {
+                // Windows Defender Security Center 상태 확인
+                using var searcher = new ManagementObjectSearcher("root\\SecurityCenter2", 
+                    "SELECT * FROM AntiVirusProduct WHERE displayName LIKE '%Defender%' OR displayName LIKE '%Windows%'");
+                var collection = await Task.Run(() => searcher.Get());
+                
+                foreach (ManagementObject obj in collection)
+                {
+                    var productState = obj["productState"];
+                    if (productState != null)
+                    {
+                        // productState 값을 분석하여 활성화 상태 확인
+                        uint state = Convert.ToUInt32(productState);
+                        bool isActive = (state & 0x1000) == 0x1000; // 활성화 비트 확인
+                        
+                        LogHelper.LogInfo($"{LOG_SOURCE}: Security Center WMI 상태 - {(isActive ? "활성" : "비활성")}");
+                        return isActive ? "활성" : "비활성";
+                    }
+                }
+
+                LogHelper.LogInfo($"{LOG_SOURCE}: Security Center WMI - 제품 정보 없음");
+                return "확인 불가";
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"{LOG_SOURCE}: Security Center WMI 확인 중 오류", ex);
+                return "확인 불가";
+            }
+        }
+
+        /// <summary>
+        /// 레지스트리를 통한 Security Center 상태 확인
+        /// </summary>
+        [SupportedOSPlatform("windows")]
+        private static string CheckSecurityCenterViaRegistry()
+        {
+            try
+            {
+                using (var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+                    @"SOFTWARE\Microsoft\Security Center"))
+                {
+                    if (key != null)
+                    {
+                        var antiVirusDisableNotify = key.GetValue("AntiVirusDisableNotify");
+                        var firewallDisableNotify = key.GetValue("FirewallDisableNotify");
+                        
+                        // 알림이 비활성화되지 않았다면 Security Center가 활성화된 상태
+                        bool isActive = (antiVirusDisableNotify == null || (int)antiVirusDisableNotify == 0) &&
+                                       (firewallDisableNotify == null || (int)firewallDisableNotify == 0);
+                        
+                        LogHelper.LogInfo($"{LOG_SOURCE}: Security Center 레지스트리 상태 - {(isActive ? "활성" : "비활성")}");
+                        return isActive ? "활성" : "비활성";
+                    }
+                }
+
+                LogHelper.LogWarning($"{LOG_SOURCE}: Security Center 레지스트리 키를 찾을 수 없음");
+                return "확인 불가";
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"{LOG_SOURCE}: Security Center 레지스트리 확인 중 오류", ex);
+                return "확인 불가";
+            }
+        }
+
+        /// <summary>
+        /// Windows Security Center 활성화 (개선된 버전)
+        /// </summary>
         [SupportedOSPlatform("windows")]
         public static async Task<bool> EnableSecurityCenterAsync()
         {
             try
             {
-                using var searcher = new ManagementObjectSearcher("root\\SecurityCenter2", "SELECT * FROM SecurityCenter");
-                var collection = await Task.Run(() => searcher.Get());
-                return collection.Count > 0;
+                // 1단계: 서비스 재시작을 통한 활성화
+                bool serviceResult = await Task.Run(() => RestartSecurityCenter());
+                if (serviceResult)
+                {
+                    LogHelper.LogInfo($"{LOG_SOURCE}: Security Center 서비스 재시작 성공");
+                    
+                    // 재시작 후 잠시 대기
+                    await Task.Delay(2000);
+                    
+                    // 상태 재확인
+                    var status = await CheckSecurityCenterStatusAsync();
+                    return status == "활성";
+                }
+
+                // 2단계: 레지스트리를 통한 설정 복구
+                bool registryResult = await Task.Run(() => EnableSecurityCenterViaRegistry());
+                if (registryResult)
+                {
+                    LogHelper.LogInfo($"{LOG_SOURCE}: Security Center 레지스트리 설정 복구 성공");
+                    return true;
+                }
+
+                LogHelper.LogWarning($"{LOG_SOURCE}: Security Center 활성화 실패");
+                return false;
             }
-            catch
+            catch (Exception ex)
             {
+                LogHelper.LogError($"{LOG_SOURCE}: Security Center 활성화 중 오류", ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 레지스트리를 통한 Security Center 활성화
+        /// </summary>
+        [SupportedOSPlatform("windows")]
+        private static bool EnableSecurityCenterViaRegistry()
+        {
+            try
+            {
+                using (var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+                    @"SOFTWARE\Microsoft\Security Center", true))
+                {
+                    if (key != null)
+                    {
+                        // 알림 활성화 (0 = 활성화, 1 = 비활성화)
+                        key.SetValue("AntiVirusDisableNotify", 0, Microsoft.Win32.RegistryValueKind.DWord);
+                        key.SetValue("FirewallDisableNotify", 0, Microsoft.Win32.RegistryValueKind.DWord);
+                        
+                        LogHelper.LogInfo($"{LOG_SOURCE}: Security Center 레지스트리 설정 복구 완료");
+                        return true;
+                    }
+                }
+
+                LogHelper.LogWarning($"{LOG_SOURCE}: Security Center 레지스트리 키에 액세스할 수 없음");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"{LOG_SOURCE}: Security Center 레지스트리 설정 중 오류", ex);
                 return false;
             }
         }
@@ -251,24 +423,93 @@ namespace LogCheck
         }
         
         /// <summary>
-        /// Windows 방화벽 상태 확인
+        /// Windows 방화벽 상태 확인 (개선된 버전)
         /// </summary>
         [SupportedOSPlatform("windows")]
         public static bool IsFirewallEnabled()
         {
             try
             {
-                using (var searcher = new ManagementObjectSearcher("root\\StandardCimv2", 
-                    "SELECT * FROM MSFT_NetFirewallProfile WHERE Enabled=1"))
+                // COM 객체를 사용한 방화벽 상태 확인
+                Type? comType = Type.GetTypeFromProgID("HNetCfg.FwMgr");
+                if (comType == null)
                 {
-                    bool anyEnabled = searcher.Get().Count > 0;
-                    LogHelper.LogInfo($"{LOG_SOURCE}: 방화벽 상태 확인 - 활성화된 프로필 있음: {anyEnabled}");
-                    return anyEnabled;
+                    LogHelper.LogWarning($"{LOG_SOURCE}: Windows Firewall COM 객체를 찾을 수 없습니다.");
+                    return CheckFirewallViaRegistry();
                 }
+
+                dynamic? firewall = Activator.CreateInstance(comType);
+                if (firewall?.LocalPolicy?.CurrentProfile?.FirewallEnabled == true)
+                {
+                    LogHelper.LogInfo($"{LOG_SOURCE}: 방화벽 상태 확인 - 활성화됨 (COM)");
+                    return true;
+                }
+
+                // 백업으로 WMI 방식 사용
+                return CheckFirewallViaWMI();
             }
             catch (Exception ex)
             {
-                LogHelper.LogError($"{LOG_SOURCE}: 방화벽 상태 확인 중 오류", ex);
+                LogHelper.LogError($"{LOG_SOURCE}: 방화벽 상태 확인 중 오류 (COM)", ex);
+                return CheckFirewallViaRegistry();
+            }
+        }
+
+        /// <summary>
+        /// WMI를 통한 방화벽 상태 확인 (백업 방법)
+        /// </summary>
+        [SupportedOSPlatform("windows")]
+        private static bool CheckFirewallViaWMI()
+        {
+            try
+            {
+                using (var searcher = new ManagementObjectSearcher("root\\StandardCimv2", 
+                    "SELECT Enabled FROM MSFT_NetFirewallProfile"))
+                {
+                    foreach (ManagementObject profile in searcher.Get())
+                    {
+                        if (profile["Enabled"] != null && (bool)profile["Enabled"])
+                        {
+                            LogHelper.LogInfo($"{LOG_SOURCE}: 방화벽 상태 확인 - 활성화된 프로필 발견 (WMI)");
+                            return true;
+                        }
+                    }
+                }
+                
+                LogHelper.LogInfo($"{LOG_SOURCE}: 방화벽 상태 확인 - 활성화된 프로필 없음 (WMI)");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"{LOG_SOURCE}: WMI 방화벽 상태 확인 중 오류", ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 레지스트리를 통한 방화벽 상태 확인 (최후 수단)
+        /// </summary>
+        [SupportedOSPlatform("windows")]
+        private static bool CheckFirewallViaRegistry()
+        {
+            try
+            {
+                using (var key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+                    @"SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile"))
+                {
+                    if (key?.GetValue("EnableFirewall") is int enabledValue && enabledValue == 1)
+                    {
+                        LogHelper.LogInfo($"{LOG_SOURCE}: 방화벽 상태 확인 - 활성화됨 (레지스트리)");
+                        return true;
+                    }
+                }
+
+                LogHelper.LogInfo($"{LOG_SOURCE}: 방화벽 상태 확인 - 비활성화됨 (레지스트리)");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError($"{LOG_SOURCE}: 레지스트리 방화벽 상태 확인 중 오류", ex);
                 return false;
             }
         }

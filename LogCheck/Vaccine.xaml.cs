@@ -1,24 +1,26 @@
+using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
+using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Win32;
-using System.Linq;
-using System.Collections.Generic;
-using System.Windows.Threading;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Runtime.Versioning;
+using System.Windows.Threading;
 
 namespace LogCheck
 {
     public partial class Vaccine : Page
     {
         private ObservableCollection<ProgramScanResult> _results = new();
-
+        private ToggleButton _selectedButton;
         private DispatcherTimer? loadingTextTimer;
         private int dotCount = 0;
         private const int maxDots = 3;
@@ -27,6 +29,9 @@ namespace LogCheck
         public Vaccine()
         {
             InitializeComponent();
+
+            SideVaccineButton.IsChecked = true;
+
             resultDataGrid.ItemsSource = _results;
 
             // 로딩 애니메이션 초기화
@@ -247,34 +252,40 @@ namespace LogCheck
         }
 
         #region Sidebar Navigation
-        [SupportedOSPlatform("windows")]
-        private void SidebarPrograms_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new ProgramsList());
-        }
+        
 
         [SupportedOSPlatform("windows")]
-        private void SidebarModification_Click(object sender, RoutedEventArgs e)
+        private void SidebarButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigateToPage(new NetWorks());
-        }
+            var clicked = sender as ToggleButton;
+            if (clicked == null) return;
 
-        [SupportedOSPlatform("windows")]
-        private void SidebarLog_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Logs());
-        }
+            // 이전 선택 해제
+            if (_selectedButton != null && _selectedButton != clicked)
+                _selectedButton.IsChecked = false;
 
-        [SupportedOSPlatform("windows")]
-        private void SidebarRecovery_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Recoverys());
-        }
+            // 선택 상태 유지
+            clicked.IsChecked = true;
+            _selectedButton = clicked;
 
-        [SupportedOSPlatform("windows")]
-        private void SidebarVaccine_Click(object sender, RoutedEventArgs e)
-        {
-            // 현재 페이지와 동일하므로 아무 동작 없음
+            switch (clicked.CommandParameter?.ToString())
+            {
+                case "Vaccine":
+                    NavigateToPage(new Vaccine());
+                    break;
+                case "NetWorks":
+                    NavigateToPage(new NetWorks());
+                    break;
+                case "ProgramsList":
+                    NavigateToPage(new ProgramsList());
+                    break;
+                case "Recoverys":
+                    NavigateToPage(new Recoverys());
+                    break;
+                case "Logs":
+                    NavigateToPage(new Logs());
+                    break;
+            }           
         }
 
         [SupportedOSPlatform("windows")]

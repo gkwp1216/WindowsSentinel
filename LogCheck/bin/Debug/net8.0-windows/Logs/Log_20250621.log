@@ -1,0 +1,1359 @@
+[2025-06-21 17:07:23.453] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 17:07:23.480] [INFO] InitializeComponent 완료
+[2025-06-21 17:07:23.489] [INFO] DataGrid 초기화 완료
+[2025-06-21 17:07:23.642] [INFO] 스피너 초기화 완료
+[2025-06-21 17:07:23.653] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 17:07:26.798] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 17:07:26.830] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:07:26.840] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:07:27.546] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 17:07:27.553] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 17:07:27.556] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 17:07:27.561] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 17:07:27.565] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 17:07:27.569] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 17:07:27.572] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 17:07:27.576] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 17:07:27.580] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 17:07:27.610] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:07:27.615] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:07:27.618] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:07:27.621] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:07:27.624] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:07:27.627] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:07:27.630] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 17:07:27.782] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 17:07:27.788] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 17:07:27.794] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 17:07:27.796] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 17:07:27.799] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 17:07:27.802] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:07:27.805] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:07:27.811] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:07:27.816] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:07:27.819] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:07:27.822] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:07:27.826] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 17:07:27.840] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 17:07:27.849] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 17:07:27.852] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 17:07:27.914] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 17:07:27.946] [INFO] Network 페이지 로드 완료
+[2025-06-21 17:07:27.948] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 17:09:35.501] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 17:09:35.539] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:09:35.547] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:09:36.109] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 17:09:36.112] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 17:09:36.115] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 17:09:36.118] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 17:09:36.121] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 17:09:36.123] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 17:09:36.125] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 17:09:36.128] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 17:09:36.130] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 17:09:36.161] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:09:36.165] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:09:36.167] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:09:36.170] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:09:36.172] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:09:36.175] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:09:36.177] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 17:09:36.332] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 17:09:36.339] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 17:09:36.342] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 17:09:36.344] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 17:09:36.348] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 17:09:36.350] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:09:36.352] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:09:36.354] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:09:36.357] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:09:36.360] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:09:36.363] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:09:36.366] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 17:09:36.380] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 17:09:36.397] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 17:09:36.401] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 17:09:36.411] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 17:09:36.449] [INFO] Network 페이지 로드 완료
+[2025-06-21 17:09:36.452] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 17:09:37.461] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 17:09:37.468] [INFO] InitializeComponent 완료
+[2025-06-21 17:09:37.474] [INFO] DataGrid 초기화 완료
+[2025-06-21 17:09:37.564] [INFO] 스피너 초기화 완료
+[2025-06-21 17:09:37.567] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 17:22:32.105] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 17:22:32.146] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:22:32.151] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:22:32.661] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 17:22:32.666] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 17:22:32.671] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 17:22:32.674] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 17:22:32.677] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 17:22:32.679] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 17:22:32.681] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 17:22:32.684] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 17:22:32.686] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 17:22:32.709] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:22:32.713] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:22:32.715] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:22:32.718] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:22:32.720] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:22:32.722] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:22:32.725] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 17:22:32.863] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 17:22:32.869] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 17:22:32.871] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 17:22:32.874] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 17:22:32.878] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 17:22:32.881] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:22:32.883] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:22:32.885] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:22:32.888] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:22:32.891] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:22:32.894] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:22:32.897] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 17:22:32.909] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 17:22:32.920] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 17:22:32.923] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 17:22:32.931] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 17:22:32.963] [INFO] Network 페이지 로드 완료
+[2025-06-21 17:22:32.966] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 17:22:36.339] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 17:22:36.350] [INFO] InitializeComponent 완료
+[2025-06-21 17:22:36.356] [INFO] DataGrid 초기화 완료
+[2025-06-21 17:22:36.510] [INFO] 스피너 초기화 완료
+[2025-06-21 17:22:36.513] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 17:22:38.262] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 17:22:38.276] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:22:38.281] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:22:38.321] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 17:22:38.327] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 17:22:38.331] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 17:22:38.336] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 17:22:38.340] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 17:22:38.344] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 17:22:38.348] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 17:22:38.352] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 17:22:38.357] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 17:22:38.386] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:22:38.390] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:22:38.393] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:22:38.396] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:22:38.400] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:22:38.403] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:22:38.405] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 17:22:38.408] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 17:22:38.411] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 17:22:38.414] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 17:22:38.417] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 17:22:38.419] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 17:22:38.422] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:22:38.425] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:22:38.428] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:22:38.431] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:22:38.434] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:22:38.437] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:22:38.439] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 17:22:38.442] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 17:22:38.453] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 17:22:38.456] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 17:22:38.461] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 17:22:38.478] [INFO] Network 페이지 로드 완료
+[2025-06-21 17:22:38.481] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 17:22:46.860] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 17:22:46.889] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:22:46.894] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:22:46.928] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 17:22:46.931] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 17:22:46.934] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 17:22:46.936] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 17:22:46.939] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 17:22:46.941] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 17:22:46.944] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 17:22:46.947] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 17:22:46.949] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 17:22:46.981] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:22:46.985] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:22:46.988] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:22:46.991] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:22:46.993] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:22:46.996] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:22:46.998] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 17:22:47.000] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 17:22:47.003] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 17:22:47.005] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 17:22:47.008] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 17:22:47.010] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 17:22:47.012] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:22:47.015] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:22:47.017] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:22:47.020] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:22:47.023] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:22:47.027] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:22:47.030] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 17:22:47.034] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 17:22:47.036] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 17:22:47.039] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 17:22:47.046] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 17:22:47.064] [INFO] Network 페이지 로드 완료
+[2025-06-21 17:22:47.066] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 17:22:49.082] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 17:22:49.093] [INFO] InitializeComponent 완료
+[2025-06-21 17:22:49.099] [INFO] DataGrid 초기화 완료
+[2025-06-21 17:22:49.236] [INFO] 스피너 초기화 완료
+[2025-06-21 17:22:49.240] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 17:30:36.430] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 17:30:36.497] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:30:36.505] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:30:37.162] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 17:30:37.164] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 17:30:37.166] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 17:30:37.168] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 17:30:37.170] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 17:30:37.172] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 17:30:37.174] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 17:30:37.176] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 17:30:37.179] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 17:30:37.214] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:30:37.218] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:30:37.221] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:30:37.224] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:30:37.228] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:30:37.230] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:30:37.233] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 17:30:37.393] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 17:30:37.400] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 17:30:37.404] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 17:30:37.407] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 17:30:37.412] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 17:30:37.414] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:30:37.417] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:30:37.421] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:30:37.425] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:30:37.428] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:30:37.431] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:30:37.434] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 17:30:37.447] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 17:30:37.459] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 17:30:37.462] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 17:30:37.473] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 17:30:37.527] [INFO] Network 페이지 로드 완료
+[2025-06-21 17:30:37.530] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 17:30:39.889] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 17:30:39.911] [INFO] InitializeComponent 완료
+[2025-06-21 17:30:39.919] [INFO] DataGrid 초기화 완료
+[2025-06-21 17:30:40.082] [INFO] 스피너 초기화 완료
+[2025-06-21 17:30:40.085] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 17:31:13.648] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 17:31:13.668] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:31:13.675] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:31:13.713] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 17:31:13.720] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 17:31:13.724] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 17:31:13.730] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 17:31:13.735] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 17:31:13.741] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 17:31:13.746] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 17:31:13.750] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 17:31:13.754] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 17:31:13.795] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:31:13.799] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:31:13.804] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:31:13.808] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:31:13.813] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:31:13.818] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:31:13.820] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 17:31:13.823] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 17:31:13.826] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 17:31:13.830] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 17:31:13.833] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 17:31:13.836] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 17:31:13.839] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:31:13.842] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:31:13.845] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:31:13.848] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:31:13.851] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:31:13.854] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:31:13.857] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 17:31:13.862] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 17:31:13.867] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 17:31:13.869] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 17:31:13.879] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 17:31:13.898] [INFO] Network 페이지 로드 완료
+[2025-06-21 17:31:13.900] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 17:31:56.670] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 17:31:56.685] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:31:56.689] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 17:31:56.724] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 17:31:56.728] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 17:31:56.731] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 17:31:56.733] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 17:31:56.736] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 17:31:56.739] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 17:31:56.742] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 17:31:56.745] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 17:31:56.748] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 17:31:56.781] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:31:56.785] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 17:31:56.788] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:31:56.791] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 17:31:56.794] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:31:56.798] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 17:31:56.801] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 17:31:56.805] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 17:31:56.808] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 17:31:56.811] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 17:31:56.814] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 17:31:56.817] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 17:31:56.820] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:31:56.823] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 17:31:56.827] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:31:56.830] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 17:31:56.833] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:31:56.836] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 17:31:56.839] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 17:31:56.846] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 17:31:56.849] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 17:31:56.851] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 17:31:56.857] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 17:31:56.883] [INFO] Network 페이지 로드 완료
+[2025-06-21 17:31:56.886] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 17:56:15.089] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 17:56:15.114] [INFO] InitializeComponent 완료
+[2025-06-21 17:56:15.122] [INFO] DataGrid 초기화 완료
+[2025-06-21 17:56:15.306] [INFO] 스피너 초기화 완료
+[2025-06-21 17:56:15.316] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 17:58:17.813] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 17:58:17.945] [INFO] InitializeComponent 완료
+[2025-06-21 17:58:17.954] [INFO] DataGrid 초기화 완료
+[2025-06-21 17:58:18.107] [INFO] 스피너 초기화 완료
+[2025-06-21 17:58:18.110] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 17:58:55.140] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 17:58:55.165] [INFO] InitializeComponent 완료
+[2025-06-21 17:58:55.172] [INFO] DataGrid 초기화 완료
+[2025-06-21 17:58:55.334] [INFO] 스피너 초기화 완료
+[2025-06-21 17:58:55.338] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 18:17:59.021] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 18:17:59.041] [INFO] InitializeComponent 완료
+[2025-06-21 18:17:59.047] [INFO] DataGrid 초기화 완료
+[2025-06-21 18:17:59.192] [INFO] 스피너 초기화 완료
+[2025-06-21 18:17:59.195] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 18:18:04.240] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 18:18:04.251] [INFO] InitializeComponent 완료
+[2025-06-21 18:18:04.256] [INFO] DataGrid 초기화 완료
+[2025-06-21 18:18:04.401] [INFO] 스피너 초기화 완료
+[2025-06-21 18:18:04.405] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 18:18:38.246] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 18:18:38.288] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 18:18:38.295] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 18:18:38.865] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 18:18:38.869] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 18:18:38.872] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 18:18:38.874] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 18:18:38.876] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 18:18:38.878] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 18:18:38.881] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 18:18:38.883] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 18:18:38.886] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 18:18:38.914] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 18:18:38.919] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 18:18:38.922] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 18:18:38.925] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 18:18:38.928] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 18:18:38.930] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 18:18:38.932] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 18:18:39.101] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 18:18:39.109] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 18:18:39.117] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 18:18:39.120] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 18:18:39.123] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 18:18:39.126] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 18:18:39.128] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 18:18:39.131] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 18:18:39.134] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 18:18:39.136] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 18:18:39.138] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 18:18:39.142] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 18:18:39.156] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 18:18:39.165] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 18:18:39.169] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 18:18:39.246] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 18:18:39.287] [INFO] Network 페이지 로드 완료
+[2025-06-21 18:18:39.289] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 18:19:41.456] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 18:19:41.475] [INFO] InitializeComponent 완료
+[2025-06-21 18:19:41.480] [INFO] DataGrid 초기화 완료
+[2025-06-21 18:19:41.605] [INFO] 스피너 초기화 완료
+[2025-06-21 18:19:41.608] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 21:56:10.960] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 21:56:11.001] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 21:56:11.006] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 21:56:11.699] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 21:56:11.702] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 21:56:11.704] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 21:56:11.706] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 21:56:11.708] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 21:56:11.710] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 21:56:11.712] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 21:56:11.714] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 21:56:11.716] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 21:56:11.739] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 21:56:11.741] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 21:56:11.743] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 21:56:11.744] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 21:56:11.746] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 21:56:11.747] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 21:56:11.749] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 21:56:11.882] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 21:56:11.894] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 21:56:11.896] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 21:56:11.898] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 21:56:11.900] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 21:56:11.901] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 21:56:11.903] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 21:56:11.904] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 21:56:11.906] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 21:56:11.907] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 21:56:11.909] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 21:56:11.910] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 21:56:11.921] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 21:56:11.929] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 21:56:11.931] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 21:56:11.991] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 21:56:12.034] [INFO] Network 페이지 로드 완료
+[2025-06-21 21:56:12.035] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 21:57:09.183] [INFO] 탭 변경됨: HistoryTab
+[2025-06-21 21:57:42.350] [INFO] 탭 변경됨: SecurityTab
+[2025-06-21 21:57:42.353] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-21 21:57:42.359] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-21 21:57:42.361] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-21 21:57:47.703] [INFO] 탭 변경됨: HistoryTab
+[2025-06-21 21:57:48.545] [INFO] 탭 변경됨: SecurityTab
+[2025-06-21 21:58:00.258] [INFO] 탭 변경됨: HistoryTab
+[2025-06-21 21:58:00.934] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 21:58:04.623] [INFO] 탭 변경됨: SecurityTab
+[2025-06-21 21:58:10.485] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 21:58:10.493] [INFO] InitializeComponent 완료
+[2025-06-21 21:58:10.496] [INFO] DataGrid 초기화 완료
+[2025-06-21 21:58:10.569] [INFO] 스피너 초기화 완료
+[2025-06-21 21:58:10.571] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 22:00:24.308] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 22:00:24.404] [INFO] InitializeComponent 완료
+[2025-06-21 22:00:24.408] [INFO] DataGrid 초기화 완료
+[2025-06-21 22:00:24.474] [INFO] 스피너 초기화 완료
+[2025-06-21 22:00:24.476] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 22:00:30.627] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 22:00:30.659] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:00:30.663] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:00:31.058] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 22:00:31.060] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 22:00:31.061] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 22:00:31.063] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 22:00:31.065] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 22:00:31.066] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 22:00:31.068] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 22:00:31.070] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 22:00:31.072] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 22:00:31.095] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:00:31.098] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:00:31.100] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:00:31.101] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:00:31.103] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:00:31.105] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:00:31.107] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 22:00:31.237] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 22:00:31.240] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 22:00:31.242] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 22:00:31.244] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 22:00:31.246] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 22:00:31.248] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:00:31.250] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:00:31.252] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:00:31.253] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:00:31.255] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:00:31.257] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:00:31.259] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 22:00:31.277] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 22:00:31.285] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 22:00:31.288] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 22:00:31.343] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 22:00:31.379] [INFO] Network 페이지 로드 완료
+[2025-06-21 22:00:31.381] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 22:00:36.752] [INFO] 탭 변경됨: HistoryTab
+[2025-06-21 22:00:37.763] [INFO] 탭 변경됨: SecurityTab
+[2025-06-21 22:00:37.767] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-21 22:00:37.780] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-21 22:00:37.784] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-21 22:01:42.353] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 22:01:42.362] [INFO] InitializeComponent 완료
+[2025-06-21 22:01:42.366] [INFO] DataGrid 초기화 완료
+[2025-06-21 22:01:42.433] [INFO] 스피너 초기화 완료
+[2025-06-21 22:01:42.435] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 22:01:45.126] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 22:01:45.133] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:01:45.141] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:01:45.163] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 22:01:45.165] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 22:01:45.167] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 22:01:45.169] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 22:01:45.170] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 22:01:45.173] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 22:01:45.174] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 22:01:45.176] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 22:01:45.177] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 22:01:45.197] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:01:45.199] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:01:45.201] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:01:45.203] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:01:45.205] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:01:45.207] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:01:45.210] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 22:01:45.212] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 22:01:45.214] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 22:01:45.216] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 22:01:45.218] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 22:01:45.220] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 22:01:45.222] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:01:45.224] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:01:45.226] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:01:45.228] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:01:45.230] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:01:45.233] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:01:45.235] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 22:01:45.238] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 22:01:45.240] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 22:01:45.242] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 22:01:45.247] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 22:01:45.265] [INFO] Network 페이지 로드 완료
+[2025-06-21 22:01:45.267] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 22:05:18.279] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 22:05:18.417] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:05:18.422] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:05:19.107] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 22:05:19.112] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 22:05:19.115] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 22:05:19.118] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 22:05:19.120] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 22:05:19.122] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 22:05:19.124] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 22:05:19.127] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 22:05:19.129] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 22:05:19.154] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:05:19.157] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:05:19.160] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:05:19.162] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:05:19.165] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:05:19.168] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:05:19.171] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 22:05:19.299] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 22:05:19.303] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 22:05:19.305] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 22:05:19.308] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 22:05:19.311] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 22:05:19.314] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:05:19.316] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:05:19.318] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:05:19.320] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:05:19.323] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:05:19.325] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:05:19.329] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 22:05:19.344] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 22:05:19.353] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 22:05:19.356] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 22:05:19.372] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 22:05:19.444] [INFO] Network 페이지 로드 완료
+[2025-06-21 22:05:19.446] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 22:05:21.174] [INFO] 탭 변경됨: SecurityTab
+[2025-06-21 22:05:21.179] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-21 22:05:21.193] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-21 22:05:21.196] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-21 22:05:44.655] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 22:05:44.787] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:05:44.794] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:05:45.220] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 22:05:45.223] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 22:05:45.225] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 22:05:45.227] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 22:05:45.229] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 22:05:45.231] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 22:05:45.233] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 22:05:45.236] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 22:05:45.238] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 22:05:45.262] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:05:45.265] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:05:45.267] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:05:45.269] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:05:45.271] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:05:45.273] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:05:45.275] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 22:05:45.404] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 22:05:45.409] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 22:05:45.412] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 22:05:45.415] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 22:05:45.418] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 22:05:45.420] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:05:45.423] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:05:45.425] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:05:45.427] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:05:45.429] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:05:45.433] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:05:45.436] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 22:05:45.447] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 22:05:45.456] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 22:05:45.458] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 22:05:45.500] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 22:05:45.558] [INFO] Network 페이지 로드 완료
+[2025-06-21 22:05:45.560] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 22:05:50.047] [INFO] 탭 변경됨: SecurityTab
+[2025-06-21 22:05:50.050] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-21 22:05:50.064] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-21 22:05:50.066] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-21 22:06:17.808] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 22:06:17.946] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:06:17.951] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:06:18.419] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 22:06:18.423] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 22:06:18.426] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 22:06:18.429] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 22:06:18.431] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 22:06:18.434] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 22:06:18.437] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 22:06:18.441] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 22:06:18.444] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 22:06:18.470] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:06:18.474] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:06:18.476] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:06:18.478] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:06:18.481] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:06:18.483] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:06:18.485] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 22:06:18.617] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 22:06:18.620] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 22:06:18.623] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 22:06:18.625] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 22:06:18.628] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 22:06:18.631] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:06:18.633] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:06:18.635] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:06:18.637] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:06:18.640] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:06:18.642] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:06:18.645] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 22:06:18.657] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 22:06:18.667] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 22:06:18.670] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 22:06:18.713] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 22:06:18.780] [INFO] Network 페이지 로드 완료
+[2025-06-21 22:06:18.782] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 22:06:20.147] [INFO] 탭 변경됨: SecurityTab
+[2025-06-21 22:06:20.151] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-21 22:06:20.157] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-21 22:06:20.160] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-21 22:06:21.210] [INFO] 탭 변경됨: HistoryTab
+[2025-06-21 22:06:22.426] [INFO] 탭 변경됨: SecurityTab
+[2025-06-21 22:06:29.077] [INFO] 탭 변경됨: HistoryTab
+[2025-06-21 22:06:38.183] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 22:06:44.612] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 22:06:44.632] [INFO] InitializeComponent 완료
+[2025-06-21 22:06:44.636] [INFO] DataGrid 초기화 완료
+[2025-06-21 22:06:44.721] [INFO] 스피너 초기화 완료
+[2025-06-21 22:06:44.723] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 22:11:03.557] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 22:11:03.589] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:11:03.594] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:11:03.999] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 22:11:04.002] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 22:11:04.004] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 22:11:04.006] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 22:11:04.008] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 22:11:04.011] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 22:11:04.012] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 22:11:04.014] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 22:11:04.017] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 22:11:04.041] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:11:04.043] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:11:04.045] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:11:04.047] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:11:04.049] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:11:04.051] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:11:04.053] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 22:11:04.181] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 22:11:04.185] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 22:11:04.187] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 22:11:04.190] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 22:11:04.193] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 22:11:04.195] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:11:04.197] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:11:04.199] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:11:04.201] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:11:04.203] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:11:04.205] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:11:04.207] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 22:11:04.225] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 22:11:04.234] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 22:11:04.236] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 22:11:04.278] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 22:11:04.317] [INFO] Network 페이지 로드 완료
+[2025-06-21 22:11:04.319] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 22:11:08.511] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 22:11:08.523] [INFO] InitializeComponent 완료
+[2025-06-21 22:11:08.526] [INFO] DataGrid 초기화 완료
+[2025-06-21 22:11:08.595] [INFO] 스피너 초기화 완료
+[2025-06-21 22:11:08.597] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 22:15:09.192] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 22:15:09.203] [INFO] InitializeComponent 완료
+[2025-06-21 22:15:09.207] [INFO] DataGrid 초기화 완료
+[2025-06-21 22:15:09.269] [INFO] 스피너 초기화 완료
+[2025-06-21 22:15:09.271] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 22:15:14.091] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 22:15:14.101] [INFO] InitializeComponent 완료
+[2025-06-21 22:15:14.104] [INFO] DataGrid 초기화 완료
+[2025-06-21 22:15:14.160] [INFO] 스피너 초기화 완료
+[2025-06-21 22:15:14.163] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 22:22:13.956] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 22:22:13.978] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:22:13.982] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:22:14.369] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 22:22:14.371] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 22:22:14.373] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 22:22:14.375] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 22:22:14.377] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 22:22:14.378] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 22:22:14.380] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 22:22:14.382] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 22:22:14.383] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 22:22:14.406] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:22:14.409] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:22:14.411] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:22:14.413] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:22:14.415] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:22:14.418] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:22:14.420] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 22:22:14.546] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 22:22:14.550] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 22:22:14.551] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 22:22:14.553] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 22:22:14.555] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 22:22:14.557] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:22:14.558] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:22:14.560] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:22:14.562] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:22:14.564] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:22:14.566] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:22:14.567] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 22:22:14.578] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 22:22:14.585] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 22:22:14.587] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 22:22:14.594] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 22:22:14.644] [INFO] Network 페이지 로드 완료
+[2025-06-21 22:22:14.645] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 22:22:45.886] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 22:22:45.893] [INFO] InitializeComponent 완료
+[2025-06-21 22:22:45.897] [INFO] DataGrid 초기화 완료
+[2025-06-21 22:22:45.964] [INFO] 스피너 초기화 완료
+[2025-06-21 22:22:45.966] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 22:22:47.692] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 22:22:47.699] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:22:47.701] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:22:47.720] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 22:22:47.722] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 22:22:47.723] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 22:22:47.725] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 22:22:47.726] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 22:22:47.727] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 22:22:47.728] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 22:22:47.730] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 22:22:47.731] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 22:22:47.751] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:22:47.753] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:22:47.754] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:22:47.756] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:22:47.757] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:22:47.759] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:22:47.760] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 22:22:47.762] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 22:22:47.763] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 22:22:47.765] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 22:22:47.766] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 22:22:47.768] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 22:22:47.770] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:22:47.771] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:22:47.773] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:22:47.775] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:22:47.777] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:22:47.779] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:22:47.781] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 22:22:47.784] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 22:22:47.786] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 22:22:47.788] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 22:22:47.793] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 22:22:47.816] [INFO] Network 페이지 로드 완료
+[2025-06-21 22:22:47.818] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 22:23:24.801] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 22:23:24.835] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:23:24.840] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:23:25.225] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 22:23:25.228] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 22:23:25.229] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 22:23:25.231] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 22:23:25.233] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 22:23:25.235] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 22:23:25.236] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 22:23:25.238] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 22:23:25.240] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 22:23:25.263] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:23:25.265] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:23:25.267] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:23:25.268] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:23:25.270] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:23:25.272] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:23:25.274] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 22:23:25.402] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 22:23:25.407] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 22:23:25.409] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 22:23:25.411] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 22:23:25.413] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 22:23:25.415] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:23:25.416] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:23:25.418] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:23:25.419] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:23:25.422] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:23:25.424] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:23:25.427] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 22:23:25.437] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 22:23:25.445] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 22:23:25.447] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 22:23:25.501] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 22:23:25.541] [INFO] Network 페이지 로드 완료
+[2025-06-21 22:23:25.543] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 22:25:11.314] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 22:25:11.343] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:25:11.347] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:25:11.738] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 22:25:11.740] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 22:25:11.742] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 22:25:11.744] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 22:25:11.746] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 22:25:11.748] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 22:25:11.750] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 22:25:11.752] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 22:25:11.754] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 22:25:11.777] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:25:11.779] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:25:11.781] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:25:11.783] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:25:11.784] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:25:11.786] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:25:11.788] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 22:25:11.914] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 22:25:11.918] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 22:25:11.920] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 22:25:11.922] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 22:25:11.925] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 22:25:11.927] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:25:11.929] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:25:11.931] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:25:11.933] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:25:11.934] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:25:11.937] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:25:11.939] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 22:25:11.950] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 22:25:11.956] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 22:25:11.958] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 22:25:11.973] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 22:25:12.015] [INFO] Network 페이지 로드 완료
+[2025-06-21 22:25:12.017] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 22:25:13.154] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 22:25:13.164] [INFO] InitializeComponent 완료
+[2025-06-21 22:25:13.167] [INFO] DataGrid 초기화 완료
+[2025-06-21 22:25:13.237] [INFO] 스피너 초기화 완료
+[2025-06-21 22:25:13.240] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 22:26:01.984] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 22:26:01.995] [INFO] InitializeComponent 완료
+[2025-06-21 22:26:02.001] [INFO] DataGrid 초기화 완료
+[2025-06-21 22:26:02.071] [INFO] 스피너 초기화 완료
+[2025-06-21 22:26:02.074] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 22:26:03.469] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 22:26:03.488] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:26:03.492] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:26:03.876] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 22:26:03.880] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 22:26:03.884] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 22:26:03.886] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 22:26:03.889] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 22:26:03.891] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 22:26:03.893] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 22:26:03.896] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 22:26:03.898] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 22:26:03.921] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:26:03.924] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:26:03.926] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:26:03.929] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:26:03.931] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:26:03.933] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:26:03.935] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 22:26:04.059] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 22:26:04.064] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 22:26:04.066] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 22:26:04.069] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 22:26:04.072] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 22:26:04.074] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:26:04.076] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:26:04.079] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:26:04.082] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:26:04.084] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:26:04.086] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:26:04.088] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 22:26:04.100] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 22:26:04.107] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 22:26:04.110] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 22:26:04.170] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 22:26:04.206] [INFO] Network 페이지 로드 완료
+[2025-06-21 22:26:04.208] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 22:26:52.295] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 22:26:52.326] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:26:52.333] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 22:26:52.727] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 22:26:52.729] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 22:26:52.732] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 22:26:52.733] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 22:26:52.735] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 22:26:52.737] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 22:26:52.739] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 22:26:52.740] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 22:26:52.743] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 22:26:52.766] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:26:52.768] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 22:26:52.770] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:26:52.772] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 22:26:52.774] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:26:52.776] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 22:26:52.777] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 22:26:52.909] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 22:26:52.912] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 22:26:52.914] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 22:26:52.916] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 22:26:52.918] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 22:26:52.920] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:26:52.922] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 22:26:52.924] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:26:52.926] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 22:26:52.927] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:26:52.929] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 22:26:52.931] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 22:26:52.942] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 22:26:52.950] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 22:26:52.952] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 22:26:53.032] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 22:26:53.076] [INFO] Network 페이지 로드 완료
+[2025-06-21 22:26:53.078] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 23:14:38.978] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 23:14:39.020] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:14:39.024] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:14:39.426] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 23:14:39.430] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 23:14:39.432] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 23:14:39.434] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 23:14:39.436] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 23:14:39.438] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 23:14:39.440] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 23:14:39.442] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 23:14:39.444] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 23:14:39.469] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:14:39.472] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:14:39.474] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:14:39.477] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:14:39.479] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:14:39.481] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:14:39.483] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 23:14:39.616] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 23:14:39.620] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 23:14:39.623] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 23:14:39.625] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 23:14:39.628] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 23:14:39.630] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:14:39.633] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:14:39.636] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:14:39.638] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:14:39.640] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:14:39.642] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:14:39.645] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 23:14:39.658] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 23:14:39.666] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 23:14:39.668] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 23:14:39.677] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 23:14:39.720] [INFO] Network 페이지 로드 완료
+[2025-06-21 23:14:39.722] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 23:15:02.483] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 23:15:02.496] [INFO] InitializeComponent 완료
+[2025-06-21 23:15:02.501] [INFO] DataGrid 초기화 완료
+[2025-06-21 23:15:02.582] [INFO] 스피너 초기화 완료
+[2025-06-21 23:15:02.584] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 23:19:14.597] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 23:19:14.632] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:19:14.639] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:19:15.035] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 23:19:15.038] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 23:19:15.041] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 23:19:15.045] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 23:19:15.047] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 23:19:15.049] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 23:19:15.053] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 23:19:15.056] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 23:19:15.059] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 23:19:15.084] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:19:15.087] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:19:15.089] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:19:15.090] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:19:15.092] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:19:15.094] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:19:15.096] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 23:19:15.224] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 23:19:15.229] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 23:19:15.232] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 23:19:15.236] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 23:19:15.239] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 23:19:15.241] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:19:15.244] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:19:15.246] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:19:15.248] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:19:15.250] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:19:15.252] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:19:15.254] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 23:19:15.267] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 23:19:15.277] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 23:19:15.281] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 23:19:15.331] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 23:19:15.390] [INFO] Network 페이지 로드 완료
+[2025-06-21 23:19:15.393] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 23:19:39.572] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 23:19:39.581] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:19:39.585] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:19:39.613] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 23:19:39.616] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 23:19:39.619] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 23:19:39.621] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 23:19:39.623] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 23:19:39.625] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 23:19:39.627] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 23:19:39.629] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 23:19:39.631] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 23:19:39.652] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:19:39.655] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:19:39.657] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:19:39.659] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:19:39.661] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:19:39.663] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:19:39.665] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 23:19:39.667] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 23:19:39.669] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 23:19:39.671] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 23:19:39.673] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 23:19:39.676] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 23:19:39.678] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:19:39.680] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:19:39.683] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:19:39.685] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:19:39.687] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:19:39.689] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:19:39.690] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 23:19:39.693] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 23:19:39.696] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 23:19:39.697] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 23:19:39.703] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 23:19:39.726] [INFO] Network 페이지 로드 완료
+[2025-06-21 23:19:39.729] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 23:24:38.063] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 23:24:38.094] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:24:38.098] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:24:38.495] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 23:24:38.497] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 23:24:38.499] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 23:24:38.501] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 23:24:38.503] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 23:24:38.504] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 23:24:38.506] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 23:24:38.508] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 23:24:38.509] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 23:24:38.533] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:24:38.535] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:24:38.537] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:24:38.539] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:24:38.540] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:24:38.542] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:24:38.544] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 23:24:38.670] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 23:24:38.674] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 23:24:38.676] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 23:24:38.678] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 23:24:38.681] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 23:24:38.683] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:24:38.685] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:24:38.686] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:24:38.688] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:24:38.690] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:24:38.692] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:24:38.694] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 23:24:38.705] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 23:24:38.712] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 23:24:38.715] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 23:24:38.723] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 23:24:38.767] [INFO] Network 페이지 로드 완료
+[2025-06-21 23:24:38.769] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 23:24:57.697] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 23:24:57.705] [INFO] InitializeComponent 완료
+[2025-06-21 23:24:57.710] [INFO] DataGrid 초기화 완료
+[2025-06-21 23:24:57.779] [INFO] 스피너 초기화 완료
+[2025-06-21 23:24:57.781] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 23:25:59.958] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 23:25:59.988] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:25:59.994] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:26:00.410] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 23:26:00.413] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 23:26:00.415] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 23:26:00.418] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 23:26:00.421] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 23:26:00.424] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 23:26:00.426] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 23:26:00.429] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 23:26:00.431] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 23:26:00.455] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:26:00.458] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:26:00.460] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:26:00.463] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:26:00.466] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:26:00.469] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:26:00.472] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 23:26:00.599] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 23:26:00.604] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 23:26:00.607] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 23:26:00.610] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 23:26:00.612] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 23:26:00.616] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:26:00.618] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:26:00.621] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:26:00.623] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:26:00.625] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:26:00.627] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:26:00.630] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 23:26:00.641] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 23:26:00.650] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 23:26:00.653] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 23:26:00.702] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 23:26:00.745] [INFO] Network 페이지 로드 완료
+[2025-06-21 23:26:00.748] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 23:26:35.955] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 23:26:38.326] [INFO] 탭 변경됨: HistoryTab
+[2025-06-21 23:26:48.910] [INFO] 탭 변경됨: SecurityTab
+[2025-06-21 23:26:48.913] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-21 23:26:48.918] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-21 23:26:48.920] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-21 23:26:59.948] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 23:27:37.307] [INFO] 탭 변경됨: HistoryTab
+[2025-06-21 23:28:28.386] [INFO] 탭 변경됨: SecurityTab
+[2025-06-21 23:29:14.149] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 23:29:14.172] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:29:14.177] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:29:14.568] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 23:29:14.571] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 23:29:14.574] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 23:29:14.576] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 23:29:14.578] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 23:29:14.580] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 23:29:14.582] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 23:29:14.584] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 23:29:14.585] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 23:29:14.610] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:29:14.613] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:29:14.615] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:29:14.617] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:29:14.618] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:29:14.620] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:29:14.622] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 23:29:14.754] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 23:29:14.757] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 23:29:14.759] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 23:29:14.762] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 23:29:14.765] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 23:29:14.766] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:29:14.768] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:29:14.770] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:29:14.772] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:29:14.774] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:29:14.775] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:29:14.778] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 23:29:14.790] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 23:29:14.798] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 23:29:14.800] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 23:29:14.845] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 23:29:14.883] [INFO] Network 페이지 로드 완료
+[2025-06-21 23:29:14.885] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 23:29:24.216] [INFO] 탭 변경됨: SecurityTab
+[2025-06-21 23:29:24.220] [INFO] 보안 탭 지연 초기화 시작
+[2025-06-21 23:29:24.224] [INFO] 보안 통계 업데이트: 총 0개, 24시간 0개, 고위험 0개, 미해결 0개
+[2025-06-21 23:29:24.227] [INFO] 보안 탭 지연 초기화 완료
+[2025-06-21 23:29:25.361] [INFO] 탭 변경됨: HistoryTab
+[2025-06-21 23:29:30.718] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 23:29:30.731] [INFO] InitializeComponent 완료
+[2025-06-21 23:29:30.733] [INFO] DataGrid 초기화 완료
+[2025-06-21 23:29:30.797] [INFO] 스피너 초기화 완료
+[2025-06-21 23:29:30.799] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 23:30:25.577] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 23:30:25.586] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:30:25.588] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:30:25.608] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 23:30:25.610] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 23:30:25.611] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 23:30:25.613] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 23:30:25.614] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 23:30:25.615] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 23:30:25.617] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 23:30:25.619] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 23:30:25.620] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 23:30:25.641] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:30:25.643] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:30:25.645] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:30:25.647] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:30:25.649] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:30:25.650] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:30:25.653] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 23:30:25.654] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 23:30:25.656] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 23:30:25.657] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 23:30:25.659] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 23:30:25.660] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 23:30:25.662] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:30:25.663] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:30:25.665] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:30:25.666] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:30:25.667] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:30:25.669] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:30:25.670] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 23:30:25.673] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 23:30:25.675] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 23:30:25.676] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 23:30:25.681] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 23:30:25.703] [INFO] Network 페이지 로드 완료
+[2025-06-21 23:30:25.705] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 23:34:29.541] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 23:34:29.586] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:34:29.591] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:34:29.928] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 23:34:29.930] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 23:34:29.932] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 23:34:29.934] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 23:34:29.936] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 23:34:29.937] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 23:34:29.939] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 23:34:29.941] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 23:34:29.942] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 23:34:29.962] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:34:29.964] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:34:29.966] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:34:29.967] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:34:29.969] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:34:29.970] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:34:29.972] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 23:34:30.096] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 23:34:30.100] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 23:34:30.102] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 23:34:30.104] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 23:34:30.106] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 23:34:30.108] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:34:30.110] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:34:30.111] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:34:30.113] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:34:30.114] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:34:30.116] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:34:30.117] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 23:34:30.129] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 23:34:30.136] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 23:34:30.138] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 23:34:30.144] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 23:34:30.182] [INFO] Network 페이지 로드 완료
+[2025-06-21 23:34:30.184] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 23:34:37.099] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 23:34:37.106] [INFO] InitializeComponent 완료
+[2025-06-21 23:34:37.109] [INFO] DataGrid 초기화 완료
+[2025-06-21 23:34:37.197] [INFO] 스피너 초기화 완료
+[2025-06-21 23:34:37.199] [INFO] InstalledPrograms 초기화 완료
+[2025-06-21 23:41:37.319] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 23:41:37.351] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:41:37.357] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:41:37.715] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 23:41:37.718] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 23:41:37.720] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 23:41:37.722] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 23:41:37.724] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 23:41:37.726] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 23:41:37.728] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 23:41:37.730] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 23:41:37.732] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 23:41:37.752] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:41:37.756] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:41:37.757] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:41:37.759] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:41:37.761] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:41:37.763] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:41:37.765] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 23:41:37.895] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 23:41:37.899] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 23:41:37.901] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 23:41:37.904] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 23:41:37.908] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 23:41:37.911] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:41:37.914] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:41:37.916] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:41:37.919] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:41:37.921] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:41:37.923] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:41:37.925] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 23:41:37.936] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 23:41:37.943] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 23:41:37.946] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 23:41:37.995] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 23:41:38.045] [INFO] Network 페이지 로드 완료
+[2025-06-21 23:41:38.048] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 23:41:40.706] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-06-21 23:41:40.715] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:41:40.717] [WARN] SecurityAlertsDataGrid가 아직 로드되지 않아 필터링을 건너뜁니다.
+[2025-06-21 23:41:40.737] [INFO] 발견된 캡처 장치 수: 8
+[2025-06-21 23:41:40.740] [INFO] 장치 0: Network adapter 'WAN Miniport (Network Monitor)' on local host - rpcap://\Device\NPF_{0DD08C1D-A3B1-4A94-B153-2C49E17FB1F0}
+[2025-06-21 23:41:40.742] [INFO] 장치 1: Network adapter 'WAN Miniport (IPv6)' on local host - rpcap://\Device\NPF_{808F958F-C536-4191-B6E0-C28D81F5B705}
+[2025-06-21 23:41:40.743] [INFO] 장치 2: Network adapter 'WAN Miniport (IP)' on local host - rpcap://\Device\NPF_{1DE07AA1-3164-4FFB-A5A6-45950B9A834C}
+[2025-06-21 23:41:40.745] [INFO] 장치 3: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - rpcap://\Device\NPF_{B12453AF-4DB0-4C5E-A133-62976B4488EC}
+[2025-06-21 23:41:40.747] [INFO] 장치 4: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - rpcap://\Device\NPF_{0DDAD6F6-FCBA-4CF6-886A-AB2D58073E84}
+[2025-06-21 23:41:40.749] [INFO] 장치 5: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host - rpcap://\Device\NPF_{BA1DC28D-F58F-4FE0-AE1E-7A878DB2D744}
+[2025-06-21 23:41:40.750] [INFO] 장치 6: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host - rpcap://\Device\NPF_{2B23BF12-7D61-426E-A19F-4B465B531401}
+[2025-06-21 23:41:40.752] [INFO] 장치 7: Network adapter 'Adapter for loopback traffic capture' on local host - rpcap://\Device\NPF_Loopback
+[2025-06-21 23:41:40.771] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:41:40.774] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (Network Monitor)' on local host
+[2025-06-21 23:41:40.775] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:41:40.777] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IPv6)' on local host
+[2025-06-21 23:41:40.779] [INFO] 처리 중인 장치: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:41:40.781] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'WAN Miniport (IP)' on local host
+[2025-06-21 23:41:40.783] [INFO] 처리 중인 장치: Network adapter 'Bluetooth Device (Personal Area Network)' on local host
+[2025-06-21 23:41:40.786] [INFO] 장치 접근 가능성: Network adapter 'Bluetooth Device (Personal Area Network)' on local host = True
+[2025-06-21 23:41:40.789] [INFO] 장치 상태: Network adapter 'Bluetooth Device (Personal Area Network)' on local host - 활성: False, IP: False, 우선순위: 0
+[2025-06-21 23:41:40.790] [INFO] 처리 중인 장치: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host
+[2025-06-21 23:41:40.792] [INFO] 장치 접근 가능성: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host = True
+[2025-06-21 23:41:40.794] [INFO] 장치 상태: Network adapter 'Intel(R) Wi-Fi 6E AX211 160MHz' on local host - 활성: True, IP: True, 우선순위: 103
+[2025-06-21 23:41:40.796] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:41:40.797] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter #2' on local host
+[2025-06-21 23:41:40.799] [INFO] 처리 중인 장치: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:41:40.801] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Microsoft Wi-Fi Direct Virtual Adapter' on local host
+[2025-06-21 23:41:40.803] [INFO] 처리 중인 장치: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:41:40.805] [INFO] 가상 인터페이스로 필터링됨: Network adapter 'Adapter for loopback traffic capture' on local host
+[2025-06-21 23:41:40.806] [INFO] 총 인터페이스: 2, 활성: 1, 접근가능: 2
+[2025-06-21 23:41:40.809] [INFO] 초기 데이터가 없어서 테스트 데이터 생성
+[2025-06-21 23:41:40.811] [INFO] 테스트 데이터 50개 생성 완료
+[2025-06-21 23:41:40.813] [INFO] 히스토리 탭 초기화 완료
+[2025-06-21 23:41:40.820] [INFO] 탭 변경됨: RealtimeTab
+[2025-06-21 23:41:40.844] [INFO] Network 페이지 로드 완료
+[2025-06-21 23:41:40.847] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-06-21 23:41:41.415] [INFO] InstalledPrograms 초기화 시작
+[2025-06-21 23:41:41.427] [INFO] InitializeComponent 완료
+[2025-06-21 23:41:41.431] [INFO] DataGrid 초기화 완료
+[2025-06-21 23:41:41.514] [INFO] 스피너 초기화 완료
+[2025-06-21 23:41:41.517] [INFO] InstalledPrograms 초기화 완료

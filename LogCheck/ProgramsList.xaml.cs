@@ -6,37 +6,39 @@
  * 4. 성능 최적화 - HashSet을 이용한 중복 프로그램 검사 방지
  */
 
+using LogCheck;
+using LogCheck.Services; // MalwareBazaarClient
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Windows;
 using System.Diagnostics;
-using System.Linq;
-using Microsoft.Win32;
-using System.Security.Cryptography.X509Certificates;
+using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
 using System.IO;
-using System.Security.Principal;
-using System.Windows.Controls;
+using System.Linq;
 using System.Management;
+using System.Net.Http; // MalwareBazaar 호출
+using System.Runtime.InteropServices.ComTypes;
+using System.Runtime.Versioning;
+using System.Security.Cryptography; // SHA256
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Policy;
+using System.Security.Principal;
+using System.Text; // 해시 계산
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Threading;
-using System.Threading.Tasks;
 using System.Windows.Media.Animation;
-using System.Runtime.InteropServices.ComTypes;
-using System.Diagnostics.Eventing.Reader;
-using System.Security.Policy;
-using System.Text.RegularExpressions;
-using System.Runtime.Versioning;
-using System.Text; // 해시 계산
-using System.Net.Http; // MalwareBazaar 호출
-using LogCheck.Services; // MalwareBazaarClient
-using System.Security.Cryptography; // SHA256
-
-// Windows Forms와의 충돌을 방지하기 위한 alias 설정
-using WpfMessageBox = System.Windows.MessageBox;
+using System.Windows.Threading;
+using static LogCheck.NetWorks;
 using WpfApplication = System.Windows.Application;
 using WpfCursors = System.Windows.Input.Cursors;
+// Windows Forms와의 충돌을 방지하기 위한 alias 설정
+using WpfMessageBox = System.Windows.MessageBox;
 
 namespace LogCheck
 {
@@ -56,6 +58,7 @@ namespace LogCheck
         // 보안 프로그램(Defender/Firewall/BitLocker) 최신 동작 날짜
         public static SecurityDate[] SD = new SecurityDate[3];
 
+        private ToggleButton _selectedButton;
         private int dotCount = 0;
         private const int maxDots = 3;
         private string baseText = "검사 중";
@@ -79,6 +82,9 @@ namespace LogCheck
                 LogHelper.LogInfo("InstalledPrograms 초기화 시작");
 
                 InitializeComponent();
+
+                SideProgramsListButton.IsChecked = true;
+
                 LogHelper.LogInfo("InitializeComponent 완료");
 
                 loadingTextTimer = new DispatcherTimer();
@@ -384,9 +390,16 @@ namespace LogCheck
                                 MalwareVerdict = "Unknown"
                             };
 
+
                             // 보안 정보 분석
                             int score = 100 + SecurityCheck(installDate) + InstallPath_Check(installLocation)
                                         + (program.Publisher == "" ? -5 : 0);
+                            for (int i = 0; i < ProgramSecurityManager.Name.Count; i++)
+                            {
+                                if (ProgramSecurityManager.Name[i] == displayName)
+                                    score += ProgramSecurityManager.Scores[i];
+                            }
+
                             var securityInfo = GetSecurityInfo(program.InstallPath, score);
                             program.SecurityLevel = securityInfo.SecurityLevel;
                             program.SecurityDetails = securityInfo.Details;
@@ -750,29 +763,38 @@ namespace LogCheck
             }
         }
 
-        private void SidebarPrograms_Click(object sender, RoutedEventArgs e)
+        [SupportedOSPlatform("windows")]
+        private void SidebarButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigateToPage(new ProgramsList());
-        }
+            var clicked = sender as ToggleButton;
+            if (clicked == null) return;
 
-        private void SidebarModification_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new NetWorks());
-        }
+            // 이전 선택 해제
+            if (_selectedButton != null && _selectedButton != clicked)
+                _selectedButton.IsChecked = false;
 
-        private void SidebarLog_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Logs());
-        }
+            // 선택 상태 유지
+            clicked.IsChecked = true;
+            _selectedButton = clicked;
 
-        private void SidebarRecovery_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Recoverys());
-        }
-
-        private void SidebarVaccine_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Vaccine());
+            switch (clicked.CommandParameter?.ToString())
+            {
+                case "Vaccine":
+                    NavigateToPage(new Vaccine());
+                    break;
+                case "NetWorks":
+                    NavigateToPage(new NetWorks());
+                    break;
+                case "ProgramsList":
+                    NavigateToPage(new ProgramsList());
+                    break;
+                case "Recoverys":
+                    NavigateToPage(new Recoverys());
+                    break;
+                case "Logs":
+                    NavigateToPage(new Logs());
+                    break;
+            }
         }
 
         private void NavigateToPage(Page page)

@@ -2,19 +2,30 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- 색상 리소스 -->
-    <SolidColorBrush x:Key="BackgroundColor" Color="#FFE1E5E5"/>
-    <SolidColorBrush x:Key="ForegroundColor" Color="#3A3A3A"/>
-    <SolidColorBrush x:Key="ButtonBackgroundColor" Color="#F5F5F5"/>
-    <SolidColorBrush x:Key="ButtonForegroundColor" Color="#3A3A3A"/>
+    <SolidColorBrush x:Key="BackgroundColor" Color="#80EEEEEE"/>
+    <SolidColorBrush x:Key="ForegroundColor" Color="Black"/>
+    <SolidColorBrush x:Key="ButtonBackgroundColor" Color="#80EEEEEE"/>
+    <SolidColorBrush x:Key="ButtonForegroundColor" Color="#333333"/>
+    <SolidColorBrush x:Key="SideButtonBackgroundColor" Color="#E9ECEF"/>
+    <SolidColorBrush x:Key="SideButtonForegroundColor" Color="#1A6FE0"/>
     <SolidColorBrush x:Key="DataGridBackgroundColor" Color="#F5F5F5"/>
-    <SolidColorBrush x:Key="DataGridForegroundColor" Color="#3A3A3A"/>
+    <SolidColorBrush x:Key="DataGridForegroundColor" Color="Black"/>
     <SolidColorBrush x:Key="DataGridRowBackgroundColor" Color="#F5F5F5"/>
     <SolidColorBrush x:Key="DataGridAlternatingRowBackgroundColor" Color="#E0E0E0"/>
-    <SolidColorBrush x:Key="ButtonHoverBackgroundColor" Color="#F5F5F5"/>
-    <SolidColorBrush x:Key="ButtonHoverForegroundColor" Color="#3A3A3A"/>
-    <SolidColorBrush x:Key="BorderBrushColor" Color="#3A3A3A"/>
-    <SolidColorBrush x:Key="CheckedColor" Color="#4CAF50"/>
-    <SolidColorBrush x:Key="HelpMarkColor" Color="#3A3A3A"/>
+    <SolidColorBrush x:Key="ButtonHoverBackgroundColor" Color="#EEEEEE"/>
+    <SolidColorBrush x:Key="ButtonHoverForegroundColor" Color="Black"/>
+    <SolidColorBrush x:Key="BorderBrushColor" Color="Black"/>
+    <SolidColorBrush x:Key="CheckedColor" Color="Black"/>
+    <SolidColorBrush x:Key="HelpMarkColor" Color="Black"/>
+    <ImageBrush x:Key="TextureBackground" 
+                ImageSource="/IconTexture/texture10.png"
+                Stretch="UniformToFill"
+                Opacity="0.85"/>
+
+    <ImageBrush x:Key="BorderBackground"
+            ImageSource="/IconTexture/texture2.png"
+            Stretch="UniformToFill"
+            Opacity="1"/>
 
     <!-- 메인 버튼 스타일 -->
     <Style x:Key="MainButtonStyle" TargetType="Button">
@@ -38,11 +49,6 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="MainBorder" Property="Background" Value="{DynamicResource ButtonHoverBackgroundColor}"/>
-                            <Setter TargetName="MainBorder" Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="#CCCCCC"/>
-                                </Setter.Value>
-                            </Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -72,11 +78,6 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="NavBorder" Property="Background" Value="{DynamicResource ButtonHoverBackgroundColor}"/>
-                            <Setter TargetName="NavBorder" Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="#CCCCCC"/>
-                                </Setter.Value>
-                            </Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -85,51 +86,50 @@
     </Style>
 
     <!-- 사이드바 버튼 스타일 -->
-    <Style x:Key="SidebarButtonStyle" TargetType="Button">
+    <Style x:Key="SidebarButtonStyle" TargetType="ToggleButton">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="Background" Value="{DynamicResource ButtonBackgroundColor}"/>
-        <Setter Property="Foreground" Value="{DynamicResource ButtonForegroundColor}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="#E0E0E0"/>
+        <Setter Property="Background" Value="{DynamicResource SideButtonBackgroundColor}"/>
+        <Setter Property="Foreground" Value="{DynamicResource SideButtonForegroundColor}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Margin" Value="0,5"/>
         <Setter Property="Height" Value="70"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}"
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderThickness="1"
                             CornerRadius="8">
-                        <Grid Margin="10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" 
-                                       Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10">
+                            <TextBlock Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=ToggleButton}}"
                                        FontFamily="Segoe MDL2 Assets"
-                                       FontSize="22"
-                                       Foreground="#4CAF50"
-                                       VerticalAlignment="Center"
+                                       FontSize="20"
+                                       Foreground="{TemplateBinding Foreground}"                             
                                        Margin="0,0,10,0"/>
-                            <TextBlock Grid.Column="1" 
-                                       Text="{TemplateBinding Content}"
-                                       FontSize="12"
-                                       FontWeight="DemiBold"
-                                       TextWrapping="Wrap"
+                            
+                            <TextBlock Text="{TemplateBinding Content}"                                      
+                                       FontWeight="SemiBold"                                      
+                                       Foreground="Black"
                                        VerticalAlignment="Center"/>
-                        </Grid>
+                        </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource ButtonHoverBackgroundColor}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource ButtonHoverForegroundColor}"/>
-                            <Setter Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="#CCCCCC"/>
-                                </Setter.Value>
-                            </Setter>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#FFB7B8BB"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#1A6FE0"/>
+                            <Setter TargetName="border" Property="BorderThickness" Value="2"/>
                         </Trigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="IsChecked" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="border" Property="Background" Value="#FFA0BEF0"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#1A6FE0"/>
+                            <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -139,16 +139,12 @@
     <!-- 검사 / 내역 버튼 스타일 -->
     <Style x:Key="CheckButtonStyle" TargetType="Button">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="Background" Value="#4CAF50"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="#1A6FE0"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Effect">
-                    <Setter.Value>
-                        <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="#CCCCCC"/>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="BorderBrush" Value="#4CAF50"/>
+                <Setter Property="Background" Value="#FF0742C3"/>
             </Trigger>
         </Style.Triggers>
     </Style>
