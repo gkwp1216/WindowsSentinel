@@ -9,7 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using LiveChartsCore.SkiaSharpView.WPF;
 using LogCheck;
+using LogCheck.Converters;
 using MaterialDesignThemes.Wpf;
 using MaterialDesignThemes.Wpf.Converters;
 using MaterialDesignThemes.Wpf.Transitions;

@@ -1,0 +1,345 @@
+<Page x:Class="LogCheck.ThreatIntelligence"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:local="clr-namespace:LogCheck"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="1400"
+      Title="위협 정보 관리" Background="Transparent">
+
+    <Page.Resources>
+        <local:FileSizeConverter x:Key="FileSizeConverter"/>
+        
+        <!-- 위험도별 색상 -->
+        <SolidColorBrush x:Key="ThreatSafeColor" Color="#4CAF50"/>
+        <SolidColorBrush x:Key="ThreatLowColor" Color="#8BC34A"/>
+        <SolidColorBrush x:Key="ThreatMediumColor" Color="#FF9800"/>
+        <SolidColorBrush x:Key="ThreatHighColor" Color="#F44336"/>
+        <SolidColorBrush x:Key="ThreatCriticalColor" Color="#9C27B0"/>
+        
+        <!-- 상태별 색상 -->
+        <SolidColorBrush x:Key="StatusActiveColor" Color="#F44336"/>
+        <SolidColorBrush x:Key="StatusExpiredColor" Color="#9E9E9E"/>
+        <SolidColorBrush x:Key="StatusInactiveColor" Color="#4CAF50"/>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 상단 제목 및 컨트롤 패널 -->
+        <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20" Margin="20,20,20,10" BorderBrush="#C2C2C2" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 제목 및 설명 -->
+                <StackPanel Grid.Column="0" Orientation="Vertical">
+                    <TextBlock Text="🛡️ 위협 정보 관리" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextColor}"/>
+                    <TextBlock Text="외부 위협 정보 연동 및 실시간 IP 차단 시스템" FontSize="14" Foreground="{DynamicResource SecondaryTextColor}" Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <!-- 컨트롤 버튼들 -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="RefreshButton" Content="새로고침" Style="{DynamicResource MaterialDesignRaisedButton}" 
+                            Click="RefreshButton_Click" Margin="0,0,10,0"/>
+                    <Button x:Name="AutoBlockToggleButton" Content="자동차단 OFF" Style="{DynamicResource MaterialDesignRaisedButton}" 
+                            Click="AutoBlockToggleButton_Click" Margin="0,0,10,0"/>
+                    <Button x:Name="SettingsButton" Content="설정" Style="{DynamicResource MaterialDesignRaisedButton}" 
+                            Click="SettingsButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- 메인 콘텐츠 영역 -->
+        <Grid Grid.Row="1" Margin="20,10,20,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="350"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 왼쪽: 위협 정보 및 차단된 IP 목록 -->
+            <Border Grid.Column="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="0,0,10,0" BorderBrush="#C2C2C2" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- 제목 및 검색 -->
+                    <Border Grid.Row="0" Background="{DynamicResource CardBackgroundColor}" CornerRadius="8" Padding="15" Margin="15,15,15,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" Text="🔍 IP 위협 정보 검색" FontSize="18" FontWeight="Bold" 
+                                       Foreground="{DynamicResource PrimaryTextColor}" VerticalAlignment="Center"/>
+                            
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <TextBox x:Name="IPSearchBox" Width="200" Margin="0,0,10,0" 
+                                         materialDesign:HintAssist.Hint="IP 주소 입력" 
+                                         TextChanged="IPSearchBox_TextChanged"/>
+                                <Button x:Name="SearchButton" Content="검색" Style="{DynamicResource MaterialDesignRaisedButton}" 
+                                        Click="SearchButton_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- 통계 정보 -->
+                    <Border Grid.Row="1" Background="{DynamicResource CardBackgroundColor}" CornerRadius="8" Padding="15" Margin="15,0,15,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
+                                <TextBlock Text="총 차단된 IP" FontSize="12" Foreground="{DynamicResource SecondaryTextColor}" HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="TotalBlockedText" Text="0" FontSize="24" FontWeight="Bold" 
+                                           Foreground="{DynamicResource PrimaryTextColor}" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center">
+                                <TextBlock Text="활성 차단" FontSize="12" Foreground="{DynamicResource SecondaryTextColor}" HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="ActiveBlockedText" Text="0" FontSize="24" FontWeight="Bold" 
+                                           Foreground="{DynamicResource StatusActiveColor}" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center">
+                                <TextBlock Text="만료된 차단" FontSize="12" Foreground="{DynamicResource SecondaryTextColor}" HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="ExpiredBlockedText" Text="0" FontSize="24" FontWeight="Bold" 
+                                           Foreground="{DynamicResource StatusExpiredColor}" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="3" Orientation="Vertical" HorizontalAlignment="Center">
+                                <TextBlock Text="자동차단 임계값" FontSize="12" Foreground="{DynamicResource SecondaryTextColor}" HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="ThresholdText" Text="50" FontSize="24" FontWeight="Bold" 
+                                           Foreground="{DynamicResource PrimaryTextColor}" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- 차단된 IP 목록 -->
+                    <Border Grid.Row="2" Background="{DynamicResource CardBackgroundColor}" CornerRadius="8" Padding="15" Margin="15,0,15,15">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="🚫 차단된 IP 목록" FontSize="16" FontWeight="Bold" 
+                                       Foreground="{DynamicResource PrimaryTextColor}" Margin="0,0,0,10"/>
+
+                            <DataGrid x:Name="BlockedIPsDataGrid" Grid.Row="1" 
+                                      AutoGenerateColumns="False" 
+                                      IsReadOnly="True"
+                                      GridLinesVisibility="Horizontal"
+                                      HeadersVisibility="Column"
+                                      CanUserResizeRows="False"
+                                      SelectionMode="Single"
+                                      SelectionChanged="BlockedIPsDataGrid_SelectionChanged">
+
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="IP 주소" Binding="{Binding IPAddress}" Width="120"/>
+                                    <DataGridTextColumn Header="차단 사유" Binding="{Binding Reason}" Width="200"/>
+                                    <DataGridTextColumn Header="차단 시간" Binding="{Binding BlockedAt, StringFormat=yyyy-MM-dd HH:mm}" Width="150"/>
+                                    <DataGridTextColumn Header="만료 시간" Binding="{Binding ExpiresAt, StringFormat=yyyy-MM-dd HH:mm}" Width="150"/>
+                                    <DataGridTextColumn Header="위협 점수" Binding="{Binding ThreatScore}" Width="80"/>
+                                    <DataGridTextColumn Header="소스" Binding="{Binding Source}" Width="80"/>
+                                    <DataGridTextColumn Header="상태" Width="80">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="{Binding IsActive, Converter={StaticResource BoolToStatusConverter}}"/>
+                                                <Setter Property="Foreground" Value="{Binding IsActive, Converter={StaticResource BoolToStatusColorConverter}}"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- 오른쪽: 위협 정보 상세 및 설정 -->
+            <Border Grid.Column="1" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="10,0,0,0" BorderBrush="#C2C2C2" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- 위협 정보 상세 -->
+                    <Border Grid.Row="0" Background="{DynamicResource CardBackgroundColor}" CornerRadius="8" Padding="15" Margin="15,15,15,10">
+                        <StackPanel>
+                            <TextBlock Text="📊 위협 정보 상세" FontSize="16" FontWeight="Bold" 
+                                       Foreground="{DynamicResource PrimaryTextColor}" Margin="0,0,0,10"/>
+                            
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="IP 주소:" FontWeight="Bold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="DetailIPText" Text="-" Margin="0,0,0,5"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="위험도:" FontWeight="Bold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="DetailThreatLevelText" Text="-" Margin="0,0,0,5"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="위협 점수:" FontWeight="Bold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="DetailThreatScoreText" Text="-" Margin="0,0,0,5"/>
+
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="국가:" FontWeight="Bold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="3" Grid.Column="1" x:Name="DetailCountryText" Text="-" Margin="0,0,0,5"/>
+
+                                <TextBlock Grid.Row="4" Grid.Column="0" Text="ISP:" FontWeight="Bold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="4" Grid.Column="1" x:Name="DetailISPText" Text="-" Margin="0,0,0,5"/>
+
+                                <TextBlock Grid.Row="5" Grid.Column="0" Text="카테고리:" FontWeight="Bold" Margin="0,0,10,5"/>
+                                <TextBlock Grid.Row="5" Grid.Column="1" x:Name="DetailCategoriesText" Text="-" Margin="0,0,0,5"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 위협 정보 소스 설정 -->
+                    <Border Grid.Row="1" Background="{DynamicResource CardBackgroundColor}" CornerRadius="8" Padding="15" Margin="15,0,15,10">
+                        <StackPanel>
+                            <TextBlock Text="⚙️ 위협 정보 소스 설정" FontSize="16" FontWeight="Bold" 
+                                       Foreground="{DynamicResource PrimaryTextColor}" Margin="0,0,0,15"/>
+                            
+                            <TextBlock Text="AbuseIPDB API 설정" FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
+                            
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="0" Text="API 키:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <PasswordBox Grid.Column="1" x:Name="ApiKeyPasswordBox" Margin="0,0,10,0"/>
+                                <Button Grid.Column="2" x:Name="SaveApiKeyButton" Content="저장" Style="{DynamicResource MaterialDesignRaisedButton}" 
+                                        Click="SaveApiKeyButton_Click"/>
+                            </Grid>
+
+                            <TextBlock x:Name="ApiKeyStatusText" Text="API 키가 설정되지 않음" FontSize="12" 
+                                       Foreground="{DynamicResource SecondaryTextColor}" Margin="0,0,0,15"/>
+
+                            <Separator Margin="0,0,0,15"/>
+                            
+                            <TextBlock Text="자동 차단 설정" FontSize="14" FontWeight="Bold" Margin="0,0,0,10"/>
+                            
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Grid.Column="0" Text="임계값:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <Slider Grid.Column="1" x:Name="ThresholdSlider" Minimum="0" Maximum="100" Value="50" 
+                                        TickFrequency="10" IsSnapToTickEnabled="True" 
+                                        ValueChanged="ThresholdSlider_ValueChanged"/>
+                                <TextBlock Grid.Column="2" x:Name="ThresholdValueText" Text="50" MinWidth="30" 
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Grid>
+
+                            <TextBlock Text="위협 점수가 이 값 이상인 IP는 자동으로 차단됩니다." FontSize="11" 
+                                       Foreground="{DynamicResource SecondaryTextColor}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 액션 버튼들 -->
+                    <Border Grid.Row="2" Background="{DynamicResource CardBackgroundColor}" CornerRadius="8" Padding="15" Margin="15,0,15,15">
+                        <StackPanel>
+                            <TextBlock Text="🎯 액션" FontSize="16" FontWeight="Bold" 
+                                       Foreground="{DynamicResource PrimaryTextColor}" Margin="0,0,0,10"/>
+                            
+                            <Button x:Name="BlockIPButton" Content="IP 차단" Style="{DynamicResource MaterialDesignRaisedButton}" 
+                                    Click="BlockIPButton_Click" Margin="0,0,0,10" HorizontalAlignment="Stretch"/>
+                            
+                            <Button x:Name="UnblockIPButton" Content="IP 차단 해제" Style="{DynamicResource MaterialDesignRaisedButton}" 
+                                    Click="UnblockIPButton_Click" Margin="0,0,0,10" HorizontalAlignment="Stretch"/>
+                            
+                            <Button x:Name="ReportIPButton" Content="IP 신고" Style="{DynamicResource MaterialDesignRaisedButton}" 
+                                    Click="ReportIPButton_Click" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- 하단: 로그 및 상태 표시 -->
+        <Border Grid.Row="2" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="15" Margin="20,10,20,20" BorderBrush="#C2C2C2" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="📝 시스템 로그" FontSize="16" FontWeight="Bold" 
+                           Foreground="{DynamicResource PrimaryTextColor}" Margin="0,0,0,10"/>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="150">
+                    <ItemsControl x:Name="LogMessagesControl">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource CardBackgroundColor}" CornerRadius="6" Padding="8" Margin="0,0,0,5">
+                                    <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" 
+                                               Foreground="{DynamicResource SecondaryTextColor}"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <!-- 로딩 오버레이 -->
+        <Grid x:Name="LoadingOverlay" 
+              Grid.Row="0" Grid.RowSpan="3" 
+              Background="#80000000" 
+              Visibility="Collapsed">
+            <Border Background="{DynamicResource ButtonBackgroundColor}" 
+                    CornerRadius="12" 
+                    Padding="30" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}" 
+                                 Value="0" 
+                                 IsIndeterminate="True" 
+                                 Width="24" 
+                                 Height="24" 
+                                 Margin="0,0,15,0"/>
+                    <TextBlock Text="처리 중..." 
+                               FontSize="16" 
+                               Foreground="{DynamicResource PrimaryTextColor}" 
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

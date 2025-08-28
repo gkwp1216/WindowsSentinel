@@ -6,6 +6,8 @@
     <SolidColorBrush x:Key="ForegroundColor" Color="Black"/>
     <SolidColorBrush x:Key="ButtonBackgroundColor" Color="#80EEEEEE"/>
     <SolidColorBrush x:Key="ButtonForegroundColor" Color="#333333"/>
+    <SolidColorBrush x:Key="PrimaryColor" Color="#1A6FE0"/>
+    <SolidColorBrush x:Key="SecondaryForegroundColor" Color="#666666"/>
     <SolidColorBrush x:Key="SideButtonBackgroundColor" Color="#E9ECEF"/>
     <SolidColorBrush x:Key="SideButtonForegroundColor" Color="#1A6FE0"/>
     <SolidColorBrush x:Key="DataGridBackgroundColor" Color="#F5F5F5"/>

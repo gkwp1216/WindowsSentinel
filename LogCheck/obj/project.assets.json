@@ -1531,11 +1531,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\admin\\Documents\\WindowsSentinel_Final\\LogCheck_0626\\LogCheck\\LogCheck.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\Documents\\KKW\\WindowsSentinel\\LogCheck\\LogCheck.csproj",
       "projectName": "Logcheck",
-      "projectPath": "C:\\Users\\admin\\Documents\\WindowsSentinel_Final\\LogCheck_0626\\LogCheck\\LogCheck.csproj",
+      "projectPath": "C:\\Users\\admin\\Documents\\KKW\\WindowsSentinel\\LogCheck\\LogCheck.csproj",
       "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\admin\\Documents\\WindowsSentinel_Final\\LogCheck_0626\\LogCheck\\obj\\",
+      "outputPath": "C:\\Users\\admin\\Documents\\KKW\\WindowsSentinel\\LogCheck\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

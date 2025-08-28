@@ -1,4 +1,4 @@
-namespace WindowsSentinel.Models
+namespace LogCheck.Models
 {
     public interface INavigable
     {
