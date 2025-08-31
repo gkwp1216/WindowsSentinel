@@ -19,8 +19,8 @@ namespace LogCheck.Services
         private readonly ConcurrentDictionary<string, IPBlockRule> _blockRules;
         private readonly AbuseIPDBClient _abuseIPDBClient;
         private readonly NetworkConnectionManager _connectionManager;
-        private readonly Timer _cleanupTimer;
-        private readonly Timer _autoBlockTimer;
+        private readonly System.Threading.Timer _cleanupTimer;
+        private readonly System.Threading.Timer _autoBlockTimer;
         private bool _isAutoBlockingEnabled = false;
         private int _autoBlockThreshold = 50; // 위협 점수 임계값
         private readonly object _lockObject = new object();
@@ -42,10 +42,10 @@ namespace LogCheck.Services
             _abuseIPDBClient.ErrorOccurred += OnAbuseIPDBError;
 
             // 정리 타이머 (1시간마다 만료된 차단 해제)
-            _cleanupTimer = new Timer(CleanupExpiredBlocks, null, TimeSpan.FromHours(1), TimeSpan.FromHours(1));
+            _cleanupTimer = new System.Threading.Timer(CleanupExpiredBlocks, null, TimeSpan.FromHours(1), TimeSpan.FromHours(1));
             
             // 자동 차단 타이머 (5분마다 실행)
-            _autoBlockTimer = new Timer(AutoBlockThreats, null, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5));
+            _autoBlockTimer = new System.Threading.Timer(AutoBlockThreats, null, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5));
         }
 
         /// <summary>
@@ -360,8 +360,8 @@ namespace LogCheck.Services
                 // 현재 활성 네트워크 연결에서 외부 IP 추출
                 var activeConnections = await _connectionManager.GetProcessConnectionsAsync();
                 var externalIPs = activeConnections
-                    .Where(c => !IsPrivateIP(c.RemoteAddress))
-                    .Select(c => c.RemoteAddress)
+                    .Where(c => !IsPrivateIP(c.RemoteAddress.ip))
+                    .Select(c => c.RemoteAddress.ip)
                     .Distinct()
                     .ToList();
 

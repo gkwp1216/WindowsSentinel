@@ -60,7 +60,7 @@ namespace LogCheck
                 "시스템의 전반적인 보안 상태를\n확인할 수 있습니다.",
                 "파일 해시 기반 악성 프로그램\n검사 결과를 확인할 수 있습니다.",
                 "네트워크 접속 내역들을\n확인하고 관리할 수 있습니다.",
-                "시스템에 설치된 프로그램 목록을\n확인하고 관리할 수 있습니다.",              
+                "실시간 네트워크 연결을 모니터링하고\n보안 위협을 탐지합니다.",              
                 "Windows Defender, 방화벽 등\n보안 프로그램을 정상화 합니다."
             };
         }
@@ -337,7 +337,7 @@ namespace LogCheck
         [SupportedOSPlatform("windows")]
         private void InstalledPrograms_Click(object sender, RoutedEventArgs e)
         {
-            NavigateToPage(new ProgramsList());
+            NavigateToPage(new NetWorks_New()); // 수정됨
             HelpButton.Visibility = Visibility.Collapsed;
         }
 

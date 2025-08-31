@@ -130,7 +130,7 @@ namespace LogCheck.Services
         /// </summary>
         private async Task<List<NetworkConnection>> GetActiveNetworkConnectionsAsync()
         {
-            return await Task.Run(() =>
+            return await Task.Run(async () =>
             {
                 var connections = new List<NetworkConnection>();
 
@@ -421,9 +421,9 @@ namespace LogCheck.Services
 
                             // 네트워크 연결 정보
                             LocalAddress = connection.LocalAddress.ip,
-                            LocalPort = connection.LocalPort,
+                            LocalPort = connection.LocalAddress.port,
                             RemoteAddress = connection.RemoteAddress.ip,
-                            RemotePort = connection.RemotePort,
+                            RemotePort = connection.RemoteAddress.port,
                             Protocol = connection.Protocol,
                             ConnectionState = connection.State,
                             ConnectionStartTime = DateTime.Now.AddMinutes(-5), // 임시로 5분 전으로 설정

@@ -300,9 +300,9 @@
                         Cursor="Hand"
                         Click="InstalledPrograms_Click">
                     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
-                        <TextBlock Text="&#xE71D;" 
+                        <TextBlock Text="&#xE704;" 
                                  Style="{StaticResource MaterialIconStyle}"/>
-                        <TextBlock Text="설치된 프로그램 목록"                               
+                        <TextBlock Text="네트워크 보안 모니터링"                               
                                    TextAlignment="Center"
                                    FontSize="25"
                                    FontWeight="SemiBold"/>

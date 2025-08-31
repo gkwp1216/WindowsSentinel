@@ -37,7 +37,7 @@ namespace LogCheck.Services
         {
             try
             {
-                var result = await Task.Run(() =>
+                var result = await Task.Run(async () =>
                 {
                     try
                     {
@@ -53,24 +53,24 @@ namespace LogCheck.Services
                         // 2. 각 연결에 대해 방화벽 규칙 생성
                         foreach (var connection in connections)
                         {
-                            var ruleName = $"Block_Process_{processId}_{connection.RemoteAddress}_{connection.RemotePort}";
-                            var success = CreateFirewallRule(ruleName, connection.RemoteAddress, reason);
+                            var ruleName = $"Block_Process_{processId}_{connection.RemoteAddress.ip}_{connection.RemoteAddress.port}";
+                            var success = CreateFirewallRule(ruleName, connection.RemoteAddress.ip, reason);
                             
                             if (success)
                             {
                                 var blockedConn = new BlockedConnection
                                 {
                                     ProcessId = processId,
-                                    RemoteAddress = connection.RemoteAddress,
-                                    RemotePort = connection.RemotePort,
+                                    RemoteAddress = connection.RemoteAddress.ip,
+                                    RemotePort = connection.RemoteAddress.port,
                                     Protocol = connection.Protocol,
                                     BlockReason = reason,
                                     BlockedTime = DateTime.Now,
                                     RuleName = ruleName
                                 };
 
-                                _blockedConnections.TryAdd($"{processId}_{connection.RemoteAddress}_{connection.RemotePort}", blockedConn);
-                                OnConnectionBlocked($"프로세스 {processId}의 연결 {connection.RemoteAddress}:{connection.RemotePort} 차단됨");
+                                _blockedConnections.TryAdd($"{processId}_{connection.RemoteAddress.ip}_{connection.RemoteAddress.port}", blockedConn);
+                                OnConnectionBlocked($"프로세스 {processId}의 연결 {connection.RemoteAddress.ip}:{connection.RemoteAddress.port} 차단됨");
                             }
                         }
 
@@ -363,10 +363,8 @@ namespace LogCheck.Services
                         var connection = new ProcessConnection
                         {
                             Protocol = match.Groups[1].Value,
-                            LocalAddress = localIP,
-                            LocalPort = localPort,
-                            RemoteAddress = remoteIP,
-                            RemotePort = remotePort,
+                            LocalAddress = (localIP, localPort),
+                            RemoteAddress = (remoteIP, remotePort),
                             State = match.Groups[4].Value,
                             ProcessId = processId
                         };

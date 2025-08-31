@@ -11,7 +11,7 @@ namespace LogCheck.Services
     public class SecurityAnalyzer
     {
         private readonly List<MaliciousIP> _maliciousIPs;
-        private readonly List<SecurityAlert> _securityAlerts;
+        private readonly List<LogCheck.Models.SecurityAlert> _securityAlerts;
         private readonly Dictionary<string, SuspiciousActivity> _suspiciousActivities;
         
         // 알려진 악성 포트 목록
@@ -32,7 +32,7 @@ namespace LogCheck.Services
         public SecurityAnalyzer()
         {
             _maliciousIPs = new List<MaliciousIP>();
-            _securityAlerts = new List<SecurityAlert>();
+            _securityAlerts = new List<LogCheck.Models.SecurityAlert>();
             _suspiciousActivities = new Dictionary<string, SuspiciousActivity>();
             
             InitializeMaliciousIPDatabase();
@@ -52,9 +52,9 @@ namespace LogCheck.Services
         }
 
         // 네트워크 패킷 보안 분석
-        public async Task<List<SecurityAlert>> AnalyzePacketAsync(NetworkUsageRecord packet)
+        public async Task<List<LogCheck.Models.SecurityAlert>> AnalyzePacketAsync(NetworkUsageRecord packet)
         {
-            var alerts = new List<SecurityAlert>();
+            var alerts = new List<LogCheck.Models.SecurityAlert>();
 
             try
             {
@@ -94,14 +94,14 @@ namespace LogCheck.Services
         }
 
         // 악성 IP 검사
-        private SecurityAlert? CheckMaliciousIP(NetworkUsageRecord packet)
+        private LogCheck.Models.SecurityAlert? CheckMaliciousIP(NetworkUsageRecord packet)
         {
             var maliciousIP = _maliciousIPs.FirstOrDefault(ip => 
                 ip.IPAddress == packet.SourceIP || ip.IPAddress == packet.DestinationIP);
 
             if (maliciousIP != null)
             {
-                return new SecurityAlert
+                return new LogCheck.Models.SecurityAlert
                 {
                     Timestamp = DateTime.Now,
                     AlertType = "악성 IP 감지",
@@ -121,13 +121,13 @@ namespace LogCheck.Services
         }
 
         // 의심스러운 포트 검사
-        private SecurityAlert? CheckSuspiciousPort(NetworkUsageRecord packet)
+        private LogCheck.Models.SecurityAlert? CheckSuspiciousPort(NetworkUsageRecord packet)
         {
             if (_suspiciousPorts.Contains(packet.DestinationPort) || _suspiciousPorts.Contains(packet.SourcePort))
             {
                 var suspiciousPort = _suspiciousPorts.Contains(packet.DestinationPort) ? packet.DestinationPort : packet.SourcePort;
                 
-                return new SecurityAlert
+                return new LogCheck.Models.SecurityAlert
                 {
                     Timestamp = DateTime.Now,
                     AlertType = "의심스러운 포트 사용",
@@ -147,7 +147,7 @@ namespace LogCheck.Services
         }
 
         // 트래픽 패턴 분석
-        private async Task<SecurityAlert?> CheckTrafficPatternAsync(NetworkUsageRecord packet)
+        private async Task<LogCheck.Models.SecurityAlert?> CheckTrafficPatternAsync(NetworkUsageRecord packet)
         {
             var key = $"{packet.SourceIP}_{packet.DestinationIP}";
             
@@ -175,7 +175,7 @@ namespace LogCheck.Services
                 
                 if (activity.RiskScore > 7.0) // 위험도 7점 이상
                 {
-                    return new SecurityAlert
+                    return new LogCheck.Models.SecurityAlert
                     {
                         Timestamp = DateTime.Now,
                         AlertType = "비정상적인 트래픽 패턴",
@@ -194,12 +194,12 @@ namespace LogCheck.Services
         }
 
         // 대용량 데이터 전송 검사
-        private SecurityAlert? CheckDataVolume(NetworkUsageRecord packet)
+        private LogCheck.Models.SecurityAlert? CheckDataVolume(NetworkUsageRecord packet)
         {
             // 단일 패킷이 10MB 이상인 경우
             if (packet.PacketSize > 10 * 1024 * 1024)
             {
-                return new SecurityAlert
+                return new LogCheck.Models.SecurityAlert
                 {
                     Timestamp = DateTime.Now,
                     AlertType = "대용량 데이터 전송",
@@ -272,7 +272,7 @@ namespace LogCheck.Services
         }
 
         // 보안 경고 목록 반환
-        public List<SecurityAlert> GetSecurityAlerts(DateTime? startDate = null, DateTime? endDate = null)
+        public List<LogCheck.Models.SecurityAlert> GetSecurityAlerts(DateTime? startDate = null, DateTime? endDate = null)
         {
             var alerts = _securityAlerts.AsQueryable();
 

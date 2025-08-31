@@ -13,7 +13,7 @@
 
     <Page.Resources>
         <RotateTransform x:Key="SpinnerRotate" CenterX="25" CenterY="25"/>
-        <local:FileSizeConverter x:Key="FileSizeConverter"/>
+        <!-- <local:FileSizeConverter x:Key="FileSizeConverter"/> -->
         
         <!-- 프로세스 상태별 색상 -->
         <SolidColorBrush x:Key="ProcessNormalColor" Color="#4CAF50"/>
@@ -28,9 +28,9 @@
         <SolidColorBrush x:Key="RiskCriticalColor" Color="#9C27B0"/>
         
         <!-- 위험도별 배경색 컨버터 -->
-        <local:RiskLevelToBackgroundConverter x:Key="RiskLevelToBackgroundConverter"/>
-        <local:RiskLevelToColorConverter x:Key="RiskLevelToColorConverter"/>
-        <local:AlertLevelToBackgroundConverter x:Key="AlertLevelToBackgroundConverter"/>
+        <!-- <converters:RiskLevelToBackgroundConverter x:Key="RiskLevelToBackgroundConverter"/> -->
+        <!-- <converters:RiskLevelToColorConverter x:Key="RiskLevelToColorConverter"/> -->
+        <!-- <converters:AlertLevelToBackgroundConverter x:Key="AlertLevelToBackgroundConverter"/> -->
     </Page.Resources>
 
     <Grid>
@@ -243,7 +243,7 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" Margin="5">
                                             <Ellipse Width="8" Height="8" 
-                                                     Fill="{Binding ProcessRiskLevel, Converter={StaticResource RiskLevelToColorConverter}}"
+                                                     Fill="Gray"
                                                      Margin="0,0,8,0"/>
                                             <StackPanel>
                                                 <TextBlock Text="{Binding ProcessName}" 
@@ -279,7 +279,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel>
-                                            <TextBlock Text="{Binding DataTransferred, Converter={StaticResource FileSizeConverter}}" 
+                                            <TextBlock Text="{Binding DataTransferred}" 
                                                        HorizontalAlignment="Center"/>
                                             <TextBlock Text="{Binding DataRate, StringFormat=\'{}{0:F1} KB/s\'}" 
                                                        FontSize="10" 
@@ -294,7 +294,7 @@
                             <DataGridTemplateColumn Header="위험도" Width="80">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Border Background="{Binding RiskLevel, Converter={StaticResource RiskLevelToBackgroundConverter}}" 
+                                        <Border Background="Gray" 
                                                 CornerRadius="4" 
                                                 Padding="8,4">
                                             <TextBlock Text="{Binding RiskLevel}" 
@@ -445,7 +445,7 @@
                                                    Foreground="{DynamicResource ForegroundColor}" 
                                                    FontWeight="SemiBold"/>
                                         <TextBlock Grid.Column="1" 
-                                                   Text="{Binding TotalDataTransferred, StringFormat='총 데이터: {0}', Converter={StaticResource FileSizeConverter}}" 
+                                                   Text="{Binding TotalDataTransferred, StringFormat='총 데이터: {0}'}" 
                                                    Foreground="{DynamicResource ForegroundColor}" 
                                                    FontWeight="SemiBold"/>
                                     </Grid>
@@ -484,7 +484,7 @@
                                 <ItemsControl x:Name="SecurityAlertsControl">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="{Binding AlertLevel, Converter={StaticResource AlertLevelToBackgroundConverter}}" 
+                                            <Border Background="Gray" 
                                                     CornerRadius="6" 
                                                     Padding="10" 
                                                     Margin="0,0,0,8">

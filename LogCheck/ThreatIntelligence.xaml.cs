@@ -229,7 +229,7 @@ namespace LogCheck
                 var ipAddress = IPSearchBox.Text.Trim();
                 if (string.IsNullOrWhiteSpace(ipAddress))
                 {
-                    MessageBox.Show("IP 주소를 입력해주세요.", "입력 오류", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    System.Windows.MessageBox.Show("IP 주소를 입력해주세요.", "입력 오류", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
                     return;
                 }
 
@@ -289,7 +289,7 @@ namespace LogCheck
             {
                 if (_currentThreatResult == null)
                 {
-                    MessageBox.Show("먼저 IP 주소를 검색해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Information);
+                    System.Windows.MessageBox.Show("먼저 IP 주소를 검색해주세요.", "알림", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
                     return;
                 }
 
@@ -328,16 +328,16 @@ namespace LogCheck
             {
                 if (_selectedBlockedIP == null)
                 {
-                    MessageBox.Show("차단 해제할 IP를 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Information);
+                    System.Windows.MessageBox.Show("차단 해제할 IP를 선택해주세요.", "알림", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
                     return;
                 }
 
                 var ipAddress = _selectedBlockedIP.IPAddress;
                 
-                var result = MessageBox.Show($"IP {ipAddress}의 차단을 해제하시겠습니까?", "확인", 
-                    MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = System.Windows.MessageBox.Show($"IP {ipAddress}의 차단을 해제하시겠습니까?", "확인", 
+                    System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
                 
-                if (result == MessageBoxResult.Yes)
+                if (result == System.Windows.MessageBoxResult.Yes)
                 {
                     ShowLoading(true);
                     AddLogMessage($"IP {ipAddress}의 차단을 해제하고 있습니다...");
@@ -372,16 +372,16 @@ namespace LogCheck
             {
                 if (_currentThreatResult == null)
                 {
-                    MessageBox.Show("먼저 IP 주소를 검색해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Information);
+                    System.Windows.MessageBox.Show("먼저 IP 주소를 검색해주세요.", "알림", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
                     return;
                 }
 
                 var ipAddress = _currentThreatResult.IPAddress;
                 
-                var result = MessageBox.Show($"IP {ipAddress}를 AbuseIPDB에 신고하시겠습니까?", "확인", 
-                    MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = System.Windows.MessageBox.Show($"IP {ipAddress}를 AbuseIPDB에 신고하시겠습니까?", "확인", 
+                    System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
                 
-                if (result == MessageBoxResult.Yes)
+                if (result == System.Windows.MessageBoxResult.Yes)
                 {
                     ShowLoading(true);
                     AddLogMessage($"IP {ipAddress}를 신고하고 있습니다...");
@@ -420,7 +420,7 @@ namespace LogCheck
                 
                 if (string.IsNullOrWhiteSpace(apiKey))
                 {
-                    MessageBox.Show("API 키를 입력해주세요.", "입력 오류", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    System.Windows.MessageBox.Show("API 키를 입력해주세요.", "입력 오류", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
                     return;
                 }
 
@@ -588,7 +588,7 @@ namespace LogCheck
             };
         }
 
-        private Brush GetThreatLevelColor(int threatScore)
+        private System.Windows.Media.Brush GetThreatLevelColor(int threatScore)
         {
             return threatScore switch
             {

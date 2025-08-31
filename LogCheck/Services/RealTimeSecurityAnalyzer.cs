@@ -19,13 +19,13 @@ namespace LogCheck.Services
         private readonly object _lockObject = new object();
 
         // 알려진 악성 IP 데이터베이스 (실제로는 외부 API나 DB에서 가져와야 함)
-        private readonly HashSet<string> _knownMaliciousIPs;
+        private HashSet<string> _knownMaliciousIPs;
         
         // 의심스러운 포트 목록
-        private readonly HashSet<int> _suspiciousPorts;
+        private HashSet<int> _suspiciousPorts;
         
         // 정상적인 포트 목록
-        private readonly HashSet<int> _legitimatePorts;
+        private HashSet<int> _legitimatePorts;
 
         public event EventHandler<SecurityAlert>? SecurityAlertGenerated;
         public event EventHandler<string>? ErrorOccurred;

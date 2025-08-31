@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\admin\Documents\WindowsSentinel_Final\LogCheck_0626\LogCheck\obj\Debug\net8.0-windows\
+c:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\
 LogCheck
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-C:\Users\admin\Documents\WindowsSentinel_Final\LogCheck_0626\LogCheck\App.xaml
-9-1185594976
+c:\My_Project\WS\LogCheck\App.xaml
+11405634035
 
-26-693785233
-2292132647533
-DarkTheme.xaml;LightTheme.xaml;Logs.xaml;MainWindows.xaml;NetWorks.xaml;ProgramsList.xaml;Recoverys.xaml;Setting.xaml;Vaccine.xaml;
+391402900779
+227-593680918
+DarkTheme.xaml;LightTheme.xaml;Logs.xaml;MainWindows.xaml;NetWorks.xaml;NetWorks_New.xaml;ProgramsList.xaml;Recoverys.xaml;Setting.xaml;ThreatIntelligence.xaml;Vaccine.xaml;
 
-False
+True
 

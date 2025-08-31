@@ -42,6 +42,12 @@ using WpfMessageBox = System.Windows.MessageBox;
 
 namespace LogCheck
 {
+    // 프로그램별 보안 점수 및 이름 관리용 static 클래스 (임시/샘플)
+    public static class ProgramSecurityManager
+    {
+        public static List<string> Name { get; set; } = new();
+        public static List<int> Scores { get; set; } = new();
+    }
     /// <summary>
     /// Page1.xaml에 대한 상호 작용 논리
     /// </summary>
@@ -809,7 +815,7 @@ namespace LogCheck
             {
                 if (insD.Key >= time && insD.Key <= time.AddMinutes(5))
                     secuScore += insD.Value; //Log.xaml.cs에서 설정한 보안점수
-                else secuScore += (-15); //로그는 발생하지 않았으나 설치된 경우
+                else secuScore += -15; //로그는 발생하지 않았으나 설치된 경우
             }
             if (time.Date == new DateTime(0001, 01, 01)) secuScore -= 100;
             return secuScore;

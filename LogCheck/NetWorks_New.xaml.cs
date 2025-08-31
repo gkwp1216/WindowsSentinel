@@ -16,39 +16,28 @@ using LiveChartsCore.SkiaSharpView.WPF;
 using SkiaSharp;
 using LogCheck.Models;
 using LogCheck.Services;
+using SecurityAlert = LogCheck.Services.SecurityAlert;
 using MaterialDesignThemes.Wpf;
 using System.Windows.Shapes;
 using MessageBox = System.Windows.MessageBox;
 using Controls = System.Windows.Controls;
+using System.Runtime.Versioning;
 
 namespace LogCheck
 {
     /// <summary>
     /// NetWorks_New.xaml에 대한 상호작용 논리
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public partial class NetWorks_New : Page, INavigable
     {
-        // XAML 컨트롤 레퍼런스 (FindName으로 초기화하여 디자이너 인식 문제 회피)
-        private Controls.ComboBox? NetworkInterfaceComboBox;
-        private Controls.Button? StartMonitoringButton;
-        private Controls.Button? StopMonitoringButton;
-        private Controls.TextBlock? MonitoringStatusText;
-        private Controls.TextBlock? MonitoringStatusText2;
-        private Ellipse? MonitoringStatusIndicator;
-        private Controls.DataGrid? ProcessNetworkDataGrid;
-        private Controls.ItemsControl? SecurityAlertsControl;
-        private Controls.ItemsControl? LogMessagesControl;
-        private CartesianChart? NetworkActivityChart;
-        private Controls.TextBox? SearchTextBox;
-        private Controls.ComboBox? ProtocolFilterComboBox;
-        private Controls.TextBlock? ActiveConnectionsText;
-        private Controls.TextBlock? DangerousConnectionsText;
+        // XAML 컨트롤 레퍼런스는 XAML에서 자동으로 생성됨
         private readonly ProcessNetworkMapper _processNetworkMapper;
         private readonly NetworkConnectionManager _connectionManager;
         private readonly RealTimeSecurityAnalyzer _securityAnalyzer;
         private readonly DispatcherTimer _updateTimer;
         private readonly ObservableCollection<ProcessNetworkInfo> _processNetworkData;
-        private readonly ObservableCollection<LogCheck.Services.SecurityAlert> _securityAlerts;
+        private readonly ObservableCollection<SecurityAlert> _securityAlerts;
         private readonly ObservableCollection<string> _logMessages;
 
         // 통계 데이터
@@ -73,21 +62,7 @@ namespace LogCheck
         {
             InitializeComponent();
 
-            // 명명된 요소 바인딩
-            NetworkInterfaceComboBox = (Controls.ComboBox?)FindName("NetworkInterfaceComboBox");
-            StartMonitoringButton = (Controls.Button?)FindName("StartMonitoringButton");
-            StopMonitoringButton = (Controls.Button?)FindName("StopMonitoringButton");
-            MonitoringStatusText = (Controls.TextBlock?)FindName("MonitoringStatusText");
-            MonitoringStatusText2 = (Controls.TextBlock?)FindName("MonitoringStatusText2");
-            MonitoringStatusIndicator = (Ellipse?)FindName("MonitoringStatusIndicator");
-            ProcessNetworkDataGrid = (Controls.DataGrid?)FindName("ProcessNetworkDataGrid");
-            SecurityAlertsControl = (Controls.ItemsControl?)FindName("SecurityAlertsControl");
-            LogMessagesControl = (Controls.ItemsControl?)FindName("LogMessagesControl");
-            NetworkActivityChart = (CartesianChart?)FindName("NetworkActivityChart");
-            SearchTextBox = (Controls.TextBox?)FindName("SearchTextBox");
-            ProtocolFilterComboBox = (Controls.ComboBox?)FindName("ProtocolFilterComboBox");
-            ActiveConnectionsText = (Controls.TextBlock?)FindName("ActiveConnectionsText");
-            DangerousConnectionsText = (Controls.TextBlock?)FindName("DangerousConnectionsText");
+            // XAML 컨트롤은 자동으로 바인딩됨
 
             // 서비스 초기화
             _processNetworkMapper = new ProcessNetworkMapper();
@@ -96,7 +71,7 @@ namespace LogCheck
 
             // 데이터 컬렉션 초기화
             _processNetworkData = new ObservableCollection<ProcessNetworkInfo>();
-            _securityAlerts = new ObservableCollection<LogCheck.Services.SecurityAlert>();
+            _securityAlerts = new ObservableCollection<SecurityAlert>();
             _logMessages = new ObservableCollection<string>();
 
             // 차트 초기화
@@ -141,16 +116,16 @@ namespace LogCheck
         private void InitializeUI()
         {
             // DataGrid 바인딩
-            ProcessNetworkDataGrid!.ItemsSource = _processNetworkData;
+            ProcessNetworkDataGrid.ItemsSource = _processNetworkData;
 
             // 보안 경고 컨트롤 바인딩
-            SecurityAlertsControl!.ItemsSource = _securityAlerts;
+            SecurityAlertsControl.ItemsSource = _securityAlerts;
 
             // 로그 메시지 컨트롤 바인딩
-            LogMessagesControl!.ItemsSource = _logMessages;
+            LogMessagesControl.ItemsSource = _logMessages;
 
             // 차트 바인딩
-            NetworkActivityChart!.Series = _chartSeries;
+            NetworkActivityChart.Series = _chartSeries;
             NetworkActivityChart.XAxes = _chartXAxes;
             NetworkActivityChart.YAxes = _chartYAxes;
 
@@ -169,7 +144,7 @@ namespace LogCheck
             try
             {
                 // 실제 구현에서는 사용 가능한 네트워크 인터페이스를 가져와야 함
-                NetworkInterfaceComboBox!.Items.Add("모든 인터페이스");
+                NetworkInterfaceComboBox.Items.Add("모든 인터페이스");
                 NetworkInterfaceComboBox.Items.Add("이더넷");
                 NetworkInterfaceComboBox.Items.Add("Wi-Fi");
                 NetworkInterfaceComboBox.SelectedIndex = 0;
@@ -233,11 +208,11 @@ namespace LogCheck
                 _isMonitoring = true;
 
                 // UI 상태 업데이트
-                StartMonitoringButton!.Visibility = Visibility.Collapsed;
-                StopMonitoringButton!.Visibility = Visibility.Visible;
-                MonitoringStatusText!.Text = "모니터링 중";
-                MonitoringStatusText2!.Text = "모니터링 중";
-                MonitoringStatusIndicator!.Fill = new SolidColorBrush(Colors.Green);
+                StartMonitoringButton.Visibility = Visibility.Collapsed;
+                StopMonitoringButton.Visibility = Visibility.Visible;
+                MonitoringStatusText.Text = "모니터링 중";
+                MonitoringStatusText2.Text = "모니터링 중";
+                MonitoringStatusIndicator.Fill = new SolidColorBrush(Colors.Green);
 
                 // 타이머 시작
                 _updateTimer.Start();
@@ -265,11 +240,11 @@ namespace LogCheck
                 _isMonitoring = false;
 
                 // UI 상태 업데이트
-                StartMonitoringButton!.Visibility = Visibility.Visible;
-                StopMonitoringButton!.Visibility = Visibility.Collapsed;
-                MonitoringStatusText!.Text = "대기 중";
-                MonitoringStatusText2!.Text = "대기 중";
-                MonitoringStatusIndicator!.Fill = new SolidColorBrush(Colors.Gray);
+                StartMonitoringButton.Visibility = Visibility.Visible;
+                StopMonitoringButton.Visibility = Visibility.Collapsed;
+                MonitoringStatusText.Text = "대기 중";
+                MonitoringStatusText2.Text = "대기 중";
+                MonitoringStatusIndicator.Fill = new SolidColorBrush(Colors.Gray);
 
                 // 타이머 중지
                 _updateTimer.Stop();
@@ -321,7 +296,7 @@ namespace LogCheck
         {
             try
             {
-                var searchText = SearchTextBox!.Text.ToLower();
+                var searchText = SearchTextBox.Text.ToLower();
                 var view = CollectionViewSource.GetDefaultView(_processNetworkData);
 
                 if (string.IsNullOrEmpty(searchText))
@@ -355,7 +330,7 @@ namespace LogCheck
         {
             try
             {
-                var selectedItem = ProtocolFilterComboBox!.SelectedItem as Controls.ComboBoxItem;
+                var selectedItem = ProtocolFilterComboBox.SelectedItem as Controls.ComboBoxItem;
                 if (selectedItem == null) return;
 
                 var protocol = selectedItem.Content.ToString();
@@ -390,7 +365,7 @@ namespace LogCheck
         {
             try
             {
-                var selectedItem = ProcessNetworkDataGrid!.SelectedItem as ProcessNetworkInfo;
+                var selectedItem = ProcessNetworkDataGrid.SelectedItem as ProcessNetworkInfo;
                 if (selectedItem != null)
                 {
                     // 선택된 항목에 대한 상세 정보 표시 (필요시 구현)
@@ -497,7 +472,7 @@ namespace LogCheck
         /// <summary>
         /// 타이머 틱 이벤트
         /// </summary>
-        private async void UpdateTimer_Tick(object sender, EventArgs e)
+        private async void UpdateTimer_Tick(object? sender, EventArgs e)
         {
             try
             {
@@ -570,8 +545,8 @@ namespace LogCheck
                 _totalDataTransferred = data.Sum(x => x.DataTransferred);
 
                 // UI 업데이트
-                ActiveConnectionsText!.Text = _totalConnections.ToString();
-                DangerousConnectionsText!.Text = (_highRiskCount + data.Count(x => x.RiskLevel == SecurityRiskLevel.Critical)).ToString();
+                ActiveConnectionsText.Text = _totalConnections.ToString();
+                DangerousConnectionsText.Text = (_highRiskCount + data.Count(x => x.RiskLevel == SecurityRiskLevel.Critical)).ToString();
 
                 // DataContext 업데이트 (실제로는 INotifyPropertyChanged 구현 필요)
                 UpdateStatisticsDisplay();
@@ -638,7 +613,7 @@ namespace LogCheck
         /// <summary>
         /// 보안 경고 업데이트
         /// </summary>
-        private void UpdateSecurityAlerts(List<LogCheck.Services.SecurityAlert> alerts)
+        private void UpdateSecurityAlerts(List<SecurityAlert> alerts)
         {
             try
             {
@@ -659,7 +634,7 @@ namespace LogCheck
         /// <summary>
         /// 이벤트 핸들러들
         /// </summary>
-        private void OnProcessNetworkDataUpdated(object sender, List<ProcessNetworkInfo> data)
+        private void OnProcessNetworkDataUpdated(object? sender, List<ProcessNetworkInfo> data)
         {
             _ = Task.Run(async () =>
             {
@@ -667,22 +642,22 @@ namespace LogCheck
             });
         }
 
-        private void OnConnectionBlocked(object sender, string message)
+        private void OnConnectionBlocked(object? sender, string message)
         {
             AddLogMessage($"연결 차단: {message}");
         }
 
-        private void OnProcessTerminated(object sender, string message)
+        private void OnProcessTerminated(object? sender, string message)
         {
             AddLogMessage($"프로세스 종료: {message}");
         }
 
-        private void OnSecurityAlertGenerated(object? sender, LogCheck.Services.SecurityAlert alert)
+        private void OnSecurityAlertGenerated(object? sender, SecurityAlert alert)
         {
             AddLogMessage($"보안 경고: {alert.Title}");
         }
 
-        private void OnErrorOccurred(object sender, string message)
+        private void OnErrorOccurred(object? sender, string message)
         {
             AddLogMessage($"오류: {message}");
         }

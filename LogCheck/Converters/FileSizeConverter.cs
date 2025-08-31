@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace LogCheck.Converters
+namespace LogCheck
 {
     /// <summary>
     /// 파일 크기를 동적 단위로 변환하는 ValueConverter
