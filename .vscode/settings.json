@@ -3,10 +3,11 @@
   "omnisharp.useModernNet": true,
   "omnisharp.loggingLevel": "information",
   "omnisharp.enableRoslynAnalyzers": true,
-  "omnisharp.organizeImportsOnFormat": true,
   "editor.formatOnSave": true,
   "editor.tabSize": 4,
-  "editor.rulers": [100],
+  "editor.rulers": [
+    100
+  ],
   "files.encoding": "utf8",
   "search.exclude": {
     "**/bin": true,
@@ -26,9 +27,10 @@
     "editor.defaultFormatter": "ms-dotnettools.csharp",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true,
-      "source.fixAll": true
+      "source.organizeImports": "explicit",
+      "source.fixAll": "explicit"
     }
   },
-  "csharp.semanticHighlighting.enabled": true
+  "csharp.semanticHighlighting.enabled": true,
+  "dotnet.formatting.organizeImportsOnFormat": true
 }

@@ -58,3 +58,19 @@
 예외: Unable to cast object of type 'System.UInt16' to type 'System.Boolean'.
 스택 추적:    at LogCheck.WmiHelper.CheckFirewallViaWMI() in C:\Users\admin\Documents\KKW\WS\LogCheck\WmiHelper.cs:line 471
 [2025-09-01 15:44:46.975] [INFO] WmiHelper: Security Center 서비스 상태 - Running
+[2025-09-01 17:43:01.940] [ERROR] WmiHelper: WMI 방화벽 상태 확인 중 오류
+예외: Unable to cast object of type 'System.UInt16' to type 'System.Boolean'.
+스택 추적:    at LogCheck.WmiHelper.CheckFirewallViaWMI() in C:\Users\admin\Documents\KKW\WS\LogCheck\WmiHelper.cs:line 471
+[2025-09-01 17:43:02.223] [INFO] WmiHelper: Security Center 서비스 상태 - Running
+[2025-09-01 17:43:25.849] [INFO] 보안 상태 업데이트 완료
+[2025-09-01 17:43:25.851] [INFO] 보안 상태 모니터링이 시작되었습니다.
+[2025-09-01 17:48:25.948] [ERROR] WmiHelper: WMI 방화벽 상태 확인 중 오류
+예외: Unable to cast object of type 'System.UInt16' to type 'System.Boolean'.
+스택 추적:    at LogCheck.WmiHelper.CheckFirewallViaWMI() in C:\Users\admin\Documents\KKW\WS\LogCheck\WmiHelper.cs:line 471
+[2025-09-01 17:48:25.951] [INFO] WmiHelper: Security Center 서비스 상태 - Running
+[2025-09-01 17:48:45.468] [INFO] 보안 상태 업데이트 완료
+[2025-09-01 17:53:25.919] [ERROR] WmiHelper: WMI 방화벽 상태 확인 중 오류
+예외: Unable to cast object of type 'System.UInt16' to type 'System.Boolean'.
+스택 추적:    at LogCheck.WmiHelper.CheckFirewallViaWMI() in C:\Users\admin\Documents\KKW\WS\LogCheck\WmiHelper.cs:line 471
+[2025-09-01 17:53:25.922] [INFO] WmiHelper: Security Center 서비스 상태 - Running
+[2025-09-01 17:53:45.752] [INFO] 보안 상태 업데이트 완료
