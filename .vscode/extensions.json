@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "ms-dotnettools.csharp",                    // C# 및 .NET 개발
+    "ms-dotnettools.vscode-dotnet-runtime",     // .NET 런타임 지원
+    "ms-vscode.powershell",                     // PowerShell 스크립트
+    "ms-vscode.xml",                            // XAML 및 XML 편집
+    "eamodio.gitlens",                          // GitLens (Git 히스토리/분석)
+    "streetsidesoftware.code-spell-checker",    // 코드 맞춤법 검사
+    "bierner.markdown-preview-github-styles",   // Markdown 미리보기(GitHub 스타일)
+    "esbenp.prettier-vscode",                   // 코드 포맷터(다양한 언어 지원)
+    "material-theme",                           // 머티리얼 테마(머티리얼 디자인 XAML과 시각적 통일)
+    "livecharts.livecharts2"                    // LiveCharts2 (LiveChartsCore 시리즈용)
+  ]
+}

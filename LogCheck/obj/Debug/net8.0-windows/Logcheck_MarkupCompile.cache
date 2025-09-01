@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\admin\Documents\WS\WS\LogCheck\obj\Debug\net8.0-windows\
+C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\
 LogCheck
 none
 false
-TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-C:\Users\admin\Documents\WS\WS\LogCheck\App.xaml
+TRACE;RELEASE;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
+C:\Users\admin\Documents\KKW\WS\LogCheck\App.xaml
 11405634035
 
-38-119808549
-227-936171561
+49-253883136
+454-1872343122
 DarkTheme.xaml;LightTheme.xaml;Logs.xaml;MainWindows.xaml;NetWorks.xaml;NetWorks_New.xaml;ProgramsList.xaml;Recoverys.xaml;Setting.xaml;ThreatIntelligence.xaml;Vaccine.xaml;
 
 False
