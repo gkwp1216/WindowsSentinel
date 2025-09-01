@@ -1,0 +1,26 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build artifacts
+bin/
+obj/
+
+# NuGet
+*.nupkg
+packages/
+
+# Rider
+.idea/
+
+# Files to ignore
+*.log
+*.cache
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Others
+*.db
