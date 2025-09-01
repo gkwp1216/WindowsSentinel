@@ -1,0 +1,48 @@
+[2025-09-01 13:06:04.262] [ERROR] WmiHelper: WMI 방화벽 상태 확인 중 오류
+예외: Unable to cast object of type 'System.UInt16' to type 'System.Boolean'.
+스택 추적:    at LogCheck.WmiHelper.CheckFirewallViaWMI() in C:\Users\admin\Documents\WS\WS\LogCheck\WmiHelper.cs:line 471
+[2025-09-01 13:06:04.283] [INFO] WmiHelper: Security Center 서비스 상태 - Running
+[2025-09-01 13:06:34.137] [INFO] 보안 상태 업데이트 완료
+[2025-09-01 13:06:34.141] [INFO] 보안 상태 모니터링이 시작되었습니다.
+[2025-09-01 13:11:34.439] [ERROR] WmiHelper: WMI 방화벽 상태 확인 중 오류
+예외: Unable to cast object of type 'System.UInt16' to type 'System.Boolean'.
+스택 추적:    at LogCheck.WmiHelper.CheckFirewallViaWMI() in C:\Users\admin\Documents\WS\WS\LogCheck\WmiHelper.cs:line 471
+[2025-09-01 13:11:34.442] [INFO] WmiHelper: Security Center 서비스 상태 - Running
+[2025-09-01 13:12:00.272] [INFO] 보안 상태 업데이트 완료
+[2025-09-01 13:16:34.376] [ERROR] WmiHelper: WMI 방화벽 상태 확인 중 오류
+예외: Unable to cast object of type 'System.UInt16' to type 'System.Boolean'.
+스택 추적:    at LogCheck.WmiHelper.CheckFirewallViaWMI() in C:\Users\admin\Documents\WS\WS\LogCheck\WmiHelper.cs:line 471
+[2025-09-01 13:16:34.378] [INFO] WmiHelper: Security Center 서비스 상태 - Running
+[2025-09-01 13:16:59.633] [INFO] 보안 상태 업데이트 완료
+[2025-09-01 13:18:23.344] [ERROR] WmiHelper: WMI 방화벽 상태 확인 중 오류
+예외: Unable to cast object of type 'System.UInt16' to type 'System.Boolean'.
+스택 추적:    at LogCheck.WmiHelper.CheckFirewallViaWMI() in C:\Users\admin\Documents\WS\WS\LogCheck\WmiHelper.cs:line 471
+[2025-09-01 13:18:23.347] [INFO] WmiHelper: Security Center 서비스 상태 - Running
+[2025-09-01 13:42:01.607] [ERROR] WmiHelper: WMI 방화벽 상태 확인 중 오류
+예외: Unable to cast object of type 'System.UInt16' to type 'System.Boolean'.
+스택 추적:    at LogCheck.WmiHelper.CheckFirewallViaWMI() in C:\Users\admin\Documents\WS\WS\LogCheck\WmiHelper.cs:line 471
+[2025-09-01 13:42:01.629] [INFO] WmiHelper: Security Center 서비스 상태 - Running
+[2025-09-01 13:42:07.914] [INFO] TCP 연결 추적을 위해 감사 정책이 일시적으로 활성화되었습니다.
+[2025-09-01 13:42:08.540] [INFO] 발견된 캡처 장치 수: 5
+[2025-09-01 13:42:08.543] [INFO] 장치 0: WAN Miniport (Network Monitor) - \Device\NPF_{0A9F13E1-D07D-457C-9A6D-D5A9B2C5DBE4}
+[2025-09-01 13:42:08.545] [INFO] 장치 1: WAN Miniport (IPv6) - \Device\NPF_{C8C949E9-F067-4F0B-8A6F-950662E210DA}
+[2025-09-01 13:42:08.546] [INFO] 장치 2: WAN Miniport (IP) - \Device\NPF_{5B6A386A-85F2-4C98-BFEE-728F81CCDB5B}
+[2025-09-01 13:42:08.548] [INFO] 장치 3: Realtek PCIe GbE Family Controller #6 - \Device\NPF_{C68D8D4D-AADA-4D9F-B978-6FBD6EE8F990}
+[2025-09-01 13:42:08.550] [INFO] 장치 4: Adapter for loopback traffic capture - \Device\NPF_Loopback
+[2025-09-01 13:42:08.562] [INFO] Interface: 이더넷 9 (Realtek PCIe GbE Family Controller #6), Type: Ethernet, Status: Up, IPv4: 192.168.18.142
+[2025-09-01 13:42:08.565] [INFO] 처리 중인 장치: WAN Miniport (Network Monitor)
+[2025-09-01 13:42:08.567] [INFO] 가상 인터페이스로 필터링됨: WAN Miniport (Network Monitor)
+[2025-09-01 13:42:08.569] [INFO] 처리 중인 장치: WAN Miniport (IPv6)
+[2025-09-01 13:42:08.571] [INFO] 가상 인터페이스로 필터링됨: WAN Miniport (IPv6)
+[2025-09-01 13:42:08.573] [INFO] 처리 중인 장치: WAN Miniport (IP)
+[2025-09-01 13:42:08.575] [INFO] 가상 인터페이스로 필터링됨: WAN Miniport (IP)
+[2025-09-01 13:42:08.577] [INFO] 처리 중인 장치: Realtek PCIe GbE Family Controller #6
+[2025-09-01 13:42:08.579] [INFO] 장치 접근 가능성: Realtek PCIe GbE Family Controller #6 = True
+[2025-09-01 13:42:08.582] [INFO] 장치 상태: Realtek PCIe GbE Family Controller #6 - 활성: True, IP: True, 우선순위: 100
+[2025-09-01 13:42:08.583] [INFO] 처리 중인 장치: Adapter for loopback traffic capture
+[2025-09-01 13:42:08.585] [INFO] 가상 인터페이스로 필터링됨: Adapter for loopback traffic capture
+[2025-09-01 13:42:08.587] [INFO] 총 인터페이스: 1, 활성: 1, 접근가능: 1
+[2025-09-01 13:42:08.644] [INFO] Network 페이지 로드 완료
+[2025-09-01 13:42:08.647] [INFO] Network 페이지 로드 완료 초기화 완료
+[2025-09-01 13:42:24.122] [INFO] 보안 상태 업데이트 완료
+[2025-09-01 13:42:24.125] [INFO] 보안 상태 모니터링이 시작되었습니다.

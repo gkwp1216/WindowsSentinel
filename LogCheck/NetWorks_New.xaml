@@ -31,6 +31,36 @@
         <!-- <converters:RiskLevelToBackgroundConverter x:Key="RiskLevelToBackgroundConverter"/> -->
         <!-- <converters:RiskLevelToColorConverter x:Key="RiskLevelToColorConverter"/> -->
         <!-- <converters:AlertLevelToBackgroundConverter x:Key="AlertLevelToBackgroundConverter"/> -->
+
+        <Style x:Key="RoundedScrollViewerStyle" TargetType="{x:Type ScrollViewer}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                        <Border CornerRadius="12"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            ClipToBounds="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ScrollContentPresenter Grid.Column="0" Margin="{TemplateBinding Padding}"/>
+
+                                <ScrollBar x:Name="PART_VerticalScrollBar"
+                                       Grid.Column="1"
+                                       Value="{TemplateBinding VerticalOffset}"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <Grid>
@@ -237,92 +267,86 @@
                         </DataGrid.ColumnHeaderStyle>
 
                         <DataGrid.Columns>
-                            <!-- 프로세스 정보 -->
-                            <DataGridTemplateColumn Header="프로세스" Width="200">
+                            <DataGridTemplateColumn Header="프로세스" Width="2*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" Margin="5">
                                             <Ellipse Width="8" Height="8" 
-                                                     Fill="Gray"
-                                                     Margin="0,0,8,0"/>
+                             Fill="Gray"
+                             Margin="0,0,8,0"/>
                                             <StackPanel>
                                                 <TextBlock Text="{Binding ProcessName}" 
-                                                           FontWeight="SemiBold" 
-                                                           Foreground="{DynamicResource ForegroundColor}"/>
+                                   FontWeight="SemiBold" 
+                                   Foreground="{DynamicResource ForegroundColor}"/>
                                                 <TextBlock Text="{Binding ProcessId, StringFormat='PID: {0}'}" 
-                                                           FontSize="11" 
-                                                           Foreground="{DynamicResource SecondaryForegroundColor}"/>
+                                   FontSize="11" 
+                                   Foreground="{DynamicResource SecondaryForegroundColor}"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!-- 네트워크 연결 정보 -->
-                            <DataGridTextColumn Header="로컬 주소" Binding="{Binding LocalAddress}" Width="120"/>
-                            <DataGridTextColumn Header="원격 주소" Binding="{Binding RemoteAddress}" Width="120"/>
-                            <DataGridTextColumn Header="프로토콜" Binding="{Binding Protocol}" Width="80"/>
-                            <DataGridTextColumn Header="상태" Binding="{Binding ConnectionState}" Width="80"/>
-                            
-                            <!-- 연결 시간 -->
-                            <DataGridTemplateColumn Header="연결 시간" Width="100">
+                            <DataGridTextColumn Header="로컬 주소" Binding="{Binding LocalAddress}" Width="1.5*"/>
+                            <DataGridTextColumn Header="원격 주소" Binding="{Binding RemoteAddress}" Width="1.5*"/>
+                            <DataGridTextColumn Header="프로토콜" Binding="{Binding Protocol}" Width="Auto"/>
+                            <DataGridTextColumn Header="상태" Binding="{Binding ConnectionState}" Width="Auto"/>
+
+                            <DataGridTemplateColumn Header="연결 시간" Width="Auto">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding ConnectionDuration, StringFormat='{}{0:hh\\:mm\\:ss}'}" 
-                                                   HorizontalAlignment="Center"/>
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!-- 데이터 전송량 -->
                             <DataGridTemplateColumn Header="데이터 전송" Width="120">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel>
+                                        <StackPanel VerticalAlignment="Center">
                                             <TextBlock Text="{Binding DataTransferred}" 
-                                                       HorizontalAlignment="Center"/>
-                                            <TextBlock Text="{Binding DataRate, StringFormat=\'{}{0:F1} KB/s\'}" 
-                                                       FontSize="10" 
-                                                       Foreground="{DynamicResource SecondaryForegroundColor}"
-                                                       HorizontalAlignment="Center"/>
+                               HorizontalAlignment="Center"/>
+                                            <TextBlock Text="{Binding DataRate, StringFormat='{}{0:F1} KB/s'}" 
+                               FontSize="10" 
+                               Foreground="{DynamicResource SecondaryForegroundColor}"
+                               HorizontalAlignment="Center"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!-- 위험도 -->
-                            <DataGridTemplateColumn Header="위험도" Width="80">
+                            <DataGridTemplateColumn Header="위험도" Width="Auto">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Border Background="Gray" 
-                                                CornerRadius="4" 
-                                                Padding="8,4">
+                        CornerRadius="4" 
+                        Padding="8,4" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding RiskLevel}" 
-                                                       Foreground="White" 
-                                                       FontWeight="SemiBold"
-                                                       HorizontalAlignment="Center"
-                                                       FontSize="11"/>
+                               Foreground="White" 
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"
+                               FontSize="11"/>
                                         </Border>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!-- 액션 -->
-                            <DataGridTemplateColumn Header="액션" Width="100">
+                            <DataGridTemplateColumn Header="액션" Width="140">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                             <Button Content="차단" 
-                                                    Style="{DynamicResource DangerButtonStyle}"
-                                                    Width="60" Height="25"
-                                                    Click="BlockConnection_Click"
-                                                    Tag="{Binding}"/>
+                            Style="{DynamicResource DangerButtonStyle}"
+                            Width="60" Height="25"
+                            Click="BlockConnection_Click"
+                            Tag="{Binding}"/>
                                             <Button Content="종료" 
-                                                    Style="{DynamicResource WarningButtonStyle}"
-                                                    Width="60" Height="25"
-                                                    Margin="5,0,0,0"
-                                                    Click="TerminateProcess_Click"
-                                                    Tag="{Binding}"/>
+                            Style="{DynamicResource WarningButtonStyle}"
+                            Width="60" Height="25"
+                            Margin="5,0,0,0"
+                            Click="TerminateProcess_Click"
+                            Tag="{Binding}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -333,184 +357,100 @@
             </Border>
 
             <!-- 오른쪽: 보안 상태 및 차트 -->
-            <Border Grid.Column="1" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="10,0,0,0" BorderBrush="#C2C2C2" BorderThickness="1">
-                <Grid Margin="15">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="200"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+            <Border Grid.Column="1" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="10,0,0,0" BorderBrush="#C2C2C2" BorderThickness="1" ClipToBounds="True">
 
-                    <!-- 보안 상태 요약 -->
-                    <Border Grid.Row="0" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,0,15">
-                        <StackPanel>
-                            <TextBlock Text="보안 상태 요약" 
-                                       Foreground="{DynamicResource ForegroundColor}" 
-                                       FontSize="16" 
-                                       FontWeight="SemiBold"
-                                       Margin="0,0,0,10"/>
-                            
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,5,0">
 
-                                <!-- 위험도별 연결 수 -->
-                                <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,10,0">
-                                    <TextBlock Text="위험도별 연결" 
-                                               Foreground="{DynamicResource SecondaryForegroundColor}" 
-                                               FontSize="12"/>
-                                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                                        <Border Background="{StaticResource RiskLowColor}" 
-                                                CornerRadius="4" 
-                                                Padding="8,4" 
-                                                Margin="0,0,5,0">
-                                            <TextBlock Text="낮음" 
-                                                       Foreground="White" 
-                                                       FontSize="11"/>
-                                        </Border>
-                                        <TextBlock Text="{Binding LowRiskCount}" 
-                                                   Foreground="{DynamicResource ForegroundColor}" 
-                                                   FontWeight="Bold"
-                                                   VerticalAlignment="Center"
-                                                   Margin="5,0,0,0"/>
-                                    </StackPanel>
-                                    
-                                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                                        <Border Background="{StaticResource RiskMediumColor}" 
-                                                CornerRadius="4" 
-                                                Padding="8,4" 
-                                                Margin="0,0,5,0">
-                                            <TextBlock Text="보통" 
-                                                       Foreground="White" 
-                                                       FontSize="11"/>
-                                        </Border>
-                                        <TextBlock Text="{Binding MediumRiskCount}" 
-                                                   Foreground="{DynamicResource ForegroundColor}" 
-                                                   FontWeight="Bold"
-                                                   VerticalAlignment="Center"
-                                                   Margin="5,0,0,0"/>
-                                    </StackPanel>
-                                    
-                                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                                        <Border Background="{StaticResource RiskHighColor}" 
-                                                CornerRadius="4" 
-                                                Padding="8,4" 
-                                                Margin="0,0,5,0">
-                                            <TextBlock Text="높음" 
-                                                       Foreground="White" 
-                                                       FontSize="11"/>
-                                        </Border>
-                                        <TextBlock Text="{Binding HighRiskCount}" 
-                                                   Foreground="{DynamicResource ForegroundColor}" 
-                                                   FontWeight="Bold"
-                                                   VerticalAlignment="Center"
-                                                   Margin="5,0,0,0"/>
-                                    </StackPanel>
-                                </StackPanel>
+                    <Grid Margin="15">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                                <!-- 프로토콜별 통계 -->
-                                <StackPanel Grid.Column="1" Grid.Row="0" Margin="10,0,0,0">
-                                    <TextBlock Text="프로토콜별 통계" 
-                                               Foreground="{DynamicResource SecondaryForegroundColor}" 
-                                               FontSize="12"/>
-                                    <TextBlock Text="{Binding TcpCount, StringFormat='TCP: {0}'}" 
-                                               Foreground="{DynamicResource ForegroundColor}" 
-                                               Margin="0,5,0,0"/>
-                                    <TextBlock Text="{Binding UdpCount, StringFormat='UDP: {0}'}" 
-                                               Foreground="{DynamicResource ForegroundColor}" 
-                                               Margin="0,2,0,0"/>
-                                    <TextBlock Text="{Binding IcmpCount, StringFormat='ICMP: {0}'}" 
-                                               Foreground="{DynamicResource ForegroundColor}" 
-                                               Margin="0,2,0,0"/>
-                                </StackPanel>
-
-                                <!-- 총 연결 수 및 데이터 전송량 -->
-                                <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,15,0,0">
-                                    <TextBlock Text="전체 통계" 
-                                               Foreground="{DynamicResource SecondaryForegroundColor}" 
-                                               FontSize="12"/>
-                                    <Grid Margin="0,5,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" 
-                                                   Text="{Binding TotalConnections, StringFormat='총 연결: {0}'}" 
-                                                   Foreground="{DynamicResource ForegroundColor}" 
-                                                   FontWeight="SemiBold"/>
-                                        <TextBlock Grid.Column="1" 
-                                                   Text="{Binding TotalDataTransferred, StringFormat='총 데이터: {0}'}" 
-                                                   Foreground="{DynamicResource ForegroundColor}" 
-                                                   FontWeight="SemiBold"/>
-                                    </Grid>
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- 실시간 차트 -->
-                    <Border Grid.Row="1" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,0,15">
-                        <StackPanel>
-                            <TextBlock Text="실시간 네트워크 활동" 
-                                       Foreground="{DynamicResource ForegroundColor}" 
-                                       FontSize="16" 
-                                       FontWeight="SemiBold"
-                                       Margin="0,0,0,10"/>
-                            
-                            <lvc:CartesianChart x:Name="NetworkActivityChart"
-                                                Height="150"
-                                                Series="{Binding ChartSeries}"
-                                                XAxes="{Binding ChartXAxes}"
-                                                YAxes="{Binding ChartYAxes}"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- 보안 경고 및 권장 조치 -->
-                    <Border Grid.Row="2" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15">
-                        <StackPanel>
-                            <TextBlock Text="보안 경고 및 권장 조치" 
-                                       Foreground="{DynamicResource ForegroundColor}" 
-                                       FontSize="16" 
-                                       FontWeight="SemiBold"
-                                       Margin="0,0,0,10"/>
-                            
-                            <ScrollViewer VerticalScrollBarVisibility="Auto" Height="200">
-                                <ItemsControl x:Name="SecurityAlertsControl">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border Background="Gray" 
-                                                    CornerRadius="6" 
-                                                    Padding="10" 
-                                                    Margin="0,0,0,8">
-                                                <StackPanel>
-                                                    <TextBlock Text="{Binding Title}" 
-                                                               Foreground="White" 
-                                                               FontWeight="SemiBold"
-                                                               Margin="0,0,0,5"/>
-                                                    <TextBlock Text="{Binding Description}" 
-                                                               Foreground="White" 
-                                                               FontSize="12"
-                                                               TextWrapping="Wrap"
-                                                               Margin="0,0,0,8"/>
-                                                    <TextBlock Text="{Binding RecommendedAction}" 
-                                                               Foreground="White" 
-                                                               FontSize="11"
-                                                               FontStyle="Italic"/>
-                                                </StackPanel>
+                        <Border Grid.Row="0" Background="{DynamicResource BackgroundColor}" CornerRadius="8,8,0,0" Padding="15" Margin="0,0,0,15">
+                            <StackPanel>
+                                <TextBlock Text="보안 상태 요약" Foreground="{DynamicResource ForegroundColor}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,10,0">
+                                        <TextBlock Text="위험도별 연결" Foreground="{DynamicResource SecondaryForegroundColor}" FontSize="12"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                            <Border Background="{StaticResource RiskLowColor}" CornerRadius="4" Padding="8,4" Margin="0,0,5,0">
+                                                <TextBlock Text="낮음" Foreground="White" FontSize="11"/>
                                             </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </ScrollViewer>
-                        </StackPanel>
-                    </Border>
-                </Grid>
+                                            <TextBlock Text="{Binding LowRiskCount}" Foreground="{DynamicResource ForegroundColor}" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                            <Border Background="{StaticResource RiskMediumColor}" CornerRadius="4" Padding="8,4" Margin="0,0,5,0">
+                                                <TextBlock Text="보통" Foreground="White" FontSize="11"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding MediumRiskCount}" Foreground="{DynamicResource ForegroundColor}" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                            <Border Background="{StaticResource RiskHighColor}" CornerRadius="4" Padding="8,4" Margin="0,0,5,0">
+                                                <TextBlock Text="높음" Foreground="White" FontSize="11"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding HighRiskCount}" Foreground="{DynamicResource ForegroundColor}" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Grid.Row="0" Margin="10,0,0,0">
+                                        <TextBlock Text="프로토콜별 통계" Foreground="{DynamicResource SecondaryForegroundColor}" FontSize="12"/>
+                                        <TextBlock Text="{Binding TcpCount, StringFormat='TCP: {0}'}" Foreground="{DynamicResource ForegroundColor}" Margin="0,5,0,0"/>
+                                        <TextBlock Text="{Binding UdpCount, StringFormat='UDP: {0}'}" Foreground="{DynamicResource ForegroundColor}" Margin="0,2,0,0"/>
+                                        <TextBlock Text="{Binding IcmpCount, StringFormat='ICMP: {0}'}" Foreground="{DynamicResource ForegroundColor}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,15,0,0">
+                                        <TextBlock Text="전체 통계" Foreground="{DynamicResource SecondaryForegroundColor}" FontSize="12"/>
+                                        <Grid Margin="0,5,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding TotalConnections, StringFormat='총 연결: {0}'}" Foreground="{DynamicResource ForegroundColor}" FontWeight="SemiBold"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding TotalDataTransferred, StringFormat='총 데이터: {0}'}" Foreground="{DynamicResource ForegroundColor}" FontWeight="SemiBold"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Row="1" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,0,15">
+                            <StackPanel>
+                                <TextBlock Text="실시간 네트워크 활동" Foreground="{DynamicResource ForegroundColor}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                <lvc:CartesianChart x:Name="NetworkActivityChart" Height="150" Series="{Binding ChartSeries}" XAxes="{Binding ChartXAxes}" YAxes="{Binding ChartYAxes}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Row="2" Background="{DynamicResource BackgroundColor}" CornerRadius="0,0,8,8" Padding="15">
+                            <StackPanel>
+                                <TextBlock Text="보안 경고 및 권장 조치" Foreground="{DynamicResource ForegroundColor}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <ItemsControl x:Name="SecurityAlertsControl">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="Gray" CornerRadius="6" Padding="10" Margin="0,0,0,8">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Title}" Foreground="White" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                                        <TextBlock Text="{Binding Description}" Foreground="White" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                                        <TextBlock Text="{Binding RecommendedAction}" Foreground="White" FontSize="11" FontStyle="Italic"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </ScrollViewer>
             </Border>
         </Grid>
 
