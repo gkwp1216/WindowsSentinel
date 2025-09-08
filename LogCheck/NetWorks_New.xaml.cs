@@ -1,27 +1,33 @@
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView.WPF;
+using LogCheck.Models;
+using LogCheck.Services;
+using MaterialDesignThemes.Wpf;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives; // Popup 사용시
 using System.Windows.Data;
+using System.Windows.Forms;
 using System.Windows.Media;
-using System.Windows.Threading;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
-using LiveChartsCore.SkiaSharpView.WPF;
-using SkiaSharp;
-using LogCheck.Models;
-using LogCheck.Services;
-using SecurityAlert = LogCheck.Services.SecurityAlert;
-using MaterialDesignThemes.Wpf;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using MessageBox = System.Windows.MessageBox;
+using System.Windows.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 using Controls = System.Windows.Controls;
-using System.Runtime.Versioning;
+using MediaColor = System.Windows.Media.Color;
+using MessageBox = System.Windows.MessageBox;
+using SecurityAlert = LogCheck.Services.SecurityAlert;
+using MediaBrushes = System.Windows.Media.Brushes;
 
 namespace LogCheck
 {
@@ -58,6 +64,8 @@ namespace LogCheck
         // 모니터링 상태
         private bool _isMonitoring = false;
 
+        private readonly NotifyIcon _notifyIcon;
+
         public NetWorks_New()
         {
             InitializeComponent();
@@ -91,6 +99,13 @@ namespace LogCheck
                 Interval = TimeSpan.FromSeconds(5)
             };
             _updateTimer.Tick += UpdateTimer_Tick;
+
+            //_notifyIcon 초기화
+            _notifyIcon = new NotifyIcon
+            {
+                Icon = System.Drawing.SystemIcons.Information,
+                Visible = true
+            };
 
             // 로그 메시지 추가
             AddLogMessage("네트워크 보안 모니터링 시스템 초기화 완료");
@@ -231,6 +246,7 @@ namespace LogCheck
         /// </summary>
         private async void StopMonitoring_Click(object sender, RoutedEventArgs e)
         {
+
             try
             {
                 AddLogMessage("네트워크 모니터링 중지...");
@@ -400,13 +416,16 @@ namespace LogCheck
                         AddLogMessage($"연결 차단 시작: {connection.ProcessName} - {connection.RemoteAddress}:{connection.RemotePort}");
 
                         var success = await _connectionManager.DisconnectProcessAsync(
-                            connection.ProcessId, 
+                            connection.ProcessId,
                             "사용자 요청 - 보안 위협 탐지");
 
                         if (success)
                         {
                             AddLogMessage("연결 차단이 완료되었습니다.");
                             MessageBox.Show("연결 차단이 완료되었습니다.", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                            // NotifyIcon 사용하여 트레이 알림
+                            ShowTrayNotification($"연결 차단 완료: {connection.ProcessName} - {connection.RemoteAddress}:{connection.RemotePort}");
                         }
                         else
                         {
@@ -422,6 +441,26 @@ namespace LogCheck
                 MessageBox.Show($"연결 차단 중 오류가 발생했습니다: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        // 트레이 알림 (BalloonTip) 표시 함수
+        private void ShowTrayNotification(string message)
+        {
+            // NotifyIcon 객체 생성
+            using (var notifyIcon = new NotifyIcon())
+            {
+                notifyIcon.Icon = System.Drawing.SystemIcons.Information;  // 아이콘 설정 (정보 아이콘)
+                notifyIcon.Visible = true;  // 아이콘 표시
+
+                // 트레이 알림 표시
+                notifyIcon.BalloonTipTitle = "네트워크 보안 알림";
+                notifyIcon.BalloonTipText = message;
+                notifyIcon.ShowBalloonTip(3000);  // 3초 동안 표시
+
+                // 잠시 대기 후 트레이 아이콘 제거
+                System.Threading.Tasks.Task.Delay(3000).ContinueWith(t => notifyIcon.Dispose());
+            }
+        }
+
 
         /// <summary>
         /// 프로세스 종료 버튼 클릭
@@ -617,10 +656,16 @@ namespace LogCheck
         {
             try
             {
+                if (!_isMonitoring) return; // 모니터링 중이 아니면 알림 건너뜀
+
                 _securityAlerts.Clear();
                 foreach (var alert in alerts)
                 {
                     _securityAlerts.Add(alert);
+
+                    // "위험" 메시지만 토스트 알림 표시
+                    if (alert.Title.Contains("위험") || alert.Title.Contains("Critical"))
+                        ShowSecurityAlertToast(alert);
                 }
 
                 AddLogMessage($"보안 경고 {alerts.Count}개 생성됨");
@@ -719,6 +764,102 @@ namespace LogCheck
         {
             // 페이지에서 이동할 때 호출
             Shutdown();
+        }
+        private void ShowSecurityAlertToast(SecurityAlert alert)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                var popup = new Popup
+                {
+                    Placement = PlacementMode.Bottom,  // 유효한 값 사용
+                    AllowsTransparency = true,
+                    PopupAnimation = PopupAnimation.Fade,
+                    StaysOpen = false,
+                    HorizontalOffset = SystemParameters.WorkArea.Width - 300, // 화면 우측
+                    VerticalOffset = SystemParameters.WorkArea.Height - 100   // 화면 하단
+                };
+
+
+                // 타이틀 TextBlock 생성
+                var titleTextBlock = new TextBlock
+                {
+                    Text = alert.Title,
+                    Foreground = MediaBrushes.White,
+                    FontWeight = FontWeights.Bold,
+                    FontSize = 14
+                };
+                DockPanel.SetDock(titleTextBlock, Dock.Left); // 여기서 Dock 설정
+
+                // X 버튼 생성
+                var closeButton = new System.Windows.Controls.Button
+                {
+                    Content = "X",
+                    Width = 20,
+                    Height = 20,
+                    HorizontalAlignment = System.Windows.HorizontalAlignment.Right
+                };
+                closeButton.Click += (s, e) => popup.IsOpen = false;
+
+                // DockPanel 생성 및 Children 추가
+                var dockPanel = new DockPanel
+                {
+                    LastChildFill = true
+                };
+                dockPanel.Children.Add(titleTextBlock);
+                dockPanel.Children.Add(closeButton);
+
+                // Border 생성
+                var border = new Border
+                {
+                    Background = new SolidColorBrush(MediaColor.FromArgb(220, 60, 60, 60)),
+                    CornerRadius = new CornerRadius(8),
+                    Padding = new Thickness(12),
+                    Child = new StackPanel
+                    {
+                        Children =
+        {
+            dockPanel,
+            new TextBlock
+            {
+                Text = alert.Description,
+                Foreground = MediaBrushes.White,
+                FontSize = 12,
+                TextWrapping = TextWrapping.Wrap,
+                MaxWidth = 250
+            },
+            new TextBlock
+            {
+                Text = $"권장 조치: {alert.RecommendedAction}",
+                Foreground = MediaBrushes.LightGray,
+                FontSize = 11,
+                FontStyle = FontStyles.Italic,
+                TextWrapping = TextWrapping.Wrap,
+                MaxWidth = 250
+            }
+        }
+                    }
+                };
+
+                popup.Child = border;
+
+                // 화면 우측 상단 위치
+                popup.HorizontalOffset = SystemParameters.WorkArea.Width - 300;
+                popup.VerticalOffset = 20;
+
+                popup.IsOpen = true;
+
+                // 일정 시간 후 자동 닫기
+                var timer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromSeconds(5)
+                };
+                timer.Tick += (s, e) =>
+                {
+                    popup.IsOpen = false;
+                    timer.Stop();
+                };
+                timer.Start();
+            });
         }
     }
 }
