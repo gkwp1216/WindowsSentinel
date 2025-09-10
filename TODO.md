@@ -1,5 +1,9 @@
 # 작업 목록 (TODO)
 
+# 예외 오류 발생
+    System.NullReferenceException: 'Object reference not set to an instance of an object.'
+    network.xaml.cs 357번줄
+    
 ## UI/UX 개선
 
 - **보안 경고 팝업**: '네트워크 보안 모니터링' 기능의 보안 경고 및 권장 조치 메시지를 사용자 친화적인 팝업 형태로 구현합니다.
