@@ -3,5 +3,18 @@
   <Profiles>
     <Profile Name="(Default)" />
   </Profiles>
-  <Settings />
+  <Settings>
+    <Setting Name="AutoStartMonitoring" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AutoSelectNic" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SelectedNicId" Type="System.String" Scope="User">
+      <Value Profile="(Default)"></Value>
+    </Setting>
+    <Setting Name="BpfFilter" Type="System.String" Scope="User">
+      <Value Profile="(Default)">tcp or udp or icmp</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

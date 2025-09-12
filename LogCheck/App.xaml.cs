@@ -2,20 +2,23 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Drawing;      // Icon
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms; // NotifyIcon
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Forms; // NotifyIcon
-using System.Drawing;      // Icon
+using LogCheck.Services;
 
 namespace LogCheck
 {
     /// <summary>
     /// App.xaml에 대한 상호 작용 논리
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public partial class App : System.Windows.Application
     {
         private NotifyIcon? _notifyIcon;
@@ -25,14 +28,14 @@ namespace LogCheck
         {
             InitializeComponent();
         }
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             // 트레이 아이콘 생성
             _notifyIcon = new NotifyIcon
             {
-                Icon = new Icon("WindowsSentinel.ico"), // 필요시 .ico 교체 가능
+                Icon = TryLoadIcon(),
                 Visible = true,
                 Text = "Windows Sentinal"
             };
@@ -44,6 +47,53 @@ namespace LogCheck
             openItem.Click += (_, __) => ShowWindow();
             contextMenu.Items.Add(openItem);
 
+            var settingsItem = new ToolStripMenuItem("설정");
+            settingsItem.Click += (_, __) =>
+            {
+                // 메인 창을 띄우고 설정 페이지로 이동
+                ShowWindow();
+                try { _mainWindows?.NavigateToPage(new Setting()); } catch { }
+            };
+            contextMenu.Items.Add(settingsItem);
+
+            var toggleItem = new ToolStripMenuItem("모니터링 중지");
+            toggleItem.Click += async (_, __) =>
+            {
+                try
+                {
+                    if (MonitoringHub.Instance.IsRunning)
+                    {
+                        await MonitoringHub.Instance.StopAsync();
+                        toggleItem.Text = "모니터링 시작";
+                        _notifyIcon?.ShowBalloonTip(3000, "Windows Sentinel", "모니터링이 중지되었습니다.", ToolTipIcon.Info);
+                    }
+                    else
+                    {
+                        var s = LogCheck.Properties.Settings.Default;
+                        var bpf = string.IsNullOrWhiteSpace(s.BpfFilter) ? "tcp or udp or icmp" : s.BpfFilter;
+                        string? nic = s.AutoSelectNic ? null : (string.IsNullOrWhiteSpace(s.SelectedNicId) ? null : s.SelectedNicId);
+                        await MonitoringHub.Instance.StartAsync(bpf, nic);
+                        toggleItem.Text = "모니터링 중지";
+                        _notifyIcon?.ShowBalloonTip(3000, "Windows Sentinel", "모니터링이 시작되었습니다.", ToolTipIcon.Info);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Toggle monitoring failed: {ex.Message}");
+                }
+            };
+            contextMenu.Items.Add(toggleItem);
+
+            // 허브 상태 변화에 따라 토글 텍스트 동기화
+            MonitoringHub.Instance.MonitoringStateChanged += (_, running) =>
+            {
+                try
+                {
+                    toggleItem.Text = running ? "모니터링 중지" : "모니터링 시작";
+                }
+                catch { }
+            };
+
             var exitItem = new ToolStripMenuItem("종료");
             exitItem.Click += (_, __) => ExitApplication();
             contextMenu.Items.Add(exitItem);
@@ -54,7 +104,7 @@ namespace LogCheck
             _notifyIcon.DoubleClick += (_, __) => ShowWindow();
 
             // 앱 종료 시 트레이 아이콘 정리
-            this.Exit += (_, __) =>
+            this.Exit += async (_, __) =>
             {
                 if (_notifyIcon != null)
                 {
@@ -62,9 +112,47 @@ namespace LogCheck
                     _notifyIcon.Dispose();
                     _notifyIcon = null;
                 }
+
+                // 모니터링 종료
+                try { await MonitoringHub.Instance.StopAsync(); } catch { /* ignore on exit */ }
             };
 
+            // 설정에 따라 자동 모니터링 시작
+            try
+            {
+                var s = LogCheck.Properties.Settings.Default;
+                var bpf = string.IsNullOrWhiteSpace(s.BpfFilter) ? "tcp or udp or icmp" : s.BpfFilter;
+                string? nic = s.AutoSelectNic ? null : (string.IsNullOrWhiteSpace(s.SelectedNicId) ? null : s.SelectedNicId);
+
+                if (s.AutoStartMonitoring)
+                {
+                    await MonitoringHub.Instance.StartAsync(bpf, nic);
+                    toggleItem.Text = "모니터링 중지";
+                    _notifyIcon?.ShowBalloonTip(3000, "Windows Sentinel", "앱 시작과 함께 모니터링을 시작했습니다.", ToolTipIcon.Info);
+                }
+                else
+                {
+                    toggleItem.Text = "모니터링 시작";
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Auto start failed: {ex.Message}");
+            }
+
             // UI는 시작 시 자동 표시되지 않음 → 백그라운드 상주
+        }
+
+        private Icon TryLoadIcon()
+        {
+            try
+            {
+                var path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "IconTexture", "WindowsSentinel.ico");
+                if (System.IO.File.Exists(path))
+                    return new Icon(path);
+            }
+            catch { }
+            return SystemIcons.Application;
         }
 
         private void ShowWindow()

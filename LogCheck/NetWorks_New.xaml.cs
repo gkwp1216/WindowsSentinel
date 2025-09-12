@@ -1,17 +1,10 @@
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
-using LiveChartsCore.SkiaSharpView.WPF;
-using LogCheck.Models;
-using LogCheck.Services;
-using MaterialDesignThemes.Wpf;
-using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Versioning;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,12 +15,20 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView.WPF;
+using LogCheck.Models;
+using LogCheck.Services;
+using MaterialDesignThemes.Wpf;
+using SkiaSharp;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 using Controls = System.Windows.Controls;
+using MediaBrushes = System.Windows.Media.Brushes;
 using MediaColor = System.Windows.Media.Color;
 using MessageBox = System.Windows.MessageBox;
 using SecurityAlert = LogCheck.Services.SecurityAlert;
-using MediaBrushes = System.Windows.Media.Brushes;
 
 namespace LogCheck
 {
@@ -64,28 +65,33 @@ namespace LogCheck
         // 모니터링 상태
         private bool _isMonitoring = false;
 
+        // 캡처 서비스 연동
+        private readonly ICaptureService _captureService;
+        private long _livePacketCount = 0; // 틱 간 누적 패킷 수
+
         private readonly NotifyIcon _notifyIcon;
+        private bool _hubSubscribed = false;
 
         public NetWorks_New()
         {
-            InitializeComponent();
-
-            // XAML 컨트롤은 자동으로 바인딩됨
-
-            // 서비스 초기화
-            _processNetworkMapper = new ProcessNetworkMapper();
-            _connectionManager = new NetworkConnectionManager();
-            _securityAnalyzer = new RealTimeSecurityAnalyzer();
-
-            // 데이터 컬렉션 초기화
+            // 컬렉션 및 차트 데이터 먼저 초기화 (InitializeComponent 중 SelectionChanged 등 이벤트가 호출될 수 있음)
             _processNetworkData = new ObservableCollection<ProcessNetworkInfo>();
             _securityAlerts = new ObservableCollection<SecurityAlert>();
             _logMessages = new ObservableCollection<string>();
-
-            // 차트 초기화
             _chartSeries = new ObservableCollection<ISeries>();
             _chartXAxes = new ObservableCollection<Axis>();
             _chartYAxes = new ObservableCollection<Axis>();
+
+            // 서비스 초기화
+            // 전역 허브의 인스턴스를 사용하여 중복 실행 방지
+            var hub = MonitoringHub.Instance;
+            _processNetworkMapper = hub.ProcessMapper;
+            _connectionManager = new NetworkConnectionManager();
+            _securityAnalyzer = new RealTimeSecurityAnalyzer();
+            _captureService = hub.Capture;
+
+            // XAML 로드 (이 시점에 SelectionChanged가 발생해도 컬렉션은 준비됨)
+            InitializeComponent();
 
             // 이벤트 구독
             SubscribeToEvents();
@@ -100,7 +106,7 @@ namespace LogCheck
             };
             _updateTimer.Tick += UpdateTimer_Tick;
 
-            //_notifyIcon 초기화
+            // _notifyIcon 초기화
             _notifyIcon = new NotifyIcon
             {
                 Icon = System.Drawing.SystemIcons.Information,
@@ -109,6 +115,104 @@ namespace LogCheck
 
             // 로그 메시지 추가
             AddLogMessage("네트워크 보안 모니터링 시스템 초기화 완료");
+
+            // 허브 상태에 따라 초기 UI 업데이트
+            if (MonitoringHub.Instance.IsRunning)
+            {
+                _isMonitoring = true;
+                StartMonitoringButton.Visibility = Visibility.Collapsed;
+                StopMonitoringButton.Visibility = Visibility.Visible;
+                MonitoringStatusText.Text = "모니터링 중";
+                MonitoringStatusText2.Text = "모니터링 중";
+                MonitoringStatusIndicator.Fill = new SolidColorBrush(Colors.Green);
+                // 새로 추가된 런타임 구성 요약 갱신
+                UpdateRuntimeConfigText();
+                _updateTimer.Start();
+            }
+
+            // 허브 이벤트 구독
+            SubscribeHub();
+            this.Unloaded += (_, __) => UnsubscribeHub();
+        }
+
+        private string BuildRuntimeConfigSummary()
+        {
+            var s = LogCheck.Properties.Settings.Default;
+            var bpf = string.IsNullOrWhiteSpace(s.BpfFilter) ? "tcp or udp or icmp" : s.BpfFilter;
+            string nicText = s.AutoSelectNic ? "자동 선택" : (string.IsNullOrWhiteSpace(s.SelectedNicId) ? "자동 선택" : s.SelectedNicId);
+            return $"NIC: {nicText} | BPF: {bpf}";
+        }
+
+        private void UpdateRuntimeConfigText()
+        {
+            try
+            {
+                if (FindName("RuntimeConfigText") is TextBlock rct)
+                {
+                    rct.Text = BuildRuntimeConfigSummary();
+                }
+            }
+            catch
+            {
+                // ignore
+            }
+        }
+
+        private void SubscribeHub()
+        {
+            if (_hubSubscribed) return;
+            var hub = MonitoringHub.Instance;
+            hub.MonitoringStateChanged += OnHubMonitoringStateChanged;
+            hub.MetricsUpdated += OnHubMetricsUpdated;
+            hub.ErrorOccurred += OnHubErrorOccurred;
+            _hubSubscribed = true;
+        }
+
+        private void UnsubscribeHub()
+        {
+            if (!_hubSubscribed) return;
+            var hub = MonitoringHub.Instance;
+            hub.MonitoringStateChanged -= OnHubMonitoringStateChanged;
+            hub.MetricsUpdated -= OnHubMetricsUpdated;
+            hub.ErrorOccurred -= OnHubErrorOccurred;
+            _hubSubscribed = false;
+        }
+
+        private void OnHubMonitoringStateChanged(object? sender, bool running)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                _isMonitoring = running;
+                StartMonitoringButton.Visibility = running ? Visibility.Collapsed : Visibility.Visible;
+                StopMonitoringButton.Visibility = running ? Visibility.Visible : Visibility.Collapsed;
+                MonitoringStatusText.Text = running ? "모니터링 중" : "대기 중";
+                MonitoringStatusText2.Text = MonitoringStatusText.Text;
+                MonitoringStatusIndicator.Fill = new SolidColorBrush(running ? Colors.Green : Colors.Gray);
+                if (running)
+                {
+                    // 런타임 구성 갱신
+                    UpdateRuntimeConfigText();
+                    _updateTimer.Start();
+                }
+                else
+                {
+                    _updateTimer.Stop();
+                }
+            });
+        }
+
+        private void OnHubMetricsUpdated(object? sender, CaptureMetrics metrics)
+        {
+            // 현재는 틱마다 _livePacketCount로 pps를 표기하므로, 여기서는 선택적으로 활용
+            // 필요하다면 별도 레이블로 최신 pps 표시 가능
+        }
+
+        private void OnHubErrorOccurred(object? sender, Exception ex)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                AddLogMessage($"허브 오류: {ex.Message}");
+            });
         }
 
         /// <summary>
@@ -123,6 +227,10 @@ namespace LogCheck
             _connectionManager.ErrorOccurred += OnErrorOccurred;
             _securityAnalyzer.SecurityAlertGenerated += OnSecurityAlertGenerated;
             _securityAnalyzer.ErrorOccurred += OnErrorOccurred;
+
+            // 캡처 서비스 이벤트
+            _captureService.OnPacket += OnCapturePacket;
+            _captureService.OnError += (s, ex) => OnErrorOccurred(s, ex.Message);
         }
 
         /// <summary>
@@ -130,19 +238,25 @@ namespace LogCheck
         /// </summary>
         private void InitializeUI()
         {
-            // DataGrid 바인딩
-            ProcessNetworkDataGrid.ItemsSource = _processNetworkData;
+            // DataGrid 바인딩 (컨트롤 존재 확인)
+            if (ProcessNetworkDataGrid != null)
+                ProcessNetworkDataGrid.ItemsSource = _processNetworkData;
 
             // 보안 경고 컨트롤 바인딩
-            SecurityAlertsControl.ItemsSource = _securityAlerts;
+            if (SecurityAlertsControl != null)
+                SecurityAlertsControl.ItemsSource = _securityAlerts;
 
             // 로그 메시지 컨트롤 바인딩
-            LogMessagesControl.ItemsSource = _logMessages;
+            if (LogMessagesControl != null)
+                LogMessagesControl.ItemsSource = _logMessages;
 
             // 차트 바인딩
-            NetworkActivityChart.Series = _chartSeries;
-            NetworkActivityChart.XAxes = _chartXAxes;
-            NetworkActivityChart.YAxes = _chartYAxes;
+            if (NetworkActivityChart != null)
+            {
+                NetworkActivityChart.Series = _chartSeries;
+                NetworkActivityChart.XAxes = _chartXAxes;
+                NetworkActivityChart.YAxes = _chartYAxes;
+            }
 
             // 네트워크 인터페이스 초기화
             InitializeNetworkInterfaces();
@@ -159,10 +273,13 @@ namespace LogCheck
             try
             {
                 // 실제 구현에서는 사용 가능한 네트워크 인터페이스를 가져와야 함
-                NetworkInterfaceComboBox.Items.Add("모든 인터페이스");
-                NetworkInterfaceComboBox.Items.Add("이더넷");
-                NetworkInterfaceComboBox.Items.Add("Wi-Fi");
-                NetworkInterfaceComboBox.SelectedIndex = 0;
+                if (NetworkInterfaceComboBox != null)
+                {
+                    NetworkInterfaceComboBox.Items.Add("모든 인터페이스");
+                    NetworkInterfaceComboBox.Items.Add("이더넷");
+                    NetworkInterfaceComboBox.Items.Add("Wi-Fi");
+                    NetworkInterfaceComboBox.SelectedIndex = 0;
+                }
             }
             catch (Exception ex)
             {
@@ -218,9 +335,13 @@ namespace LogCheck
             {
                 AddLogMessage("네트워크 모니터링 시작...");
 
-                // 모니터링 시작
-                await _processNetworkMapper.StartMonitoringAsync();
+                // 전역 허브를 통해 모니터링 시작 (설정 기반 NIC/BPF 사용)
+                var s = LogCheck.Properties.Settings.Default;
+                var bpf = string.IsNullOrWhiteSpace(s.BpfFilter) ? "tcp or udp or icmp" : s.BpfFilter;
+                string? nic = s.AutoSelectNic ? null : (string.IsNullOrWhiteSpace(s.SelectedNicId) ? null : s.SelectedNicId);
+                await MonitoringHub.Instance.StartAsync(bpf, nic);
                 _isMonitoring = true;
+                Interlocked.Exchange(ref _livePacketCount, 0);
 
                 // UI 상태 업데이트
                 StartMonitoringButton.Visibility = Visibility.Collapsed;
@@ -228,6 +349,7 @@ namespace LogCheck
                 MonitoringStatusText.Text = "모니터링 중";
                 MonitoringStatusText2.Text = "모니터링 중";
                 MonitoringStatusIndicator.Fill = new SolidColorBrush(Colors.Green);
+                UpdateRuntimeConfigText();
 
                 // 타이머 시작
                 _updateTimer.Start();
@@ -250,19 +372,16 @@ namespace LogCheck
             try
             {
                 AddLogMessage("네트워크 모니터링 중지...");
-
-                // 모니터링 중지
-                await _processNetworkMapper.StopMonitoringAsync();
+                await MonitoringHub.Instance.StopAsync();
                 _isMonitoring = false;
 
-                // UI 상태 업데이트
                 StartMonitoringButton.Visibility = Visibility.Visible;
                 StopMonitoringButton.Visibility = Visibility.Collapsed;
                 MonitoringStatusText.Text = "대기 중";
                 MonitoringStatusText2.Text = "대기 중";
                 MonitoringStatusIndicator.Fill = new SolidColorBrush(Colors.Gray);
+                // 구성 요약은 유지하거나 필요 시 빈 값으로 둘 수 있음 (여기서는 유지)
 
-                // 타이머 중지
                 _updateTimer.Stop();
 
                 AddLogMessage("네트워크 모니터링이 중지되었습니다.");
@@ -346,11 +465,21 @@ namespace LogCheck
         {
             try
             {
-                var selectedItem = ProtocolFilterComboBox.SelectedItem as Controls.ComboBoxItem;
-                if (selectedItem == null) return;
+                // sender 우선 사용하여 XAML 이름(null 가능) 의존 제거
+                var combo = sender as Controls.ComboBox ?? ProtocolFilterComboBox;
+                if (combo == null) return;
 
-                var protocol = selectedItem.Content.ToString();
+                string? protocol = null;
+                if (combo.SelectedItem is Controls.ComboBoxItem cbi)
+                    protocol = cbi.Content?.ToString();
+                else
+                    protocol = combo.SelectedItem?.ToString();
+
+                if (string.IsNullOrWhiteSpace(protocol)) return;
+
+                if (_processNetworkData == null) return;
                 var view = CollectionViewSource.GetDefaultView(_processNetworkData);
+                if (view == null) return;
 
                 if (protocol == "모든 프로토콜")
                 {
@@ -485,7 +614,7 @@ namespace LogCheck
 
                         // 프로세스 종료 (실제로는 NetworkConnectionManager에서 처리)
                         var success = await _connectionManager.DisconnectProcessAsync(
-                            connection.ProcessId, 
+                            connection.ProcessId,
                             "사용자 요청 - 프로세스 종료");
 
                         if (success)
@@ -517,6 +646,13 @@ namespace LogCheck
             {
                 if (_isMonitoring)
                 {
+                    // 최근 틱 간 패킷 처리율 계산 및 상태 표시
+                    var taken = Interlocked.Exchange(ref _livePacketCount, 0);
+                    var secs = Math.Max(1, (int)_updateTimer.Interval.TotalSeconds);
+                    var pps = taken / secs;
+                    if (MonitoringStatusText != null) MonitoringStatusText.Text = $"모니터링 중 ({pps} pps)";
+                    if (MonitoringStatusText2 != null) MonitoringStatusText2.Text = $"모니터링 중 ({pps} pps)";
+
                     // 주기적으로 데이터 업데이트
                     var data = await _processNetworkMapper.GetProcessNetworkDataAsync();
                     await UpdateProcessNetworkDataAsync(data);
@@ -529,12 +665,24 @@ namespace LogCheck
         }
 
         /// <summary>
+        /// 캡처 서비스 패킷 수신 이벤트
+        /// </summary>
+        private void OnCapturePacket(object? sender, PacketDto dto)
+        {
+            // 배경 스레드에서 호출됨: 원자적 증가
+            Interlocked.Increment(ref _livePacketCount);
+        }
+
+        /// <summary>
         /// 프로세스-네트워크 데이터 업데이트
         /// </summary>
         private async Task UpdateProcessNetworkDataAsync(List<ProcessNetworkInfo> data)
         {
             try
             {
+                // null 데이터 방어
+                data ??= new List<ProcessNetworkInfo>();
+
                 await Dispatcher.InvokeAsync(() =>
                 {
                     // 데이터 컬렉션 업데이트
@@ -574,6 +722,8 @@ namespace LogCheck
         {
             try
             {
+                data ??= new List<ProcessNetworkInfo>();
+
                 _totalConnections = data.Count;
                 _lowRiskCount = data.Count(x => x.RiskLevel == SecurityRiskLevel.Low);
                 _mediumRiskCount = data.Count(x => x.RiskLevel == SecurityRiskLevel.Medium);
@@ -584,8 +734,10 @@ namespace LogCheck
                 _totalDataTransferred = data.Sum(x => x.DataTransferred);
 
                 // UI 업데이트
-                ActiveConnectionsText.Text = _totalConnections.ToString();
-                DangerousConnectionsText.Text = (_highRiskCount + data.Count(x => x.RiskLevel == SecurityRiskLevel.Critical)).ToString();
+                if (ActiveConnectionsText != null)
+                    ActiveConnectionsText.Text = _totalConnections.ToString();
+                if (DangerousConnectionsText != null)
+                    DangerousConnectionsText.Text = (_highRiskCount + data.Count(x => x.RiskLevel == SecurityRiskLevel.Critical)).ToString();
 
                 // DataContext 업데이트 (실제로는 INotifyPropertyChanged 구현 필요)
                 UpdateStatisticsDisplay();
@@ -629,6 +781,7 @@ namespace LogCheck
                 // 간단한 차트 업데이트 (실제로는 더 정교한 구현 필요)
                 if (_chartSeries.Count > 0 && _chartSeries[0] is LineSeries<double> lineSeries)
                 {
+                    data ??= new List<ProcessNetworkInfo>();
                     var chartData = new List<double>();
                     var currentHour = DateTime.Now.Hour;
 
@@ -657,6 +810,7 @@ namespace LogCheck
             try
             {
                 if (!_isMonitoring) return; // 모니터링 중이 아니면 알림 건너뜀
+                alerts ??= new List<SecurityAlert>();
 
                 _securityAlerts.Clear();
                 foreach (var alert in alerts)
@@ -720,7 +874,7 @@ namespace LogCheck
                 Dispatcher.InvokeAsync(() =>
                 {
                     _logMessages.Add(logMessage);
-                    
+
                     // 로그 메시지가 너무 많아지면 오래된 것 제거
                     while (_logMessages.Count > 100)
                     {
@@ -744,6 +898,7 @@ namespace LogCheck
             {
                 _updateTimer?.Stop();
                 _ = _processNetworkMapper?.StopMonitoringAsync();
+                _ = _captureService?.StopAsync();
             }
             catch (Exception ex)
             {
@@ -860,6 +1015,49 @@ namespace LogCheck
                 };
                 timer.Start();
             });
+        }
+
+        private void OpenSettings_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // 현재 창에서 내비게이션 메서드를 찾아 호출
+                if (Window.GetWindow(this) is MainWindows mw)
+                {
+                    mw.NavigateToPage(new Setting());
+                }
+                else
+                {
+                    // 대체: 현재 페이지의 최상위 Frame을 찾아 네비게이트
+                    var parent = this.Parent;
+                    while (parent != null && parent is not System.Windows.Controls.Frame)
+                    {
+                        parent = (parent as FrameworkElement)?.Parent;
+                    }
+                    if (parent is System.Windows.Controls.Frame frame)
+                    {
+                        frame.Navigate(new Setting());
+                    }
+                    else
+                    {
+                        // 마지막 대안: 새 창으로 설정 페이지 열기
+                        var win = new Window
+                        {
+                            Title = "설정",
+                            Width = 800,
+                            Height = 600,
+                            Content = new Setting(),
+                            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                            Owner = Window.GetWindow(this)
+                        };
+                        win.Show();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"설정 열기 오류: {ex.Message}");
+            }
         }
     }
 }

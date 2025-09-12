@@ -13,7 +13,7 @@ namespace LogCheck.Properties
 
 
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
     {
 
@@ -25,6 +25,48 @@ namespace LogCheck.Properties
             {
                 return defaultInstance;
             }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoStartMonitoring
+        {
+            get
+            {
+                return ((bool)(this["AutoStartMonitoring"]));
+            }
+            set
+            {
+                this["AutoStartMonitoring"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoSelectNic
+        {
+            get { return ((bool)(this["AutoSelectNic"])); }
+            set { this["AutoSelectNic"] = value; }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SelectedNicId
+        {
+            get { return ((string)(this["SelectedNicId"])); }
+            set { this["SelectedNicId"] = value; }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("tcp or udp or icmp")]
+        public string BpfFilter
+        {
+            get { return ((string)(this["BpfFilter"])); }
+            set { this["BpfFilter"] = value; }
         }
     }
 }

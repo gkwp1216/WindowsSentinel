@@ -126,21 +126,21 @@
                                           Margin="0,0,15,0"
                                           materialDesign:HintAssist.Hint="네트워크 인터페이스 선택"/>
 
-                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <WrapPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
                                     <Button x:Name="StartMonitoringButton"
                                             Content="모니터링 시작"
                                             Style="{DynamicResource StartMonitoringButtonStyle}"
                                             Click="StartMonitoring_Click"
-                                            Width="150" Height="35"
-                                            Margin="0,0,10,0">
+                        Width="140" Height="35"
+                        Margin="0,0,8,8">
                                     </Button>
 
                                     <Button x:Name="StopMonitoringButton"
                                             Content="모니터링 중지"
                                             Style="{DynamicResource StartMonitoringButtonStyle}"
                                             Click="StopMonitoring_Click"
-                                            Width="150" Height="35"
-                                            Margin="0,0,10,0"
+                        Width="140" Height="35"
+                        Margin="0,0,8,8"
                                             Visibility="Collapsed">
                                     </Button>
 
@@ -148,9 +148,17 @@
                                             Content="새로고침"
                                             Style="{DynamicResource RefreshButtonStyle}"
                                             Click="Refresh_Click"
-                                            Width="120" Height="35">
+                                            Width="110" Height="35" Margin="0,0,8,8">
                                     </Button>
-                                </StackPanel>
+
+                    <Button x:Name="OpenSettingsButton"
+                        Style="{DynamicResource RefreshButtonStyle}"
+                        Click="OpenSettings_Click"
+                        Width="40" Height="35" Margin="0,0,0,8"
+                        ToolTip="설정">
+                    <materialDesign:PackIcon Kind="Cog" Width="20" Height="20"/>
+                    </Button>
+                                </WrapPanel>
                             </Grid>
                         </StackPanel>
                     </Grid>
@@ -462,12 +470,19 @@
                                         </ItemsControl>
                                     </ScrollViewer>
 
-                                    <!-- 모니터링 상태 -->
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Ellipse x:Name="MonitoringStatusIndicator" Width="12" Height="12" 
-                                                 Fill="Gray" Margin="0,0,8,0"/>
-                                        <TextBlock x:Name="MonitoringStatusText2" Text="대기 중" 
-                                                   Foreground="{DynamicResource SecondaryForegroundColor}" FontSize="12"/>
+                                    <!-- 모니터링 상태 + 런타임 구성 요약 -->
+                                    <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Ellipse x:Name="MonitoringStatusIndicator" Width="12" Height="12" 
+                                                     Fill="Gray" Margin="0,0,8,0"/>
+                                            <TextBlock x:Name="MonitoringStatusText2" Text="대기 중" 
+                                                       Foreground="{DynamicResource SecondaryForegroundColor}" FontSize="12"/>
+                                        </StackPanel>
+                                        <TextBlock x:Name="RuntimeConfigText"
+                                                   Text="NIC: 자동 선택 | BPF: tcp or udp or icmp"
+                                                   Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                   FontSize="11"
+                                                   Margin="0,4,0,0"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
