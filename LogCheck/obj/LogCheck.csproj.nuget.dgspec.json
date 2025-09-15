@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\My_Project\\WS\\LogCheck\\LogCheck.csproj": {}
+    "C:\\Users\\admin\\Documents\\KKW\\asdf\\WS_0915\\WS\\LogCheck\\LogCheck.csproj": {}
   },
   "projects": {
-    "C:\\My_Project\\WS\\LogCheck\\LogCheck.csproj": {
+    "C:\\Users\\admin\\Documents\\KKW\\asdf\\WS_0915\\WS\\LogCheck\\LogCheck.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\My_Project\\WS\\LogCheck\\LogCheck.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Documents\\KKW\\asdf\\WS_0915\\WS\\LogCheck\\LogCheck.csproj",
         "projectName": "Logcheck",
-        "projectPath": "C:\\My_Project\\WS\\LogCheck\\LogCheck.csproj",
-        "packagesPath": "C:\\Users\\김기원\\.nuget\\packages\\",
-        "outputPath": "C:\\My_Project\\WS\\LogCheck\\obj\\",
+        "projectPath": "C:\\Users\\admin\\Documents\\KKW\\asdf\\WS_0915\\WS\\LogCheck\\LogCheck.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\Documents\\KKW\\asdf\\WS_0915\\WS\\LogCheck\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\김기원\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -106,7 +106,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO; // 파일 입출력 추가
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Threading;
@@ -69,6 +70,14 @@ namespace LogCheck
         private readonly ICaptureService _captureService;
         private long _livePacketCount = 0; // 틱 간 누적 패킷 수
 
+
+        private readonly string _logFilePath =
+            System.IO.Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory, // exe 기준 폴더   
+                @"..\..\..\monitoring_log_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt"
+                );
+
+
         private readonly NotifyIcon _notifyIcon;
         private bool _hubSubscribed = false;
 
@@ -113,8 +122,44 @@ namespace LogCheck
                 Visible = true
             };
 
+            // 트레이 메뉴 추가
+            var contextMenu = new System.Windows.Forms.ContextMenuStrip();
+            contextMenu.Items.Add("로그 열기", null, (s, e) =>
+            {
+                try
+                {
+                    if (File.Exists(_logFilePath))
+                    {
+                        System.Diagnostics.Process.Start("notepad.exe", _logFilePath);
+                    }
+                    else
+                    {
+                        System.Windows.MessageBox.Show("아직 로그 파일이 없습니다.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"로그 열기 오류: {ex.Message}");
+                }
+            });
+            contextMenu.Items.Add("종료", null, (s, e) =>
+            {
+                _notifyIcon.Visible = false;
+                _notifyIcon.Dispose();
+                System.Windows.Application.Current.Shutdown();
+            });
+            _notifyIcon.ContextMenuStrip = contextMenu;
+
             // 로그 메시지 추가
             AddLogMessage("네트워크 보안 모니터링 시스템 초기화 완료");
+
+            // 앱 종료 시 트레이 아이콘/타이머 정리 (종료 보장)
+            System.Windows.Application.Current.Exit += (_, __) =>
+            {
+                try { _updateTimer?.Stop(); } catch { }
+                try { _notifyIcon.Visible = false; } catch { }
+                try { _notifyIcon.Dispose(); } catch { }
+            };
 
             // 허브 상태에 따라 초기 UI 업데이트
             if (MonitoringHub.Instance.IsRunning)
@@ -132,7 +177,13 @@ namespace LogCheck
 
             // 허브 이벤트 구독
             SubscribeHub();
-            this.Unloaded += (_, __) => UnsubscribeHub();
+            this.Unloaded += (_, __) =>
+            {
+                try { _updateTimer?.Stop(); } catch { }
+                try { _notifyIcon.Visible = false; } catch { }
+                try { _notifyIcon.Dispose(); } catch { }
+                UnsubscribeHub();
+            };
         }
 
         private string BuildRuntimeConfigSummary()
@@ -601,6 +652,12 @@ namespace LogCheck
                 var button = sender as Controls.Button;
                 if (button?.Tag is ProcessNetworkInfo connection)
                 {
+                    if (!OperatingSystem.IsWindows())
+                    {
+                        MessageBox.Show("이 기능은 Windows에서만 지원됩니다.", "미지원 플랫폼", MessageBoxButton.OK, MessageBoxImage.Information);
+                        return;
+                    }
+
                     var result = MessageBox.Show(
                         $"프로세스 '{connection.ProcessName}' (PID: {connection.ProcessId})을(를) 강제 종료하시겠습니까?\n\n" +
                         "⚠️ 주의: 이 작업은 데이터 손실을 야기할 수 있습니다.",
@@ -612,20 +669,35 @@ namespace LogCheck
                     {
                         AddLogMessage($"프로세스 종료 시작: {connection.ProcessName} (PID: {connection.ProcessId})");
 
-                        // 프로세스 종료 (실제로는 NetworkConnectionManager에서 처리)
-                        var success = await _connectionManager.DisconnectProcessAsync(
-                            connection.ProcessId,
-                            "사용자 요청 - 프로세스 종료");
-
-                        if (success)
+                        try
                         {
-                            AddLogMessage("프로세스 종료가 완료되었습니다.");
-                            MessageBox.Show("프로세스 종료가 완료되었습니다.", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                            // 프로세스 트리(패밀리) 전체 종료 시도 (Chrome 등 멀티 프로세스 대응)
+                            bool success = await Task.Run(() => _connectionManager.TerminateProcessFamily(connection.ProcessId));
+                            if (success)
+                            {
+                                AddLogMessage("프로세스 종료가 완료되었습니다.");
+                                MessageBox.Show("프로세스 종료가 완료되었습니다.", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                                try
+                                {
+                                    // 종료된 프로세스를 UI에서 즉시 반영
+                                    var data = await _processNetworkMapper.GetProcessNetworkDataAsync();
+                                    await UpdateProcessNetworkDataAsync(data);
+                                }
+                                catch (Exception refreshEx)
+                                {
+                                    AddLogMessage($"리스트 새로고침 실패: {refreshEx.Message}");
+                                }
+                            }
+                            else
+                            {
+                                AddLogMessage("프로세스 종료에 실패했습니다. 관리자 권한이 필요할 수 있습니다.");
+                                MessageBox.Show("프로세스 종료에 실패했습니다. 관리자 권한이 필요할 수 있습니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            AddLogMessage("프로세스 종료에 실패했습니다.");
-                            MessageBox.Show("프로세스 종료에 실패했습니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                            AddLogMessage($"프로세스 종료 실패: {ex.Message}");
+                            MessageBox.Show($"프로세스 종료에 실패했습니다: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                 }
@@ -871,6 +943,7 @@ namespace LogCheck
                 var timestamp = DateTime.Now.ToString("HH:mm:ss");
                 var logMessage = $"[{timestamp}] {message}";
 
+                // UI에 추가
                 Dispatcher.InvokeAsync(() =>
                 {
                     _logMessages.Add(logMessage);
@@ -881,6 +954,8 @@ namespace LogCheck
                         _logMessages.RemoveAt(0);
                     }
                 });
+                // 파일에도 저장
+                File.AppendAllText(_logFilePath, logMessage + Environment.NewLine);
             }
             catch (Exception ex)
             {
@@ -896,9 +971,12 @@ namespace LogCheck
         {
             try
             {
+                // UI 업데이트 타이머만 중지
                 _updateTimer?.Stop();
-                _ = _processNetworkMapper?.StopMonitoringAsync();
-                _ = _captureService?.StopAsync();
+
+                // ❌ 모니터링 정지 호출 제거
+                // _ = _processNetworkMapper?.StopMonitoringAsync();
+                // _ = _captureService?.StopAsync();
             }
             catch (Exception ex)
             {

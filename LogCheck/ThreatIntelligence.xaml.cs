@@ -44,6 +44,25 @@ namespace LogCheck
 
             // 초기 데이터 로드
             InitializeData();
+
+            // 페이지 언로드 시 리소스 정리
+            this.Unloaded += (_, __) =>
+            {
+                try
+                {
+                    // 이벤트 구독 해제
+                    _abuseIPDBClient.ErrorOccurred -= OnAbuseIPDBError;
+                    _abuseIPDBClient.ThreatDataReceived -= OnThreatDataReceived;
+                    _ipBlocker.IPBlocked -= OnIPBlocked;
+                    _ipBlocker.IPUnblocked -= OnIPUnblocked;
+                    _ipBlocker.ErrorOccurred -= OnIPBlockerError;
+                    _ipBlocker.ThreatDetected -= OnThreatDetected;
+
+                    // 타이머 보유 객체 해제
+                    (_ipBlocker as IDisposable)?.Dispose();
+                }
+                catch { }
+            };
         }
 
         private void SubscribeToEvents()

@@ -47,15 +47,14 @@ namespace LogCheck
                 }
             }
         }
-
-        protected override void OnClosing(CancelEventArgs e)
+        protected override async void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
 
             if (isExplicitClose) return;
 
-            // 기본 동작 취소하고 사용자에게 묻기
-            e.Cancel = true;
+            e.Cancel = true; // 기본 종료 취소
+
             var result = System.Windows.MessageBox.Show(
                 "프로그램을 완전히 종료하시겠습니까?\n'아니오'를 선택하면 시스템 트레이로 이동합니다.",
                 "종료 확인",
@@ -65,12 +64,17 @@ namespace LogCheck
             if (result == MessageBoxResult.Yes)
             {
                 isExplicitClose = true;
+                try
+                {
+                    await LogCheck.Services.MonitoringHub.Instance.StopAsync();
+                }
+                catch { }
+
                 System.Windows.Application.Current.Shutdown();
             }
             else if (result == MessageBoxResult.No)
             {
-                // 트레이로 이동
-                Hide();
+                Hide(); // 트레이로 이동
             }
             // Cancel이면 아무것도 하지 않음
         }

@@ -1,13 +1,17 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\My_Project\\WS\\LogCheck\\",
+  "WorkspaceRootPath": "C:\\Users\\admin\\Documents\\KKW\\asdf\\WS_0915\\WS\\LogCheck\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\my_project\\ws\\logcheck\\networks_new.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\documents\\kkw\\asdf\\ws_0915\\ws\\logcheck\\mainwindows.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:mainwindows.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\documents\\kkw\\asdf\\ws_0915\\ws\\logcheck\\networks_new.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:networks_new.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\my_project\\ws\\logcheck\\networks_new.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|c:\\users\\admin\\documents\\kkw\\asdf\\ws_0915\\ws\\logcheck\\networks_new.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{FF1B161A-D009-4170-AD93-B9C575024CF2}|LogCheck.csproj|solutionrelative:networks_new.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
@@ -27,23 +31,35 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "NetWorks_New.xaml.cs",
-              "DocumentMoniker": "C:\\My_Project\\WS\\LogCheck\\NetWorks_New.xaml.cs",
-              "RelativeDocumentMoniker": "NetWorks_New.xaml.cs",
-              "ToolTip": "C:\\My_Project\\WS\\LogCheck\\NetWorks_New.xaml.cs",
-              "RelativeToolTip": "NetWorks_New.xaml.cs",
-              "ViewState": "AgIAAMoBAAAAAAAAAAD4v9UBAAAqAAAAAAAAAA==",
+              "Title": "MainWindows.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Documents\\KKW\\asdf\\WS_0915\\WS\\LogCheck\\MainWindows.xaml.cs",
+              "RelativeDocumentMoniker": "MainWindows.xaml.cs",
+              "ToolTip": "C:\\Users\\admin\\Documents\\KKW\\asdf\\WS_0915\\WS\\LogCheck\\MainWindows.xaml.cs",
+              "RelativeToolTip": "MainWindows.xaml.cs",
+              "ViewState": "AgIAADIAAAAAAAAAAAAiwEQAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-08T05:02:02.532Z",
+              "WhenOpened": "2025-09-15T04:33:15.553Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "NetWorks_New.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\admin\\Documents\\KKW\\asdf\\WS_0915\\WS\\LogCheck\\NetWorks_New.xaml.cs",
+              "RelativeDocumentMoniker": "NetWorks_New.xaml.cs",
+              "ToolTip": "C:\\Users\\admin\\Documents\\KKW\\asdf\\WS_0915\\WS\\LogCheck\\NetWorks_New.xaml.cs",
+              "RelativeToolTip": "NetWorks_New.xaml.cs",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAMwFAAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T05:02:02.532Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "NetWorks_New.xaml",
-              "DocumentMoniker": "C:\\My_Project\\WS\\LogCheck\\NetWorks_New.xaml",
+              "DocumentMoniker": "C:\\Users\\admin\\Documents\\KKW\\asdf\\WS_0915\\WS\\LogCheck\\NetWorks_New.xaml",
               "RelativeDocumentMoniker": "NetWorks_New.xaml",
-              "ToolTip": "C:\\My_Project\\WS\\LogCheck\\NetWorks_New.xaml",
+              "ToolTip": "C:\\Users\\admin\\Documents\\KKW\\asdf\\WS_0915\\WS\\LogCheck\\NetWorks_New.xaml",
               "RelativeToolTip": "NetWorks_New.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-09-08T05:01:58.189Z"

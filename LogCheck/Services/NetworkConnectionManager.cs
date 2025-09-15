@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Management;
+using System.Runtime.Versioning;
 using LogCheck.Models;
 using System.Text.RegularExpressions;
 using System.Collections.Concurrent;
@@ -564,6 +565,176 @@ namespace LogCheck.Services
             catch (Exception ex)
             {
                 OnErrorOccurred($"프로세스 종료 중 오류: {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 멀티프로세스 앱(예: chrome)의 하위 자식들뿐 아니라 동일 패밀리의 루트까지 찾아 전체 트리를 종료한다.
+        /// 1) 선택 PID의 프로세스명을 얻고, 부모 체인을 따라가며 같은 이름의 루트를 찾는다.
+        /// 2) 루트 기준으로 모든 자식 프로세스를 하위부터 Kill.
+        /// 3) 실패 시 taskkill /T /F 폴백.
+        /// </summary>
+    [SupportedOSPlatform("windows")]
+    public bool TerminateProcessFamily(int processId)
+        {
+            try
+            {
+                using var target = Process.GetProcessById(processId);
+                string name = target.ProcessName; // ex) chrome
+
+                int rootPid = FindProcessFamilyRoot(processId, name);
+
+                // 하위부터 종료
+                var allDescendants = GetDescendantsBreadthFirst(rootPid);
+                // 하위부터 => 역순으로 Kill
+                foreach (var pid in allDescendants.AsEnumerable().Reverse())
+                {
+                    TryKillOnce(pid);
+                }
+
+                // 마지막에 루트 종료
+                if (!TryKillOnce(rootPid))
+                {
+                    // 폴백: taskkill로 트리 강제 종료
+                    TryTaskKillTree(rootPid);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                OnErrorOccurred($"프로세스 패밀리 종료 중 오류: {ex.Message}");
+                return false;
+            }
+        }
+
+    [SupportedOSPlatform("windows")]
+    private int FindProcessFamilyRoot(int pid, string processName)
+        {
+            try
+            {
+                int current = pid;
+                while (true)
+                {
+                    var parent = GetParentProcessInfo(current);
+                    if (parent == null) break;
+                    // 같은 이름일 때만 상위로 계속(브라우저 루트까지)
+                    if (!string.Equals(parent.Value.name, processName, StringComparison.OrdinalIgnoreCase))
+                        break;
+                    current = parent.Value.pid;
+                }
+                return current;
+            }
+            catch
+            {
+                return pid; // 실패 시 원래 PID 반환
+            }
+        }
+
+    [SupportedOSPlatform("windows")]
+    private (int pid, string name)? GetParentProcessInfo(int pid)
+        {
+            try
+            {
+                using var searcher = new ManagementObjectSearcher($"SELECT ParentProcessId FROM Win32_Process WHERE ProcessId={pid}");
+                foreach (ManagementObject obj in searcher.Get())
+                {
+                    int ppid = Convert.ToInt32(obj["ParentProcessId"]);
+                    if (ppid <= 0) return null;
+                    using var ps = new ManagementObjectSearcher($"SELECT Name FROM Win32_Process WHERE ProcessId={ppid}");
+                    foreach (ManagementObject pobj in ps.Get())
+                    {
+                        string name = pobj["Name"]?.ToString() ?? string.Empty;
+                        return (ppid, name.Replace(".exe", "", StringComparison.OrdinalIgnoreCase));
+                    }
+                    return (ppid, string.Empty);
+                }
+            }
+            catch { }
+            return null;
+        }
+
+    [SupportedOSPlatform("windows")]
+    private List<int> GetDescendantsBreadthFirst(int rootPid)
+        {
+            var result = new List<int>();
+            try
+            {
+                var queue = new Queue<int>();
+                queue.Enqueue(rootPid);
+                while (queue.Count > 0)
+                {
+                    int current = queue.Dequeue();
+                    var children = GetChildren(current);
+                    foreach (var child in children)
+                    {
+                        result.Add(child);
+                        queue.Enqueue(child);
+                    }
+                }
+            }
+            catch { }
+            return result;
+        }
+
+    [SupportedOSPlatform("windows")]
+    private List<int> GetChildren(int pid)
+        {
+            var list = new List<int>();
+            try
+            {
+                using var searcher = new ManagementObjectSearcher($"SELECT ProcessId FROM Win32_Process WHERE ParentProcessId={pid}");
+                foreach (ManagementObject obj in searcher.Get())
+                {
+                    int cpid = Convert.ToInt32(obj["ProcessId"]);
+                    list.Add(cpid);
+                }
+            }
+            catch { }
+            return list;
+        }
+
+        private bool TryKillOnce(int pid)
+        {
+            try
+            {
+                using var p = Process.GetProcessById(pid);
+                // 가능하면 먼저 종료 대기(메인 윈도우 있는 경우)
+                try { if (p.CloseMainWindow()) p.WaitForExit(1000); } catch { }
+                if (!p.HasExited)
+                {
+                    p.Kill(entireProcessTree: false);
+                    p.WaitForExit(2000);
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private bool TryTaskKillTree(int pid)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "taskkill",
+                    Arguments = $"/PID {pid} /T /F",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
+                };
+                using var proc = Process.Start(psi);
+                if (proc == null) return false;
+                proc.WaitForExit(5000);
+                return proc.HasExited && proc.ExitCode == 0;
+            }
+            catch
+            {
                 return false;
             }
         }

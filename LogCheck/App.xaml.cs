@@ -103,18 +103,23 @@ namespace LogCheck
             // 아이콘 더블클릭 시 창 열기
             _notifyIcon.DoubleClick += (_, __) => ShowWindow();
 
-            // 앱 종료 시 트레이 아이콘 정리
-            this.Exit += async (_, __) =>
+            // 앱 종료 시 정리(동기 보장)
+            this.Exit += (_, __) =>
             {
-                if (_notifyIcon != null)
+                try
                 {
-                    _notifyIcon.Visible = false;
-                    _notifyIcon.Dispose();
-                    _notifyIcon = null;
-                }
+                    // 모니터링을 동기적으로 중단하여 캡처 스레드가 남지 않도록 보장
+                    try { MonitoringHub.Instance.StopAsync().GetAwaiter().GetResult(); } catch { /* ignore on exit */ }
 
-                // 모니터링 종료
-                try { await MonitoringHub.Instance.StopAsync(); } catch { /* ignore on exit */ }
+                    // 트레이 아이콘 정리
+                    if (_notifyIcon != null)
+                    {
+                        try { _notifyIcon.Visible = false; } catch { }
+                        try { _notifyIcon.Dispose(); } catch { }
+                        _notifyIcon = null;
+                    }
+                }
+                catch { /* 마지막 정리에서 발생하는 예외는 무시 */ }
             };
 
             // 설정에 따라 자동 모니터링 시작
@@ -177,6 +182,8 @@ namespace LogCheck
 
         private void ExitApplication()
         {
+            // 가능한 한 빨리 백그라운드 작업을 중단 후 종료
+            try { MonitoringHub.Instance.StopAsync().GetAwaiter().GetResult(); } catch { }
             Shutdown(); // 명시적 종료
         }
 
