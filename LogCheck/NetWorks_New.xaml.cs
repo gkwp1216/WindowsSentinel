@@ -124,24 +124,24 @@ namespace LogCheck
 
             // 트레이 메뉴 추가
             var contextMenu = new System.Windows.Forms.ContextMenuStrip();
-            contextMenu.Items.Add("로그 열기", null, (s, e) =>
-            {
-                try
-                {
-                    if (File.Exists(_logFilePath))
-                    {
-                        System.Diagnostics.Process.Start("notepad.exe", _logFilePath);
-                    }
-                    else
-                    {
-                        System.Windows.MessageBox.Show("아직 로그 파일이 없습니다.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"로그 열기 오류: {ex.Message}");
-                }
-            });
+            //contextMenu.Items.Add("로그 열기", null, (s, e) =>
+            //{
+            //    try
+            //    {
+            //        if (File.Exists(_logFilePath))
+            //        {
+            //            System.Diagnostics.Process.Start("notepad.exe", _logFilePath);
+            //        }
+            //        else
+            //        {
+            //            System.Windows.MessageBox.Show("아직 로그 파일이 없습니다.");
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        System.Diagnostics.Debug.WriteLine($"로그 열기 오류: {ex.Message}");
+            //    }
+            //});
             contextMenu.Items.Add("종료", null, (s, e) =>
             {
                 _notifyIcon.Visible = false;
@@ -955,7 +955,7 @@ namespace LogCheck
                     }
                 });
                 // 파일에도 저장
-                File.AppendAllText(_logFilePath, logMessage + Environment.NewLine);
+                //File.AppendAllText(_logFilePath, logMessage + Environment.NewLine);
             }
             catch (Exception ex)
             {
