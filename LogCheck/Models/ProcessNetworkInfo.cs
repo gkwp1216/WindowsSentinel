@@ -41,6 +41,7 @@ namespace LogCheck.Models
         public bool IsBlocked { get; set; }
         public DateTime? BlockedTime { get; set; }
         public string BlockReason { get; set; } = string.Empty;
+        public bool IsWhitelisted { get; set; } = false; // System Idle Process 등 화이트리스트 프로세스
 
         // 추가 메타데이터
         public string UserName { get; set; } = string.Empty;
@@ -53,7 +54,7 @@ namespace LogCheck.Models
         public string DisplayName => string.IsNullOrEmpty(ProcessName) ? $"PID {ProcessId}" : ProcessName;
         public string FullAddress => $"{RemoteAddress}:{RemotePort}";
         public string LocalFullAddress => $"{LocalAddress}:{LocalPort}";
-        
+
         // 생성자
         public ProcessNetworkInfo()
         {
@@ -62,7 +63,7 @@ namespace LogCheck.Models
             ProcessRiskLevel = ProcessRiskLevel.Normal;
             RiskLevel = SecurityRiskLevel.Low;
         }
-        
+
         // 위험도 계산
         public void CalculateRiskLevel()
         {
@@ -125,8 +126,8 @@ namespace LogCheck.Models
             if (IPAddress.TryParse(ipAddress, out var ip))
             {
                 var bytes = ip.GetAddressBytes();
-                return (bytes[0] == 10) || 
-                       (bytes[0] == 172 && bytes[1] >= 16 && bytes[1] <= 31) || 
+                return (bytes[0] == 10) ||
+                       (bytes[0] == 172 && bytes[1] >= 16 && bytes[1] <= 31) ||
                        (bytes[0] == 192 && bytes[1] == 168);
             }
             return false;
@@ -169,6 +170,7 @@ namespace LogCheck.Models
         Low = 0,
         Medium = 1,
         High = 2,
-        Critical = 3
+        Critical = 3,
+        System = 4  // System Idle Process 및 시스템 프로세스용
     }
 }

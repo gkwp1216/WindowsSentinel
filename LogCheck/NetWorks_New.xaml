@@ -14,18 +14,28 @@
     <Page.Resources>
         <RotateTransform x:Key="SpinnerRotate" CenterX="25" CenterY="25"/>
         <!-- <local:FileSizeConverter x:Key="FileSizeConverter"/> -->
+        
+        <!-- 컨버터들 -->
+        <converters:WhitelistStatusToColorConverter x:Key="WhitelistStatusToColorConverter"/>
+        <converters:SecurityRiskLevelToColorConverter x:Key="SecurityRiskLevelToColorConverter"/>
+        <converters:WhitelistStatusToIconConverter x:Key="WhitelistStatusToIconConverter"/>
 
         <!-- 프로세스 상태별 색상 -->
         <SolidColorBrush x:Key="ProcessNormalColor" Color="#4CAF50"/>
         <SolidColorBrush x:Key="ProcessWarningColor" Color="#FF9800"/>
         <SolidColorBrush x:Key="ProcessDangerColor" Color="#F44336"/>
         <SolidColorBrush x:Key="ProcessUnknownColor" Color="#9E9E9E"/>
+        
+        <!-- 화이트리스트 프로세스 색상 -->
+        <SolidColorBrush x:Key="ProcessWhitelistColor" Color="#2196F3"/>
+        <SolidColorBrush x:Key="ProcessSystemColor" Color="#607D8B"/>
 
         <!-- 위험도별 색상 -->
         <SolidColorBrush x:Key="RiskLowColor" Color="#4CAF50"/>
         <SolidColorBrush x:Key="RiskMediumColor" Color="#FF9800"/>
         <SolidColorBrush x:Key="RiskHighColor" Color="#F44336"/>
         <SolidColorBrush x:Key="RiskCriticalColor" Color="#9C27B0"/>
+        <SolidColorBrush x:Key="RiskSystemColor" Color="#607D8B"/>
 
         <!-- 위험도별 배경색 컨버터 -->
         <!-- <converters:RiskLevelToBackgroundConverter x:Key="RiskLevelToBackgroundConverter"/> -->
@@ -236,7 +246,12 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Left">
-                                                <Ellipse Width="8" Height="8" Fill="Gray" Margin="0,0,8,0"/>
+                                                <Ellipse Width="8" Height="8" 
+                                                         Fill="{Binding RiskLevel, Converter={StaticResource SecurityRiskLevelToColorConverter}}" 
+                                                         Margin="0,0,8,0"/>
+                                                <TextBlock Text="{Binding IsWhitelisted, Converter={StaticResource WhitelistStatusToIconConverter}}" 
+                                                           Foreground="{Binding IsWhitelisted, Converter={StaticResource WhitelistStatusToColorConverter}}"
+                                                           FontSize="12" Margin="0,0,4,0" VerticalAlignment="Center"/>
                                                 <StackPanel>
                                                     <TextBlock Text="{Binding ProcessName}" FontWeight="SemiBold" 
                                                                Foreground="{DynamicResource ForegroundColor}"/>

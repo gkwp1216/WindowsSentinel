@@ -307,6 +307,126 @@ namespace LogCheck.Services
                 AverageAlertsPerDay = weeklyAlerts.Count / 7.0
             };
         }
+
+        /// <summary>
+        /// ProcessNetworkInfo 리스트를 분석하여 화이트리스트 처리 및 위험도 평가
+        /// </summary>
+        public async Task<List<ProcessNetworkInfo>> AnalyzeProcessNetworkInfoAsync(List<ProcessNetworkInfo> processInfoList)
+        {
+            var analyzedList = new List<ProcessNetworkInfo>();
+
+            foreach (var processInfo in processInfoList)
+            {
+                // System Idle Process 화이트리스트 처리
+                if (IsSystemIdleProcess(processInfo))
+                {
+                    processInfo.IsWhitelisted = true;
+                    processInfo.RiskLevel = SecurityRiskLevel.System;
+                    processInfo.RiskDescription = "System Idle Process - 시스템 유휴 프로세스";
+                    processInfo.IsSystemProcess = true;
+                }
+                // 기타 시스템 프로세스 확인
+                else if (IsKnownSystemProcess(processInfo))
+                {
+                    processInfo.IsWhitelisted = true;
+                    processInfo.RiskLevel = SecurityRiskLevel.System;
+                    processInfo.RiskDescription = "알려진 시스템 프로세스";
+                    processInfo.IsSystemProcess = true;
+                }
+                // System Idle Process 위장 공격 탐지
+                else if (IsSuspiciousSystemIdleProcessImpersonation(processInfo))
+                {
+                    processInfo.RiskLevel = SecurityRiskLevel.Critical;
+                    processInfo.RiskDescription = "System Idle Process 위장 의심 - 악성코드 가능성 높음";
+
+                    // 경고 생성
+                    var alert = new LogCheck.Models.SecurityAlert
+                    {
+                        Timestamp = DateTime.Now,
+                        Severity = "Critical",
+                        AlertType = "Process Impersonation",
+                        Description = $"PID {processInfo.ProcessId}의 '{processInfo.ProcessName}' 프로세스가 System Idle Process를 위장하고 있을 가능성이 있습니다.",
+                        Details = $"프로세스 경로: {processInfo.ProcessPath}, 원격 주소: {processInfo.RemoteAddress}:{processInfo.RemotePort}",
+                        SourceIP = processInfo.RemoteAddress,
+                        DestinationIP = processInfo.LocalAddress,
+                        SourcePort = processInfo.RemotePort,
+                        DestinationPort = processInfo.LocalPort,
+                        Protocol = processInfo.Protocol,
+                        IsResolved = false,
+                        Action = "Monitored"
+                    };
+                    _securityAlerts.Add(alert);
+                }
+                else
+                {
+                    // 일반 프로세스 위험도 계산
+                    processInfo.CalculateRiskLevel();
+                }
+
+                analyzedList.Add(processInfo);
+            }
+
+            return await Task.FromResult(analyzedList);
+        }
+
+        /// <summary>
+        /// System Idle Process 여부 확인
+        /// </summary>
+        private bool IsSystemIdleProcess(ProcessNetworkInfo processInfo)
+        {
+            // PID 0은 System Idle Process
+            if (processInfo.ProcessId == 0)
+                return true;
+
+            // 프로세스 이름이 "System Idle Process"인 경우
+            if (string.Equals(processInfo.ProcessName, "System Idle Process", StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// 알려진 시스템 프로세스 여부 확인
+        /// </summary>
+        private bool IsKnownSystemProcess(ProcessNetworkInfo processInfo)
+        {
+            var systemProcessNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "System", "csrss.exe", "winlogon.exe", "services.exe", "lsass.exe",
+                "svchost.exe", "explorer.exe", "dwm.exe", "winlogon.exe"
+            };
+
+            return systemProcessNames.Contains(processInfo.ProcessName);
+        }
+
+        /// <summary>
+        /// System Idle Process 위장 공격 탐지
+        /// </summary>
+        private bool IsSuspiciousSystemIdleProcessImpersonation(ProcessNetworkInfo processInfo)
+        {
+            // System Idle Process와 유사한 이름이지만 PID가 0이 아닌 경우
+            var suspiciousNames = new[]
+            {
+                "system idle process",
+                "systemidle",
+                "system_idle",
+                "idle_process",
+                "systemidleprocess"
+            };
+
+            var processNameLower = processInfo.ProcessName?.ToLowerInvariant() ?? "";
+
+            // 유사한 이름을 가졌지만 PID가 0이 아닌 경우 의심
+            foreach (var suspiciousName in suspiciousNames)
+            {
+                if (processNameLower.Contains(suspiciousName) && processInfo.ProcessId != 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 
     public class SecurityStatistics

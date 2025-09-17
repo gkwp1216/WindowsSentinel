@@ -731,6 +731,8 @@ namespace LogCheck
         {
             try
             {
+                System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UpdateTimer_Tick 호출됨, 모니터링 상태: {_isMonitoring}");
+
                 if (_isMonitoring)
                 {
                     // 최근 틱 간 패킷 처리율 계산 및 상태 표시
@@ -741,12 +743,15 @@ namespace LogCheck
                     if (MonitoringStatusText2 != null) MonitoringStatusText2.Text = $"모니터링 중 ({pps} pps)";
 
                     // 주기적으로 데이터 업데이트
+                    System.Diagnostics.Debug.WriteLine("[NetWorks_New] 프로세스 데이터 가져오기 시작");
                     var data = await _processNetworkMapper.GetProcessNetworkDataAsync();
-                    await UpdateProcessNetworkDataAsync(data);
+                    System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 프로세스 데이터 가져오기 완료: {data?.Count ?? 0}개");
+                    await UpdateProcessNetworkDataAsync(data ?? new List<ProcessNetworkInfo>());
                 }
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 타이머 업데이트 오류: {ex.Message}");
                 AddLogMessage($"타이머 업데이트 오류: {ex.Message}");
             }
         }
@@ -766,6 +771,7 @@ namespace LogCheck
         private async Task UpdateProcessNetworkDataAsync(List<ProcessNetworkInfo> data)
         {
             data ??= new List<ProcessNetworkInfo>();
+            System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UpdateProcessNetworkDataAsync 호출됨, 데이터 개수: {data.Count}");
 
             // IsSystem 자동 판단
             foreach (var item in data)
@@ -776,13 +782,19 @@ namespace LogCheck
             var general = data.Where(p => !p.IsSystem).ToList();
             var system = data.Where(p => p.IsSystem).ToList();
 
+            System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 일반 프로세스: {general.Count}개, 시스템 프로세스: {system.Count}개");
+
             await Dispatcher.InvokeAsync(() =>
             {
+                System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 시작 - 기존 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
+
                 _generalProcessData.Clear();
                 foreach (var item in general) _generalProcessData.Add(item);
 
                 _systemProcessData.Clear();
                 foreach (var item in system) _systemProcessData.Add(item);
+
+                System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 완료 - 새로운 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
             });
 
             UpdateStatistics(data);
@@ -1157,6 +1169,6 @@ namespace LogCheck
                 AddLogMessage($"설정 열기 오류: {ex.Message}");
             }
         }
-       
+
     }
 }

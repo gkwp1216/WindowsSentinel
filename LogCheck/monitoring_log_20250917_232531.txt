@@ -1,0 +1,1358 @@
+[23:25:31] 네트워크 보안 모니터링 시스템 초기화 완료
+[23:25:33] 통계 업데이트 오류: 다른 스레드가 이 개체를 소유하고 있어 호출 스레드가 해당 개체에 액세스할 수 없습니다.
+[23:25:33] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:33] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:33] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:33] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] Battle.net.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] Agent.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] backgroundTaskHost.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [높음] MapleStory.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:33] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:33] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:33] 보안 경고 120개 생성됨
+[23:25:35] 통계 업데이트 오류: 다른 스레드가 이 개체를 소유하고 있어 호출 스레드가 해당 개체에 액세스할 수 없습니다.
+[23:25:35] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:35] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:35] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:35] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] Battle.net.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] Agent.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [높음] MapleStory.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:35] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:35] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:35] 보안 경고 117개 생성됨
+[23:25:36] 통계 업데이트: 총 연결: 135 | 위험 연결: 0 | TCP: 135 | UDP: 0 | 총 데이터: 0.0 MB
+[23:25:36] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:36] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:36] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:36] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] Battle.net.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] Agent.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [높음] MapleStory.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:36] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:36] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:36] 보안 경고 118개 생성됨
+[23:25:37] 통계 업데이트 오류: 다른 스레드가 이 개체를 소유하고 있어 호출 스레드가 해당 개체에 액세스할 수 없습니다.
+[23:25:37] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:37] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:37] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:37] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] Battle.net.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] Agent.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [높음] MapleStory.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:37] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:37] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:37] 보안 경고 118개 생성됨
+[23:25:39] 통계 업데이트 오류: 다른 스레드가 이 개체를 소유하고 있어 호출 스레드가 해당 개체에 액세스할 수 없습니다.
+[23:25:39] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:39] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:39] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:39] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] Battle.net.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] Agent.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [높음] MapleStory.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:39] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:39] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:39] 보안 경고 117개 생성됨
+[23:25:41] 통계 업데이트 오류: 다른 스레드가 이 개체를 소유하고 있어 호출 스레드가 해당 개체에 액세스할 수 없습니다.
+[23:25:41] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:41] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:41] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:41] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] Battle.net.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] Agent.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [높음] MapleStory.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:41] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:41] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:41] 보안 경고 117개 생성됨
+[23:25:42] 통계 업데이트: 총 연결: 134 | 위험 연결: 0 | TCP: 134 | UDP: 0 | 총 데이터: 0.0 MB
+[23:25:42] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:42] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:42] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:42] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] Battle.net.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] Agent.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [높음] MapleStory.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:42] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:42] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:42] 보안 경고 117개 생성됨
+[23:25:44] 통계 업데이트 오류: 다른 스레드가 이 개체를 소유하고 있어 호출 스레드가 해당 개체에 액세스할 수 없습니다.
+[23:25:44] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:44] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:44] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:44] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] Battle.net.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [높음] MapleStory.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:44] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:44] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:44] 보안 경고 116개 생성됨
+[23:25:46] 통계 업데이트 오류: 다른 스레드가 이 개체를 소유하고 있어 호출 스레드가 해당 개체에 액세스할 수 없습니다.
+[23:25:46] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:46] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:46] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:46] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] Battle.net.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [높음] MapleStory.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:46] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:46] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:46] 보안 경고 117개 생성됨
+[23:25:47] 통계 업데이트: 총 연결: 136 | 위험 연결: 0 | TCP: 136 | UDP: 0 | 총 데이터: 0.0 MB
+[23:25:47] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:47] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:47] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:47] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] Battle.net.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [높음] MapleStory.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:47] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:47] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:47] 보안 경고 116개 생성됨
+[23:25:48] 통계 업데이트 오류: 다른 스레드가 이 개체를 소유하고 있어 호출 스레드가 해당 개체에 액세스할 수 없습니다.
+[23:25:48] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:48] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:48] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:48] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] Battle.net.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [높음] MapleStory.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:48] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:48] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:48] 보안 경고 116개 생성됨
+[23:25:50] 통계 업데이트 오류: 다른 스레드가 이 개체를 소유하고 있어 호출 스레드가 해당 개체에 액세스할 수 없습니다.
+[23:25:50] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:50] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:50] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:50] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [심각] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] Battle.net.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] Discord.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] Code.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [높음] MapleStory.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:50] 보안 경고: [보통] System 네트워크 위협 탐지
+[23:25:50] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[23:25:50] 보안 경고 116개 생성됨
