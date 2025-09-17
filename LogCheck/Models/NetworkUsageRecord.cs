@@ -1,6 +1,6 @@
 using System;
 
-namespace WindowsSentinel.Models
+namespace LogCheck.Models
 {
     public class NetworkUsageRecord
     {
@@ -30,4 +30,4 @@ namespace WindowsSentinel.Models
         public string TopProtocol { get; set; } = string.Empty;
         public string TopDestination { get; set; } = string.Empty;
     }
-} 
+}

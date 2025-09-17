@@ -1,5 +1,4 @@
-﻿using LogCheck;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -18,7 +17,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Threading;
-using WindowsSentinel;
+using LogCheck;
+using LogCheck.Models;
 // Windows Forms와의 충돌을 방지하기 위한 alias 설정
 using WpfControl = System.Windows.Controls.Control;
 
@@ -960,7 +960,8 @@ namespace LogCheck
             report.AppendLine("==========================");
 
             // UI 스레드에서 ResultReport 업데이트
-            Dispatcher.Invoke(() => {
+            Dispatcher.Invoke(() =>
+            {
                 if (ResultReport != null)
                 {
                     ResultReport.Text = report.ToString();
@@ -1162,7 +1163,7 @@ namespace LogCheck
         }
 
         #region Sidebar Navigation
-        
+
 
         [SupportedOSPlatform("windows")]
         private void SidebarButton_Click(object sender, RoutedEventArgs e)

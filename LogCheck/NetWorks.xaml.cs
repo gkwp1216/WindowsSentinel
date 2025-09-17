@@ -29,17 +29,15 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LogCheck.Models;
 using LogCheck.Services;
-using SecurityAlert = LogCheck.Models.SecurityAlert;
 using MaterialDesignThemes.Wpf;
-using SkiaSharp;
-using WindowsSentinel;
-using WindowsSentinel.Models;
-using SharpPcap;
 using PacketDotNet;
+using SharpPcap;
+using SkiaSharp;
 using Application = System.Windows.Application;
 using Cursors = System.Windows.Input.Cursors;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
+using SecurityAlert = LogCheck.Models.SecurityAlert;
 
 namespace LogCheck
 {
@@ -59,9 +57,9 @@ namespace LogCheck
     [SupportedOSPlatform("windows")]
     public partial class NetWorks : Page
     {
-    // XAML 이벤트 핸들러 Stub (클래스 내부로 이동)
-    // 필드 선언부
-    private DispatcherTimer? loadingTextTimer;
+        // XAML 이벤트 핸들러 Stub (클래스 내부로 이동)
+        // 필드 선언부
+        private DispatcherTimer? loadingTextTimer;
         private void SidebarButton_Click(object sender, RoutedEventArgs e) { }
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
         private void StartCapture_Click(object sender, RoutedEventArgs e) { }
@@ -601,7 +599,7 @@ namespace LogCheck
             {
                 // Get all network interfaces that are up and not loopback
                 var interfaces = NetworkInterface.GetAllNetworkInterfaces()
-                    .Where(ni => ni.OperationalStatus == OperationalStatus.Up && 
+                    .Where(ni => ni.OperationalStatus == OperationalStatus.Up &&
                                 ni.NetworkInterfaceType != NetworkInterfaceType.Loopback &&
                                 ni.NetworkInterfaceType != NetworkInterfaceType.Tunnel &&
                                 ni.NetworkInterfaceType != NetworkInterfaceType.Unknown)

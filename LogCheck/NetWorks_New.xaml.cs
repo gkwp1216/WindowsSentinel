@@ -39,6 +39,9 @@ namespace LogCheck
     [SupportedOSPlatform("windows")]
     public partial class NetWorks_New : Page, INavigable
     {
+        private readonly ObservableCollection<ProcessNetworkInfo> _generalProcessData;
+        private readonly ObservableCollection<ProcessNetworkInfo> _systemProcessData;
+
         // XAML 컨트롤 레퍼런스는 XAML에서 자동으로 생성됨
         private readonly ProcessNetworkMapper _processNetworkMapper;
         private readonly NetworkConnectionManager _connectionManager;
@@ -84,7 +87,8 @@ namespace LogCheck
         public NetWorks_New()
         {
             // 컬렉션 및 차트 데이터 먼저 초기화 (InitializeComponent 중 SelectionChanged 등 이벤트가 호출될 수 있음)
-            _processNetworkData = new ObservableCollection<ProcessNetworkInfo>();
+            _generalProcessData = new ObservableCollection<ProcessNetworkInfo>();
+            _systemProcessData = new ObservableCollection<ProcessNetworkInfo>();
             _securityAlerts = new ObservableCollection<SecurityAlert>();
             _logMessages = new ObservableCollection<string>();
             _chartSeries = new ObservableCollection<ISeries>();
@@ -99,8 +103,21 @@ namespace LogCheck
             _securityAnalyzer = new RealTimeSecurityAnalyzer();
             _captureService = hub.Capture;
 
+            _logFilePath = System.IO.Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                @"..\..\..\monitoring_log_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt"
+            );
+
             // XAML 로드 (이 시점에 SelectionChanged가 발생해도 컬렉션은 준비됨)
             InitializeComponent();
+
+            GeneralProcessDataGrid.ItemsSource = _generalProcessData;
+            SystemProcessDataGrid.ItemsSource = _systemProcessData;
+            SecurityAlertsControl.ItemsSource = _securityAlerts;
+            LogMessagesControl.ItemsSource = _logMessages;
+            NetworkActivityChart.Series = _chartSeries;
+            NetworkActivityChart.XAxes = _chartXAxes;
+            NetworkActivityChart.YAxes = _chartYAxes;
 
             // 이벤트 구독
             SubscribeToEvents();
@@ -124,24 +141,24 @@ namespace LogCheck
 
             // 트레이 메뉴 추가
             var contextMenu = new System.Windows.Forms.ContextMenuStrip();
-            //contextMenu.Items.Add("로그 열기", null, (s, e) =>
-            //{
-            //    try
-            //    {
-            //        if (File.Exists(_logFilePath))
-            //        {
-            //            System.Diagnostics.Process.Start("notepad.exe", _logFilePath);
-            //        }
-            //        else
-            //        {
-            //            System.Windows.MessageBox.Show("아직 로그 파일이 없습니다.");
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        System.Diagnostics.Debug.WriteLine($"로그 열기 오류: {ex.Message}");
-            //    }
-            //});
+            contextMenu.Items.Add("로그 열기", null, (s, e) =>
+            {
+                try
+                {
+                    if (File.Exists(_logFilePath))
+                    {
+                        System.Diagnostics.Process.Start("notepad.exe", _logFilePath);
+                    }
+                    else
+                    {
+                        System.Windows.MessageBox.Show("아직 로그 파일이 없습니다.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"로그 열기 오류: {ex.Message}");
+                }
+            });
             contextMenu.Items.Add("종료", null, (s, e) =>
             {
                 _notifyIcon.Visible = false;
@@ -289,19 +306,21 @@ namespace LogCheck
         /// </summary>
         private void InitializeUI()
         {
-            // DataGrid 바인딩 (컨트롤 존재 확인)
-            if (ProcessNetworkDataGrid != null)
-                ProcessNetworkDataGrid.ItemsSource = _processNetworkData;
+            // 시스템 탭 DataGrid 바인딩
+            if (SystemProcessDataGrid != null)
+                SystemProcessDataGrid.ItemsSource = _systemProcessData;
 
-            // 보안 경고 컨트롤 바인딩
+            // 일반 탭 DataGrid 바인딩
+            if (GeneralProcessDataGrid != null)
+                GeneralProcessDataGrid.ItemsSource = _generalProcessData;
+
+            // 나머지 UI 초기화
             if (SecurityAlertsControl != null)
                 SecurityAlertsControl.ItemsSource = _securityAlerts;
 
-            // 로그 메시지 컨트롤 바인딩
             if (LogMessagesControl != null)
                 LogMessagesControl.ItemsSource = _logMessages;
 
-            // 차트 바인딩
             if (NetworkActivityChart != null)
             {
                 NetworkActivityChart.Series = _chartSeries;
@@ -309,10 +328,7 @@ namespace LogCheck
                 NetworkActivityChart.YAxes = _chartYAxes;
             }
 
-            // 네트워크 인터페이스 초기화
             InitializeNetworkInterfaces();
-
-            // 차트 초기화
             InitializeChart();
         }
 
@@ -561,10 +577,9 @@ namespace LogCheck
         {
             try
             {
-                var selectedItem = ProcessNetworkDataGrid.SelectedItem as ProcessNetworkInfo;
-                if (selectedItem != null)
+                // sender를 DataGrid로 캐스팅
+                if (sender is DataGrid dg && dg.SelectedItem is ProcessNetworkInfo selectedItem)
                 {
-                    // 선택된 항목에 대한 상세 정보 표시 (필요시 구현)
                     AddLogMessage($"선택됨: {selectedItem.ProcessName} (PID: {selectedItem.ProcessId}) - {selectedItem.RemoteAddress}:{selectedItem.RemotePort}");
                 }
             }
@@ -750,41 +765,46 @@ namespace LogCheck
         /// </summary>
         private async Task UpdateProcessNetworkDataAsync(List<ProcessNetworkInfo> data)
         {
-            try
-            {
-                // null 데이터 방어
-                data ??= new List<ProcessNetworkInfo>();
+            data ??= new List<ProcessNetworkInfo>();
 
+            // IsSystem 자동 판단
+            foreach (var item in data)
+            {
+                item.IsSystem = IsSystemProcess(item.ProcessName, item.ProcessId);
+            }
+
+            var general = data.Where(p => !p.IsSystem).ToList();
+            var system = data.Where(p => p.IsSystem).ToList();
+
+            await Dispatcher.InvokeAsync(() =>
+            {
+                _generalProcessData.Clear();
+                foreach (var item in general) _generalProcessData.Add(item);
+
+                _systemProcessData.Clear();
+                foreach (var item in system) _systemProcessData.Add(item);
+            });
+
+            UpdateStatistics(data);
+            UpdateChart(data);
+            _ = Task.Run(async () =>
+            {
+                var alerts = await _securityAnalyzer.AnalyzeConnectionsAsync(data);
                 await Dispatcher.InvokeAsync(() =>
                 {
-                    // 데이터 컬렉션 업데이트
-                    _processNetworkData.Clear();
-                    foreach (var item in data)
-                    {
-                        _processNetworkData.Add(item);
-                    }
-
-                    // 통계 업데이트
-                    UpdateStatistics(data);
-
-                    // 차트 업데이트
-                    UpdateChart(data);
-
-                    // 보안 분석 실행
-                    _ = Task.Run(async () =>
-                    {
-                        var alerts = await _securityAnalyzer.AnalyzeConnectionsAsync(data);
-                        await Dispatcher.InvokeAsync(() =>
-                        {
-                            UpdateSecurityAlerts(alerts);
-                        });
-                    });
+                    UpdateSecurityAlerts(alerts);
                 });
-            }
-            catch (Exception ex)
-            {
-                AddLogMessage($"데이터 업데이트 오류: {ex.Message}");
-            }
+            });
+        }
+
+        /// <summary>
+        /// 시스템 프로세스 여부 판단 (간단 예시)
+        /// </summary>
+        private bool IsSystemProcess(string processName, int pid)
+        {
+            if (pid <= 4) return true; // 시스템 프로세스 PID 0~4는 무조건 시스템
+            var systemNames = new[] { "svchost", "System", "wininit", "winlogon", "lsass", "services" };
+            return systemNames.Any(n => processName.IndexOf(n, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         /// <summary>
@@ -955,7 +975,7 @@ namespace LogCheck
                     }
                 });
                 // 파일에도 저장
-                //File.AppendAllText(_logFilePath, logMessage + Environment.NewLine);
+                File.AppendAllText(_logFilePath, logMessage + Environment.NewLine);
             }
             catch (Exception ex)
             {
@@ -1137,5 +1157,6 @@ namespace LogCheck
                 AddLogMessage($"설정 열기 오류: {ex.Message}");
             }
         }
+       
     }
 }

@@ -1,6 +1,7 @@
 using System;
-using System.Net;
 using System.Collections.Generic; // Added for List
+using System.Diagnostics;
+using System.Net;
 
 namespace LogCheck.Models
 {
@@ -15,6 +16,8 @@ namespace LogCheck.Models
         public string ProcessPath { get; set; } = string.Empty;
         public DateTime ProcessStartTime { get; set; }
         public ProcessRiskLevel ProcessRiskLevel { get; set; }
+
+        public bool IsSystem { get; set; } = false;
 
         // 네트워크 연결 정보
         public string LocalAddress { get; set; } = string.Empty;
@@ -144,6 +147,7 @@ namespace LogCheck.Models
         {
             return $"{ProcessName} (PID: {ProcessId}) - {RemoteAddress}:{RemotePort} ({Protocol})";
         }
+
     }
 
     /// <summary>

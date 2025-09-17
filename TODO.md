@@ -42,7 +42,7 @@
 
 # 개발 관점을 고려한 System Idle Process
 
-# System Idle Process 분석 예외 처리
+# System Idle Process 분석 예외 처리 / System Idle Process 화이트리스트 처리
 
     System Idle Process는  PID(프로세스 식별자)가 0으로 고정된, 커널 수준의 특수 프로세스.
     따라서 WS가 비정상적인 자원 사용량을 감시 or 악성 행위를 탐지할 때, 이 프로세스는 반드시 예외(화이트리스트) 처리해야 함
@@ -52,7 +52,72 @@
     공격자들은 이 프로세스의 이름을 교묘하게 위장하여 악성코드를 숨기는 경우가 종종 있음. 예) System ldle Process (Idle의 I가 소문자 L)  or System Idle Process.exe (정상 프로세스는 .exe 확장자가 없음)
     프로세스의 실행 경로, 디지털 서명, PID 등을 종합적으로 분석하여 이러한 위장 악성코드를 정확히 걸러낼 수 있는 로직을 갖추어야 함
 
+# OnHubMonitoringStateChanged 예외 수정
+
+NetWorks_New.xaml.cs 232번째 줄 예외 처리
+Null 참조 및 UI 스레드 안전성 보장
+
+# 같은 PID 그룹화 표시
+
+같은 PID를 가진 프로세스들을 하나의 그룹으로 묶어서 표시하는 기능 구현
+그룹화된 항목은 확장/축소 가능하도록 UI 개선
+
+# 시스템/일반 프로세스 차별화
+
+시스템 프로세스 색상 구분 (빨간색 계열)
+추가 경고 표시 및 별도 정렬
+현재 탭 분리는 완료되었으나 시각적 구분 강화 필요
+
+# 위험도 표시 개선
+
+RiskLevelToBackgroundConverter 구현
+현재 회색 배경을 위험도별 색상으로 변경
+
+# 프로세스 아이콘 표시
+
+프로세스 아이콘을 불러와서 DataGrid에 표시하는 기능 구현
+
+# 차트 데이터 개선
+
+UpdateChart에서 연결 수 대신 데이터 전송량 기반으로 변경
+private void UpdateChart(List<ProcessNetworkInfo> data)
+{
+var chartData = data.GroupBy(x => x.ConnectionStartTime.Hour)
+.Select(g => g.Sum(x => x.DataTransferred))
+.ToList();
+}
+
+# MessageBox를 Toast/Snackbar로 교체
+
+BlockConnection_Click, TerminateProcess_Click 수정
+비침습적 알림 시스템 구현
+
+# 자동 차단 시스템 구현
+
+이상 네트워크 탐지 규칙 수립
+자동 차단 로직 구현
+사용자 승인 워크플로우 추가
+
+# 차단된 네트워크 관리 UI
+
+차단 리스트 표시 페이지
+수동 해제 기능
+차단 이력 및 통계
+
+# 악성코드 탐지 강화
+
+System Idle Process 위장 탐지
+디지털 서명 검증
+실행 경로 분석
+
+# 보안 경고 팝업 시스템
+
+경고 레벨별 UI 디자인
+팝업 큐 관리
+사용자 액션 처리
+
 ### 우선순위 작업 (TODO)
+
 - OnHubMonitoringStateChanged 함수 예외 발생중 / (Network_New.xaml.cs 232번째 줄
 - 같은 PID는 묶어서 표시되도록 수정
 - 프로세스 아이콘 표시? 불러오기?

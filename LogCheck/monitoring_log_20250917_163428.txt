@@ -1,0 +1,985 @@
+[16:34:28] 네트워크 보안 모니터링 시스템 초기화 완료
+[16:34:29] 통계 업데이트 오류: 다른 스레드가 이 개체를 소유하고 있어 호출 스레드가 해당 개체에 액세스할 수 없습니다.
+[16:34:29] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] Microsoft.ServiceHub.Controller.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.ThreadedWaitDialog.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.RoslynCodeAnalysisService.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.IndexingService.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] OneDriveStandaloneUpdater.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] svchost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] svchost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] OneDriveStandaloneUpdater.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] Microsoft.ServiceHub.Controller.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.ThreadedWaitDialog.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.RoslynCodeAnalysisService.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] SourceTree.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.IndexingService.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] ServiceHub.DataWarehouseHost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] WindowsPackageManagerServer.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] MSPCManager.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] MSPCManager.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[16:34:29] 보안 경고 171개 생성됨
+[16:34:32] 통계 업데이트 오류: 다른 스레드가 이 개체를 소유하고 있어 호출 스레드가 해당 개체에 액세스할 수 없습니다.
+[16:34:32] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] Microsoft.ServiceHub.Controller.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.ThreadedWaitDialog.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.RoslynCodeAnalysisService.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.IndexingService.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] OneDriveStandaloneUpdater.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] svchost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] svchost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] OneDriveStandaloneUpdater.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] Microsoft.ServiceHub.Controller.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.ThreadedWaitDialog.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.RoslynCodeAnalysisService.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] SourceTree.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.IndexingService.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] ServiceHub.DataWarehouseHost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] WindowsPackageManagerServer.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] MSPCManager.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] MSPCManager.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[16:34:32] 보안 경고 171개 생성됨
+[16:34:33] 통계 업데이트: 총 연결: 178 | 위험 연결: 0 | TCP: 178 | UDP: 0 | 총 데이터: 0.0 MB
+[16:34:33] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] Microsoft.ServiceHub.Controller.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.ThreadedWaitDialog.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.RoslynCodeAnalysisService.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.IndexingService.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] OneDriveStandaloneUpdater.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] svchost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] svchost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] OneDriveStandaloneUpdater.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] Microsoft.ServiceHub.Controller.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.ThreadedWaitDialog.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.RoslynCodeAnalysisService.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.IndexingService.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] ServiceHub.DataWarehouseHost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] WindowsPackageManagerServer.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] MSPCManager.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] MSPCManager.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[16:34:33] 보안 경고 170개 생성됨
+[16:34:34] 통계 업데이트 오류: 다른 스레드가 이 개체를 소유하고 있어 호출 스레드가 해당 개체에 액세스할 수 없습니다.
+[16:34:34] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] Microsoft.ServiceHub.Controller.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.ThreadedWaitDialog.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.RoslynCodeAnalysisService.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.IndexingService.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] OneDriveStandaloneUpdater.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] svchost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] svchost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] OneDriveStandaloneUpdater.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] Microsoft.ServiceHub.Controller.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.ThreadedWaitDialog.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.RoslynCodeAnalysisService.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.IndexingService.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] ServiceHub.DataWarehouseHost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] WindowsPackageManagerServer.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] MSPCManager.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] MSPCManager.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[16:34:34] 보안 경고 170개 생성됨
+[16:34:36] 통계 업데이트 오류: 다른 스레드가 이 개체를 소유하고 있어 호출 스레드가 해당 개체에 액세스할 수 없습니다.
+[16:34:36] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] OneDriveStandaloneUpdater.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] svchost.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] svchost.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] OneDriveStandaloneUpdater.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] Microsoft.ServiceHub.Controller.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] ServiceHub.ThreadedWaitDialog.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] ServiceHub.RoslynCodeAnalysisService.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] ServiceHub.IndexingService.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] ServiceHub.DataWarehouseHost.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] WindowsPackageManagerServer.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] MSPCManager.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] MSPCManager.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[16:34:36] 보안 경고 123개 생성됨
+[16:34:38] 통계 업데이트 오류: 다른 스레드가 이 개체를 소유하고 있어 호출 스레드가 해당 개체에 액세스할 수 없습니다.
+[16:34:38] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] OneDriveStandaloneUpdater.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] svchost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] svchost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] OneDriveStandaloneUpdater.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] Microsoft.ServiceHub.Controller.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.ThreadedWaitDialog.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.RoslynCodeAnalysisService.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.IndexingService.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.DataWarehouseHost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] WindowsPackageManagerServer.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] MSPCManager.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] MSPCManager.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고 122개 생성됨
+[16:34:38] 통계 업데이트: 총 연결: 134 | 위험 연결: 0 | TCP: 134 | UDP: 0 | 총 데이터: 0.0 MB
+[16:34:38] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] LM Studio.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] OneDriveStandaloneUpdater.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] svchost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] svchost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] OneDriveStandaloneUpdater.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] Microsoft.ServiceHub.Controller.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] PerfWatson2.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.VSDetouredHost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.ThreadedWaitDialog.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.RoslynCodeAnalysisService.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.IdentityHost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.IndexingService.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] devenv.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.Host.dotnet.x64.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [높음] System Idle Process 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] ServiceHub.DataWarehouseHost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] WindowsPackageManagerServer.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] copilot-language-server.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] MSPCManager.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] MSPCManager.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] LockApp.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [낮음] chrome.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] System 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] svchost.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] lsass.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] wininit.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고: [보통] services.exe 네트워크 위협 탐지
+[16:34:38] 보안 경고 122개 생성됨

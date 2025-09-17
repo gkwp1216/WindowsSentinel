@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using LogCheck.Models;
-using WindowsSentinel.Models;
 
 namespace LogCheck.Services
 {
@@ -13,7 +12,7 @@ namespace LogCheck.Services
         private readonly List<MaliciousIP> _maliciousIPs;
         private readonly List<LogCheck.Models.SecurityAlert> _securityAlerts;
         private readonly Dictionary<string, SuspiciousActivity> _suspiciousActivities;
-        
+
         // 알려진 악성 포트 목록
         private readonly HashSet<int> _suspiciousPorts = new HashSet<int>
         {
@@ -34,7 +33,7 @@ namespace LogCheck.Services
             _maliciousIPs = new List<MaliciousIP>();
             _securityAlerts = new List<LogCheck.Models.SecurityAlert>();
             _suspiciousActivities = new Dictionary<string, SuspiciousActivity>();
-            
+
             InitializeMaliciousIPDatabase();
         }
 
@@ -96,7 +95,7 @@ namespace LogCheck.Services
         // 악성 IP 검사
         private LogCheck.Models.SecurityAlert? CheckMaliciousIP(NetworkUsageRecord packet)
         {
-            var maliciousIP = _maliciousIPs.FirstOrDefault(ip => 
+            var maliciousIP = _maliciousIPs.FirstOrDefault(ip =>
                 ip.IPAddress == packet.SourceIP || ip.IPAddress == packet.DestinationIP);
 
             if (maliciousIP != null)
@@ -126,7 +125,7 @@ namespace LogCheck.Services
             if (_suspiciousPorts.Contains(packet.DestinationPort) || _suspiciousPorts.Contains(packet.SourcePort))
             {
                 var suspiciousPort = _suspiciousPorts.Contains(packet.DestinationPort) ? packet.DestinationPort : packet.SourcePort;
-                
+
                 return new LogCheck.Models.SecurityAlert
                 {
                     Timestamp = DateTime.Now,
@@ -150,7 +149,7 @@ namespace LogCheck.Services
         private async Task<LogCheck.Models.SecurityAlert?> CheckTrafficPatternAsync(NetworkUsageRecord packet)
         {
             var key = $"{packet.SourceIP}_{packet.DestinationIP}";
-            
+
             if (!_suspiciousActivities.ContainsKey(key))
             {
                 _suspiciousActivities[key] = new SuspiciousActivity
@@ -168,11 +167,11 @@ namespace LogCheck.Services
             activity.DataVolume += packet.PacketSize;
 
             // 5분 내 동일 IP 간 50회 이상 연결 시 의심스러운 활동으로 판단
-            if (activity.ConnectionCount > 50 && 
+            if (activity.ConnectionCount > 50 &&
                 (DateTime.Now - activity.Timestamp).TotalMinutes <= 5)
             {
                 activity.RiskScore = CalculateRiskScore(activity);
-                
+
                 if (activity.RiskScore > 7.0) // 위험도 7점 이상
                 {
                     return new LogCheck.Models.SecurityAlert
@@ -320,4 +319,4 @@ namespace LogCheck.Services
         public string MostCommonAlertType { get; set; } = string.Empty;
         public double AverageAlertsPerDay { get; set; }
     }
-} 
+}

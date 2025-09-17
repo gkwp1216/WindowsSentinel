@@ -3,13 +3,13 @@ using System.Management;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-namespace WindowsSentinel
+namespace LogCheck
 {
     public static class WmiHelper
     {
         // Windows Defender 관련 메서드들
         #region Windows Defender
-        
+
         // Windows Defender 상태 확인
         public static async Task<bool> CheckDefenderStatusAsync()
         {
@@ -20,7 +20,7 @@ namespace WindowsSentinel
                     var scope = new ManagementScope("\\\\\\.\\\\root\\\\Microsoft\\\\Windows\\\\Defender");
                     var query = new ObjectQuery("SELECT * FROM MSFT_MpPreference");
                     var searcher = new ManagementObjectSearcher(scope, query);
-                    
+
                     foreach (ManagementObject item in searcher.Get())
                     {
                         if (item["DisableRealtimeMonitoring"] != null)
@@ -28,7 +28,7 @@ namespace WindowsSentinel
                             return !(bool)item["DisableRealtimeMonitoring"];
                         }
                     }
-                    
+
                     return false;
                 }
                 catch (Exception ex)
@@ -49,12 +49,12 @@ namespace WindowsSentinel
                     var scope = new ManagementScope("\\\\\\.\\\\root\\\\Microsoft\\\\Windows\\\\Defender");
                     var path = new ManagementPath("MSFT_MpPreference");
                     var options = new ObjectGetOptions();
-                    
+
                     using (var managementClass = new ManagementClass(scope, path, options))
                     {
                         var inParams = managementClass.GetMethodParameters("SetDisableRealtimeMonitoring");
                         inParams["DisableRealtimeMonitoring"] = false;
-                        
+
                         var outParams = managementClass.InvokeMethod("SetDisableRealtimeMonitoring", inParams, null);
                         return (uint)outParams["ReturnValue"] == 0; // 0은 성공을 의미
                     }
@@ -80,7 +80,7 @@ namespace WindowsSentinel
                     var scope = new ManagementScope("\\\\.\\root\\Microsoft\\Windows\\Defender");
                     var query = new ObjectQuery("SELECT * FROM MSFT_MpPreference");
                     var searcher = new ManagementObjectSearcher(scope, query);
-                    
+
                     foreach (ManagementObject item in searcher.Get())
                     {
                         if (item["DisableRealtimeMonitoring"] != null)
@@ -88,7 +88,7 @@ namespace WindowsSentinel
                             return !(bool)item["DisableRealtimeMonitoring"];
                         }
                     }
-                    
+
                     return false;
                 }
                 catch (Exception ex)
@@ -109,12 +109,12 @@ namespace WindowsSentinel
                     var scope = new ManagementScope("\\\\.\\root\\Microsoft\\Windows\\Defender");
                     var path = new ManagementPath("MSFT_MpPreference");
                     var options = new ObjectGetOptions();
-                    
+
                     using (var managementClass = new ManagementClass(scope, path, options))
                     {
                         var inParams = managementClass.GetMethodParameters("SetDisableRealtimeMonitoring");
                         inParams["DisableRealtimeMonitoring"] = false;
-                        
+
                         var outParams = managementClass.InvokeMethod("SetDisableRealtimeMonitoring", inParams, null);
                         return (uint)outParams["ReturnValue"] == 0; // 0은 성공을 의미
                     }
@@ -138,7 +138,7 @@ namespace WindowsSentinel
                     var scope = new ManagementScope("\\\\.\\root\\StandardCimv2");
                     var query = new ObjectQuery("SELECT * FROM MSFT_NetFirewallProfile");
                     var searcher = new ManagementObjectSearcher(scope, query);
-                    
+
                     foreach (ManagementObject item in searcher.Get())
                     {
                         // 모든 프로필(Domain, Private, Public)이 활성화되어 있는지 확인
@@ -147,7 +147,7 @@ namespace WindowsSentinel
                             return false;
                         }
                     }
-                    
+
                     return true;
                 }
                 catch (Exception ex)
@@ -168,14 +168,14 @@ namespace WindowsSentinel
                     var scope = new ManagementScope("\\\\.\\root\\StandardCimv2");
                     var path = new ManagementPath("MSFT_NetFirewallProfile");
                     var options = new ObjectGetOptions();
-                    
+
                     using (var managementClass = new ManagementClass(scope, path, options))
                     {
                         // 모든 프로필(Domain, Private, Public)에 대해 활성화
                         var inParams = managementClass.GetMethodParameters("EnableFirewall");
                         inParams["Profile"] = 0x7FFFFFFF; // 모든 프로필 (DOMAIN | PRIVATE | PUBLIC)
                         inParams["Enable"] = true;
-                        
+
                         var outParams = managementClass.InvokeMethod("EnableFirewall", inParams, null);
                         return (uint)outParams["ReturnValue"] == 0; // 0은 성공을 의미
                     }
@@ -187,11 +187,11 @@ namespace WindowsSentinel
                 }
             });
         }
-        #endregion
+#endregion
 
         // Windows Security Center 관련 메서드들
         #region Windows Security Center
-        
+
         // Windows Security Center 상태 확인
         public static async Task<string> CheckSecurityCenterStatusAsync()
         {
@@ -202,13 +202,13 @@ namespace WindowsSentinel
                     var scope = new ManagementScope("\\\\.\\root\\SecurityCenter2");
                     var query = new ObjectQuery("SELECT * FROM AntiVirusProduct");
                     var searcher = new ManagementObjectSearcher(scope, query);
-                    
+
                     var results = searcher.Get();
                     if (results.Count == 0)
                     {
                         return "설치되지 않음";
                     }
-                    
+
                     // 첫 번째 안티바이러스 제품의 상태 확인
                     foreach (ManagementObject item in results)
                     {
@@ -223,7 +223,7 @@ namespace WindowsSentinel
                             return "활성";
                         }
                     }
-                    
+
                     return "상태 확인 불가";
                 }
                 catch (Exception ex)
@@ -266,12 +266,12 @@ namespace WindowsSentinel
                 }
             });
         }
-        
+
         #endregion
 
         // BitLocker 관련 메서드들
         #region BitLocker
-        
+
         // BitLocker 상태 확인
         public static async Task<string> CheckBitLockerStatusAsync()
         {
@@ -282,19 +282,19 @@ namespace WindowsSentinel
                     var scope = new ManagementScope("\\\\localhost\\root\\cimv2\\Security\\MicrosoftVolumeEncryption");
                     var query = new ObjectQuery("SELECT * FROM Win32_EncryptableVolume WHERE DriveLetter = 'C:'");
                     var searcher = new ManagementObjectSearcher(scope, query);
-                    
+
                     var results = searcher.Get();
                     if (results.Count == 0)
                     {
                         return "미지원 또는 설치되지 않음";
                     }
-                    
+
                     foreach (ManagementObject item in results)
                     {
                         if (item["ProtectionStatus"] != null)
                         {
                             uint protectionStatus = (uint)item["ProtectionStatus"];
-                            
+
                             // ProtectionStatus 값에 따라 상태 판단
                             switch (protectionStatus)
                             {
@@ -311,7 +311,7 @@ namespace WindowsSentinel
                             }
                         }
                     }
-                    
+
                     return "상태 확인 불가";
                 }
                 catch (Exception ex)
@@ -340,36 +340,36 @@ namespace WindowsSentinel
                     var scope = new ManagementScope("\\\\localhost\\root\\cimv2\\Security\\MicrosoftVolumeEncryption");
                     var query = new ObjectQuery("SELECT * FROM Win32_EncryptableVolume WHERE DriveLetter = 'C:'");
                     var searcher = new ManagementObjectSearcher(scope, query);
-                    
+
                     foreach (ManagementObject volume in searcher.Get())
                     {
                         // BitLocker 보호기 추가 (TPM + PIN)
                         string volumePath = volume["DeviceID"].ToString();
-                        
+
                         // TPM 보호기 활성화
                         using (var tpmParams = volume.GetMethodParameters("ProtectKeyWithTPM"))
                         using (var pinParams = volume.GetMethodParameters("ProtectKeyWithTPMAndPIN"))
                         {
                             // TPM 보호기 추가
                             var tpmResult = volume.InvokeMethod("ProtectKeyWithTPM", tpmParams, null);
-                            
+
                             // TPM + PIN 보호기 추가 (선택사항, 필요에 따라 주석 해제)
                             // pinParams["ProtectorSecret"] = "사용자_설정_PIN_코드"; // 실제로는 안전한 방식으로 PIN을 설정해야 함
                             // var pinResult = volume.InvokeMethod("ProtectKeyWithTPMAndPIN", pinParams, null);
-                            
+
                             // 볼륨 암호화 시작
                             using (var encryptParams = volume.GetMethodParameters("Encrypt"))
                             {
                                 encryptParams["EncryptionMethod"] = 1; // AES_128_WITH_DIFFUSER
                                 encryptParams["EncryptUsedSpaceOnly"] = false;
                                 encryptParams["EncryptionFlags"] = 1; // SYSTEM_VOLUME
-                                
+
                                 var encryptResult = volume.InvokeMethod("Encrypt", encryptParams, null);
                                 return (uint)encryptResult["ReturnValue"] == 0; // 0은 성공을 의미
                             }
                         }
                     }
-                    
+
                     return false;
                 }
                 catch (Exception ex)
@@ -379,7 +379,7 @@ namespace WindowsSentinel
                 }
             });
         }
-        
+
         // 관리자 권한 확인
         private static bool IsUserAdministrator()
         {
@@ -394,7 +394,7 @@ namespace WindowsSentinel
                 return false;
             }
         }
-        
+
         #endregion
     }
 }

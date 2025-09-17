@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace WindowsSentinel
+namespace LogCheck.Converters
 {
     public class StringToVisibilityConverter : IValueConverter
     {
@@ -17,4 +17,4 @@ namespace WindowsSentinel
             throw new NotImplementedException();
         }
     }
-} 
+}

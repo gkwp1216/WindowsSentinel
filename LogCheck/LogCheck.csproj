@@ -9,7 +9,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-    <AssemblyName>Logcheck</AssemblyName>
+    <AssemblyName>LogCheck</AssemblyName>
     <RootNamespace>LogCheck</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <PlatformTarget>x64</PlatformTarget>

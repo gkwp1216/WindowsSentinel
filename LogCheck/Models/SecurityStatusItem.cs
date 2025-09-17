@@ -1,6 +1,6 @@
 using System;
 
-namespace WindowsSentinel
+namespace LogCheck.Models
 {
     public class SecurityStatusItem
     {

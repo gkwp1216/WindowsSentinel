@@ -19,6 +19,8 @@
     <SolidColorBrush x:Key="BorderBrushColor" Color="Black"/>
     <SolidColorBrush x:Key="CheckedColor" Color="Black"/>
     <SolidColorBrush x:Key="HelpMarkColor" Color="Black"/>
+    <SolidColorBrush x:Key="StartMonitoringButtonNormalBackground" Color="#BFE3B5"/>
+    <SolidColorBrush x:Key="RefreshButtonNormalBackground" Color="#E8D06F"/>
     <ImageBrush x:Key="TextureBackground" 
                 ImageSource="/IconTexture/texture10.png"
                 Stretch="UniformToFill"
@@ -109,7 +111,7 @@
                                        FontSize="20"
                                        Foreground="{TemplateBinding Foreground}"                             
                                        Margin="0,0,10,0"/>
-                            
+
                             <TextBlock Text="{TemplateBinding Content}"                                      
                                        FontWeight="SemiBold"                                      
                                        Foreground="Black"
@@ -149,6 +151,290 @@
                 <Setter Property="Background" Value="#FF0742C3"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <!-- 모니터링 시작 / 새로고침 버튼 스타일-->
+    <Style x:Key="StartMonitoringButtonStyle" TargetType="Button">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="8,4"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                        CornerRadius="6"
+                        BorderThickness="1"
+                        BorderBrush="#A0CB9F"
+                        Background="{StaticResource StartMonitoringButtonNormalBackground}">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#888" BlurRadius="6" ShadowDepth="2" Opacity="0.3"/>
+                        </Border.Effect>
+                        <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Margin="6,2"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- 마우스 오버 -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#CDEDC4" Offset="0.0"/>
+                                        <GradientStop Color="#A6D79E" Offset="1.0"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#8FC98A"/>
+                            <Setter TargetName="border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="#6BA46B" BlurRadius="8" ShadowDepth="3" Opacity="0.5"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <!-- 눌림 -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#A6D79E" Offset="0.0"/>
+                                        <GradientStop Color="#8FC98A" Offset="1.0"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#7AAE77"/>
+                            <Setter TargetName="border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="#557755" BlurRadius="4" ShadowDepth="1" Opacity="0.4"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform Y="1"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <!-- Disabled -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Background" Value="#DDD"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#AAA"/>
+                            <Setter Property="Foreground" Value="#888"/>
+                            <Setter TargetName="border" Property="Effect" Value="{x:Null}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RefreshButtonStyle" TargetType="Button">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="8,4"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                        CornerRadius="6"
+                        BorderThickness="1"
+                        BorderBrush="#B2A94D"
+                        Background="{StaticResource RefreshButtonNormalBackground}">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#9C8F3C" BlurRadius="6" ShadowDepth="2" Opacity="0.3"/>
+                        </Border.Effect>
+                        <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Margin="6,2"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- 마우스 오버 -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#F0E57C" Offset="0.0"/>
+                                        <GradientStop Color="#D9C746" Offset="1.0"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#C9BD40"/>
+                            <Setter TargetName="border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="#B8AD38" BlurRadius="8" ShadowDepth="3" Opacity="0.5"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <!-- 눌림 -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#D9C746" Offset="0.0"/>
+                                        <GradientStop Color="#C4B238" Offset="1.0"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#978E2F"/>
+                            <Setter TargetName="border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="#8A7E2B" BlurRadius="4" ShadowDepth="1" Opacity="0.4"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform Y="1"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <!-- Disabled -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Background" Value="#DDD"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#AAA"/>
+                            <Setter Property="Foreground" Value="#888"/>
+                            <Setter TargetName="border" Property="Effect" Value="{x:Null}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- 뒤로가기 버튼 스타일 -->
+    <Style x:Key="BackButtonStyle" TargetType="Button">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="8,4"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                        CornerRadius="6"
+                        BorderThickness="1"
+                        BorderBrush="#78909C"
+                        Background="#CFD8DC">
+                        <!-- 기본 배경: 블루그레이 밝은톤 -->
+                        <Border.Effect>
+                            <DropShadowEffect Color="#888" BlurRadius="6" ShadowDepth="2" Opacity="0.3"/>
+                        </Border.Effect>
+                        <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Margin="6,2"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <!-- 마우스 오버 -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#ECEFF1" Offset="0.0"/>
+                                        <GradientStop Color="#B0BEC5" Offset="1.0"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#546E7A"/>
+                            <Setter TargetName="border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="#546E7A" BlurRadius="8" ShadowDepth="3" Opacity="0.5"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <!-- 눌림 -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#B0BEC5" Offset="0.0"/>
+                                        <GradientStop Color="#90A4AE" Offset="1.0"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#607D8B"/>
+                            <Setter TargetName="border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="#37474F" BlurRadius="4" ShadowDepth="1" Opacity="0.4"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform Y="1"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <!-- Disabled -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Background" Value="#DDD"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="#AAA"/>
+                            <Setter Property="Foreground" Value="#888"/>
+                            <Setter TargetName="border" Property="Effect" Value="{x:Null}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- 차단 / 종료 버튼 스타일 -->
+    <Style x:Key="BlockButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="#748CAB"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="6,3"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="4"
+                            BorderBrush="Transparent"
+                            BorderThickness="1">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Margin="4,2"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#5C6E91"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TerminateButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="#D96C6C"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="6,3"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="4"
+                            BorderBrush="Transparent"
+                            BorderThickness="1">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Margin="4,2"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#C14444"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!-- 모드 버튼 스타일 -->
