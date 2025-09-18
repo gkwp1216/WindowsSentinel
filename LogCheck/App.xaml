@@ -2,6 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:LogCheck"
+             xmlns:converters="clr-namespace:LogCheck.Converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              StartupUri="MainWindows.xaml"
              ShutdownMode="OnExplicitShutdown">
@@ -11,6 +12,9 @@
                 <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
                 <ResourceDictionary Source="LightTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- 컨버터 등록 -->
+            <converters:BoolToExpandIconConverter x:Key="BoolToExpandIconConverter" />
 
             <Style TargetType="ToolTip">
                 <Setter Property="OverridesDefaultStyle" Value="True"/>

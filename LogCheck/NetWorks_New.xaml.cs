@@ -42,6 +42,10 @@ namespace LogCheck
         private readonly ObservableCollection<ProcessNetworkInfo> _generalProcessData;
         private readonly ObservableCollection<ProcessNetworkInfo> _systemProcessData;
 
+        // PID별 그룹화된 데이터 컬렉션
+        private readonly ObservableCollection<ProcessGroup> _generalProcessGroups;
+        private readonly ObservableCollection<ProcessGroup> _systemProcessGroups;
+
         // XAML 컨트롤 레퍼런스는 XAML에서 자동으로 생성됨
         private readonly ProcessNetworkMapper _processNetworkMapper;
         private readonly NetworkConnectionManager _connectionManager;
@@ -74,11 +78,12 @@ namespace LogCheck
         private long _livePacketCount = 0; // 틱 간 누적 패킷 수
 
 
-        private readonly string _logFilePath =
-            System.IO.Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory, // exe 기준 폴더   
-                @"..\..\..\monitoring_log_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt"
-                );
+        // 로그 파일 생성 비활성화
+        // private readonly string _logFilePath =
+        //     System.IO.Path.Combine(
+        //         AppDomain.CurrentDomain.BaseDirectory, // exe 기준 폴더   
+        //         @"..\..\..\monitoring_log_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt"
+        //         );
 
 
         private readonly NotifyIcon _notifyIcon;
@@ -89,6 +94,8 @@ namespace LogCheck
             // 컬렉션 및 차트 데이터 먼저 초기화 (InitializeComponent 중 SelectionChanged 등 이벤트가 호출될 수 있음)
             _generalProcessData = new ObservableCollection<ProcessNetworkInfo>();
             _systemProcessData = new ObservableCollection<ProcessNetworkInfo>();
+            _generalProcessGroups = new ObservableCollection<ProcessGroup>();
+            _systemProcessGroups = new ObservableCollection<ProcessGroup>();
             _securityAlerts = new ObservableCollection<SecurityAlert>();
             _logMessages = new ObservableCollection<string>();
             _chartSeries = new ObservableCollection<ISeries>();
@@ -103,16 +110,27 @@ namespace LogCheck
             _securityAnalyzer = new RealTimeSecurityAnalyzer();
             _captureService = hub.Capture;
 
-            _logFilePath = System.IO.Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                @"..\..\..\monitoring_log_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt"
-            );
+            // 로그 파일 경로 설정 비활성화
+            // _logFilePath = System.IO.Path.Combine(
+            //     AppDomain.CurrentDomain.BaseDirectory,
+            //     @"..\..\..\monitoring_log_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt"
+            // );
 
             // XAML 로드 (이 시점에 SelectionChanged가 발생해도 컬렉션은 준비됨)
             InitializeComponent();
 
+            // 기존 데이터 바인딩
             GeneralProcessDataGrid.ItemsSource = _generalProcessData;
             SystemProcessDataGrid.ItemsSource = _systemProcessData;
+
+            // 그룹화된 DataGrid 데이터 바인딩 설정
+            if (GroupedProcessDataGrid != null)
+            {
+                var groupedView = CollectionViewSource.GetDefaultView(_generalProcessData);
+                groupedView.GroupDescriptions.Add(new PropertyGroupDescription("ProcessId"));
+                GroupedProcessDataGrid.ItemsSource = groupedView;
+            }
+
             SecurityAlertsControl.ItemsSource = _securityAlerts;
             LogMessagesControl.ItemsSource = _logMessages;
             NetworkActivityChart.Series = _chartSeries;
@@ -141,6 +159,8 @@ namespace LogCheck
 
             // 트레이 메뉴 추가
             var contextMenu = new System.Windows.Forms.ContextMenuStrip();
+            // 로그 파일 생성 비활성화로 인한 로그 열기 메뉴 주석 처리
+            /*
             contextMenu.Items.Add("로그 열기", null, (s, e) =>
             {
                 try
@@ -159,6 +179,7 @@ namespace LogCheck
                     System.Diagnostics.Debug.WriteLine($"로그 열기 오류: {ex.Message}");
                 }
             });
+            */
             contextMenu.Items.Add("종료", null, (s, e) =>
             {
                 _notifyIcon.Visible = false;
@@ -766,7 +787,7 @@ namespace LogCheck
         }
 
         /// <summary>
-        /// 프로세스-네트워크 데이터 업데이트
+        /// 프로세스-네트워크 데이터 업데이트 (그룹화 포함)
         /// </summary>
         private async Task UpdateProcessNetworkDataAsync(List<ProcessNetworkInfo> data)
         {
@@ -788,13 +809,19 @@ namespace LogCheck
             {
                 System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 시작 - 기존 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
 
+                // 기존 개별 프로세스 데이터 업데이트 (호환성 유지)
                 _generalProcessData.Clear();
                 foreach (var item in general) _generalProcessData.Add(item);
 
                 _systemProcessData.Clear();
                 foreach (var item in system) _systemProcessData.Add(item);
 
+                // PID별 그룹화된 데이터 업데이트
+                UpdateProcessGroups(_generalProcessGroups, general);
+                UpdateProcessGroups(_systemProcessGroups, system);
+
                 System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 완료 - 새로운 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
+                System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 그룹 업데이트 완료 - 일반 그룹: {_generalProcessGroups.Count}개, 시스템 그룹: {_systemProcessGroups.Count}개");
             });
 
             UpdateStatistics(data);
@@ -807,6 +834,32 @@ namespace LogCheck
                     UpdateSecurityAlerts(alerts);
                 });
             });
+        }
+
+        /// <summary>
+        /// PID별로 프로세스를 그룹화하여 업데이트
+        /// </summary>
+        private void UpdateProcessGroups(ObservableCollection<ProcessGroup> groupCollection, List<ProcessNetworkInfo> processes)
+        {
+            groupCollection.Clear();
+
+            var groupedByPid = processes
+                .GroupBy(p => p.ProcessId)
+                .OrderBy(g => g.Key);
+
+            foreach (var group in groupedByPid)
+            {
+                var processGroup = new ProcessGroup
+                {
+                    ProcessId = group.Key,
+                    ProcessName = group.First().ProcessName,
+                    ProcessPath = group.First().ProcessPath,
+                    Processes = new ObservableCollection<ProcessNetworkInfo>(group.ToList()),
+                    IsExpanded = false // 기본적으로 축소된 상태
+                };
+
+                groupCollection.Add(processGroup);
+            }
         }
 
         /// <summary>
@@ -986,8 +1039,8 @@ namespace LogCheck
                         _logMessages.RemoveAt(0);
                     }
                 });
-                // 파일에도 저장
-                File.AppendAllText(_logFilePath, logMessage + Environment.NewLine);
+                // 파일 로그 생성 비활성화
+                // File.AppendAllText(_logFilePath, logMessage + Environment.NewLine);
             }
             catch (Exception ex)
             {
@@ -1169,6 +1222,241 @@ namespace LogCheck
                 AddLogMessage($"설정 열기 오류: {ex.Message}");
             }
         }
+
+        #region 그룹화 기능 이벤트 핸들러
+
+        /// <summary>
+        /// 그룹 확장/축소 버튼 클릭 이벤트
+        /// </summary>
+        private void ExpandGroup_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ProcessGroup? group = null;
+
+                // Button 클릭인 경우
+                if (sender is System.Windows.Controls.Button button && button.Tag is ProcessGroup buttonGroup)
+                {
+                    group = buttonGroup;
+                }
+                // StackPanel MouseLeftButtonDown인 경우  
+                else if (sender is System.Windows.Controls.StackPanel panel && panel.Tag is ProcessGroup panelGroup)
+                {
+                    group = panelGroup;
+                }
+
+                if (group != null)
+                {
+                    group.IsExpanded = !group.IsExpanded;
+
+                    // 상세 정보 표시 로직
+                    if (group.IsExpanded)
+                    {
+                        AddLogMessage($"프로세스 '{group.ProcessName}' (PID: {group.ProcessId})의 {group.ProcessCount}개 프로세스 연결 정보를 표시합니다.");
+
+                        // TODO: 실제 하위 프로세스 목록을 표시하는 UI 구현
+                        // 현재는 로그 메시지로만 표시
+                        foreach (var process in group.Processes.Take(5)) // 최대 5개만 표시
+                        {
+                            AddLogMessage($"  - {process.LocalAddress} -> {process.RemoteAddress} ({process.Protocol}, {process.ConnectionState})");
+                        }
+                        if (group.Processes.Count > 5)
+                        {
+                            AddLogMessage($"  ... 그 외 {group.Processes.Count - 5}개 연결");
+                        }
+                    }
+                    else
+                    {
+                        AddLogMessage($"프로세스 그룹 '{group.ProcessName}' (PID: {group.ProcessId})을 축소했습니다.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"그룹 확장/축소 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Expander 확장 이벤트
+        /// </summary>
+        private void ProcessGroupExpander_Expanded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is System.Windows.Controls.Expander expander && expander.DataContext is ProcessGroup group)
+                {
+                    AddLogMessage($"프로세스 '{group.ProcessName}' (PID: {group.ProcessId})의 {group.ProcessCount}개 프로세스 연결 정보를 표시합니다.");
+
+                    // 실제 하위 프로세스 목록을 로그에 표시
+                    foreach (var process in group.Processes.Take(5)) // 최대 5개만 표시
+                    {
+                        AddLogMessage($"  - {process.LocalAddress} -> {process.RemoteAddress} ({process.Protocol}, {process.ConnectionState})");
+                    }
+                    if (group.Processes.Count > 5)
+                    {
+                        AddLogMessage($"  ... 그 외 {group.Processes.Count - 5}개 연결");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"프로세스 그룹 확장 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Expander 축소 이벤트  
+        /// </summary>
+        private void ProcessGroupExpander_Collapsed(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is System.Windows.Controls.Expander expander && expander.DataContext is ProcessGroup group)
+                {
+                    AddLogMessage($"프로세스 그룹 '{group.ProcessName}' (PID: {group.ProcessId})을 축소했습니다.");
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"프로세스 그룹 축소 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 그룹 내 모든 연결 차단
+        /// </summary>
+        private async void BlockGroupConnections_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // DataGrid의 그룹 헤더에서 클릭 시, DataContext를 통해 그룹 정보 가져오기
+                var button = sender as System.Windows.Controls.Button;
+                var groupHeader = button?.DataContext as CollectionViewGroup;
+
+                if (groupHeader != null && groupHeader.Items.Count > 0)
+                {
+                    var processItems = groupHeader.Items.Cast<ProcessNetworkInfo>().ToList();
+                    var firstProcess = processItems.First();
+
+                    var result = MessageBox.Show(
+                        $"프로세스 '{firstProcess.ProcessName}' (PID: {firstProcess.ProcessId})의 모든 네트워크 연결 {processItems.Count}개를 차단하시겠습니까?",
+                        "네트워크 연결 차단 확인",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        int blockedCount = 0;
+                        foreach (var connection in processItems)
+                        {
+                            try
+                            {
+                                // 임시로 간단한 차단 로직 구현 (실제로는 방화벽 규칙 추가)
+                                connection.IsBlocked = true;
+                                connection.BlockedTime = DateTime.Now;
+                                connection.BlockReason = "사용자가 그룹 단위로 차단";
+                                blockedCount++;
+                            }
+                            catch (Exception ex)
+                            {
+                                AddLogMessage($"연결 차단 실패 ({connection.RemoteAddress}:{connection.RemotePort}): {ex.Message}");
+                            }
+                        }
+
+                        AddLogMessage($"프로세스 그룹 '{firstProcess.ProcessName}'에서 {blockedCount}개 연결을 차단했습니다.");
+
+                        if (blockedCount > 0)
+                        {
+                            // UI 새로고침
+                            await RefreshProcessData();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"그룹 연결 차단 오류: {ex.Message}");
+                MessageBox.Show($"연결 차단 중 오류가 발생했습니다: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// 그룹 프로세스 종료
+        /// </summary>
+        private async void TerminateGroupProcess_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // DataGrid의 그룹 헤더에서 클릭 시, DataContext를 통해 그룹 정보 가져오기
+                var button = sender as System.Windows.Controls.Button;
+                var groupHeader = button?.DataContext as CollectionViewGroup;
+
+                if (groupHeader != null && groupHeader.Items.Count > 0)
+                {
+                    var processItems = groupHeader.Items.Cast<ProcessNetworkInfo>().ToList();
+                    var firstProcess = processItems.First();
+
+                    var result = MessageBox.Show(
+                        $"프로세스 '{firstProcess.ProcessName}' (PID: {firstProcess.ProcessId})을(를) 강제 종료하시겠습니까?\n\n" +
+                        $"이 작업은 되돌릴 수 없으며, 해당 프로세스의 모든 연결({processItems.Count}개)이 함께 종료됩니다.\n" +
+                        $"시스템 프로세스인 경우 시스템 불안정을 야기할 수 있습니다.",
+                        "프로세스 종료 확인",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        try
+                        {
+                            var process = System.Diagnostics.Process.GetProcessById(firstProcess.ProcessId);
+
+                            string processInfo = $"프로세스명: {process.ProcessName}, PID: {process.Id}, 시작시간: {process.StartTime}";
+
+                            process.Kill();
+                            process.WaitForExit(5000); // 5초 대기
+
+                            AddLogMessage($"프로세스 종료 성공 - {processInfo}");
+
+                            // UI 새로고침
+                            await RefreshProcessData();
+                        }
+                        catch (ArgumentException)
+                        {
+                            AddLogMessage($"프로세스 종료 실패: PID {firstProcess.ProcessId}에 해당하는 프로세스를 찾을 수 없습니다.");
+                        }
+                        catch (System.ComponentModel.Win32Exception ex)
+                        {
+                            AddLogMessage($"프로세스 종료 실패: 권한이 부족하거나 시스템에서 보호하는 프로세스입니다. ({ex.Message})");
+                            MessageBox.Show("프로세스 종료 권한이 부족합니다. 관리자 권한으로 실행하세요.", "권한 부족", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"그룹 프로세스 종료 오류: {ex.Message}");
+                MessageBox.Show($"프로세스 종료 중 오류가 발생했습니다: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// 프로세스 데이터 새로고침
+        /// </summary>
+        private async Task RefreshProcessData()
+        {
+            try
+            {
+                var data = await _processNetworkMapper.GetProcessNetworkDataAsync();
+                await UpdateProcessNetworkDataAsync(data);
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"데이터 새로고침 실패: {ex.Message}");
+            }
+        }
+
+        #endregion
 
     }
 }

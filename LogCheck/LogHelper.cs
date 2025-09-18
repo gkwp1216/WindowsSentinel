@@ -7,6 +7,8 @@ namespace LogCheck
 {
     public static class LogHelper
     {
+        // 로그 파일 생성 비활성화
+        /*
         private static readonly string LogFilePath = Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory, 
             "Logs",
@@ -32,6 +34,7 @@ namespace LogCheck
                 WpfMessageBox.Show($"로그 디렉토리 생성 실패: {ex.Message}");
             }
         }
+        */
 
         public static void LogInfo(string message)
         {
@@ -58,8 +61,8 @@ namespace LogCheck
                 throw new ArgumentNullException(nameof(message), "로그 메시지는 null이거나 비어있을 수 없습니다.");
             }
 
-            string errorMessage = ex != null 
-                ? $"{message}\n예외: {ex.Message}\n스택 추적: {ex.StackTrace}" 
+            string errorMessage = ex != null
+                ? $"{message}\n예외: {ex.Message}\n스택 추적: {ex.StackTrace}"
                 : message;
             Log("ERROR", errorMessage);
         }
@@ -78,13 +81,13 @@ namespace LogCheck
             try
             {
                 string logMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] [{level}] {message}\n";
-                
+
                 // 콘솔에 출력
                 Console.Write(logMessage);
-                
-                // 파일에 쓰기 (비동기로 처리)
-                File.AppendAllText(LogFilePath, logMessage);
-                
+
+                // 파일 로그 생성 비활성화
+                // File.AppendAllText(LogFilePath, logMessage);
+
                 // 디버그 창에 출력
                 System.Diagnostics.Debug.Write(logMessage);
             }

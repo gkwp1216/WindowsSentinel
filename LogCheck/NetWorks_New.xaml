@@ -19,6 +19,7 @@
         <converters:WhitelistStatusToColorConverter x:Key="WhitelistStatusToColorConverter"/>
         <converters:SecurityRiskLevelToColorConverter x:Key="SecurityRiskLevelToColorConverter"/>
         <converters:WhitelistStatusToIconConverter x:Key="WhitelistStatusToIconConverter"/>
+        <converters:ProtocolCountConverter x:Key="ProtocolCountConverter"/>
 
         <!-- 프로세스 상태별 색상 -->
         <SolidColorBrush x:Key="ProcessNormalColor" Color="#4CAF50"/>
@@ -212,8 +213,294 @@
 
                 <TabControl Grid.Row="2">
                     <!-- 프로세스-네트워크 연결 테이블 -->
-                    <!-- 일반 프로세스 탭 -->
-                    <TabItem Header="일반 프로세스">
+                    <!-- 일반 프로세스 탭 (그룹화된 뷰) -->
+                    <TabItem Header="일반 프로세스 (그룹화)">
+                        <DataGrid x:Name="GroupedProcessDataGrid"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  Background="{DynamicResource DataGridBackgroundColor}"
+                                  Foreground="{DynamicResource DataGridForegroundColor}" 
+                                  BorderThickness="0"
+                                  GridLinesVisibility="None"
+                                  RowBackground="{DynamicResource DataGridRowBackgroundColor}" 
+                                  AlternatingRowBackground="{DynamicResource DataGridAlternatingRowBackgroundColor}"
+                                  RowHeight="45"
+                                  HeadersVisibility="Column"
+                                  CanUserResizeRows="False"
+                                  SelectionMode="Single"
+                                  SelectionChanged="ProcessNetworkDataGrid_SelectionChanged"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto">
+
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="10,8"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+
+                            <!-- 그룹화 스타일 정의 -->
+                            <DataGrid.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <Border Background="{DynamicResource PrimaryColor}" 
+                                                    CornerRadius="5" 
+                                                    Padding="10,8" 
+                                                    Margin="5,5,5,0">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="300"/>
+                                                        <ColumnDefinition Width="100"/>
+                                                        <ColumnDefinition Width="150"/>
+                                                        <ColumnDefinition Width="120"/>
+                                                        <ColumnDefinition Width="100"/>
+                                                        <ColumnDefinition Width="140"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <!-- 프로세스 그룹 정보 -->
+                                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <!-- 위험도 표시 -->
+                                                        <Ellipse Width="10" Height="10" 
+                                                                 Fill="{Binding Items[0].RiskLevel, Converter={StaticResource SecurityRiskLevelToColorConverter}, Mode=OneWay}" 
+                                                                 Margin="0,0,8,0"/>
+
+                                                        <!-- 화이트리스트 표시 -->
+                                                        <TextBlock Text="{Binding Items[0].IsWhitelisted, Converter={StaticResource WhitelistStatusToIconConverter}, Mode=OneWay}" 
+                                                                   Foreground="{Binding Items[0].IsWhitelisted, Converter={StaticResource WhitelistStatusToColorConverter}, Mode=OneWay}"
+                                                                   FontSize="14" Margin="0,0,6,0" VerticalAlignment="Center"/>
+
+                                                        <!-- 프로세스 정보 -->
+                                                        <StackPanel>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding Items[0].ProcessName, Mode=OneWay}" 
+                                                                           FontWeight="Bold" 
+                                                                           FontSize="14"
+                                                                           Foreground="White"/>
+                                                                <TextBlock Text="{Binding ItemCount, StringFormat=' ({0}개 연결)', Mode=OneWay}" 
+                                                                           FontWeight="SemiBold" 
+                                                                           FontSize="12"
+                                                                           Foreground="#E0E0E0"
+                                                                           Margin="5,0,0,0"/>
+                                                            </StackPanel>
+                                                            <TextBlock FontSize="11" Foreground="#E0E0E0">
+                                                                <Run Text="PID: "/>
+                                                                <Run Text="{Binding Name, Mode=OneWay}"/>
+                                                            </TextBlock>
+                                                        </StackPanel>
+                                                    </StackPanel>
+
+                                                    <!-- 활성 연결 수 -->
+                                                    <TextBlock Grid.Column="1" 
+                                                               Text="{Binding ItemCount}" 
+                                                               HorizontalAlignment="Center" 
+                                                               VerticalAlignment="Center"
+                                                               FontWeight="Bold"
+                                                               FontSize="14"
+                                                               Foreground="White"/>
+
+                                                    <!-- 프로토콜 요약 -->
+                                                    <StackPanel Grid.Column="2" 
+                                                                VerticalAlignment="Center" 
+                                                                HorizontalAlignment="Center">
+                                                        <TextBlock FontSize="11" Foreground="White" HorizontalAlignment="Center">
+                                                            <Run Text="TCP: "/>
+                                                            <Run Text="{Binding Items, Converter={StaticResource ProtocolCountConverter}, ConverterParameter='TCP', Mode=OneWay}"/>
+                                                            <Run Text=" | UDP: "/>
+                                                            <Run Text="{Binding Items, Converter={StaticResource ProtocolCountConverter}, ConverterParameter='UDP', Mode=OneWay}"/>
+                                                        </TextBlock>
+                                                    </StackPanel>
+
+                                                    <!-- 총 데이터 전송량 (임시) -->
+                                                    <TextBlock Grid.Column="3" 
+                                                               Text="0 bytes" 
+                                                               HorizontalAlignment="Center" 
+                                                               VerticalAlignment="Center"
+                                                               FontSize="11" 
+                                                               Foreground="White"/>
+
+                                                    <!-- 최고 위험도 -->
+                                                    <Border Grid.Column="4" 
+                                                            CornerRadius="4" 
+                                                            Padding="8,4" 
+                                                            VerticalAlignment="Center" 
+                                                            HorizontalAlignment="Center">
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="Background" Value="#607D8B"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Items[0].RiskLevel, Mode=OneWay}" Value="Low">
+                                                                        <Setter Property="Background" Value="#4CAF50"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Items[0].RiskLevel, Mode=OneWay}" Value="Medium">
+                                                                        <Setter Property="Background" Value="#F39C12"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Items[0].RiskLevel, Mode=OneWay}" Value="High">
+                                                                        <Setter Property="Background" Value="#E74C3C"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+                                                        <TextBlock Text="{Binding Items[0].RiskLevel, Mode=OneWay}" 
+                                                                   Foreground="White" 
+                                                                   FontWeight="Bold"
+                                                                   HorizontalAlignment="Center" 
+                                                                   FontSize="11"/>
+                                                    </Border>
+
+                                                    <!-- 그룹 액션 버튼들 -->
+                                                    <StackPanel Grid.Column="5" 
+                                                                Orientation="Horizontal" 
+                                                                HorizontalAlignment="Center" 
+                                                                VerticalAlignment="Center">
+                                                        <Button Content="전체 차단" 
+                                                                Background="#E53E3E"
+                                                                Foreground="White"
+                                                                BorderBrush="Transparent"
+                                                                Width="70" 
+                                                                Height="25"
+                                                                FontSize="10"
+                                                                Click="BlockGroupConnections_Click"/>
+                                                        <Button Content="전체 종료" 
+                                                                Background="#9F7AEA"
+                                                                Foreground="White"
+                                                                BorderBrush="Transparent"
+                                                                Width="70" 
+                                                                Height="25"
+                                                                FontSize="10"
+                                                                Margin="5,0,0,0" 
+                                                                Click="TerminateGroupProcess_Click"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+
+                                    <GroupStyle.ContainerStyle>
+                                        <Style TargetType="{x:Type GroupItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                        <Expander IsExpanded="True" 
+                                                                  Background="Transparent"
+                                                                  BorderThickness="0">
+                                                            <Expander.Header>
+                                                                <ContentPresenter Content="{TemplateBinding Content}" 
+                                                                                  ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                                                            </Expander.Header>
+                                                            <ItemsPresenter Margin="10,0,0,10"/>
+                                                        </Expander>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GroupStyle.ContainerStyle>
+                                </GroupStyle>
+                            </DataGrid.GroupStyle>
+
+                            <!-- 컬럼 정의 (개별 연결 정보) -->
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="로컬 주소" Width="120">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding LocalAddress}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="원격 주소" Width="120">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding RemoteAddress}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="프로토콜" Width="80">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Protocol}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="상태" Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ConnectionState}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="연결 시간" Width="100">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ConnectionDuration, StringFormat='{}{0:hh\\:mm\\:ss}'}" 
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="데이터 전송" Width="120">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <TextBlock Text="{Binding DataTransferred}" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="{Binding DataRate, StringFormat='{}{0:F1} KB/s'}" 
+                                                           FontSize="10" Foreground="{DynamicResource SecondaryForegroundColor}" HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="위험도" Width="80">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border CornerRadius="4" Padding="8,4" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="Gray"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding RiskLevel}" Value="Low">
+                                                                <Setter Property="Background" Value="#4CAF50"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding RiskLevel}" Value="Medium">
+                                                                <Setter Property="Background" Value="#F39C12"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding RiskLevel}" Value="High">
+                                                                <Setter Property="Background" Value="#E74C3C"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding RiskLevel}" Foreground="White" FontWeight="SemiBold"
+                                                           HorizontalAlignment="Center" FontSize="11"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="액션" Width="140">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Button Content="차단" Style="{DynamicResource BlockButtonStyle}"
+                                                        Width="60" Height="25" Click="BlockConnection_Click" Tag="{Binding}"/>
+                                                <Button Content="종료" Style="{DynamicResource TerminateButtonStyle}" Width="60" Height="25"
+                                                        Margin="5,0,0,0" Click="TerminateProcess_Click" Tag="{Binding}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+
+                    <!-- 기존 일반 프로세스 탭 (상세 뷰) -->
+                    <TabItem Header="일반 프로세스 (상세)">
                         <DataGrid x:Name="GeneralProcessDataGrid"
                           AutoGenerateColumns="False"
                           IsReadOnly="True"
