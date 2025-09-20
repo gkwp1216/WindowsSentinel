@@ -42,7 +42,11 @@ namespace LogCheck
         private readonly ObservableCollection<ProcessNetworkInfo> _generalProcessData;
         private readonly ObservableCollection<ProcessNetworkInfo> _systemProcessData;
 
-        // PID별 그룹화된 데이터 컬렉션
+        // TreeView용 프로세스 노드 컬렉션 (작업 관리자 방식)
+        private readonly ObservableCollection<ProcessTreeNode> _processTreeNodes;
+        private readonly ObservableCollection<ProcessTreeNode> _systemProcessTreeNodes;
+
+        // 기존 그룹화된 데이터 컬렉션 (하위 호환성을 위해 유지)
         private readonly ObservableCollection<ProcessGroup> _generalProcessGroups;
         private readonly ObservableCollection<ProcessGroup> _systemProcessGroups;
 
@@ -89,6 +93,9 @@ namespace LogCheck
         private readonly NotifyIcon _notifyIcon;
         private bool _hubSubscribed = false;
 
+        // 간단한 그룹 확장 상태 관리
+        private readonly Dictionary<int, bool> _groupExpandedStates = new Dictionary<int, bool>();
+
         public NetWorks_New()
         {
             // 컬렉션 및 차트 데이터 먼저 초기화 (InitializeComponent 중 SelectionChanged 등 이벤트가 호출될 수 있음)
@@ -96,6 +103,9 @@ namespace LogCheck
             _systemProcessData = new ObservableCollection<ProcessNetworkInfo>();
             _generalProcessGroups = new ObservableCollection<ProcessGroup>();
             _systemProcessGroups = new ObservableCollection<ProcessGroup>();
+            _processTreeNodes = new ObservableCollection<ProcessTreeNode>();
+            _systemProcessTreeNodes = new ObservableCollection<ProcessTreeNode>();
+            _processNetworkData = new ObservableCollection<ProcessNetworkInfo>();
             _securityAlerts = new ObservableCollection<SecurityAlert>();
             _logMessages = new ObservableCollection<string>();
             _chartSeries = new ObservableCollection<ISeries>();
@@ -119,17 +129,13 @@ namespace LogCheck
             // XAML 로드 (이 시점에 SelectionChanged가 발생해도 컬렉션은 준비됨)
             InitializeComponent();
 
+            // TreeView 바인딩
+            if (ProcessTreeView != null)
+                ProcessTreeView.ItemsSource = _processTreeNodes;
+
             // 기존 데이터 바인딩
             GeneralProcessDataGrid.ItemsSource = _generalProcessData;
             SystemProcessDataGrid.ItemsSource = _systemProcessData;
-
-            // 그룹화된 DataGrid 데이터 바인딩 설정
-            if (GroupedProcessDataGrid != null)
-            {
-                var groupedView = CollectionViewSource.GetDefaultView(_generalProcessData);
-                groupedView.GroupDescriptions.Add(new PropertyGroupDescription("ProcessId"));
-                GroupedProcessDataGrid.ItemsSource = groupedView;
-            }
 
             SecurityAlertsControl.ItemsSource = _securityAlerts;
             LogMessagesControl.ItemsSource = _logMessages;
@@ -190,6 +196,10 @@ namespace LogCheck
 
             // 로그 메시지 추가
             AddLogMessage("네트워크 보안 모니터링 시스템 초기화 완료");
+
+            // ProcessTreeNode 상태 관리 시스템 초기화 (작업 관리자 방식)
+            ProcessTreeNode.ClearExpandedStates(); // 이전 세션 상태 초기화 (선택적)
+            System.Diagnostics.Debug.WriteLine("[NetWorks_New] ProcessTreeNode 상태 관리 시스템 초기화됨");
 
             // 앱 종료 시 트레이 아이콘/타이머 정리 (종료 보장)
             System.Windows.Application.Current.Exit += (_, __) =>
@@ -269,25 +279,60 @@ namespace LogCheck
 
         private void OnHubMonitoringStateChanged(object? sender, bool running)
         {
-            Dispatcher.Invoke(() =>
+            try
             {
-                _isMonitoring = running;
-                StartMonitoringButton.Visibility = running ? Visibility.Collapsed : Visibility.Visible;
-                StopMonitoringButton.Visibility = running ? Visibility.Visible : Visibility.Collapsed;
-                MonitoringStatusText.Text = running ? "모니터링 중" : "대기 중";
-                MonitoringStatusText2.Text = MonitoringStatusText.Text;
-                MonitoringStatusIndicator.Fill = new SolidColorBrush(running ? Colors.Green : Colors.Gray);
-                if (running)
+                // 애플리케이션이 종료 중인지 확인
+                if (System.Windows.Application.Current?.Dispatcher?.HasShutdownStarted == true)
+                    return;
+
+                // UI가 아직 유효한지 확인
+                if (Dispatcher.HasShutdownStarted)
+                    return;
+
+                Dispatcher.Invoke(() =>
                 {
-                    // 런타임 구성 갱신
-                    UpdateRuntimeConfigText();
-                    _updateTimer.Start();
-                }
-                else
-                {
-                    _updateTimer.Stop();
-                }
-            });
+                    try
+                    {
+                        _isMonitoring = running;
+
+                        // UI 요소들이 유효한지 확인
+                        if (StartMonitoringButton != null)
+                            StartMonitoringButton.Visibility = running ? Visibility.Collapsed : Visibility.Visible;
+                        if (StopMonitoringButton != null)
+                            StopMonitoringButton.Visibility = running ? Visibility.Visible : Visibility.Collapsed;
+                        if (MonitoringStatusText != null)
+                            MonitoringStatusText.Text = running ? "모니터링 중" : "대기 중";
+                        if (MonitoringStatusText2 != null)
+                            MonitoringStatusText2.Text = MonitoringStatusText?.Text ?? "";
+                        if (MonitoringStatusIndicator != null)
+                            MonitoringStatusIndicator.Fill = new SolidColorBrush(running ? Colors.Green : Colors.Gray);
+
+                        if (running)
+                        {
+                            // 런타임 구성 갱신
+                            UpdateRuntimeConfigText();
+                            _updateTimer?.Start();
+                        }
+                        else
+                        {
+                            _updateTimer?.Stop();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"UI 업데이트 중 오류: {ex.Message}");
+                    }
+                });
+            }
+            catch (TaskCanceledException)
+            {
+                // 종료 시 발생하는 TaskCanceledException은 무시
+                System.Diagnostics.Debug.WriteLine("OnHubMonitoringStateChanged: TaskCanceledException 발생 (정상 종료 과정)");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"OnHubMonitoringStateChanged 예외: {ex.Message}");
+            }
         }
 
         private void OnHubMetricsUpdated(object? sender, CaptureMetrics metrics)
@@ -298,10 +343,37 @@ namespace LogCheck
 
         private void OnHubErrorOccurred(object? sender, Exception ex)
         {
-            Dispatcher.Invoke(() =>
+            try
             {
-                AddLogMessage($"허브 오류: {ex.Message}");
-            });
+                // 애플리케이션이 종료 중인지 확인
+                if (System.Windows.Application.Current?.Dispatcher?.HasShutdownStarted == true)
+                    return;
+
+                // UI가 아직 유효한지 확인
+                if (Dispatcher.HasShutdownStarted)
+                    return;
+
+                Dispatcher.Invoke(() =>
+                {
+                    try
+                    {
+                        AddLogMessage($"허브 오류: {ex.Message}");
+                    }
+                    catch (Exception uiEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"UI 업데이트 중 오류: {uiEx.Message}");
+                    }
+                });
+            }
+            catch (TaskCanceledException)
+            {
+                // 종료 시 발생하는 TaskCanceledException은 무시
+                System.Diagnostics.Debug.WriteLine("OnHubErrorOccurred: TaskCanceledException 발생 (정상 종료 과정)");
+            }
+            catch (Exception dispatcherEx)
+            {
+                System.Diagnostics.Debug.WriteLine($"OnHubErrorOccurred 예외: {dispatcherEx.Message}");
+            }
         }
 
         /// <summary>
@@ -611,6 +683,59 @@ namespace LogCheck
         }
 
         /// <summary>
+        /// ProcessTreeView 로드 완료 시 - TreeView는 자동으로 IsExpanded 바인딩 관리
+        /// </summary>
+        private void GroupedProcessDataGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("ProcessTreeView Loaded - TreeView 자동 상태 관리 활성화");
+            // TreeView는 IsExpanded 바인딩을 통해 자동으로 상태를 관리하므로 추가 작업 불필요
+        }
+
+        /// <summary>
+        /// 프로세스 그룹 펼침 이벤트 핸들러
+        /// </summary>
+        private void ProcessGroupExpander_Expanded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Expander expander && expander.DataContext is CollectionViewGroup group)
+                {
+                    if (int.TryParse(group.Name?.ToString(), out int processId))
+                    {
+                        _groupExpandedStates[processId] = true;
+                        System.Diagnostics.Debug.WriteLine($"그룹 {processId} 펼침됨 - 상태 저장");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ProcessGroupExpander_Expanded 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 프로세스 그룹 접힘 이벤트 핸들러
+        /// </summary>
+        private void ProcessGroupExpander_Collapsed(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Expander expander && expander.DataContext is CollectionViewGroup group)
+                {
+                    if (int.TryParse(group.Name?.ToString(), out int processId))
+                    {
+                        _groupExpandedStates[processId] = false;
+                        System.Diagnostics.Debug.WriteLine($"그룹 {processId} 접힘됨 - 상태 저장");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ProcessGroupExpander_Collapsed 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// 연결 차단 버튼 클릭
         /// </summary>
         private async void BlockConnection_Click(object sender, RoutedEventArgs e)
@@ -805,60 +930,242 @@ namespace LogCheck
 
             System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 일반 프로세스: {general.Count}개, 시스템 프로세스: {system.Count}개");
 
-            await Dispatcher.InvokeAsync(() =>
+            try
             {
-                System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 시작 - 기존 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
+                // 애플리케이션이 종료 중인지 확인
+                if (System.Windows.Application.Current?.Dispatcher?.HasShutdownStarted == true)
+                    return;
 
-                // 기존 개별 프로세스 데이터 업데이트 (호환성 유지)
-                _generalProcessData.Clear();
-                foreach (var item in general) _generalProcessData.Add(item);
+                // UI가 아직 유효한지 확인
+                if (Dispatcher.HasShutdownStarted)
+                    return;
 
-                _systemProcessData.Clear();
-                foreach (var item in system) _systemProcessData.Add(item);
+                await Dispatcher.InvokeAsync(() =>
+                {
+                    try
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 시작 - 기존 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
 
-                // PID별 그룹화된 데이터 업데이트
-                UpdateProcessGroups(_generalProcessGroups, general);
-                UpdateProcessGroups(_systemProcessGroups, system);
+                        // 스마트 업데이트: 컬렉션을 완전히 지우지 않고 업데이트
+                        UpdateCollectionSmart(_generalProcessData, general);
+                        UpdateCollectionSmart(_systemProcessData, system);
 
-                System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 완료 - 새로운 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
-                System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 그룹 업데이트 완료 - 일반 그룹: {_generalProcessGroups.Count}개, 시스템 그룹: {_systemProcessGroups.Count}개");
-            });
+                        // PID별 그룹화된 데이터 업데이트 (기존)
+                        UpdateProcessGroups(_generalProcessGroups, general);
+                        UpdateProcessGroups(_systemProcessGroups, system);
+
+                        // 작업 관리자 방식의 TreeView 업데이트 (새로운 방식)
+                        UpdateProcessTreeSmart(_processTreeNodes, general);
+                        UpdateProcessTreeSmart(_systemProcessTreeNodes, system);
+
+                        System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 완료 - 새로운 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
+                        System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 그룹 업데이트 완료 - 일반 그룹: {_generalProcessGroups.Count}개, 시스템 그룹: {_systemProcessGroups.Count}개");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"UI 업데이트 중 오류: {ex.Message}");
+                    }
+                }, DispatcherPriority.DataBind);
+
+                // 간단한 상태 복원 시도
+                _ = Task.Delay(100).ContinueWith(_ =>
+                {
+                    Dispatcher.BeginInvoke(() => RestoreGroupStates(), DispatcherPriority.Background);
+                });
+
+            }
+            catch (TaskCanceledException)
+            {
+                // 종료 시 발생하는 TaskCanceledException은 무시
+                System.Diagnostics.Debug.WriteLine("UpdateProcessNetworkDataAsync: TaskCanceledException 발생 (정상 종료 과정)");
+                return;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"UpdateProcessNetworkDataAsync Dispatcher 호출 중 예외: {ex.Message}");
+                return;
+            }
 
             UpdateStatistics(data);
             UpdateChart(data);
             _ = Task.Run(async () =>
             {
-                var alerts = await _securityAnalyzer.AnalyzeConnectionsAsync(data);
-                await Dispatcher.InvokeAsync(() =>
+                try
                 {
-                    UpdateSecurityAlerts(alerts);
-                });
+                    var alerts = await _securityAnalyzer.AnalyzeConnectionsAsync(data);
+
+                    // 애플리케이션이 종료 중인지 확인
+                    if (System.Windows.Application.Current?.Dispatcher?.HasShutdownStarted == true)
+                        return;
+
+                    // UI가 아직 유효한지 확인
+                    if (Dispatcher.HasShutdownStarted)
+                        return;
+
+                    await Dispatcher.InvokeAsync(() =>
+                    {
+                        try
+                        {
+                            UpdateSecurityAlerts(alerts);
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"보안 알림 업데이트 중 오류: {ex.Message}");
+                        }
+                    });
+                }
+                catch (TaskCanceledException)
+                {
+                    // 종료 시 발생하는 TaskCanceledException은 무시
+                    System.Diagnostics.Debug.WriteLine("보안 분석 Task: TaskCanceledException 발생 (정상 종료 과정)");
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"보안 분석 Task 예외: {ex.Message}");
+                }
             });
         }
 
         /// <summary>
-        /// PID별로 프로세스를 그룹화하여 업데이트
+        /// 작업 관리자 방식의 스마트 TreeView 업데이트
+        /// 기존 노드 객체를 유지하면서 데이터만 업데이트하여 확장 상태 보존
+        /// </summary>
+        private void UpdateProcessTreeSmart(ObservableCollection<ProcessTreeNode> treeNodeCollection, List<ProcessNetworkInfo> processes)
+        {
+            try
+            {
+                // 프로세스별로 그룹화
+                var groupedData = processes
+                    .GroupBy(p => new { p.ProcessId, p.ProcessName })
+                    .ToDictionary(g => g.Key, g => g.ToList());
+
+                System.Diagnostics.Debug.WriteLine($"[UpdateProcessTreeSmart] 그룹화된 프로세스: {groupedData.Count}개");
+
+                // 1. 더 이상 존재하지 않는 프로세스 제거
+                var nodesToRemove = treeNodeCollection
+                    .Where(node => !groupedData.ContainsKey(new { ProcessId = node.ProcessId, ProcessName = node.ProcessName }))
+                    .ToList();
+
+                foreach (var node in nodesToRemove)
+                {
+                    treeNodeCollection.Remove(node);
+                    System.Diagnostics.Debug.WriteLine($"[UpdateProcessTreeSmart] 프로세스 제거: {node.ProcessName} ({node.ProcessId})");
+                }
+
+                // 2. 기존 노드 업데이트 또는 신규 노드 추가
+                foreach (var group in groupedData)
+                {
+                    var existingNode = treeNodeCollection.FirstOrDefault(n =>
+                        n.ProcessId == group.Key.ProcessId &&
+                        n.ProcessName == group.Key.ProcessName);
+
+                    if (existingNode != null)
+                    {
+                        // 기존 노드 업데이트 (IsExpanded 상태는 자동으로 유지됨)
+                        existingNode.UpdateConnections(group.Value);
+                        existingNode.UpdateProcessInfo(group.Value.First());
+
+                        System.Diagnostics.Debug.WriteLine($"[UpdateProcessTreeSmart] 기존 노드 업데이트: {existingNode.ProcessName} ({existingNode.ProcessId}) - {group.Value.Count}개 연결, 확장상태: {existingNode.IsExpanded}");
+                    }
+                    else
+                    {
+                        // 새 노드 생성
+                        var firstConnection = group.Value.First();
+                        var newNode = new ProcessTreeNode
+                        {
+                            ProcessId = group.Key.ProcessId,
+                            ProcessName = group.Key.ProcessName,
+                            ProcessPath = firstConnection.ProcessPath
+                        };
+
+                        // 저장된 확장 상태 복원
+                        var savedState = ProcessTreeNode.GetSavedExpandedState(newNode.UniqueId);
+                        newNode.IsExpanded = savedState;
+
+                        // 연결 정보 추가
+                        newNode.UpdateConnections(group.Value);
+
+                        treeNodeCollection.Add(newNode);
+
+                        System.Diagnostics.Debug.WriteLine($"[UpdateProcessTreeSmart] 새 노드 생성: {newNode.ProcessName} ({newNode.ProcessId}) - {group.Value.Count}개 연결, 확장상태: {newNode.IsExpanded} (복원됨: {savedState})");
+                    }
+                }
+
+                System.Diagnostics.Debug.WriteLine($"[UpdateProcessTreeSmart] 업데이트 완료 - 총 {treeNodeCollection.Count}개 노드");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[UpdateProcessTreeSmart] 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// PID별로 프로세스를 그룹화하여 '스마트하게' 업데이트합니다.
         /// </summary>
         private void UpdateProcessGroups(ObservableCollection<ProcessGroup> groupCollection, List<ProcessNetworkInfo> processes)
         {
-            groupCollection.Clear();
-
-            var groupedByPid = processes
+            // 1. 새로운 데이터를 PID 기준으로 그룹화합니다.
+            var newGroups = processes
+                .Where(p => p != null)
                 .GroupBy(p => p.ProcessId)
-                .OrderBy(g => g.Key);
+                .ToDictionary(g => g.Key, g => g.ToList());
 
-            foreach (var group in groupedByPid)
+            // 2. 기존 그룹 목록에서 더 이상 존재하지 않는 프로세스 그룹을 제거합니다.
+            var pidsToRemove = groupCollection.Select(g => g.ProcessId).Except(newGroups.Keys).ToList();
+            foreach (var pid in pidsToRemove)
             {
-                var processGroup = new ProcessGroup
+                var groupToRemove = groupCollection.FirstOrDefault(g => g.ProcessId == pid);
+                if (groupToRemove != null)
                 {
-                    ProcessId = group.Key,
-                    ProcessName = group.First().ProcessName,
-                    ProcessPath = group.First().ProcessPath,
-                    Processes = new ObservableCollection<ProcessNetworkInfo>(group.ToList()),
-                    IsExpanded = false // 기본적으로 축소된 상태
-                };
+                    groupCollection.Remove(groupToRemove);
+                    System.Diagnostics.Debug.WriteLine($"그룹 제거: PID {pid}");
+                }
+            }
 
-                groupCollection.Add(processGroup);
+            // 3. 신규 또는 기존 그룹의 내용을 업데이트합니다.
+            foreach (var newGroup in newGroups)
+            {
+                var existingGroup = groupCollection.FirstOrDefault(g => g.ProcessId == newGroup.Key);
+
+                if (existingGroup != null)
+                {
+                    // 3-1. 그룹이 이미 존재하면 내부 프로세스 목록만 업데이트합니다.
+                    // 이렇게 하면 ProcessGroup 객체 자체가 교체되지 않으므로 IsExpanded 상태가 유지됩니다.
+                    var firstProcess = newGroup.Value.First();
+                    existingGroup.ProcessName = firstProcess.ProcessName ?? "Unknown";
+                    existingGroup.ProcessPath = firstProcess.ProcessPath ?? "";
+
+                    // 내부 컬렉션도 Clear/Add 대신 스마트하게 업데이트하면 더 좋습니다.
+                    // 지금은 간단하게 Clear/Add로 처리해도 IsExpanded 상태는 유지됩니다.
+                    existingGroup.Processes.Clear();
+                    foreach (var process in newGroup.Value)
+                    {
+                        existingGroup.Processes.Add(process);
+                    }
+                    System.Diagnostics.Debug.WriteLine($"그룹 업데이트: PID {newGroup.Key} ({newGroup.Value.Count}개 항목)");
+                }
+                else
+                {
+                    // 3-2. 새로운 그룹이면 컬렉션에 추가합니다.
+                    var firstProcess = newGroup.Value.First();
+
+                    // 저장된 상태가 있으면 사용, 없으면 기본값(false)
+                    bool isExpanded = _groupExpandedStates.ContainsKey(newGroup.Key)
+                        ? _groupExpandedStates[newGroup.Key]
+                        : false;
+
+                    var processGroup = new ProcessGroup
+                    {
+                        ProcessId = newGroup.Key,
+                        ProcessName = firstProcess.ProcessName ?? "Unknown",
+                        ProcessPath = firstProcess.ProcessPath ?? "",
+                        Processes = new ObservableCollection<ProcessNetworkInfo>(newGroup.Value),
+                        IsExpanded = isExpanded
+                    };
+                    groupCollection.Add(processGroup);
+                    System.Diagnostics.Debug.WriteLine($"그룹 추가: PID {newGroup.Key} (상태: {(isExpanded ? "펼침" : "접힘")})");
+                }
             }
         }
 
@@ -925,6 +1232,47 @@ namespace LogCheck
             catch (Exception ex)
             {
                 AddLogMessage($"통계 표시 업데이트 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 컬렉션을 스마트하게 업데이트 (Clear 대신 개별 아이템 변경)
+        /// </summary>
+        private void UpdateCollectionSmart<T>(ObservableCollection<T> collection, List<T> newItems)
+            where T : class
+        {
+            try
+            {
+                // ProcessNetworkInfo의 경우 객체 참조가 달라서 간단히 Clear & Add 방식 사용
+                // 하지만 CollectionView를 완전히 리셋하지 않도록 하나씩 처리
+
+                // 기존 방식보다 부드럽게 업데이트
+                if (collection.Count == 0)
+                {
+                    // 빈 컬렉션이면 그냥 추가
+                    foreach (var item in newItems)
+                    {
+                        collection.Add(item);
+                    }
+                }
+                else
+                {
+                    // 하나씩 제거하고 추가하여 UI 깜빡임 최소화
+                    collection.Clear();
+                    foreach (var item in newItems)
+                    {
+                        collection.Add(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"스마트 업데이트 실패: {ex.Message}");
+                collection.Clear();
+                foreach (var item in newItems)
+                {
+                    collection.Add(item);
+                }
             }
         }
 
@@ -1056,10 +1404,20 @@ namespace LogCheck
         {
             try
             {
-                // UI 업데이트 타이머만 중지
+                // UI 업데이트 타이머 중지
                 _updateTimer?.Stop();
 
-                // ❌ 모니터링 정지 호출 제거
+                // Hub 이벤트 구독 해제
+                try
+                {
+                    UnsubscribeHub();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Hub 구독 해제 중 오류: {ex.Message}");
+                }
+
+                // ❌ 모니터링 정지 호출 제거 (전역 허브에서 관리)
                 // _ = _processNetworkMapper?.StopMonitoringAsync();
                 // _ = _captureService?.StopAsync();
             }
@@ -1085,56 +1443,68 @@ namespace LogCheck
         }
         private void ShowSecurityAlertToast(SecurityAlert alert)
         {
-            Dispatcher.Invoke(() =>
+            try
             {
-                var popup = new Popup
-                {
-                    Placement = PlacementMode.Bottom,  // 유효한 값 사용
-                    AllowsTransparency = true,
-                    PopupAnimation = PopupAnimation.Fade,
-                    StaysOpen = false,
-                    HorizontalOffset = SystemParameters.WorkArea.Width - 300, // 화면 우측
-                    VerticalOffset = SystemParameters.WorkArea.Height - 100   // 화면 하단
-                };
+                // 애플리케이션이 종료 중인지 확인
+                if (System.Windows.Application.Current?.Dispatcher?.HasShutdownStarted == true)
+                    return;
 
+                // UI가 아직 유효한지 확인
+                if (Dispatcher.HasShutdownStarted)
+                    return;
 
-                // 타이틀 TextBlock 생성
-                var titleTextBlock = new TextBlock
+                Dispatcher.Invoke(() =>
                 {
-                    Text = alert.Title,
-                    Foreground = MediaBrushes.White,
-                    FontWeight = FontWeights.Bold,
-                    FontSize = 14
-                };
-                DockPanel.SetDock(titleTextBlock, Dock.Left); // 여기서 Dock 설정
-
-                // X 버튼 생성
-                var closeButton = new System.Windows.Controls.Button
-                {
-                    Content = "X",
-                    Width = 20,
-                    Height = 20,
-                    HorizontalAlignment = System.Windows.HorizontalAlignment.Right
-                };
-                closeButton.Click += (s, e) => popup.IsOpen = false;
-
-                // DockPanel 생성 및 Children 추가
-                var dockPanel = new DockPanel
-                {
-                    LastChildFill = true
-                };
-                dockPanel.Children.Add(titleTextBlock);
-                dockPanel.Children.Add(closeButton);
-
-                // Border 생성
-                var border = new Border
-                {
-                    Background = new SolidColorBrush(MediaColor.FromArgb(220, 60, 60, 60)),
-                    CornerRadius = new CornerRadius(8),
-                    Padding = new Thickness(12),
-                    Child = new StackPanel
+                    try
                     {
-                        Children =
+                        var popup = new Popup
+                        {
+                            Placement = PlacementMode.Bottom,  // 유효한 값 사용
+                            AllowsTransparency = true,
+                            PopupAnimation = PopupAnimation.Fade,
+                            StaysOpen = false,
+                            HorizontalOffset = SystemParameters.WorkArea.Width - 300, // 화면 우측
+                            VerticalOffset = SystemParameters.WorkArea.Height - 100   // 화면 하단
+                        };
+
+
+                        // 타이틀 TextBlock 생성
+                        var titleTextBlock = new TextBlock
+                        {
+                            Text = alert.Title,
+                            Foreground = MediaBrushes.White,
+                            FontWeight = FontWeights.Bold,
+                            FontSize = 14
+                        };
+                        DockPanel.SetDock(titleTextBlock, Dock.Left); // 여기서 Dock 설정
+
+                        // X 버튼 생성
+                        var closeButton = new System.Windows.Controls.Button
+                        {
+                            Content = "X",
+                            Width = 20,
+                            Height = 20,
+                            HorizontalAlignment = System.Windows.HorizontalAlignment.Right
+                        };
+                        closeButton.Click += (s, e) => popup.IsOpen = false;
+
+                        // DockPanel 생성 및 Children 추가
+                        var dockPanel = new DockPanel
+                        {
+                            LastChildFill = true
+                        };
+                        dockPanel.Children.Add(titleTextBlock);
+                        dockPanel.Children.Add(closeButton);
+
+                        // Border 생성
+                        var border = new Border
+                        {
+                            Background = new SolidColorBrush(MediaColor.FromArgb(220, 60, 60, 60)),
+                            CornerRadius = new CornerRadius(8),
+                            Padding = new Thickness(12),
+                            Child = new StackPanel
+                            {
+                                Children =
         {
             dockPanel,
             new TextBlock
@@ -1155,31 +1525,45 @@ namespace LogCheck
                 MaxWidth = 250
             }
         }
+                            }
+                        };
+
+                        popup.Child = border;
+
+                        // 화면 우측 상단 위치
+                        popup.HorizontalOffset = SystemParameters.WorkArea.Width - 300;
+                        popup.VerticalOffset = 20;
+
+                        popup.IsOpen = true;
+
+                        // 일정 시간 후 자동 닫기
+                        var timer = new DispatcherTimer
+                        {
+                            Interval = TimeSpan.FromSeconds(5)
+                        };
+                        timer.Tick += (s, e) =>
+                        {
+                            popup.IsOpen = false;
+                            timer.Stop();
+                        };
+                        timer.Start();
                     }
-                };
-
-                popup.Child = border;
-
-                // 화면 우측 상단 위치
-                popup.HorizontalOffset = SystemParameters.WorkArea.Width - 300;
-                popup.VerticalOffset = 20;
-
-                popup.IsOpen = true;
-
-                // 일정 시간 후 자동 닫기
-                var timer = new DispatcherTimer
-                {
-                    Interval = TimeSpan.FromSeconds(5)
-                };
-                timer.Tick += (s, e) =>
-                {
-                    popup.IsOpen = false;
-                    timer.Stop();
-                };
-                timer.Start();
-            });
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"보안 알림 토스트 생성 중 오류: {ex.Message}");
+                    }
+                });
+            }
+            catch (TaskCanceledException)
+            {
+                // 종료 시 발생하는 TaskCanceledException은 무시
+                System.Diagnostics.Debug.WriteLine("ShowSecurityAlertToast: TaskCanceledException 발생 (정상 종료 과정)");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ShowSecurityAlertToast 예외: {ex.Message}");
+            }
         }
-
         private void OpenSettings_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1278,69 +1662,20 @@ namespace LogCheck
         }
 
         /// <summary>
-        /// Expander 확장 이벤트
-        /// </summary>
-        private void ProcessGroupExpander_Expanded(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender is System.Windows.Controls.Expander expander && expander.DataContext is ProcessGroup group)
-                {
-                    AddLogMessage($"프로세스 '{group.ProcessName}' (PID: {group.ProcessId})의 {group.ProcessCount}개 프로세스 연결 정보를 표시합니다.");
-
-                    // 실제 하위 프로세스 목록을 로그에 표시
-                    foreach (var process in group.Processes.Take(5)) // 최대 5개만 표시
-                    {
-                        AddLogMessage($"  - {process.LocalAddress} -> {process.RemoteAddress} ({process.Protocol}, {process.ConnectionState})");
-                    }
-                    if (group.Processes.Count > 5)
-                    {
-                        AddLogMessage($"  ... 그 외 {group.Processes.Count - 5}개 연결");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                AddLogMessage($"프로세스 그룹 확장 오류: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Expander 축소 이벤트  
-        /// </summary>
-        private void ProcessGroupExpander_Collapsed(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender is System.Windows.Controls.Expander expander && expander.DataContext is ProcessGroup group)
-                {
-                    AddLogMessage($"프로세스 그룹 '{group.ProcessName}' (PID: {group.ProcessId})을 축소했습니다.");
-                }
-            }
-            catch (Exception ex)
-            {
-                AddLogMessage($"프로세스 그룹 축소 오류: {ex.Message}");
-            }
-        }
-
-        /// <summary>
         /// 그룹 내 모든 연결 차단
         /// </summary>
         private async void BlockGroupConnections_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                // DataGrid의 그룹 헤더에서 클릭 시, DataContext를 통해 그룹 정보 가져오기
+                // TreeView 방식: Button의 Tag에서 ProcessTreeNode 가져오기
                 var button = sender as System.Windows.Controls.Button;
-                var groupHeader = button?.DataContext as CollectionViewGroup;
+                var processNode = button?.Tag as ProcessTreeNode;
 
-                if (groupHeader != null && groupHeader.Items.Count > 0)
+                if (processNode != null && processNode.Connections.Count > 0)
                 {
-                    var processItems = groupHeader.Items.Cast<ProcessNetworkInfo>().ToList();
-                    var firstProcess = processItems.First();
-
                     var result = MessageBox.Show(
-                        $"프로세스 '{firstProcess.ProcessName}' (PID: {firstProcess.ProcessId})의 모든 네트워크 연결 {processItems.Count}개를 차단하시겠습니까?",
+                        $"프로세스 '{processNode.ProcessName}' (PID: {processNode.ProcessId})의 모든 네트워크 연결 {processNode.Connections.Count}개를 차단하시겠습니까?",
                         "네트워크 연결 차단 확인",
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Warning);
@@ -1348,7 +1683,7 @@ namespace LogCheck
                     if (result == MessageBoxResult.Yes)
                     {
                         int blockedCount = 0;
-                        foreach (var connection in processItems)
+                        foreach (var connection in processNode.Connections.ToList())
                         {
                             try
                             {
@@ -1364,7 +1699,7 @@ namespace LogCheck
                             }
                         }
 
-                        AddLogMessage($"프로세스 그룹 '{firstProcess.ProcessName}'에서 {blockedCount}개 연결을 차단했습니다.");
+                        AddLogMessage($"프로세스 그룹 '{processNode.ProcessName}'에서 {blockedCount}개 연결을 차단했습니다.");
 
                         if (blockedCount > 0)
                         {
@@ -1372,6 +1707,10 @@ namespace LogCheck
                             await RefreshProcessData();
                         }
                     }
+                }
+                else
+                {
+                    MessageBox.Show("선택된 프로세스 그룹을 찾을 수 없습니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             catch (Exception ex)
@@ -1388,18 +1727,15 @@ namespace LogCheck
         {
             try
             {
-                // DataGrid의 그룹 헤더에서 클릭 시, DataContext를 통해 그룹 정보 가져오기
+                // TreeView 방식: Button의 Tag에서 ProcessTreeNode 가져오기
                 var button = sender as System.Windows.Controls.Button;
-                var groupHeader = button?.DataContext as CollectionViewGroup;
+                var processNode = button?.Tag as ProcessTreeNode;
 
-                if (groupHeader != null && groupHeader.Items.Count > 0)
+                if (processNode != null)
                 {
-                    var processItems = groupHeader.Items.Cast<ProcessNetworkInfo>().ToList();
-                    var firstProcess = processItems.First();
-
                     var result = MessageBox.Show(
-                        $"프로세스 '{firstProcess.ProcessName}' (PID: {firstProcess.ProcessId})을(를) 강제 종료하시겠습니까?\n\n" +
-                        $"이 작업은 되돌릴 수 없으며, 해당 프로세스의 모든 연결({processItems.Count}개)이 함께 종료됩니다.\n" +
+                        $"프로세스 '{processNode.ProcessName}' (PID: {processNode.ProcessId})을(를) 강제 종료하시겠습니까?\n\n" +
+                        $"이 작업은 되돌릴 수 없으며, 해당 프로세스의 모든 연결({processNode.Connections.Count}개)이 함께 종료됩니다.\n" +
                         $"시스템 프로세스인 경우 시스템 불안정을 야기할 수 있습니다.",
                         "프로세스 종료 확인",
                         MessageBoxButton.YesNo,
@@ -1409,7 +1745,7 @@ namespace LogCheck
                     {
                         try
                         {
-                            var process = System.Diagnostics.Process.GetProcessById(firstProcess.ProcessId);
+                            var process = System.Diagnostics.Process.GetProcessById(processNode.ProcessId);
 
                             string processInfo = $"프로세스명: {process.ProcessName}, PID: {process.Id}, 시작시간: {process.StartTime}";
 
@@ -1423,7 +1759,7 @@ namespace LogCheck
                         }
                         catch (ArgumentException)
                         {
-                            AddLogMessage($"프로세스 종료 실패: PID {firstProcess.ProcessId}에 해당하는 프로세스를 찾을 수 없습니다.");
+                            AddLogMessage($"프로세스 종료 실패: PID {processNode.ProcessId}에 해당하는 프로세스를 찾을 수 없습니다.");
                         }
                         catch (System.ComponentModel.Win32Exception ex)
                         {
@@ -1455,6 +1791,95 @@ namespace LogCheck
                 AddLogMessage($"데이터 새로고침 실패: {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// TreeView 방식에서는 자동 상태 관리로 인해 별도 복원 불필요
+        /// </summary>
+        private void RestoreGroupStates()
+        {
+            // TreeView는 IsExpanded 바인딩을 통해 자동으로 상태가 관리되므로
+            // 별도의 수동 복원 작업이 필요하지 않습니다.
+            System.Diagnostics.Debug.WriteLine("[RestoreGroupStates] TreeView 자동 상태 관리 - 수동 복원 불필요");
+        }
+
+        #endregion
+
+        #region 그룹 상태 관리 - DEPRECATED (데이터 바인딩으로 대체됨)
+        /*
+        /// <summary>
+        /// 그룹의 확장/축소 상태를 저장합니다
+        /// 이제 이벤트 핸들러에서 실시간으로 상태를 저장하므로 이 메서드는 간단히 처리
+        /// </summary>
+        private void SaveGroupExpandedStates()
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"현재 저장된 그룹 상태: {_processGroupExpandedStates.Count}개");
+                foreach (var kvp in _processGroupExpandedStates)
+                {
+                    System.Diagnostics.Debug.WriteLine($"  PID {kvp.Key}: {(kvp.Value ? "펼침" : "접힘")}");
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"그룹 상태 저장 오류: {ex.Message}");
+            }
+        }
+        */
+
+        /*
+        /// <summary>
+        /// DEPRECATED - TreeView 방식에서는 자동으로 상태가 관리됨
+        /// 저장된 그룹의 확장/축소 상태를 복원합니다
+        /// </summary>
+        private void RestoreGroupExpandedStates()
+        {
+            // TreeView의 IsExpanded 데이터 바인딩으로 자동 관리됨
+        }
+        */
+
+        /*
+        /// <summary>
+        /// DEPRECATED - TreeView 방식에서는 자동으로 상태가 관리됨
+        /// 실제 그룹 상태 복원 로직
+        /// </summary>
+        private void RestoreGroupStatesInternal(ICollectionView view)
+        {
+            // TreeView의 IsExpanded 데이터 바인딩으로 자동 관리됨
+        }
+        */
+
+        /*
+        /// <summary>
+        /// DEPRECATED - TreeView 방식에서는 사용하지 않음
+        /// DataGrid에서 CollectionViewGroup에 해당하는 GroupItem을 찾습니다
+        /// </summary>
+        private GroupItem? GetGroupItemFromGroup(DataGrid dataGrid, CollectionViewGroup group)
+        {
+            // TreeView 방식에서는 사용하지 않음
+            return null;
+        }
+
+        /// <summary>
+        /// DEPRECATED - TreeView 방식에서는 사용하지 않음
+        /// GroupItem에서 Expander 컨트롤을 찾습니다
+        /// </summary>
+        private Expander? FindExpanderInGroupItem(GroupItem groupItem)
+        {
+            // TreeView 방식에서는 사용하지 않음
+            return null;
+        }
+
+        /// <summary>
+        /// DEPRECATED - TreeView 방식에서는 사용하지 않음
+        /// 시각적 트리에서 특정 타입의 자식 요소를 찾습니다
+        /// </summary>
+        private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            // TreeView 방식에서는 사용하지 않음
+            return null;
+        }
+        */
 
         #endregion
 

@@ -50,10 +50,17 @@
     공격자들은 이 프로세스의 이름을 교묘하게 위장하여 악성코드를 숨기는 경우가 종종 있음. 예) System ldle Process (Idle의 I가 소문자 L)  or System Idle Process.exe (정상 프로세스는 .exe 확장자가 없음)
     프로세스의 실행 경로, 디지털 서명, PID 등을 종합적으로 분석하여 이러한 위장 악성코드를 정확히 걸러낼 수 있는 로직을 갖추어야 함
 
-# OnHubMonitoringStateChanged 예외 수정
+# OnHubMonitoringStateChanged 예외 수정 ✅
 
-NetWorks_New.xaml.cs 232번째 줄 예외 처리
-Null 참조 및 UI 스레드 안전성 보장
+~~NetWorks_New.xaml.cs 232번째 줄 예외 처리~~
+~~Null 참조 및 UI 스레드 안전성 보장~~
+
+**해결됨**: 종료 시 발생하는 TaskCanceledException 방지를 위한 안전장치 구현
+
+- Dispatcher.HasShutdownStarted 체크 추가
+- TaskCanceledException 예외 처리 추가
+- UI 요소 null 체크 강화
+- 모든 Dispatcher.Invoke/InvokeAsync 호출에 안전장치 적용
 
 # 같은 PID 그룹화 표시
 
@@ -116,7 +123,6 @@ System Idle Process 위장 탐지
 
 ### 우선순위 작업 (TODO)
 
-- 자식 프로세스에도 프로세스명 표시 (줄맞춤)
 - 기본적으로 프로세스 목록이 접힌 상태로 나오도록
 - 새로고침 되어도 프로세스 목록이 접힘/펼침 상태 유지
 - 트레이 우클릭 => 창열기 하면 또하나 열리는 문제 해결

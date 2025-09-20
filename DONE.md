@@ -24,45 +24,10 @@
   - 트레이 메뉴에 “설정” 항목 추가: 메인 창 표시 후 설정 페이지로 이동
 
 - 빌드/XAML 안정화
+
   - WPF 빌드 오류(MC3072: Spacing 속성 미지원) 해결 → Margin 기반 레이아웃으로 교체
   - MaterialDesign PackIcon 사용을 위한 XAML 네임스페이스 누락(MC3000) 보완
   - Windows 전용 API 경고(CA1416) 및 일부 널 가능성 경고는 정보성으로 유지, 빌드 성공 상태 확보
-
-## 주요 화면 변경 사항
-
-- NetWorks_New
-
-  - 상태 영역에 "NIC: … | BPF: …" 요약 텍스트 추가
-  - 모니터링 시작/중지 등 상태 이벤트 시 요약 텍스트 갱신
-  - 우측 상단 기어 아이콘 버튼으로 설정 페이지 이동(툴팁 제공)
-
-- Setting
-
-  - 테마(라이트/다크), 자동 시작, NIC 자동선택/수동 선택, BPF 필터 검증/저장 제공
-  - 좌측 상단 뒤로가기 버튼으로 NetWorks_New로 복귀
-
-- Tray(시스템 트레이)
-  - 모니터링 시작/중지 토글 및 풍선 알림
-  - “설정” 메뉴 항목으로 즉시 설정 페이지 진입 가능
-
-## 동작 요약
-
-- 앱 시작 시 설정값(자동 시작, NIC/BPF)에 따라 캡처 자동 시작 가능
-- 설정 변경은 저장 후 다음 실행에 반영되며, 런타임 요약을 통해 가시적으로 확인 가능
-- 시작/중지 시 트레이 풍선 알림으로 상태 변화를 즉시 인지 가능
-
-## 빌드/실행
-
-- VS Code 작업(Task)
-  - Build: 솔루션 빌드 (현재 경고 다수 존재하나 기능 영향 없음)
-  - Publish: 솔루션 퍼블리시
-  - Watch: 변경 감지 실행(개발 중 편의)
-
-## 기술 스택
-
-- .NET 8 WPF
-- SharpPcap / PacketDotNet (패킷 캡처/해석)
-- MaterialDesignInXaml (아이콘/스타일), LiveChartsCore (차트)
 
 ## 참고: 구조/파일 추가 및 문서
 
@@ -80,12 +45,16 @@
 - 경고 정리: CS8618/CS8600/CS8622 및 분석 경고 선별적 해소
 - 최소 단위 테스트: 설정 저장/로드, BPF 검증 로직 등 핵심 경로 스모크 테스트
 
-## 현재 상태 메모
-
-- MaterialDesign 네임스페이스 누락으로 인한 XAML 파싱 오류(MC3000) 해결됨
-- 설정 진입 경로(기어 아이콘, 트레이 메뉴)와 뒤로가기 네비게이션 정상 동작
-- 빌드 성공, 기능 동작 확인(경고는 정보성으로 유지)
+# - 자식 프로세스에도 프로세스명 표시 (줄맞춤)
 
 # System Idle Process 분석 예외 처리 / System Idle Process 화이트리스트 처리
 
 # - 같은 PID는 묶어서 표시되도록 수정
+
+# Windows Task Manager 방식으로 그룹 확장 상태 유지 문제 해결 (DataGrid → TreeView)
+
+- ProcessTreeNode 모델: INotifyPropertyChanged와 정적 Dictionary를 통한 전역 상태 관리
+- TreeView 구조: DataGrid 그룹핑을 완전히 TreeView로 교체, HierarchicalDataTemplate 적용
+- 스마트 업데이트: 기존 노드 재사용으로 UI 파괴 없이 데이터만 업데이트
+- 자동 상태 관리: TwoWay 데이터 바인딩으로 수동 복원 로직 불필요
+- 이벤트 마이그레이션: 모든 이벤트 핸들러를 TreeView 방식으로 완전 전환
