@@ -100,6 +100,7 @@ C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\refint\Logcheck.dll
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\Logcheck.pdb
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\ref\Logcheck.dll
+<<<<<<< HEAD
 C:\Users\ajh58\Documents\카카오톡 받은 파일\WS\WS\LogCheck\bin\Debug\net8.0-windows\Logcheck.exe
 C:\Users\ajh58\Documents\카카오톡 받은 파일\WS\WS\LogCheck\bin\Debug\net8.0-windows\Logcheck.deps.json
 C:\Users\ajh58\Documents\카카오톡 받은 파일\WS\WS\LogCheck\bin\Debug\net8.0-windows\Logcheck.runtimeconfig.json
@@ -1130,3 +1131,5 @@ C:\Users\admin\Downloads\WS_0914\WS\LogCheck\obj\Debug\net8.0-windows\refint\Log
 C:\Users\admin\Downloads\WS_0914\WS\LogCheck\obj\Debug\net8.0-windows\Logcheck.pdb
 C:\Users\admin\Downloads\WS_0914\WS\LogCheck\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
 C:\Users\admin\Downloads\WS_0914\WS\LogCheck\obj\Debug\net8.0-windows\ref\Logcheck.dll
+=======
+>>>>>>> parent of 126e2e8 (백그라운드 작동 및 스크롤 기능 추가)
