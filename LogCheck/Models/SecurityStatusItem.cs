@@ -1,5 +1,3 @@
-using System;
-
 namespace LogCheck.Models
 {
     public class SecurityStatusItem

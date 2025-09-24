@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Threading.Tasks;
-using System.Management;
 using LogCheck.Models;
-using System.Text.RegularExpressions;
 using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.Management;
+using System.Text.RegularExpressions;
 
 namespace LogCheck.Services
 {
@@ -103,13 +98,13 @@ namespace LogCheck.Services
             {
                 // 1. 활성 네트워크 연결 수집
                 var connections = await GetActiveNetworkConnectionsAsync();
-                
+
                 // 2. 프로세스 정보 수집
                 var processes = await GetProcessInformationAsync();
-                
+
                 // 3. 데이터 매핑 및 통합
                 var result = await MapProcessToNetworkAsync(connections, processes);
-                
+
                 // 4. 위험도 계산
                 foreach (var item in result)
                 {
@@ -241,7 +236,7 @@ namespace LogCheck.Services
                     // WMI를 통한 프로세스 정보 수집
                     using var searcher = new ManagementObjectSearcher(
                         "SELECT ProcessId, Name, ExecutablePath, CreationDate, UserModeTime, WorkingSetSize FROM Win32_Process");
-                    
+
                     foreach (ManagementObject obj in searcher.Get())
                     {
                         try
@@ -259,7 +254,7 @@ namespace LogCheck.Services
 
                             // 추가 프로세스 정보 수집
                             EnrichProcessInfo(processInfo);
-                            
+
                             processes[processId] = processInfo;
                         }
                         catch (Exception ex)
@@ -396,7 +391,7 @@ namespace LogCheck.Services
         /// 프로세스와 네트워크 연결 매핑
         /// </summary>
         private async Task<List<ProcessNetworkInfo>> MapProcessToNetworkAsync(
-            List<NetworkConnection> connections, 
+            List<NetworkConnection> connections,
             Dictionary<int, ProcessInfo> processes)
         {
             return await Task.Run(() =>

@@ -1,8 +1,3 @@
-using System;
-using System.IO;
-using System.Windows;
-using WpfMessageBox = System.Windows.MessageBox;
-
 namespace LogCheck
 {
     public static class LogHelper

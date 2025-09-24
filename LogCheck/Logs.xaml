@@ -27,11 +27,11 @@
                               Click="SidebarButton_Click"
                               IsThreeState="False"
                               ClickMode="Release"/>
-                <!-- 네트워크 접속 내역 -->
+                <!-- 네트워크 모니터링 -->
                 <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
-                              CommandParameter="NetWorks"
-                              Tag="&#xE81C;"
-                              Content="네트워크 접속 내역"
+                              CommandParameter="NetWorks_New"
+                              Tag="&#xE704;"
+                              Content="네트워크 모니터링"
                               Cursor="Hand"
                               Click="SidebarButton_Click"
                               IsThreeState="False"
@@ -165,21 +165,11 @@
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button x:Name="btnShowChangeLogs" Content="내역 확인"
-                                Style="{DynamicResource CheckButtonStyle}"
+                                Style="{DynamicResource RefreshButtonStyle}"
                                 BorderThickness="0" 
                                 Width="200" Height="30" 
                                 Click="BtnShowChangeLogs_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            CornerRadius="12">
-                                        <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
+                            
                         </Button>
 
                     </StackPanel>

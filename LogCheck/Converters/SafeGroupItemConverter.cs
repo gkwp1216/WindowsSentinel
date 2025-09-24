@@ -1,9 +1,6 @@
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Windows.Data;
-using System.Windows.Media;
 using LogCheck.Models;
+using System.Globalization;
+using System.Windows.Data;
 
 namespace LogCheck.Converters
 {

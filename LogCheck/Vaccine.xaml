@@ -34,11 +34,11 @@
                               Click="SidebarButton_Click"
                               IsThreeState="False"
                               ClickMode="Release"/>
-                <!-- 네트워크 접속 내역 -->
+                <!-- 네트워크 모니터링 -->
                 <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
-                              CommandParameter="NetWorks"
-                              Tag="&#xE81C;"
-                              Content="네트워크 접속 내역"
+                              CommandParameter="NetWorks_New"
+                              Tag="&#xE704;"
+                              Content="네트워크 모니터링"
                               Cursor="Hand"
                               Click="SidebarButton_Click"
                               IsThreeState="False"
@@ -116,24 +116,12 @@
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <Button x:Name="fileScanButton" Content="파일 검사" Width="200" Height="30" Margin="0,0,10,0"
-                                Style="{DynamicResource CheckButtonStyle}" Cursor="Hand" Click="FileScanButton_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="12">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
+                                Style="{DynamicResource RefreshButtonStyle}" Cursor="Hand" Click="FileScanButton_Click">
+                            
                         </Button>
                         <Button x:Name="fullScanButton" Content="전체 검사" Width="200" Height="30"
-                                Style="{DynamicResource CheckButtonStyle}" Cursor="Hand" Click="FullScanButton_Click">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="12">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
+                                Style="{DynamicResource RefreshButtonStyle}" Cursor="Hand" Click="FullScanButton_Click">
+                            
                         </Button>
                     </StackPanel>
                 </Grid>

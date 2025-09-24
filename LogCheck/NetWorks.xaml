@@ -127,64 +127,34 @@
 
                                     <Button x:Name="StartCaptureButton"
                                 Content="캡처 시작"
-                                Style="{DynamicResource CheckButtonStyle}"
+                                Style="{DynamicResource RefreshButtonStyle}"
                                 Click="StartCapture_Click"
                                 BorderThickness="0"
                                 Width="200" Height="30"
                                 Cursor="Hand">
-                                        <Button.Template>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            CornerRadius="12">
-                                                    <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Button.Template>
+                                        
                                     </Button>
 
                                     <Button x:Name="StopCaptureButton"
                                 Content="캡처 중지"
-                                Style="{DynamicResource CheckButtonStyle}"
+                                Style="{DynamicResource RefreshButtonStyle}"
                                 Click="StopCapture_Click"
                                 BorderThickness="0"
                                 Cursor="Hand"
                                 Width="200" Height="30"
                                 Visibility="Collapsed">
-                                        <Button.Template>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}"
-                                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                                        CornerRadius="12">
-                                                    <ContentPresenter HorizontalAlignment="Center" 
-                                                                      VerticalAlignment="Center"/>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Button.Template>
+                                        
                                     </Button>
 
                                     <Button x:Name="ClearButton"
                                 Content="목록 지우기"
-                                Style="{DynamicResource CheckButtonStyle}"
+                                Style="{DynamicResource RefreshButtonStyle}"
                                 Click="Clear_Click"
                                 Margin="10,0,0,0"
                                 Width="200" Height="30"
                                 BorderThickness="0"
                                 Cursor="Hand">
-                                        <Button.Template>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}"
-                                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                                        CornerRadius="12">
-                                                    <ContentPresenter HorizontalAlignment="Center" 
-                                                          VerticalAlignment="Center"/>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Button.Template>
+                                        
                                     </Button>
                                 </StackPanel>
                             </Grid>

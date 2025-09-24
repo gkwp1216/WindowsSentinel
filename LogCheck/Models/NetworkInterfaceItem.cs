@@ -1,5 +1,5 @@
-using System.Net.NetworkInformation;
 using SharpPcap;
+using System.Net.NetworkInformation;
 
 namespace LogCheck.Models
 {
@@ -7,7 +7,7 @@ namespace LogCheck.Models
     {
         public ICaptureDevice? Device { get; set; }
         public string Name { get; set; } = string.Empty;
-    public NetworkInterface? InterfaceInfo { get; set; }
+        public NetworkInterface? InterfaceInfo { get; set; }
         public bool IsActive { get; set; }
         public bool HasIPAddress { get; set; }
         public long Speed { get; set; }

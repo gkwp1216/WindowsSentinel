@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace LogCheck
 {
     public static class ChangeLogEntry
@@ -26,4 +22,4 @@ namespace LogCheck
             Install_Date.Clear();
         }
     }
-} 
+}

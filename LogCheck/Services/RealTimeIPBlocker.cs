@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
 using LogCheck.Models;
-using System.Threading;
+using System.Collections.Concurrent;
 
 namespace LogCheck.Services
 {
@@ -43,7 +36,7 @@ namespace LogCheck.Services
 
             // 정리 타이머 (1시간마다 만료된 차단 해제)
             _cleanupTimer = new System.Threading.Timer(CleanupExpiredBlocks, null, TimeSpan.FromHours(1), TimeSpan.FromHours(1));
-            
+
             // 자동 차단 타이머 (5분마다 실행)
             _autoBlockTimer = new System.Threading.Timer(AutoBlockThreats, null, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5));
         }
@@ -110,7 +103,7 @@ namespace LogCheck.Services
                 // Windows 방화벽 규칙 생성
                 var ruleName = $"WindowsSentinel_Block_{ipAddress}_{DateTime.Now:yyyyMMddHHmmss}";
                 var success = await _connectionManager.BlockIPAddressAsync(ipAddress, reason);
-                
+
                 if (!success)
                 {
                     OnErrorOccurred($"Windows 방화벽 규칙 생성 실패: {ipAddress}");
@@ -177,7 +170,7 @@ namespace LogCheck.Services
 
                 // Windows 방화벽 규칙 삭제
                 var success = await _connectionManager.UnblockIPAsync(ipAddress);
-                
+
                 if (!success)
                 {
                     OnErrorOccurred($"Windows 방화벽 규칙 삭제 실패: {ipAddress}");
@@ -186,7 +179,7 @@ namespace LogCheck.Services
 
                 // 차단 정보 제거
                 _blockedIPs.TryRemove(ipAddress, out _);
-                
+
                 // 차단 규칙 제거
                 if (_blockRules.TryGetValue(blockedIP.FirewallRuleName, out var rule))
                 {
@@ -231,19 +224,19 @@ namespace LogCheck.Services
 
                 // AbuseIPDB에서 위협 정보 조회
                 var threatResult = await _abuseIPDBClient.LookupIPAsync(ipAddress);
-                
+
                 if (threatResult.IsThreat && threatResult.ThreatScore >= _autoBlockThreshold)
                 {
                     if (_isAutoBlockingEnabled)
                     {
                         var reason = $"자동 차단: {threatResult.ThreatDescription}";
                         await BlockIPAddressAsync(ipAddress, reason);
-                        
+
                         // 위협 정보 업데이트
                         threatResult.IsBlocked = true;
                         threatResult.BlockReason = reason;
                     }
-                    
+
                     ThreatDetected?.Invoke(this, threatResult);
                 }
 
@@ -272,16 +265,16 @@ namespace LogCheck.Services
         public async Task<List<ThreatLookupResult>> CheckMultipleIPsAsync(List<string> ipAddresses)
         {
             var results = new List<ThreatLookupResult>();
-            
+
             foreach (var ip in ipAddresses)
             {
                 var result = await CheckAndBlockIPAsync(ip);
                 results.Add(result);
-                
+
                 // Rate limiting을 위한 지연
                 await Task.Delay(100);
             }
-            
+
             return results;
         }
 
@@ -317,7 +310,7 @@ namespace LogCheck.Services
             var total = _blockedIPs.Count;
             var active = _blockedIPs.Values.Count(ip => ip.IsActive);
             var expired = _blockedIPs.Values.Count(ip => ip.ExpiresAt.HasValue && ip.ExpiresAt.Value < DateTime.Now);
-            
+
             return (total, active, expired);
         }
 

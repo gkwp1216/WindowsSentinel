@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Concurrent;
 using LogCheck.Models;
+using System.Collections.Concurrent;
 using System.Net;
-using System.Text.RegularExpressions;
 
 namespace LogCheck.Services
 {
@@ -20,10 +15,10 @@ namespace LogCheck.Services
 
         // 알려진 악성 IP 데이터베이스 (실제로는 외부 API나 DB에서 가져와야 함)
         private HashSet<string> _knownMaliciousIPs;
-        
+
         // 의심스러운 포트 목록
         private HashSet<int> _suspiciousPorts;
-        
+
         // 정상적인 포트 목록
         private HashSet<int> _legitimatePorts;
 
@@ -34,7 +29,7 @@ namespace LogCheck.Services
         {
             _securityAlerts = new ConcurrentDictionary<string, SecurityAlert>();
             _threatPatterns = new ConcurrentDictionary<string, ThreatPattern>();
-            
+
             // 초기 데이터 초기화
             InitializeThreatDatabase();
         }
@@ -118,10 +113,10 @@ namespace LogCheck.Services
                     if (alert != null)
                     {
                         alerts.Add(alert);
-                        
+
                         // 보안 경고 이벤트 발생
                         SecurityAlertGenerated?.Invoke(this, alert);
-                        
+
                         // 보안 경고 저장
                         var alertKey = $"{connection.ProcessId}_{connection.RemoteAddress}_{connection.RemotePort}";
                         _securityAlerts.TryAdd(alertKey, alert);
@@ -684,8 +679,8 @@ namespace LogCheck.Services
             if (IPAddress.TryParse(ipAddress, out var ip))
             {
                 var bytes = ip.GetAddressBytes();
-                return !((bytes[0] == 10) || 
-                        (bytes[0] == 172 && bytes[1] >= 16 && bytes[1] <= 31) || 
+                return !((bytes[0] == 10) ||
+                        (bytes[0] == 172 && bytes[1] >= 16 && bytes[1] <= 31) ||
                         (bytes[0] == 192 && bytes[1] == 168) ||
                         (bytes[0] == 127));
             }

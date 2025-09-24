@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
+using LogCheck.Models;
+using LogCheck.Services;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using LogCheck.Models;
-using LogCheck.Services;
-using MaterialDesignThemes.Wpf;
 
 namespace LogCheck
 {
@@ -81,16 +76,16 @@ namespace LogCheck
             {
                 // 차단된 IP 목록 로드
                 LoadBlockedIPs();
-                
+
                 // 통계 업데이트
                 UpdateStatistics();
-                
+
                 // API 키 상태 확인
                 UpdateApiKeyStatus();
-                
+
                 // 자동 차단 상태 확인
                 UpdateAutoBlockStatus();
-                
+
                 AddLogMessage("위협 정보 관리 시스템이 초기화되었습니다.");
             }
             catch (Exception ex)
@@ -105,7 +100,7 @@ namespace LogCheck
             {
                 var blockedIPs = _ipBlocker.GetBlockedIPs();
                 _blockedIPs.Clear();
-                
+
                 foreach (var blockedIP in blockedIPs)
                 {
                     _blockedIPs.Add(blockedIP);
@@ -122,7 +117,7 @@ namespace LogCheck
             try
             {
                 var (total, active, expired) = _ipBlocker.GetBlockStatistics();
-                
+
                 TotalBlockedText.Text = total.ToString();
                 ActiveBlockedText.Text = active.ToString();
                 ExpiredBlockedText.Text = expired.ToString();
@@ -140,7 +135,7 @@ namespace LogCheck
             {
                 var status = _abuseIPDBClient.GetApiKeyStatus();
                 ApiKeyStatusText.Text = $"API 키: {status}";
-                
+
                 if (_abuseIPDBClient.IsConfigured)
                 {
                     ApiKeyStatusText.Foreground = new SolidColorBrush(Colors.Green);
@@ -162,7 +157,7 @@ namespace LogCheck
             {
                 var isEnabled = _ipBlocker.IsAutoBlockingEnabled;
                 AutoBlockToggleButton.Content = isEnabled ? "자동차단 ON" : "자동차단 OFF";
-                
+
                 if (isEnabled)
                 {
                     AutoBlockToggleButton.Background = new SolidColorBrush(Colors.Green);
@@ -186,13 +181,13 @@ namespace LogCheck
             {
                 ShowLoading(true);
                 AddLogMessage("데이터를 새로고침하고 있습니다...");
-                
+
                 await Task.Delay(1000); // UI 업데이트를 위한 지연
-                
+
                 LoadBlockedIPs();
                 UpdateStatistics();
                 UpdateApiKeyStatus();
-                
+
                 AddLogMessage("데이터 새로고침이 완료되었습니다.");
             }
             catch (Exception ex)
@@ -211,9 +206,9 @@ namespace LogCheck
             {
                 var newState = !_ipBlocker.IsAutoBlockingEnabled;
                 _ipBlocker.IsAutoBlockingEnabled = newState;
-                
+
                 UpdateAutoBlockStatus();
-                
+
                 var message = newState ? "자동 IP 차단이 활성화되었습니다." : "자동 IP 차단이 비활성화되었습니다.";
                 AddLogMessage(message);
             }
@@ -261,10 +256,10 @@ namespace LogCheck
                 // 상세 정보 업데이트
                 UpdateThreatDetails(threatResult);
 
-                var message = threatResult.IsThreat 
+                var message = threatResult.IsThreat
                     ? $"IP {ipAddress}는 위협 IP입니다. (점수: {threatResult.ThreatScore})"
                     : $"IP {ipAddress}는 안전합니다.";
-                
+
                 AddLogMessage(message);
 
                 if (threatResult.IsBlocked)
@@ -289,7 +284,7 @@ namespace LogCheck
             try
             {
                 _selectedBlockedIP = BlockedIPsDataGrid.SelectedItem as BlockedIPAddress;
-                
+
                 if (_selectedBlockedIP != null)
                 {
                     // 선택된 IP의 상세 정보 표시
@@ -319,7 +314,7 @@ namespace LogCheck
                 AddLogMessage($"IP {ipAddress}를 차단하고 있습니다...");
 
                 var success = await _ipBlocker.BlockIPAddressAsync(ipAddress, reason);
-                
+
                 if (success)
                 {
                     AddLogMessage($"IP {ipAddress}가 성공적으로 차단되었습니다.");
@@ -352,17 +347,17 @@ namespace LogCheck
                 }
 
                 var ipAddress = _selectedBlockedIP.IPAddress;
-                
-                var result = System.Windows.MessageBox.Show($"IP {ipAddress}의 차단을 해제하시겠습니까?", "확인", 
+
+                var result = System.Windows.MessageBox.Show($"IP {ipAddress}의 차단을 해제하시겠습니까?", "확인",
                     System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
-                
+
                 if (result == System.Windows.MessageBoxResult.Yes)
                 {
                     ShowLoading(true);
                     AddLogMessage($"IP {ipAddress}의 차단을 해제하고 있습니다...");
 
                     var success = await _ipBlocker.UnblockIPAddressAsync(ipAddress);
-                    
+
                     if (success)
                     {
                         AddLogMessage($"IP {ipAddress}의 차단이 해제되었습니다.");
@@ -396,10 +391,10 @@ namespace LogCheck
                 }
 
                 var ipAddress = _currentThreatResult.IPAddress;
-                
-                var result = System.Windows.MessageBox.Show($"IP {ipAddress}를 AbuseIPDB에 신고하시겠습니까?", "확인", 
+
+                var result = System.Windows.MessageBox.Show($"IP {ipAddress}를 AbuseIPDB에 신고하시겠습니까?", "확인",
                     System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
-                
+
                 if (result == System.Windows.MessageBoxResult.Yes)
                 {
                     ShowLoading(true);
@@ -408,9 +403,9 @@ namespace LogCheck
                     // 기본 카테고리 ID (악성 소프트웨어)
                     var categoryId = 1;
                     var comment = "WindowsSentinel에서 자동 신고";
-                    
+
                     var success = await _abuseIPDBClient.ReportIPAsync(ipAddress, categoryId, comment);
-                    
+
                     if (success)
                     {
                         AddLogMessage($"IP {ipAddress} 신고가 완료되었습니다.");
@@ -436,7 +431,7 @@ namespace LogCheck
             try
             {
                 var apiKey = ApiKeyPasswordBox.Password.Trim();
-                
+
                 if (string.IsNullOrWhiteSpace(apiKey))
                 {
                     System.Windows.MessageBox.Show("API 키를 입력해주세요.", "입력 오류", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
@@ -447,12 +442,12 @@ namespace LogCheck
                 AddLogMessage("API 키를 설정하고 있습니다...");
 
                 _abuseIPDBClient.Configure(apiKey);
-                
+
                 await Task.Delay(500); // UI 업데이트를 위한 지연
-                
+
                 UpdateApiKeyStatus();
                 ApiKeyPasswordBox.Password = string.Empty;
-                
+
                 AddLogMessage("API 키가 성공적으로 설정되었습니다.");
             }
             catch (Exception ex)
@@ -472,7 +467,7 @@ namespace LogCheck
                 var threshold = (int)e.NewValue;
                 ThresholdValueText.Text = threshold.ToString();
                 _ipBlocker.AutoBlockThreshold = threshold;
-                
+
                 AddLogMessage($"자동 차단 임계값이 {threshold}로 변경되었습니다.");
             }
             catch (Exception ex)
@@ -547,10 +542,10 @@ namespace LogCheck
             {
                 DetailIPText.Text = threatResult.IPAddress;
                 DetailThreatScoreText.Text = threatResult.ThreatScore.ToString();
-                
+
                 var threatLevel = GetThreatLevelText(threatResult.ThreatScore);
                 DetailThreatLevelText.Text = threatLevel;
-                
+
                 // 위협 점수에 따른 색상 변경
                 var color = GetThreatLevelColor(threatResult.ThreatScore);
                 DetailThreatLevelText.Foreground = color;
@@ -630,9 +625,9 @@ namespace LogCheck
             {
                 var timestamp = DateTime.Now.ToString("HH:mm:ss");
                 var logMessage = $"[{timestamp}] {message}";
-                
+
                 _logMessages.Add(logMessage);
-                
+
                 // 로그 메시지가 너무 많아지면 오래된 것 제거
                 while (_logMessages.Count > 100)
                 {
@@ -658,7 +653,7 @@ namespace LogCheck
                 UpdateStatistics();
                 UpdateApiKeyStatus();
                 UpdateAutoBlockStatus();
-                
+
                 AddLogMessage("위협 정보 관리 페이지에 진입했습니다.");
             }
             catch (Exception ex)
@@ -686,7 +681,7 @@ namespace LogCheck
                 // 리소스 정리
                 _abuseIPDBClient?.Dispose();
                 _ipBlocker?.Dispose();
-                
+
                 AddLogMessage("위협 정보 관리 시스템이 종료되었습니다.");
             }
             catch (Exception ex)

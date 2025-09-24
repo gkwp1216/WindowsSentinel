@@ -4,7 +4,8 @@
              xmlns:local="clr-namespace:LogCheck"
              xmlns:converters="clr-namespace:LogCheck.Converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             StartupUri="MainWindows.xaml">
+             StartupUri="MainWindows.xaml"
+             ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

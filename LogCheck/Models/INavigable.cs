@@ -5,4 +5,4 @@ namespace LogCheck.Models
         void OnNavigatedTo();
         void OnNavigatedFrom();
     }
-} 
+}

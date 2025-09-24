@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Linq;
 using LogCheck.Models;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 
 namespace LogCheck.Services
 {
@@ -87,17 +83,17 @@ namespace LogCheck.Services
                 await EnforceRateLimit();
 
                 var response = await _httpClient.GetAsync($"{_baseUrl}/check?ipAddress={ipAddress}&maxAgeInDays=90");
-                
+
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
                     var abuseResponse = JsonSerializer.Deserialize<AbuseIPDBResponse>(json);
-                    
+
                     if (abuseResponse?.Data != null)
                     {
                         var threatData = ConvertToThreatIntelligenceData(abuseResponse.Data);
                         _cache[ipAddress] = threatData;
-                        
+
                         ThreatDataReceived?.Invoke(this, threatData);
                         return CreateLookupResult(threatData);
                     }
@@ -151,19 +147,19 @@ namespace LogCheck.Services
         public async Task<List<ThreatLookupResult>> LookupMultipleIPsAsync(List<string> ipAddresses)
         {
             var results = new List<ThreatLookupResult>();
-            
+
             foreach (var ip in ipAddresses)
             {
                 var result = await LookupIPAsync(ip);
                 results.Add(result);
-                
+
                 // Rate limiting을 위한 지연
                 if (_isConfigured)
                 {
                     await Task.Delay(100); // 100ms 지연
                 }
             }
-            
+
             return results;
         }
 
@@ -193,7 +189,7 @@ namespace LogCheck.Services
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await _httpClient.PostAsync($"{_baseUrl}/report", content);
-                
+
                 if (response.IsSuccessStatusCode)
                 {
                     return true;
@@ -263,10 +259,10 @@ namespace LogCheck.Services
         {
             if (string.IsNullOrEmpty(_apiKey))
                 return "설정되지 않음";
-            
+
             if (_apiKey.Length <= 8)
                 return "잘못된 형식";
-            
+
             return $"{_apiKey.Substring(0, 4)}...{_apiKey.Substring(_apiKey.Length - 4)}";
         }
 
@@ -319,7 +315,7 @@ namespace LogCheck.Services
             };
 
             var categoryText = categories.Count > 0 ? string.Join(", ", categories) : "알 수 없음";
-            
+
             return $"위험도: {levelText} (점수: {score}/100), 카테고리: {categoryText}, 총 신고: {totalReports}회";
         }
 

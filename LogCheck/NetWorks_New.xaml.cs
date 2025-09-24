@@ -1,30 +1,17 @@
-using System;
-using System.Collections.Generic;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LogCheck.Models;
+using LogCheck.Services;
+using SkiaSharp;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO; // 파일 입출력 추가
-using System.Linq;
 using System.Runtime.Versioning;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives; // Popup 사용시
 using System.Windows.Data;
-using System.Windows.Forms;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
-using LiveChartsCore.SkiaSharpView.WPF;
-using LogCheck.Models;
-using LogCheck.Services;
-using MaterialDesignThemes.Wpf;
-using SkiaSharp;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 using Controls = System.Windows.Controls;
 using MediaBrushes = System.Windows.Media.Brushes;
 using MediaColor = System.Windows.Media.Color;
@@ -39,6 +26,8 @@ namespace LogCheck
     [SupportedOSPlatform("windows")]
     public partial class NetWorks_New : Page, INavigable
     {
+        private ToggleButton _selectedButton;
+
         private readonly ObservableCollection<ProcessNetworkInfo> _generalProcessData;
         private readonly ObservableCollection<ProcessNetworkInfo> _systemProcessData;
 
@@ -1606,6 +1595,51 @@ namespace LogCheck
                 AddLogMessage($"설정 열기 오류: {ex.Message}");
             }
         }
+
+        #region Sidebar Navigation
+
+
+        [SupportedOSPlatform("windows")]
+        private void SidebarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var clicked = sender as ToggleButton;
+            if (clicked == null) return;
+
+            // 이전 선택 해제
+            if (_selectedButton != null && _selectedButton != clicked)
+                _selectedButton.IsChecked = false;
+
+            // 선택 상태 유지
+            clicked.IsChecked = true;
+            _selectedButton = clicked;
+
+            switch (clicked.CommandParameter?.ToString())
+            {
+                case "Vaccine":
+                    NavigateToPage(new Vaccine());
+                    break;
+                case "NetWorks_New":
+                    NavigateToPage(new NetWorks_New());
+                    break;
+                case "ProgramsList":
+                    NavigateToPage(new ProgramsList());
+                    break;
+                case "Recoverys":
+                    NavigateToPage(new Recoverys());
+                    break;
+                case "Logs":
+                    NavigateToPage(new Logs());
+                    break;
+            }
+        }
+
+        [SupportedOSPlatform("windows")]
+        private void NavigateToPage(Page page)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindows;
+            mainWindow?.NavigateToPage(page);
+        }
+        #endregion
 
         #region 그룹화 기능 이벤트 핸들러
 

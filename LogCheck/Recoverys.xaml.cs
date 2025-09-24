@@ -1,26 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Runtime.Versioning;
 using System.Security.Principal;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Navigation;
 using System.Windows.Threading;
-using LogCheck;
-using LogCheck.Models;
 // Windows Forms와의 충돌을 방지하기 위한 alias 설정
-using WpfControl = System.Windows.Controls.Control;
 
 namespace LogCheck
 {
@@ -1184,8 +1172,8 @@ namespace LogCheck
                 case "Vaccine":
                     NavigateToPage(new Vaccine());
                     break;
-                case "NetWorks":
-                    NavigateToPage(new NetWorks());
+                case "NetWorks_New":
+                    NavigateToPage(new NetWorks_New());
                     break;
                 case "ProgramsList":
                     NavigateToPage(new ProgramsList());

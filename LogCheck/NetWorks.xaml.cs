@@ -1,20 +1,16 @@
 // using 지시문을 파일 맨 위로 이동 및 중복 제거
-using System;
-using System.Collections.Generic;
+using LogCheck.Models;
+using LogCheck.Services;
+using SharpPcap;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
-using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using System.Runtime.Versioning;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -22,17 +18,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Navigation;
 using System.Windows.Threading;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
-using LogCheck.Models;
-using LogCheck.Services;
-using MaterialDesignThemes.Wpf;
-using PacketDotNet;
-using SharpPcap;
-using SkiaSharp;
 using Application = System.Windows.Application;
 using Cursors = System.Windows.Input.Cursors;
 using MessageBox = System.Windows.MessageBox;
@@ -60,7 +46,6 @@ namespace LogCheck
         // XAML 이벤트 핸들러 Stub (클래스 내부로 이동)
         // 필드 선언부
         private DispatcherTimer? loadingTextTimer;
-        private void SidebarButton_Click(object sender, RoutedEventArgs e) { }
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
         private void StartCapture_Click(object sender, RoutedEventArgs e) { }
         private void StopCapture_Click(object sender, RoutedEventArgs e) { }
@@ -88,6 +73,7 @@ namespace LogCheck
         private Models.WSPacketCapture? _packetCapture;
         private bool _isCapturing;
         private readonly ObservableCollection<NetworkUsageRecord> _historyRecords = new ObservableCollection<NetworkUsageRecord>();
+        private ToggleButton _selectedButton;
 
         // 무한 팝업 방지를 위한 플래그들
         private bool _isInitializing = false;
@@ -706,5 +692,50 @@ namespace LogCheck
                 return item.InterfaceInfo != null ? item.InterfaceInfo.Name : item.Name;
             }
         }
+
+        #region Sidebar Navigation
+
+
+        [SupportedOSPlatform("windows")]
+        private void SidebarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var clicked = sender as ToggleButton;
+            if (clicked == null) return;
+
+            // 이전 선택 해제
+            if (_selectedButton != null && _selectedButton != clicked)
+                _selectedButton.IsChecked = false;
+
+            // 선택 상태 유지
+            clicked.IsChecked = true;
+            _selectedButton = clicked;
+
+            switch (clicked.CommandParameter?.ToString())
+            {
+                case "Vaccine":
+                    NavigateToPage(new Vaccine());
+                    break;
+                case "NetWorks":
+                    NavigateToPage(new NetWorks());
+                    break;
+                case "ProgramsList":
+                    NavigateToPage(new ProgramsList());
+                    break;
+                case "Recoverys":
+                    NavigateToPage(new Recoverys());
+                    break;
+                case "Logs":
+                    NavigateToPage(new Logs());
+                    break;
+            }
+        }
+
+        [SupportedOSPlatform("windows")]
+        private void NavigateToPage(Page page)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindows;
+            mainWindow?.NavigateToPage(page);
+        }
+        #endregion
     }
 }

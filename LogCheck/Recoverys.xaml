@@ -27,11 +27,11 @@
                               Click="SidebarButton_Click"
                               IsThreeState="False"
                               ClickMode="Release"/>
-                <!-- 네트워크 접속 내역 -->
+                <!-- 네트워크 모니터링 -->
                 <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
-                              CommandParameter="NetWorks"
-                              Tag="&#xE81C;"
-                              Content="네트워크 접속 내역"
+                              CommandParameter="NetWorks_New"
+                              Tag="&#xE704;"
+                              Content="네트워크 모니터링"
                               Cursor="Hand"
                               Click="SidebarButton_Click"
                               IsThreeState="False"
@@ -126,40 +126,20 @@
                             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" >
                                 <Button Content="간편 보안 설정 복원"
                                         Click="OptimizeSecuritySettings_Click"
-                                        Style="{DynamicResource CheckButtonStyle}"
+                                        Style="{DynamicResource RefreshButtonStyle}"
                                         BorderThickness="0"
                                         Width="200" Height="30"
                                         Cursor="Hand">
-                                    <Button.Template>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border Background="{TemplateBinding Background}"
-                                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                                    CornerRadius="12">
-                                                <ContentPresenter HorizontalAlignment="Center" 
-                                                                  VerticalAlignment="Center"/>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Button.Template>
+                                    
                                 </Button>
                                 <Button Content="정밀 보안 진단 및 복구"
                                         Margin="10,0,0,0"
                                         Click="StartDiagnosticWizard_Click"
-                                        Style="{DynamicResource CheckButtonStyle}"
+                                        Style="{DynamicResource RefreshButtonStyle}"
                                         BorderThickness="0"
                                         Width="200" Height="30"
                                         Cursor="Hand">
-                                    <Button.Template>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border Background="{TemplateBinding Background}"
-                                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                                    CornerRadius="12">
-                                                <ContentPresenter HorizontalAlignment="Center" 
-                                                                  VerticalAlignment="Center"/>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Button.Template>
+                                    
                                 </Button>
 
                             </StackPanel>

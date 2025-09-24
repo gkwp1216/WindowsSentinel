@@ -1,12 +1,7 @@
-using SharpPcap;
 using PacketDotNet;
-using System;
+using SharpPcap;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.NetworkInformation;
-using System.Threading.Tasks;
 
 namespace LogCheck.Models
 {
@@ -132,24 +127,24 @@ namespace LogCheck.Models
             try
             {
                 var ip = IPAddress.Parse(ipAddress);
-                
+
                 // 로컬 IP 주소 범위 확인
                 if (IPAddress.IsLoopback(ip)) return true;
-                
+
                 // 사설 IP 주소 범위 확인
                 var bytes = ip.GetAddressBytes();
                 if (bytes.Length == 4) // IPv4
                 {
                     // 10.0.0.0/8
                     if (bytes[0] == 10) return true;
-                    
+
                     // 172.16.0.0/12
                     if (bytes[0] == 172 && bytes[1] >= 16 && bytes[1] <= 31) return true;
-                    
+
                     // 192.168.0.0/16
                     if (bytes[0] == 192 && bytes[1] == 168) return true;
                 }
-                
+
                 return false;
             }
             catch
@@ -177,7 +172,7 @@ namespace LogCheck.Models
                 // .NET의 TcpConnectionInformation에는 ProcessId가 없으므로
                 // 프로세스 ID를 가져오려면 다른 방법을 사용해야 합니다.
                 // 여기서는 간단히 null을 반환하거나 WMI/P/Invoke를 사용할 수 있습니다.
-                
+
                 // 향후 구현을 위해 null 반환
                 return null;
             }
@@ -221,10 +216,10 @@ namespace LogCheck.Models
                 }
 
                 System.Diagnostics.Debug.WriteLine($"시도하는 장치: {device.Description}");
-                
+
                 device.OnPacketArrival += Device_OnPacketArrival;
                 device.Open(); // Simplified Open call
-                
+
                 try
                 {
                     device.Filter = "tcp";
@@ -296,11 +291,11 @@ namespace LogCheck.Models
         public string Flags { get; set; } = string.Empty;
         public int Length { get; set; }
         public int? ProcessId { get; set; }
-        
+
         // 추가된 속성들
         public string Direction { get; set; } = string.Empty;
         public long PacketSize { get; set; }
         public string ProcessName { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
     }
-} 
+}

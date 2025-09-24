@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Management;
-using System.Runtime.Versioning;
-using LogCheck.Models;
-using System.Text.RegularExpressions;
 using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.Management;
 using System.Net;
+using System.Runtime.Versioning;
+using System.Text.RegularExpressions;
 
 namespace LogCheck.Services
 {
@@ -44,7 +39,7 @@ namespace LogCheck.Services
                     {
                         // 1. 프로세스의 모든 네트워크 연결 식별
                         var connections = GetProcessConnections(processId);
-                        
+
                         if (!connections.Any())
                         {
                             OnErrorOccurred($"프로세스 {processId}의 네트워크 연결을 찾을 수 없습니다.");
@@ -56,7 +51,7 @@ namespace LogCheck.Services
                         {
                             var ruleName = $"Block_Process_{processId}_{connection.RemoteAddress.ip}_{connection.RemoteAddress.port}";
                             var success = CreateFirewallRule(ruleName, connection.RemoteAddress.ip, reason);
-                            
+
                             if (success)
                             {
                                 var blockedConn = new BlockedConnection
@@ -575,8 +570,8 @@ namespace LogCheck.Services
         /// 2) 루트 기준으로 모든 자식 프로세스를 하위부터 Kill.
         /// 3) 실패 시 taskkill /T /F 폴백.
         /// </summary>
-    [SupportedOSPlatform("windows")]
-    public bool TerminateProcessFamily(int processId)
+        [SupportedOSPlatform("windows")]
+        public bool TerminateProcessFamily(int processId)
         {
             try
             {
@@ -609,8 +604,8 @@ namespace LogCheck.Services
             }
         }
 
-    [SupportedOSPlatform("windows")]
-    private int FindProcessFamilyRoot(int pid, string processName)
+        [SupportedOSPlatform("windows")]
+        private int FindProcessFamilyRoot(int pid, string processName)
         {
             try
             {
@@ -632,8 +627,8 @@ namespace LogCheck.Services
             }
         }
 
-    [SupportedOSPlatform("windows")]
-    private (int pid, string name)? GetParentProcessInfo(int pid)
+        [SupportedOSPlatform("windows")]
+        private (int pid, string name)? GetParentProcessInfo(int pid)
         {
             try
             {
@@ -655,8 +650,8 @@ namespace LogCheck.Services
             return null;
         }
 
-    [SupportedOSPlatform("windows")]
-    private List<int> GetDescendantsBreadthFirst(int rootPid)
+        [SupportedOSPlatform("windows")]
+        private List<int> GetDescendantsBreadthFirst(int rootPid)
         {
             var result = new List<int>();
             try
@@ -678,8 +673,8 @@ namespace LogCheck.Services
             return result;
         }
 
-    [SupportedOSPlatform("windows")]
-    private List<int> GetChildren(int pid)
+        [SupportedOSPlatform("windows")]
+        private List<int> GetChildren(int pid)
         {
             var list = new List<int>();
             try

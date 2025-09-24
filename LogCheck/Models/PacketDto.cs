@@ -1,5 +1,3 @@
-using System;
-
 namespace LogCheck.Models
 {
     public enum ProtocolKind { TCP, UDP, ICMP, Other }

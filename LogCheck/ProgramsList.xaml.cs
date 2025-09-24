@@ -6,27 +6,18 @@
  * 4. 성능 최적화 - HashSet을 이용한 중복 프로그램 검사 방지
  */
 
-using LogCheck;
 using LogCheck.Services; // MalwareBazaarClient
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Management;
-using System.Net.Http; // MalwareBazaar 호출
-using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Versioning;
 using System.Security.Cryptography; // SHA256
 using System.Security.Cryptography.X509Certificates;
-using System.Security.Policy;
 using System.Security.Principal;
 using System.Text; // 해시 계산
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -34,7 +25,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using static LogCheck.NetWorks;
 using WpfApplication = System.Windows.Application;
 using WpfCursors = System.Windows.Input.Cursors;
 // Windows Forms와의 충돌을 방지하기 위한 alias 설정
@@ -788,8 +778,8 @@ namespace LogCheck
                 case "Vaccine":
                     NavigateToPage(new Vaccine());
                     break;
-                case "NetWorks":
-                    NavigateToPage(new NetWorks());
+                case "NetWorks_New":
+                    NavigateToPage(new NetWorks_New());
                     break;
                 case "ProgramsList":
                     NavigateToPage(new ProgramsList());

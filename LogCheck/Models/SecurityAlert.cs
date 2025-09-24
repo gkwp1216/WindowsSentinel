@@ -1,5 +1,3 @@
-using System;
-
 namespace LogCheck.Models
 {
     public class SecurityAlert
@@ -66,4 +64,4 @@ namespace LogCheck.Models
         public string Pattern { get; set; } = string.Empty;
         public double RiskScore { get; set; }
     }
-} 
+}

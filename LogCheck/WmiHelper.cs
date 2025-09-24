@@ -1,11 +1,7 @@
-using System;
-using System.Linq;  // LINQ 사용을 위한 네임스페이스
 using System.Management;
+using System.Runtime.Versioning;
 using System.Security.Principal;
 using System.ServiceProcess;  // ServiceController 클래스를 사용하기 위한 네임스페이스
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Runtime.Versioning;
 
 namespace LogCheck
 {
@@ -16,7 +12,7 @@ namespace LogCheck
         private const string LOG_SOURCE = "WmiHelper";
 
         #region Windows Defender
-        
+
         /// <summary>
         /// Windows Defender 실시간 보호 활성화/비활성화
         /// </summary>
@@ -81,7 +77,7 @@ namespace LogCheck
 
         // Windows Firewall 관련 메서드들
         #region Windows Firewall
-        
+
         // Windows Firewall 상태 확인
         [SupportedOSPlatform("windows")]
         public static async Task<bool> CheckFirewallStatusAsync()
@@ -117,7 +113,7 @@ namespace LogCheck
 
         // Windows Security Center 관련 메서드들
         #region Windows Security Center
-        
+
         /// <summary>
         /// Windows Security Center 상태 확인 (개선된 버전)
         /// </summary>
@@ -164,9 +160,9 @@ namespace LogCheck
                     {
                         service.Refresh();
                         bool isRunning = service.Status == ServiceControllerStatus.Running;
-                        
+
                         LogHelper.LogInfo($"{LOG_SOURCE}: Security Center 서비스 상태 - {service.Status}");
-                        
+
                         return isRunning ? "활성" : "비활성";
                     }
                 });
@@ -187,10 +183,10 @@ namespace LogCheck
             try
             {
                 // Windows Defender Security Center 상태 확인
-                using var searcher = new ManagementObjectSearcher("root\\SecurityCenter2", 
+                using var searcher = new ManagementObjectSearcher("root\\SecurityCenter2",
                     "SELECT * FROM AntiVirusProduct WHERE displayName LIKE '%Defender%' OR displayName LIKE '%Windows%'");
                 var collection = await Task.Run(() => searcher.Get());
-                
+
                 foreach (ManagementObject obj in collection)
                 {
                     var productState = obj["productState"];
@@ -199,7 +195,7 @@ namespace LogCheck
                         // productState 값을 분석하여 활성화 상태 확인
                         uint state = Convert.ToUInt32(productState);
                         bool isActive = (state & 0x1000) == 0x1000; // 활성화 비트 확인
-                        
+
                         LogHelper.LogInfo($"{LOG_SOURCE}: Security Center WMI 상태 - {(isActive ? "활성" : "비활성")}");
                         return isActive ? "활성" : "비활성";
                     }
@@ -230,11 +226,11 @@ namespace LogCheck
                     {
                         var antiVirusDisableNotify = key.GetValue("AntiVirusDisableNotify");
                         var firewallDisableNotify = key.GetValue("FirewallDisableNotify");
-                        
+
                         // 알림이 비활성화되지 않았다면 Security Center가 활성화된 상태
                         bool isActive = (antiVirusDisableNotify == null || (int)antiVirusDisableNotify == 0) &&
                                        (firewallDisableNotify == null || (int)firewallDisableNotify == 0);
-                        
+
                         LogHelper.LogInfo($"{LOG_SOURCE}: Security Center 레지스트리 상태 - {(isActive ? "활성" : "비활성")}");
                         return isActive ? "활성" : "비활성";
                     }
@@ -263,10 +259,10 @@ namespace LogCheck
                 if (serviceResult)
                 {
                     LogHelper.LogInfo($"{LOG_SOURCE}: Security Center 서비스 재시작 성공");
-                    
+
                     // 재시작 후 잠시 대기
                     await Task.Delay(2000);
-                    
+
                     // 상태 재확인
                     var status = await CheckSecurityCenterStatusAsync();
                     return status == "활성";
@@ -306,7 +302,7 @@ namespace LogCheck
                         // 알림 활성화 (0 = 활성화, 1 = 비활성화)
                         key.SetValue("AntiVirusDisableNotify", 0, Microsoft.Win32.RegistryValueKind.DWord);
                         key.SetValue("FirewallDisableNotify", 0, Microsoft.Win32.RegistryValueKind.DWord);
-                        
+
                         LogHelper.LogInfo($"{LOG_SOURCE}: Security Center 레지스트리 설정 복구 완료");
                         return true;
                     }
@@ -325,7 +321,7 @@ namespace LogCheck
 
         // BitLocker 관련 메서드들
         #region BitLocker
-        
+
         // BitLocker 상태 확인
         [SupportedOSPlatform("windows")]
         public static async Task<string> CheckBitLockerStatusAsync()
@@ -357,7 +353,7 @@ namespace LogCheck
                 return false;
             }
         }
-        
+
         // 관리자 권한 확인
         private static bool IsUserAdministrator()
         {
@@ -375,7 +371,7 @@ namespace LogCheck
         #endregion
 
         #region Windows 방화벽
-        
+
         /// <summary>
         /// Windows 방화벽 프로필 상태 설정
         /// </summary>
@@ -384,17 +380,17 @@ namespace LogCheck
         {
             try
             {
-                string[] profiles = profile.Equals("All", StringComparison.OrdinalIgnoreCase) 
-                    ? new[] { "Domain", "Private", "Public" } 
+                string[] profiles = profile.Equals("All", StringComparison.OrdinalIgnoreCase)
+                    ? new[] { "Domain", "Private", "Public" }
                     : new[] { profile };
 
                 bool allSucceeded = true;
-                
+
                 foreach (string prof in profiles)
                 {
                     try
                     {
-                        using (var searcher = new ManagementObjectSearcher("root\\StandardCimv2", 
+                        using (var searcher = new ManagementObjectSearcher("root\\StandardCimv2",
                             $"SELECT * FROM MSFT_NetFirewallProfile WHERE Name='{prof}'"))
                         using (var collection = searcher.Get())
                         {
@@ -412,7 +408,7 @@ namespace LogCheck
                         allSucceeded = false;
                     }
                 }
-                
+
                 return allSucceeded;
             }
             catch (Exception ex)
@@ -421,7 +417,7 @@ namespace LogCheck
                 return false;
             }
         }
-        
+
         /// <summary>
         /// Windows 방화벽 상태 확인 (개선된 버전)
         /// </summary>
@@ -463,7 +459,7 @@ namespace LogCheck
         {
             try
             {
-                using (var searcher = new ManagementObjectSearcher("root\\StandardCimv2", 
+                using (var searcher = new ManagementObjectSearcher("root\\StandardCimv2",
                     "SELECT Enabled FROM MSFT_NetFirewallProfile"))
                 {
                     foreach (ManagementObject profile in searcher.Get())
@@ -475,7 +471,7 @@ namespace LogCheck
                         }
                     }
                 }
-                
+
                 LogHelper.LogInfo($"{LOG_SOURCE}: 방화벽 상태 확인 - 활성화된 프로필 없음 (WMI)");
                 return false;
             }
@@ -513,11 +509,11 @@ namespace LogCheck
                 return false;
             }
         }
-        
+
         #endregion
-        
+
         #region Windows 보안 센터
-        
+
         /// <summary>
         /// 보안 센터 서비스 재시작
         /// </summary>
@@ -538,7 +534,7 @@ namespace LogCheck
                         service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
                         service.Start();
                     }
-                    
+
                     service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(30));
                     LogHelper.LogInfo($"{LOG_SOURCE}: 보안 센터 서비스 재시작 완료");
                     return service.Status == ServiceControllerStatus.Running;
@@ -550,11 +546,11 @@ namespace LogCheck
                 return false;
             }
         }
-        
+
         #endregion
-        
+
         #region BitLocker
-        
+
         /// <summary>
         /// BitLocker 보호기 추가 (관리자 권한 필요)
         /// </summary>
@@ -581,12 +577,12 @@ namespace LogCheck
                                 return true;
                             }
                         }
-                        
+
                         LogHelper.LogWarning($"{LOG_SOURCE}: BitLocker TPM 보호기 추가 실패 - 반환 코드: {result}");
                         return false;
                     }
                 }
-                
+
                 LogHelper.LogWarning($"{LOG_SOURCE}: BitLocker 볼륨을 찾을 수 없음 - 드라이브 {driveLetter}");
                 return false;
             }
@@ -596,7 +592,7 @@ namespace LogCheck
                 return false;
             }
         }
-        
+
         #endregion
 
         /// <summary>

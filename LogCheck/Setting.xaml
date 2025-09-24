@@ -17,24 +17,6 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- 🔹 헤더 영역: 뒤로가기 버튼 + 제목 -->
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,20">
-                <Button x:Name="BackToMainButton"
-                        Style="{DynamicResource BackButtonStyle}"
-                        Width="40"
-                        Height="35"
-                        Margin="0,0,10,0"
-                        Click="BackToMain_Click"
-                        ToolTip="메인으로">
-                    <materialDesign:PackIcon Kind="ArrowLeft" Width="20" Height="20"/>
-                </Button>
-                <TextBlock Text="설정"
-                           FontSize="26"
-                           FontWeight="Bold"
-                           VerticalAlignment="Center"
-                           Foreground="{DynamicResource ForegroundColor}" />
-            </StackPanel>
-
             <!-- 🔹 설정 섹션 -->
             <StackPanel Grid.Row="1" Orientation="Vertical">
 

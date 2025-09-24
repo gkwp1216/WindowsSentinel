@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
+﻿using System.Diagnostics.Eventing.Reader;
 using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Media;
-using WpfMessageBox = System.Windows.MessageBox;
 
 namespace LogCheck
 {
@@ -135,7 +130,7 @@ namespace LogCheck
         }
 
         #region Sidebar Navigation
-        
+
 
         [SupportedOSPlatform("windows")]
         private void SidebarButton_Click(object sender, RoutedEventArgs e)
@@ -156,8 +151,8 @@ namespace LogCheck
                 case "Vaccine":
                     NavigateToPage(new Vaccine());
                     break;
-                case "NetWorks":
-                    NavigateToPage(new NetWorks());
+                case "NetWorks_New":
+                    NavigateToPage(new NetWorks_New());
                     break;
                 case "ProgramsList":
                     NavigateToPage(new ProgramsList());

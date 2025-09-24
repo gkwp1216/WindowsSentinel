@@ -1,20 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Drawing;      // Icon
-using System.Linq;
+﻿using LogCheck.Services;
 using System.Runtime.Versioning;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Forms; // NotifyIcon
-using System.Windows.Input;
-using System.Windows.Media;
-<<<<<<< HEAD
-using LogCheck.Services;
-=======
->>>>>>> parent of 126e2e8 (백그라운드 작동 및 스크롤 기능 추가)
 
 namespace LogCheck
 {
@@ -24,11 +10,13 @@ namespace LogCheck
     [SupportedOSPlatform("windows")]
     public partial class App : System.Windows.Application
     {
+        private NotifyIcon? _notifyIcon;
+        private MainWindows? _mainWindows;
+
         public App()
         {
             InitializeComponent();
         }
-<<<<<<< HEAD
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -188,8 +176,6 @@ namespace LogCheck
             Shutdown(); // 명시적 종료
         }
 
-=======
->>>>>>> parent of 126e2e8 (백그라운드 작동 및 스크롤 기능 추가)
         public static class ThemeManager
         {
             public static string CurrentTheme { get; set; } = "Light"; // 기본값
