@@ -52,6 +52,16 @@ namespace LogCheck
         private readonly ObservableCollection<SecurityAlert> _securityAlerts;
         private readonly ObservableCollection<string> _logMessages;
 
+        // AutoBlock 시스템
+        private readonly IAutoBlockService _autoBlockService;
+        private readonly ObservableCollection<AutoBlockedConnection> _blockedConnections;
+        private readonly ObservableCollection<AutoWhitelistEntry> _whitelistEntries;
+        private bool _isInitialized = false;
+        private int _totalBlockedCount = 0;
+        private int _level1BlockCount = 0;
+        private int _level2BlockCount = 0;
+        private int _level3BlockCount = 0;
+
         // 통계 데이터
         private int _totalConnections = 0;
         private int _lowRiskCount = 0;
@@ -110,6 +120,34 @@ namespace LogCheck
             get => $"{_totalDataTransferred / (1024.0 * 1024.0):F1} MB";
         }
 
+        // AutoBlock 바인딩 프로퍼티
+        public int TotalBlockedCount
+        {
+            get => _totalBlockedCount;
+            set { _totalBlockedCount = value; OnPropertyChanged(); }
+        }
+
+        public int Level1BlockCount
+        {
+            get => _level1BlockCount;
+            set { _level1BlockCount = value; OnPropertyChanged(); }
+        }
+
+        public int Level2BlockCount
+        {
+            get => _level2BlockCount;
+            set { _level2BlockCount = value; OnPropertyChanged(); }
+        }
+
+        public int Level3BlockCount
+        {
+            get => _level3BlockCount;
+            set { _level3BlockCount = value; OnPropertyChanged(); }
+        }
+
+        public ObservableCollection<AutoBlockedConnection> BlockedConnections => _blockedConnections;
+        public ObservableCollection<AutoWhitelistEntry> WhitelistEntries => _whitelistEntries;
+
         public ObservableCollection<ISeries> ChartSeries => _chartSeries;
         public ObservableCollection<Axis> ChartXAxes => _chartXAxes;
         public ObservableCollection<Axis> ChartYAxes => _chartYAxes;
@@ -157,6 +195,10 @@ namespace LogCheck
             _chartXAxes = new ObservableCollection<Axis>();
             _chartYAxes = new ObservableCollection<Axis>();
 
+            // AutoBlock 컬렉션 초기화
+            _blockedConnections = new ObservableCollection<AutoBlockedConnection>();
+            _whitelistEntries = new ObservableCollection<AutoWhitelistEntry>();
+
             // 서비스 초기화
             // 전역 허브의 인스턴스를 사용하여 중복 실행 방지
             var hub = MonitoringHub.Instance;
@@ -164,6 +206,11 @@ namespace LogCheck
             _connectionManager = new NetworkConnectionManager();
             _securityAnalyzer = new RealTimeSecurityAnalyzer();
             _captureService = hub.Capture;
+
+            // AutoBlock 서비스 초기화
+            var dbPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "autoblock.db");
+            var connectionString = $"Data Source={dbPath};";
+            _autoBlockService = new AutoBlockService(connectionString);
 
             // 로그 파일 경로 설정 비활성화
             // _logFilePath = System.IO.Path.Combine(
@@ -193,6 +240,7 @@ namespace LogCheck
 
             // 이벤트 구독
             SubscribeToEvents();
+            SubscribeToAutoBlockEvents();
 
             // UI 초기화
             InitializeUI();
@@ -438,6 +486,111 @@ namespace LogCheck
             // 캡처 서비스 이벤트
             _captureService.OnPacket += OnCapturePacket;
             _captureService.OnError += (s, ex) => OnErrorOccurred(s, ex.Message);
+        }
+
+        /// <summary>
+        /// AutoBlock 시스템 초기화
+        /// </summary>
+        private async void SubscribeToAutoBlockEvents()
+        {
+            try
+            {
+                // AutoBlock 서비스 초기화
+                await _autoBlockService.InitializeAsync();
+                AddLogMessage("AutoBlock 시스템이 초기화되었습니다.");
+
+                // System Idle Process 자동 화이트리스트 추가
+                await EnsureSystemIdleProcessWhitelistAsync();
+
+                // 초기 통계 및 데이터 로드
+                await LoadAutoBlockDataAsync();
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"AutoBlock 시스템 초기화 실패: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"AutoBlock initialization error: {ex}");
+            }
+        }
+
+        /// <summary>
+        /// System Idle Process를 화이트리스트에 자동 추가
+        /// </summary>
+        private async Task EnsureSystemIdleProcessWhitelistAsync()
+        {
+            try
+            {
+                const string systemIdleProcessPath = "System Idle Process";
+                const string whitelistReason = "시스템 기본 프로세스 - PID 0 (자동 추가)";
+
+                // 이미 화이트리스트에 있는지 확인
+                var existingWhitelist = await _autoBlockService.GetWhitelistAsync();
+                var alreadyWhitelisted = existingWhitelist.Any(w =>
+                    string.Equals(w.ProcessPath, systemIdleProcessPath, StringComparison.OrdinalIgnoreCase));
+
+                if (!alreadyWhitelisted)
+                {
+                    // System Idle Process를 화이트리스트에 추가
+                    var success = await _autoBlockService.AddToWhitelistAsync(systemIdleProcessPath, whitelistReason);
+
+                    if (success)
+                    {
+                        AddLogMessage("✅ System Idle Process가 자동으로 화이트리스트에 추가되었습니다.");
+                    }
+                    else
+                    {
+                        AddLogMessage("⚠️ System Idle Process 화이트리스트 추가 실패");
+                    }
+                }
+                else
+                {
+                    AddLogMessage("ℹ️ System Idle Process가 이미 화이트리스트에 등록되어 있습니다.");
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"❌ System Idle Process 화이트리스트 처리 오류: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"System Idle Process whitelist error: {ex}");
+            }
+        }
+
+        /// <summary>
+        /// AutoBlock 데이터 로드
+        /// </summary>
+        private async Task LoadAutoBlockDataAsync()
+        {
+            try
+            {
+                // 최근 24시간 차단 이력 로드
+                var since = DateTime.Now.AddDays(-1);
+                var recentBlocks = await _autoBlockService.GetBlockHistoryAsync(since, 100);
+
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                {
+                    _blockedConnections.Clear();
+                    foreach (var block in recentBlocks)
+                    {
+                        _blockedConnections.Add(block);
+                    }
+                });
+
+                // 화이트리스트 로드
+                var whitelist = await _autoBlockService.GetWhitelistAsync();
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                {
+                    _whitelistEntries.Clear();
+                    foreach (var entry in whitelist)
+                    {
+                        _whitelistEntries.Add(entry);
+                    }
+                });
+
+                // 통계 업데이트
+                UpdateAutoBlockStatistics();
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"AutoBlock 데이터 로드 실패: {ex.Message}");
+            }
         }
 
         /// <summary>
@@ -973,6 +1126,13 @@ namespace LogCheck
                     System.Diagnostics.Debug.WriteLine("[NetWorks_New] 프로세스 데이터 가져오기 시작");
                     var data = await _processNetworkMapper.GetProcessNetworkDataAsync();
                     System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 프로세스 데이터 가져오기 완료: {data?.Count ?? 0}개");
+
+                    // AutoBlock 분석 수행
+                    if (_autoBlockService != null && data?.Any() == true)
+                    {
+                        await AnalyzeConnectionsWithAutoBlockAsync(data);
+                    }
+
                     await UpdateProcessNetworkDataAsync(data ?? new List<ProcessNetworkInfo>());
                 }
             }
@@ -1000,6 +1160,10 @@ namespace LogCheck
             data ??= new List<ProcessNetworkInfo>();
             System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UpdateProcessNetworkDataAsync 호출됨, 데이터 개수: {data.Count}");
 
+            // System Idle Process 완전 제외 (실수로 종료되는 것 방지)
+            data = data.Where(p => !IsSystemIdleProcess(p)).ToList();
+            System.Diagnostics.Debug.WriteLine($"[NetWorks_New] System Idle Process 제외 후 데이터 개수: {data.Count}");
+
             // IsSystem 자동 판단
             foreach (var item in data)
             {
@@ -1007,7 +1171,7 @@ namespace LogCheck
             }
 
             var general = data.Where(p => !p.IsSystem).ToList();
-            var system = data.Where(p => p.IsSystem).ToList();
+            var system = data.Where(p => p.IsSystem).ToList(); // System Idle Process는 이미 data에서 제외됨
 
             System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 일반 프로세스: {general.Count}개, 시스템 프로세스: {system.Count}개");
 
@@ -1258,6 +1422,15 @@ namespace LogCheck
             if (pid <= 4) return true; // 시스템 프로세스 PID 0~4는 무조건 시스템
             var systemNames = new[] { "svchost", "System", "wininit", "winlogon", "lsass", "services" };
             return systemNames.Any(n => processName.IndexOf(n, StringComparison.OrdinalIgnoreCase) >= 0);
+        }
+
+        /// <summary>
+        /// System Idle Process 여부 확인 (UI에서 숨기기 위함)
+        /// </summary>
+        private bool IsSystemIdleProcess(ProcessNetworkInfo process)
+        {
+            return process.ProcessId == 0 &&
+                   string.Equals(process.ProcessName, "System Idle Process", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -2036,6 +2209,302 @@ namespace LogCheck
             return null;
         }
         */
+
+        #endregion
+
+        #region AutoBlock 시스템 메서드
+
+        /// <summary>
+        /// 연결들을 AutoBlock 시스템으로 분석
+        /// </summary>
+        private async Task AnalyzeConnectionsWithAutoBlockAsync(List<ProcessNetworkInfo> connections)
+        {
+            if (!_isInitialized || connections?.Any() != true)
+                return;
+
+            try
+            {
+                var blockedCount = 0;
+                var level1Count = 0;
+                var level2Count = 0;
+                var level3Count = 0;
+
+                foreach (var connection in connections)
+                {
+                    // 화이트리스트 확인
+                    if (await _autoBlockService.IsWhitelistedAsync(connection))
+                        continue;
+
+                    // 연결 분석
+                    var decision = await _autoBlockService.AnalyzeConnectionAsync(connection);
+
+                    if (decision.Level > BlockLevel.None)
+                    {
+                        // 차단 실행
+                        var blocked = await _autoBlockService.BlockConnectionAsync(connection, decision.Level);
+
+                        if (blocked)
+                        {
+                            blockedCount++;
+
+                            switch (decision.Level)
+                            {
+                                case BlockLevel.Immediate:
+                                    level1Count++;
+                                    AddLogMessage($"[AutoBlock-Immediate] 즉시 차단: {connection.ProcessName} -> {connection.RemoteAddress}:{connection.RemotePort}");
+                                    break;
+                                case BlockLevel.Warning:
+                                    level2Count++;
+                                    AddLogMessage($"[AutoBlock-Warning] 경고 후 차단: {connection.ProcessName} -> {connection.RemoteAddress}:{connection.RemotePort}");
+                                    break;
+                                case BlockLevel.Monitor:
+                                    level3Count++;
+                                    AddLogMessage($"[AutoBlock-Monitor] 모니터링: {connection.ProcessName} -> {connection.RemoteAddress}:{connection.RemotePort}");
+                                    break;
+                            }
+
+                            // 보안 알림 생성
+                            var alertLevel = decision.Level == BlockLevel.Immediate ? LogCheck.Services.SecurityAlertLevel.High :
+                                            decision.Level == BlockLevel.Warning ? LogCheck.Services.SecurityAlertLevel.Medium :
+                                            LogCheck.Services.SecurityAlertLevel.Low;
+
+                            var alert = new LogCheck.Services.SecurityAlert
+                            {
+                                Title = $"AutoBlock: {connection.ProcessName} 연결 차단됨",
+                                Description = $"연결 차단됨 - {decision.Reason}",
+                                AlertLevel = alertLevel,
+                                ProcessId = connection.ProcessId,
+                                ProcessName = connection.ProcessName,
+                                RemoteAddress = connection.RemoteAddress,
+                                RemotePort = connection.RemotePort,
+                                Protocol = connection.Protocol,
+                                RiskScore = (int)(decision.ConfidenceScore * 100),
+                                RiskFactors = decision.TriggeredRules,
+                                RecommendedAction = decision.RecommendedAction,
+                                Timestamp = DateTime.Now,
+                                IsResolved = false
+                            };
+
+                            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                _securityAlerts.Insert(0, alert);
+                                // 알림 목록 크기 제한
+                                while (_securityAlerts.Count > 100)
+                                {
+                                    _securityAlerts.RemoveAt(_securityAlerts.Count - 1);
+                                }
+                            });
+                        }
+                    }
+                }
+
+                // 통계 업데이트
+                if (blockedCount > 0)
+                {
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        TotalBlockedCount += blockedCount;
+                        Level1BlockCount += level1Count;
+                        Level2BlockCount += level2Count;
+                        Level3BlockCount += level3Count;
+                    });
+
+                    // 차단 데이터 새로고침
+                    await LoadAutoBlockDataAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"AutoBlock 분석 오류: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"AutoBlock analysis error: {ex}");
+            }
+        }
+
+        /// <summary>
+        /// AutoBlock 통계 업데이트
+        /// </summary>
+        private void UpdateAutoBlockStatistics()
+        {
+            try
+            {
+                // 통계는 데이터베이스에서 직접 조회하는 대신 
+                // 현재 로드된 데이터를 기반으로 계산
+                var totalBlocked = _blockedConnections.Count;
+                var level1 = _blockedConnections.Count(b => b.BlockLevel == BlockLevel.Immediate);
+                var level2 = _blockedConnections.Count(b => b.BlockLevel == BlockLevel.Warning);
+                var level3 = _blockedConnections.Count(b => b.BlockLevel == BlockLevel.Monitor);
+
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                {
+                    TotalBlockedCount = totalBlocked;
+                    Level1BlockCount = level1;
+                    Level2BlockCount = level2;
+                    Level3BlockCount = level3;
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"AutoBlock statistics update error: {ex}");
+            }
+        }
+
+        /// <summary>
+        /// AutoBlock 서비스 상태 확인
+        /// </summary>
+        private bool IsAutoBlockInitialized => _autoBlockService != null && _isInitialized;
+
+        #endregion
+
+        #region AutoBlock UI 이벤트 핸들러
+
+        /// <summary>
+        /// 화이트리스트 추가 버튼 클릭
+        /// </summary>
+        private async void AddToWhitelist_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // 간단한 입력 다이얼로그 (실제 구현에서는 더 정교한 UI 사용)
+                var dialog = new Microsoft.Win32.OpenFileDialog
+                {
+                    Title = "화이트리스트에 추가할 프로그램 선택",
+                    Filter = "실행 파일 (*.exe)|*.exe|모든 파일 (*.*)|*.*"
+                };
+
+                if (dialog.ShowDialog() == true)
+                {
+                    var result = await _autoBlockService.AddToWhitelistAsync(dialog.FileName, "사용자 추가");
+                    if (result)
+                    {
+                        AddLogMessage($"화이트리스트에 추가됨: {System.IO.Path.GetFileName(dialog.FileName)}");
+                        await LoadAutoBlockDataAsync(); // 데이터 새로고침
+                    }
+                    else
+                    {
+                        AddLogMessage($"화이트리스트 추가 실패: {System.IO.Path.GetFileName(dialog.FileName)}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"화이트리스트 추가 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 화이트리스트에서 제거 버튼 클릭
+        /// </summary>
+        private async void RemoveFromWhitelist_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (WhitelistDataGrid.SelectedItem is AutoWhitelistEntry selectedEntry)
+                {
+                    var result = MessageBox.Show(
+                        $"'{selectedEntry.ProcessPath}'\n화이트리스트에서 제거하시겠습니까?",
+                        "화이트리스트 제거 확인",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        var success = await _autoBlockService.RemoveFromWhitelistAsync(selectedEntry.ProcessPath);
+                        if (success)
+                        {
+                            AddLogMessage($"화이트리스트에서 제거됨: {System.IO.Path.GetFileName(selectedEntry.ProcessPath)}");
+                            await LoadAutoBlockDataAsync(); // 데이터 새로고침
+                        }
+                        else
+                        {
+                            AddLogMessage($"화이트리스트 제거 실패: {System.IO.Path.GetFileName(selectedEntry.ProcessPath)}");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("제거할 항목을 선택해주세요.", "선택 없음", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"화이트리스트 제거 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// AutoBlock 테스트 버튼 클릭
+        /// </summary>
+        private async void TestAutoBlock_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                AddLogMessage("🧪 AutoBlock 시스템 테스트를 시작합니다...");
+
+                var testResults = new List<string>();
+
+                // 1. System Idle Process 위장 테스트
+                AddLogMessage("1️⃣ System Idle Process 위장 탐지 테스트 중...");
+                var forgeryTests = AutoBlockTestHelper.GetSystemIdleProcessForgeryTests();
+                foreach (var testCase in forgeryTests)
+                {
+                    var result = await _autoBlockService.AnalyzeConnectionAsync(testCase);
+                    var message = $"   {testCase.ProcessName} (PID:{testCase.ProcessId}) → {result.Level} ({result.ConfidenceScore:P1})";
+                    testResults.Add(message);
+                    AddLogMessage(message);
+                }
+
+                // 2. 의심스러운 포트 테스트
+                AddLogMessage("2️⃣ 의심스러운 포트 탐지 테스트 중...");
+                var portTests = AutoBlockTestHelper.GetSuspiciousPortTests();
+                foreach (var testCase in portTests)
+                {
+                    var result = await _autoBlockService.AnalyzeConnectionAsync(testCase);
+                    var message = $"   {testCase.ProcessName}:{testCase.RemotePort} → {result.Level} ({result.ConfidenceScore:P1})";
+                    testResults.Add(message);
+                    AddLogMessage(message);
+                }
+
+                // 3. 정상 연결 테스트 (허용되어야 함)
+                AddLogMessage("3️⃣ 정상 연결 테스트 중...");
+                var legitimateTests = AutoBlockTestHelper.GetLegitimateTests();
+                foreach (var testCase in legitimateTests)
+                {
+                    var result = await _autoBlockService.AnalyzeConnectionAsync(testCase);
+                    var message = $"   {testCase.ProcessName} → {result.Level} ({result.ConfidenceScore:P1})";
+                    testResults.Add(message);
+                    AddLogMessage(message);
+                }
+
+                // 4. 정상적인 System Idle Process 테스트
+                AddLogMessage("4️⃣ 정상적인 System Idle Process 테스트 중...");
+                var legitimateIdleTests = AutoBlockTestHelper.GetLegitimateSystemIdleProcessTests();
+                foreach (var testCase in legitimateIdleTests)
+                {
+                    var result = await _autoBlockService.AnalyzeConnectionAsync(testCase);
+                    var message = $"   정상 System Idle Process (PID:{testCase.ProcessId}) → {result.Level} ({result.ConfidenceScore:P1})";
+                    testResults.Add(message);
+                    AddLogMessage(message);
+                }
+
+                // 데이터 새로고침
+                await LoadAutoBlockDataAsync();
+
+                AddLogMessage($"✅ AutoBlock 테스트 완료! 총 {testResults.Count}건 테스트됨");
+
+                // 테스트 결과 요약 다이얼로그
+                var summary = string.Join("\n", testResults);
+                MessageBox.Show(
+                    $"AutoBlock 테스트가 완료되었습니다!\n\n테스트 결과:\n{summary.Substring(0, Math.Min(500, summary.Length))}...\n\n자세한 결과는 로그를 확인하세요.",
+                    "AutoBlock 테스트 완료",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"❌ AutoBlock 테스트 실행 오류: {ex.Message}");
+                MessageBox.Show($"테스트 실행 중 오류가 발생했습니다:\n{ex.Message}", "테스트 오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         #endregion
 

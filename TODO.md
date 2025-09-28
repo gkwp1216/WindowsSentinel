@@ -2,7 +2,18 @@
 
 ## 코드 품질 및 아키텍쳐
 
-- UpdateProcessNetworkDataAsync 메서드 내 Dispatcher.InvokeAsync -비동기 작업(Task.Run)이 완료된 후 결과만 UI 스레드로 보내는 패턴이 더 효율적 -개선방안 -개선 방안: Task.Run 안에서 데이터 처리와 보안 분석(\_securityAnalyzer.AnalyzeConnectionsAsync(data))을 모두 수행하고, 최종적으로 UI 업데이트에 필요한 부분(\_processNetworkData.Clear(), \_securityAlerts.Clear())만 Dispatcher.InvokeAsync로 호출하는 방식으로 리팩토링
+- UpdateProcessNetworkDat### Phase 1: 핵심 시스템 개발 (완료)
+
+- ✅ AutoBlock 서비스 아키텍처 설계
+- ✅ IAutoBlockService 인터페이스 정의
+- ✅ BlockRuleEngine 구현
+- ✅ AutoBlockService 핵심 기능
+- ✅ 데이터베이스 스키마 및 Repository 패턴
+- ✅ 실시간 패킷 분석 및 자동 차단
+- ✅ 화이트리스트 관리 시스템
+- ✅ 테스트 프레임워크 구성
+- ✅ UI 통합 작업 (AutoBlock 탭 및 통계 표시)
+- ✅ AutoBlock UI 가시성 문제 해결 메서드 내 Dispatcher.InvokeAsync -비동기 작업(Task.Run)이 완료된 후 결과만 UI 스레드로 보내는 패턴이 더 효율적 -개선방안 -개선 방안: Task.Run 안에서 데이터 처리와 보안 분석(\_securityAnalyzer.AnalyzeConnectionsAsync(data))을 모두 수행하고, 최종적으로 UI 업데이트에 필요한 부분(\_processNetworkData.Clear(), \_securityAlerts.Clear())만 Dispatcher.InvokeAsync로 호출하는 방식으로 리팩토링
 
 - 통계 데이터 업데이트 방식: UpdateStatistics와 UpdateStatisticsDisplay를 분리한 것은 좋으나, \_totalConnections, \_lowRiskCount와 같은 필드들을 직접 업데이트하고 있음.
   이는 WPF의 MVVM(Model-View-ViewModel) 패턴과 충돌할 수 있다.
@@ -36,11 +47,6 @@
     공격자들은 이 프로세스의 이름을 교묘하게 위장하여 악성코드를 숨기는 경우가 종종 있음. 예) System ldle Process (Idle의 I가 소문자 L)  or System Idle Process.exe (정상 프로세스는 .exe 확장자가 없음)
     프로세스의 실행 경로, 디지털 서명, PID 등을 종합적으로 분석하여 이러한 위장 악성코드를 정확히 걸러낼 수 있는 로직을 갖추어야 함
 
-# 위험도 표시 개선
-
-RiskLevelToBackgroundConverter 구현
-현재 회색 배경을 위험도별 색상으로 변경
-
 # 차트 데이터 개선
 
 UpdateChart에서 연결 수 대신 데이터 전송량 기반으로 변경
@@ -56,36 +62,60 @@ var chartData = data.GroupBy(x => x.ConnectionStartTime.Hour)
 BlockConnection_Click, TerminateProcess_Click 수정
 비침습적 알림 시스템 구현
 
-# 자동 차단 시스템 구현
-
-이상 네트워크 탐지 규칙 수립
-자동 차단 로직 구현
-사용자 승인 워크플로우 추가
-
-# 차단된 네트워크 관리 UI
-
-차단 리스트 표시 페이지
-수동 해제 기능
-차단 이력 및 통계
-
-# 악성코드 탐지 강화
-
-System Idle Process 위장 탐지
-디지털 서명 검증
-실행 경로 분석
-
 # 보안 경고 팝업 시스템
 
 경고 레벨별 UI 디자인
 팝업 큐 관리
 사용자 액션 처리
 
+# AutoBlock 시스템 고도화 (Phase 2)
+
+### UI/UX 개선
+
+- 차단된 연결 상세 정보 모달/페이지
+- 화이트리스트 관리 전용 UI
+- 차단 이력 시각화 (차트/그래프)
+- 실시간 차단 알림 토스트
+
+### 기능 확장
+
+- 사용자 정의 차단 규칙 추가/편집
+- 임시 화이트리스트 (시간 제한)
+- 차단 예외 처리 및 복구 기능
+- AutoBlock 설정 페이지 (민감도 조정)
+
+### 성능 최적화
+
+- 대용량 연결 처리 최적화
+- 데이터베이스 쿼리 성능 개선
+- 메모리 사용량 모니터링 및 최적화
+- 백그라운드 분석 스레드 풀 관리
+
+### 보안 강화
+
+- 암호화된 차단 규칙 저장
+- 관리자 권한 확인 강화
+- 차단 우회 시도 탐지
+- 로그 무결성 검증
+
+### 주요 완료 사항 (2025.09.28)
+
+- **AutoBlock 자동 차단 시스템 완전 구현**
+- **NetWorks_New.xaml.cs 메인 UI 통합**
+- **Rules.md 기반 3단계 차단 규칙 시스템**
+- **SQLite 데이터베이스 통합 및 실시간 통계**
+- **보안 알림 시스템 완전 연동**
+
 ### 우선순위 작업 (TODO)
 
-- 기존 UI 다시 살린 후 적용
-- 안되는 기능들 작동하게끔 작업
+- 안되는 기능들 작동하게끔 작업 ( 그래프는 잘 안되는데? )
 
 - 시스템 프로세스는 추가 경고 표시 및 추가 정렬 (색상 추가, 따로 분리 ) // 생각해볼것
-- 이상 네트워크 차단 규칙 수립 / 자동 차단 기능 제작
-- 차단된 네트워크 리스트를 표시하는 UI 제작
 - 보안 경고 팝업 구현: 보안 이벤트 발생 시 표시될 팝업 컴포넌트 설계 및 경고 레벨별 UX 흐름 정의
+
+### 다음 단계 작업
+
+- **AutoBlock UI 개선**: 차단된 연결 상세 정보 표시 페이지
+- **화이트리스트 관리 UI**: 사용자 친화적인 화이트리스트 추가/제거 인터페이스
+- **차단 규칙 커스터마이징**: 사용자 정의 차단 규칙 추가 기능
+- **성능 모니터링**: AutoBlock 시스템 성능 지표 및 최적화

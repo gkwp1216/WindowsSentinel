@@ -4,15 +4,15 @@
 winexe
 C#
 .cs
-C:\My_Project\WS\LogCheck\obj\Release\net8.0-windows\
+c:\My_Project\WS_git\LogCheck\obj\Release\net8.0-windows\
 LogCheck
 none
 false
 TRACE;RELEASE;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-C:\My_Project\WS\LogCheck\App.xaml
+c:\My_Project\WS_git\LogCheck\App.xaml
 11405634035
 
-50-284632873
+56953558818
 227-1451632846
 DarkTheme.xaml;LightTheme.xaml;Logs.xaml;MainWindows.xaml;NetWorks.xaml;NetWorks_New.xaml;ProgramsList.xaml;Recoverys.xaml;Setting.xaml;ThreatIntelligence.xaml;Vaccine.xaml;
 
