@@ -1,10 +1,6 @@
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
-using LogCheck.Models;
-using LogCheck.Services;
-using SkiaSharp;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +8,12 @@ using System.Windows.Controls.Primitives; // Popup 사용시
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Threading;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LogCheck.Models;
+using LogCheck.Services;
+using SkiaSharp;
 using Controls = System.Windows.Controls;
 using MediaBrushes = System.Windows.Media.Brushes;
 using MediaColor = System.Windows.Media.Color;
@@ -24,9 +26,11 @@ namespace LogCheck
     /// NetWorks_New.xaml에 대한 상호작용 논리
     /// </summary>
     [SupportedOSPlatform("windows")]
-    public partial class NetWorks_New : Page, INavigable
+    public partial class NetWorks_New : Page, INavigable, INotifyPropertyChanged
     {
-        private ToggleButton _selectedButton;
+        private ToggleButton? _selectedButton;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private readonly ObservableCollection<ProcessNetworkInfo> _generalProcessData;
         private readonly ObservableCollection<ProcessNetworkInfo> _systemProcessData;
@@ -57,6 +61,58 @@ namespace LogCheck
         private int _udpCount = 0;
         private int _icmpCount = 0;
         private long _totalDataTransferred = 0;
+
+        // 바인딩용 공개 프로퍼티들
+        public int TotalConnections
+        {
+            get => _totalConnections;
+            set { _totalConnections = value; OnPropertyChanged(); }
+        }
+
+        public int LowRiskCount
+        {
+            get => _lowRiskCount;
+            set { _lowRiskCount = value; OnPropertyChanged(); }
+        }
+
+        public int MediumRiskCount
+        {
+            get => _mediumRiskCount;
+            set { _mediumRiskCount = value; OnPropertyChanged(); }
+        }
+
+        public int HighRiskCount
+        {
+            get => _highRiskCount;
+            set { _highRiskCount = value; OnPropertyChanged(); }
+        }
+
+        public int TcpCount
+        {
+            get => _tcpCount;
+            set { _tcpCount = value; OnPropertyChanged(); }
+        }
+
+        public int UdpCount
+        {
+            get => _udpCount;
+            set { _udpCount = value; OnPropertyChanged(); }
+        }
+
+        public int IcmpCount
+        {
+            get => _icmpCount;
+            set { _icmpCount = value; OnPropertyChanged(); }
+        }
+
+        public string TotalDataTransferred
+        {
+            get => $"{_totalDataTransferred / (1024.0 * 1024.0):F1} MB";
+        }
+
+        public ObservableCollection<ISeries> ChartSeries => _chartSeries;
+        public ObservableCollection<Axis> ChartXAxes => _chartXAxes;
+        public ObservableCollection<Axis> ChartYAxes => _chartYAxes;
 
         // 차트 데이터
         private readonly ObservableCollection<ISeries> _chartSeries;
@@ -132,6 +188,9 @@ namespace LogCheck
             NetworkActivityChart.XAxes = _chartXAxes;
             NetworkActivityChart.YAxes = _chartYAxes;
 
+            // DataContext 설정 (바인딩을 위해)
+            this.DataContext = this;
+
             // 이벤트 구독
             SubscribeToEvents();
 
@@ -205,7 +264,6 @@ namespace LogCheck
                 StartMonitoringButton.Visibility = Visibility.Collapsed;
                 StopMonitoringButton.Visibility = Visibility.Visible;
                 MonitoringStatusText.Text = "모니터링 중";
-                MonitoringStatusText2.Text = "모니터링 중";
                 MonitoringStatusIndicator.Fill = new SolidColorBrush(Colors.Green);
                 // 새로 추가된 런타임 구성 요약 갱신
                 UpdateRuntimeConfigText();
@@ -291,8 +349,7 @@ namespace LogCheck
                             StopMonitoringButton.Visibility = running ? Visibility.Visible : Visibility.Collapsed;
                         if (MonitoringStatusText != null)
                             MonitoringStatusText.Text = running ? "모니터링 중" : "대기 중";
-                        if (MonitoringStatusText2 != null)
-                            MonitoringStatusText2.Text = MonitoringStatusText?.Text ?? "";
+
                         if (MonitoringStatusIndicator != null)
                             MonitoringStatusIndicator.Fill = new SolidColorBrush(running ? Colors.Green : Colors.Gray);
 
@@ -443,30 +500,68 @@ namespace LogCheck
         {
             try
             {
-                // 샘플 데이터로 차트 초기화
-                var sampleData = new List<double> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                var sampleLabels = new List<string> { "00", "02", "04", "06", "08", "10", "12", "14", "16", "18", "20", "22" };
+                // 샘플 데이터로 차트 초기화 (0-25 범위의 현실적인 데이터)
+                var sampleData = new List<double> { 2, 3, 1, 5, 8, 12, 18, 22, 20, 15, 10, 5 };
+                var currentTime = DateTime.Now;
+                var sampleLabels = new List<string>();
+                for (int i = 0; i < 12; i++)
+                {
+                    var timeSlot = currentTime.AddHours(-22 + (i * 2));
+                    sampleLabels.Add(timeSlot.ToString("HH"));
+                }
 
                 var lineSeries = new LineSeries<double>
                 {
                     Values = sampleData,
-                    Name = "네트워크 활동",
-                    Stroke = new SolidColorPaint(SKColors.Blue, 2),
-                    Fill = new SolidColorPaint(SKColors.Blue.WithAlpha(50))
+                    Name = "Network Activity",
+                    Stroke = new SolidColorPaint(SKColors.DodgerBlue, 2),
+                    Fill = new SolidColorPaint(SKColors.DodgerBlue.WithAlpha(20)),
+                    GeometrySize = 3,
+                    GeometryStroke = new SolidColorPaint(SKColors.DodgerBlue, 1),
+                    GeometryFill = new SolidColorPaint(SKColors.White),
+                    LineSmoothness = 0.2, // 부드러운 곡선
+                    DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                    DataLabelsSize = 9,
+                    DataLabelsPosition = LiveChartsCore.Measure.DataLabelsPosition.Top
                 };
 
                 _chartSeries.Add(lineSeries);
 
+                // X축 설정 개선 (수치 표시 문제 해결)
                 _chartXAxes.Add(new Axis
                 {
                     Labels = sampleLabels,
-                    LabelsRotation = 0
+                    LabelsRotation = 0,
+                    TextSize = 10,
+                    LabelsPaint = new SolidColorPaint(SKColors.Black),
+                    SeparatorsPaint = new SolidColorPaint(SKColors.LightGray, 1),
+                    Name = "Time (Hours)",
+                    NameTextSize = 10,
+                    NamePaint = new SolidColorPaint(SKColors.DarkGray),
+                    ShowSeparatorLines = true
                 });
 
+                // Y축 설정 개선 (수치 뭉침 현상 해결)  
                 _chartYAxes.Add(new Axis
                 {
-                    Name = "활동 수준",
-                    MinStep = 1
+                    Name = "Connections",
+                    NameTextSize = 10,
+                    NamePaint = new SolidColorPaint(SKColors.DarkGray),
+                    TextSize = 9,
+                    LabelsPaint = new SolidColorPaint(SKColors.Black),
+                    SeparatorsPaint = new SolidColorPaint(SKColors.LightGray, 1),
+                    MinLimit = 0,
+                    MaxLimit = 25, // 고정 최대값으로 일관된 스케일
+                    MinStep = 5, // 5단위 간격
+                    ForceStepToMin = true,
+                    ShowSeparatorLines = true,
+                    Labeler = value =>
+                    {
+                        // 5의 배수만 표시하여 뭉침 방지
+                        if (value % 5 == 0)
+                            return value.ToString("0");
+                        return "";
+                    }
                 });
             }
             catch (Exception ex)
@@ -496,7 +591,6 @@ namespace LogCheck
                 StartMonitoringButton.Visibility = Visibility.Collapsed;
                 StopMonitoringButton.Visibility = Visibility.Visible;
                 MonitoringStatusText.Text = "모니터링 중";
-                MonitoringStatusText2.Text = "모니터링 중";
                 MonitoringStatusIndicator.Fill = new SolidColorBrush(Colors.Green);
                 UpdateRuntimeConfigText();
 
@@ -527,7 +621,6 @@ namespace LogCheck
                 StartMonitoringButton.Visibility = Visibility.Visible;
                 StopMonitoringButton.Visibility = Visibility.Collapsed;
                 MonitoringStatusText.Text = "대기 중";
-                MonitoringStatusText2.Text = "대기 중";
                 MonitoringStatusIndicator.Fill = new SolidColorBrush(Colors.Gray);
                 // 구성 요약은 유지하거나 필요 시 빈 값으로 둘 수 있음 (여기서는 유지)
 
@@ -875,7 +968,6 @@ namespace LogCheck
                     var secs = Math.Max(1, (int)_updateTimer.Interval.TotalSeconds);
                     var pps = taken / secs;
                     if (MonitoringStatusText != null) MonitoringStatusText.Text = $"모니터링 중 ({pps} pps)";
-                    if (MonitoringStatusText2 != null) MonitoringStatusText2.Text = $"모니터링 중 ({pps} pps)";
 
                     // 주기적으로 데이터 업데이트
                     System.Diagnostics.Debug.WriteLine("[NetWorks_New] 프로세스 데이터 가져오기 시작");
@@ -1177,22 +1269,26 @@ namespace LogCheck
             {
                 data ??= new List<ProcessNetworkInfo>();
 
-                _totalConnections = data.Count;
-                _lowRiskCount = data.Count(x => x.RiskLevel == SecurityRiskLevel.Low);
-                _mediumRiskCount = data.Count(x => x.RiskLevel == SecurityRiskLevel.Medium);
-                _highRiskCount = data.Count(x => x.RiskLevel == SecurityRiskLevel.High);
-                _tcpCount = data.Count(x => x.Protocol == "TCP");
-                _udpCount = data.Count(x => x.Protocol == "UDP");
-                _icmpCount = data.Count(x => x.Protocol == "ICMP");
+                // 프로퍼티를 통해 업데이트하여 자동으로 UI가 갱신되도록 함
+                TotalConnections = data.Count;
+                LowRiskCount = data.Count(x => x.RiskLevel == SecurityRiskLevel.Low);
+                MediumRiskCount = data.Count(x => x.RiskLevel == SecurityRiskLevel.Medium);
+                HighRiskCount = data.Count(x => x.RiskLevel == SecurityRiskLevel.High);
+                TcpCount = data.Count(x => x.Protocol == "TCP");
+                UdpCount = data.Count(x => x.Protocol == "UDP");
+                IcmpCount = data.Count(x => x.Protocol == "ICMP");
                 _totalDataTransferred = data.Sum(x => x.DataTransferred);
+
+                // TotalDataTransferred는 계산된 프로퍼티이므로 수동으로 알림
+                OnPropertyChanged(nameof(TotalDataTransferred));
 
                 // UI 업데이트
                 if (ActiveConnectionsText != null)
-                    ActiveConnectionsText.Text = _totalConnections.ToString();
+                    ActiveConnectionsText.Text = TotalConnections.ToString();
                 if (DangerousConnectionsText != null)
-                    DangerousConnectionsText.Text = (_highRiskCount + data.Count(x => x.RiskLevel == SecurityRiskLevel.Critical)).ToString();
+                    DangerousConnectionsText.Text = (HighRiskCount + data.Count(x => x.RiskLevel == SecurityRiskLevel.Critical)).ToString();
 
-                // DataContext 업데이트 (실제로는 INotifyPropertyChanged 구현 필요)
+                // 통계 표시 업데이트
                 UpdateStatisticsDisplay();
             }
             catch (Exception ex)
@@ -1272,22 +1368,48 @@ namespace LogCheck
         {
             try
             {
-                // 간단한 차트 업데이트 (실제로는 더 정교한 구현 필요)
                 if (_chartSeries.Count > 0 && _chartSeries[0] is LineSeries<double> lineSeries)
                 {
                     data ??= new List<ProcessNetworkInfo>();
                     var chartData = new List<double>();
-                    var currentHour = DateTime.Now.Hour;
+                    var currentTime = DateTime.Now;
 
-                    // 24시간 데이터 시뮬레이션
+                    // 최근 12개 시간대의 데이터 생성 (2시간 간격)
                     for (int i = 0; i < 12; i++)
                     {
-                        var hour = (currentHour - 11 + i + 24) % 24;
-                        var hourData = data.Count(x => x.ConnectionStartTime.Hour == hour);
-                        chartData.Add(hourData);
+                        var timeSlot = currentTime.AddHours(-22 + (i * 2));
+                        var hourData = data.Count(x =>
+                            Math.Abs((x.ConnectionStartTime - timeSlot).TotalHours) < 1);
+
+                        // Y축 설정에 맞는 범위로 제한 (0-25)
+                        var normalizedData = Math.Max(0, Math.Min(25, hourData));
+                        chartData.Add(normalizedData);
                     }
 
-                    lineSeries.Values = chartData;
+                    // UI 스레드에서 차트 업데이트
+                    System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        try
+                        {
+                            lineSeries.Values = chartData;
+
+                            // X축 레이블도 실시간으로 업데이트
+                            if (_chartXAxes.Count > 0)
+                            {
+                                var timeLabels = new List<string>();
+                                for (int i = 0; i < 12; i++)
+                                {
+                                    var timeSlot = currentTime.AddHours(-22 + (i * 2));
+                                    timeLabels.Add(timeSlot.ToString("HH"));
+                                }
+                                _chartXAxes[0].Labels = timeLabels;
+                            }
+                        }
+                        catch (Exception uiEx)
+                        {
+                            AddLogMessage($"차트 UI 업데이트 오류: {uiEx.Message}");
+                        }
+                    });
                 }
             }
             catch (Exception ex)
@@ -1914,6 +2036,15 @@ namespace LogCheck
             return null;
         }
         */
+
+        #endregion
+
+        #region INotifyPropertyChanged Implementation
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         #endregion
 

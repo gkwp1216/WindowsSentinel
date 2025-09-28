@@ -140,132 +140,163 @@
         <Grid Grid.Column="1" Margin="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- 테이블 제목 및 필터 -->
+            <!-- 통합 헤더: 제목, 상태, 필터, 컨트롤 -->
             <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20" Margin="10,0,20,10" BorderBrush="#C2C2C2" BorderThickness="1">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="10,0,0,0" VerticalAlignment="Center">
-                        <TextBlock Text="실시간 네트워크 모니터링" 
-                               Foreground="{DynamicResource ForegroundColor}" 
-                               FontSize="20" 
-                               FontWeight="SemiBold"
-                               Margin="0,0,0,0"
-                               VerticalAlignment="Center"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                        <!-- 도움말 아이콘 -->
-                        <Border Width="25" Height="25" 
-                                Background="Transparent"
-                                Cursor="Hand"
-                                Margin="10,0,0,0">
-                            <materialDesign:PackIcon Kind="HelpCircleOutline"
-                                                     Width="25" Height="25"
-                                                     Foreground="{DynamicResource HelpMarkColor}"
-                                                     HorizontalAlignment="Center"
-                                                     VerticalAlignment="Center" />
-                            <Border.ToolTip>
-                                <ToolTip Content="실시간으로 네트워크 모니터링을 하고 보안 위협을 탐지합니다."
-                                         Placement="MousePoint"
-                                         HorizontalOffset="420" VerticalOffset="15"/>
-                            </Border.ToolTip>
-                        </Border>
+                    <!-- 첫 번째 행: 제목과 모니터링 상태 -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                        <TextBox x:Name="SearchTextBox"                                                                      
-                             VerticalContentAlignment="Center"
-                             Width="200"
-                             Height="30"
-                             materialDesign:HintAssist.Hint="프로세스명, IP, 포트로 검색"
-                             Margin="10,0,0,0"
-                             TextChanged="Search_TextChanged"/>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="실시간 네트워크 모니터링" 
+                                       Foreground="{DynamicResource ForegroundColor}" 
+                                       FontSize="20" 
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
 
-                    </StackPanel>
+                            <!-- 도움말 아이콘 -->
+                            <Border Width="25" Height="25" 
+                                    Background="Transparent"
+                                    Cursor="Hand"
+                                    Margin="10,0,0,0">
+                                <materialDesign:PackIcon Kind="HelpCircleOutline"
+                                                         Width="25" Height="25"
+                                                         Foreground="{DynamicResource HelpMarkColor}"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center" />
+                                <Border.ToolTip>
+                                    <ToolTip Content="실시간으로 네트워크 모니터링을 하고 보안 위협을 탐지합니다."
+                                             Placement="MousePoint"
+                                             HorizontalOffset="420" VerticalOffset="15"/>
+                                </Border.ToolTip>
+                            </Border>
+                        </StackPanel>
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <ComboBox x:Name="ProtocolFilterComboBox"
-                                  VerticalContentAlignment="Center"
-                                  Width="120"
-                                  Height="30"
-                                  Margin="0,0,10,0"
-                                  materialDesign:HintAssist.Hint="프로토콜"
-                                  SelectionChanged="ProtocolFilter_SelectionChanged">
-                            <ComboBoxItem Content="모든 프로토콜" IsSelected="True"/>
-                            <ComboBoxItem Content="TCP"/>
-                            <ComboBoxItem Content="UDP"/>
-                            <ComboBoxItem Content="ICMP"/>
-                        </ComboBox>
+                        <!-- 모니터링 상태 표시 -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <Ellipse x:Name="MonitoringStatusIndicator" 
+                                     Width="12" Height="12" 
+                                     Fill="Gray" 
+                                     Margin="0,0,8,0"/>
+                            
+                            <TextBlock x:Name="MonitoringStatusText"
+                                       Text="대기 중" 
+                                       Foreground="{DynamicResource ForegroundColor}" 
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
 
-                        <ComboBox x:Name="NetworkInterfaceComboBox"                                       
-                                  Width="120"   
-                                  Height="30"
-                                  VerticalContentAlignment="Center"                            
-                                  materialDesign:HintAssist.Hint="네트워크 인터페이스 선택"/>
-                    </StackPanel>
-                </Grid>
-            </Border>
+                    <!-- 구분선 -->
+                    <Border Grid.Row="1" Height="1" Background="#E0E0E0" Margin="0,15,0,15"/>
 
-            <!-- 상태 표시 -->
-            <Border Grid.Row="1" Background="{DynamicResource BackgroundColor}" CornerRadius="12" Padding="20" Margin="10,10,20,10">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="450"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    <!-- 두 번째 행: 통계, 필터, 컨트롤 -->
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
-                        <TextBlock Text="모니터링 상태: "                               
-                                   Foreground="{DynamicResource ForegroundColor}" 
-                                   FontWeight="SemiBold"/>
-                        <TextBlock x:Name="MonitoringStatusText"
-                                   Text="대기 중" 
-                                   Foreground="{DynamicResource SecondaryForegroundColor}" 
-                                   Margin="5,0,0,0"/>
+                        <!-- 실시간 통계 -->
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border Background="{DynamicResource SecondaryBackgroundColor}" 
+                                    CornerRadius="6" 
+                                    Padding="8,4">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="활성 연결" 
+                                               Foreground="{DynamicResource SecondaryForegroundColor}" 
+                                               FontSize="12" 
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="ActiveConnectionsText"
+                                               Text="0" 
+                                               Foreground="{DynamicResource PrimaryColor}" 
+                                               FontWeight="Bold"
+                                               FontSize="14"
+                                               Margin="6,0,0,0"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
 
-                        <TextBlock Text="| 활성 연결: "
-                                   Foreground="{DynamicResource ForegroundColor}" 
-                                   FontWeight="SemiBold"
-                                   Margin="20,0,0,0"/>
-                        
-                        <TextBlock x:Name="ActiveConnectionsText"
-                                   Text="0" 
-                                   Foreground="{DynamicResource PrimaryColor}" 
-                                   FontWeight="Bold"
-                                   Margin="5,0,0,0"/>
+                            <Border Background="{DynamicResource ProcessDangerColor}" 
+                                    CornerRadius="6" 
+                                    Padding="8,4"
+                                    Margin="10,0,0,0"
+                                    Opacity="0.9">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="위험 연결" 
+                                               Foreground="White" 
+                                               FontSize="12" 
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="DangerousConnectionsText"
+                                               Text="0"
+                                               Foreground="White" 
+                                               FontWeight="Bold"
+                                               FontSize="14"
+                                               Margin="6,0,0,0"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
 
-                        <TextBlock Text="| 위험 연결: " 
-                                   Foreground="{DynamicResource ForegroundColor}" 
-                                   FontWeight="SemiBold"
-                                   Margin="20,0,0,0"/>
-                        <TextBlock x:Name="DangerousConnectionsText"
-                                   Text="0"
-                                   Foreground="{DynamicResource ProcessDangerColor}" 
-                                   FontWeight="Bold"
-                                   Margin="5,0,0,0"/>
-                    </StackPanel>
+                        <!-- 중앙 필터 영역 -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBox x:Name="SearchTextBox"                                                                      
+                                     VerticalContentAlignment="Center"
+                                     Width="200"
+                                     Height="32"
+                                     materialDesign:HintAssist.Hint="프로세스명, IP, 포트로 검색"
+                                     Margin="0,0,10,0"
+                                     TextChanged="Search_TextChanged"/>
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right"  VerticalAlignment="Center">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <ComboBox x:Name="ProtocolFilterComboBox"
+                                      VerticalContentAlignment="Center"
+                                      Width="120"
+                                      Height="32"
+                                      Margin="0,0,10,0"
+                                      materialDesign:HintAssist.Hint="프로토콜"
+                                      SelectionChanged="ProtocolFilter_SelectionChanged">
+                                <ComboBoxItem Content="모든 프로토콜" IsSelected="True"/>
+                                <ComboBoxItem Content="TCP"/>
+                                <ComboBoxItem Content="UDP"/>
+                                <ComboBoxItem Content="ICMP"/>
+                            </ComboBox>
 
+                            <ComboBox x:Name="NetworkInterfaceComboBox"                                       
+                                      Width="140"   
+                                      Height="32"
+                                      VerticalContentAlignment="Center"                            
+                                      materialDesign:HintAssist.Hint="네트워크 인터페이스"/>
+                        </StackPanel>
+
+                        <!-- 우측 컨트롤 버튼 -->
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                             <Button x:Name="StartMonitoringButton"
-                                    Content="모니터링 시작"
+                                    Content="시작"
                                     Style="{DynamicResource RefreshButtonStyle}"
                                     Click="StartMonitoring_Click"
-                                    Width="120" Height="30"
-                                    Margin="0,0,8,0">
+                                    Width="60" Height="32"
+                                    Margin="0,0,6,0">
                             </Button>
 
                             <Button x:Name="StopMonitoringButton"
-                                    Content="모니터링 중지"
+                                    Content="중지"
                                     Style="{DynamicResource RefreshButtonStyle}"
                                     Click="StopMonitoring_Click"
-                                    Width="120" Height="30"
-                                    Margin="0,0,8,0"
+                                    Width="60" Height="32"
+                                    Margin="0,0,6,0"
                                     Visibility="Collapsed">
                             </Button>
 
@@ -274,14 +305,14 @@
                                     Style="{DynamicResource RefreshButtonStyle}"
                                     Click="Refresh_Click"
                                     VerticalAlignment="Center"
-                                    Width="120" Height="30" >
+                                    Width="80" Height="32">
                             </Button>
                         </StackPanel>
-                    </StackPanel>
+                    </Grid>
                 </Grid>
             </Border>
 
-            <Border Grid.Row="2" Background="{DynamicResource BackgroundColor}" CornerRadius="12" Padding="20" Margin="10,10,20,20">
+            <Border Grid.Row="1" Background="{DynamicResource BackgroundColor}" CornerRadius="12" Padding="20" Margin="10,10,20,20">
 
                 <TabControl>
                     <!-- 프로세스-네트워크 연결 테이블 -->
@@ -884,10 +915,16 @@
 
                                     <Border Grid.Column="1" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,10,0">
                                         <StackPanel>
-                                            <TextBlock Text="실시간 네트워크 활동" HorizontalAlignment="Center" Foreground="{DynamicResource ForegroundColor}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,0"/>
+                                            <TextBlock Text="실시간 네트워크 활동" HorizontalAlignment="Center" Foreground="{DynamicResource ForegroundColor}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
                                             <lvc:CartesianChart x:Name="NetworkActivityChart"
-                                                                Width="260" Height="200"
-                                                                Series="{Binding ChartSeries}" XAxes="{Binding ChartXAxes}" YAxes="{Binding ChartYAxes}"/>
+                                                                Width="320" Height="180"
+                                                                Series="{Binding ChartSeries}" 
+                                                                XAxes="{Binding ChartXAxes}" 
+                                                                YAxes="{Binding ChartYAxes}"
+                                                                Background="White"
+                                                                Margin="10,5,5,0"
+                                                                LegendPosition="Hidden"
+                                                                TooltipPosition="Hidden"/>
                                         </StackPanel>
                                     </Border>
 
@@ -927,7 +964,7 @@
                                     <!-- 모니터링 상태 + 런타임 구성 요약 -->
                                     <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <Ellipse x:Name="MonitoringStatusIndicator" Width="12" Height="12" 
+                                            <Ellipse x:Name="MonitoringStatusIndicator2" Width="12" Height="12" 
                                                      Fill="Gray" Margin="0,0,8,0"/>
                                             <TextBlock x:Name="MonitoringStatusText2" Text="대기 중" 
                                                        Foreground="{DynamicResource SecondaryForegroundColor}" FontSize="12"/>
