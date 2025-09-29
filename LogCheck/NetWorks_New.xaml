@@ -411,7 +411,7 @@
 
                                 <TreeView.Resources>
                                     <!-- 프로세스 노드 템플릿 -->
-                                    <HierarchicalDataTemplate DataType="{x:Type models:ProcessTreeNode}" ItemsSource="{Binding Connections}">
+                                    <HierarchicalDataTemplate DataType="{x:Type models:ProcessTreeNode}" ItemsSource="{Binding AllConnections}">
                                         <!-- 프로세스 그룹 헤더 -->
                                         <Border Background="{Binding BackgroundColor}" 
                                             CornerRadius="5" 
@@ -436,11 +436,27 @@
                                                                    FontWeight="Bold" 
                                                                    FontSize="14"
                                                                    Foreground="{DynamicResource ForegroundColor}"/>
-                                                            <TextBlock Text="{Binding ConnectionCount, StringFormat=' ({0}개 연결)'}" 
+                                                            <TextBlock Text="{Binding ConnectionCount, StringFormat=' ({0}개 활성)'}" 
                                                                    FontWeight="SemiBold" 
                                                                    FontSize="12"
                                                                    Foreground="{DynamicResource SecondaryForegroundColor}"
                                                                    Margin="5,0,0,0"/>
+                                                            <!-- 차단된 연결 표시 -->
+                                                            <TextBlock Text="{Binding BlockedConnectionCount, StringFormat=' ({0}개 차단)'}" 
+                                                                   FontWeight="SemiBold" 
+                                                                   FontSize="12"
+                                                                   Foreground="#FF6B47"
+                                                                   Margin="5,0,0,0">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding BlockedConnectionCount}" Value="0">
+                                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
                                                         </StackPanel>
                                                         <TextBlock FontSize="11" Foreground="{DynamicResource SecondaryForegroundColor}">
                                                         <Run Text="PID: "/>
@@ -509,9 +525,21 @@
 
                                     <!-- 개별 연결 템플릿 -->
                                     <DataTemplate DataType="{x:Type models:ProcessNetworkInfo}">
-                                        <Border Background="Transparent" 
-                                            Padding="5,3"
+                                        <Border Padding="5,3"
                                             Margin="20,1,5,1">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="Transparent"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsBlocked}" Value="True">
+                                                            <Setter Property="Background" Value="#40FF6B47"/>
+                                                            <Setter Property="BorderBrush" Value="#FF6B47"/>
+                                                            <Setter Property="BorderThickness" Value="1"/>
+                                                            <Setter Property="CornerRadius" Value="3"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="50"/>
@@ -523,12 +551,30 @@
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <Image Grid.Column="0"
-                                                   Width="16" Height="16"
-                                                   Margin="0,0,8,0"
-                                                   Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=DataContext.ProcessPath, Converter={StaticResource FilePathToIconConverter}}"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Left"/>
+                                                <!-- 상태 아이콘 표시 -->
+                                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <!-- 차단 아이콘 -->
+                                                    <materialDesign:PackIcon Kind="ShieldOff" 
+                                                                         Width="16" Height="16"
+                                                                         Foreground="#FF6B47" 
+                                                                         Margin="0,0,4,0"
+                                                                         VerticalAlignment="Center">
+                                                        <materialDesign:PackIcon.Style>
+                                                            <Style TargetType="materialDesign:PackIcon">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsBlocked}" Value="True">
+                                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </materialDesign:PackIcon.Style>
+                                                    </materialDesign:PackIcon>
+                                                    <!-- 프로세스 아이콘 -->
+                                                    <Image Width="16" Height="16"
+                                                           Source="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=DataContext.ProcessPath, Converter={StaticResource FilePathToIconConverter}}"
+                                                           VerticalAlignment="Center"/>
+                                                </StackPanel>
 
                                                 <TextBlock Grid.Column="1" 
                                                        Text="{Binding LocalAddress}" 
@@ -546,10 +592,22 @@
                                                        Foreground="{DynamicResource SecondaryForegroundColor}"
                                                        VerticalAlignment="Center"/>
                                                 <TextBlock Grid.Column="4" 
-                                                       Text="{Binding ConnectionState}" 
                                                        FontSize="11"
-                                                       Foreground="{DynamicResource ForegroundColor}"
-                                                       VerticalAlignment="Center"/>
+                                                       VerticalAlignment="Center">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Text" Value="{Binding ConnectionState}"/>
+                                                            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsBlocked}" Value="True">
+                                                                    <Setter Property="Text" Value="차단됨"/>
+                                                                    <Setter Property="Foreground" Value="#FF6B47"/>
+                                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
 
                                                 <!-- 위험도 표시 -->
                                                 <Border Grid.Column="5" 

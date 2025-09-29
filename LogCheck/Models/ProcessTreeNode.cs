@@ -50,6 +50,16 @@ namespace LogCheck.Models
         public ObservableCollection<ProcessNetworkInfo> Connections { get; set; } = new();
 
         /// <summary>
+        /// 차단된 연결 목록 (별도 관리)
+        /// </summary>
+        public ObservableCollection<ProcessNetworkInfo> BlockedConnections { get; set; } = new();
+
+        /// <summary>
+        /// 전체 연결 목록 (활성 + 차단) - TreeView에서 사용
+        /// </summary>
+        public ObservableCollection<ProcessNetworkInfo> AllConnections { get; set; } = new();
+
+        /// <summary>
         /// 작업 관리자처럼 확장 상태를 개별 관리
         /// 상태 변경 시 전역 딕셔너리에 자동 저장
         /// </summary>
@@ -73,14 +83,26 @@ namespace LogCheck.Models
         }
 
         /// <summary>
-        /// 현재 연결 수
+        /// 현재 활성 연결 수
         /// </summary>
         public int ConnectionCount => Connections.Count;
 
         /// <summary>
-        /// 트리뷰에 표시될 텍스트
+        /// 차단된 연결 수
         /// </summary>
-        public string DisplayText => $"{ProcessName} ({ConnectionCount}개 연결)";
+        public int BlockedConnectionCount => BlockedConnections.Count;
+
+        /// <summary>
+        /// 전체 연결 수 (활성 + 차단)
+        /// </summary>
+        public int TotalConnectionCount => ConnectionCount + BlockedConnectionCount;
+
+        /// <summary>
+        /// 트리뷰에 표시될 텍스트 (활성/차단 연결 수 구분)
+        /// </summary>
+        public string DisplayText => BlockedConnectionCount > 0
+            ? $"{ProcessName} ({ConnectionCount}개 활성, {BlockedConnectionCount}개 차단)"
+            : $"{ProcessName} ({ConnectionCount}개 연결)";
 
         /// <summary>
         /// 고유 식별자 생성 (PID는 재사용될 수 있으므로 프로세스명과 함께 사용)
@@ -148,19 +170,52 @@ namespace LogCheck.Models
         }
 
         /// <summary>
-        /// 연결 목록 업데이트 및 관련 프로퍼티 갱신
+        /// 연결 목록 업데이트 및 관련 프로퍼티 갱신 (활성/차단 연결 분리)
         /// </summary>
         /// <param name="newConnections">새로운 연결 목록</param>
         public void UpdateConnections(List<ProcessNetworkInfo> newConnections)
         {
+            // 활성 연결과 차단된 연결 분리
+            var activeConnections = newConnections.Where(c => !c.IsBlocked).ToList();
+            var blockedConnections = newConnections.Where(c => c.IsBlocked).ToList();
+
+            // 활성 연결 업데이트
             Connections.Clear();
-            foreach (var connection in newConnections)
+            foreach (var connection in activeConnections)
             {
                 Connections.Add(connection);
             }
 
+            // 차단된 연결 업데이트 (기존 차단 목록과 병합)
+            foreach (var blockedConnection in blockedConnections)
+            {
+                // 중복 제거 (같은 원격 주소:포트 조합)
+                var existing = BlockedConnections.FirstOrDefault(c =>
+                    c.RemoteAddress == blockedConnection.RemoteAddress &&
+                    c.RemotePort == blockedConnection.RemotePort &&
+                    c.ProcessId == blockedConnection.ProcessId);
+
+                if (existing == null)
+                {
+                    BlockedConnections.Add(blockedConnection);
+                }
+            }
+
+            // 전체 연결 목록 업데이트 (TreeView 표시용)
+            AllConnections.Clear();
+            foreach (var connection in activeConnections)
+            {
+                AllConnections.Add(connection);
+            }
+            foreach (var connection in BlockedConnections)
+            {
+                AllConnections.Add(connection);
+            }
+
             // 관련 프로퍼티들 갱신 알림
             OnPropertyChanged(nameof(ConnectionCount));
+            OnPropertyChanged(nameof(BlockedConnectionCount));
+            OnPropertyChanged(nameof(TotalConnectionCount));
             OnPropertyChanged(nameof(DisplayText));
             OnPropertyChanged(nameof(BackgroundColor));
         }

@@ -126,6 +126,21 @@ namespace LogCheck.Models
         public int ProcessId { get; set; }
 
         /// <summary>
+        /// 부모 프로세스 ID
+        /// </summary>
+        public int? ParentProcessId { get; set; }
+
+        /// <summary>
+        /// 부모 프로세스명
+        /// </summary>
+        public string ParentProcessName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 자식 프로세스 차단으로 인한 연관 차단 여부
+        /// </summary>
+        public bool IsRelatedToChildBlock { get; set; } = false;
+
+        /// <summary>
         /// 원격 주소
         /// </summary>
         public string RemoteAddress { get; set; } = string.Empty;

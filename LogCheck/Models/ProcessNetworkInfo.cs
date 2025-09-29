@@ -16,6 +16,12 @@ namespace LogCheck.Models
 
         public bool IsSystem { get; set; } = false;
 
+        // 프로세스 계층 구조 정보 (부모-자식 관계 추적)
+        public int? ParentProcessId { get; set; }
+        public string ParentProcessName { get; set; } = string.Empty;
+        public List<int> ChildProcessIds { get; set; } = new List<int>();
+        public bool HasBlockedChildren { get; set; } = false; // 자식 프로세스 중 차단된 것이 있는지
+
         // 네트워크 연결 정보
         public string LocalAddress { get; set; } = string.Empty;
         public int LocalPort { get; set; }

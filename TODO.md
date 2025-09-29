@@ -1,8 +1,11 @@
 # 작업 목록 (TODO)
 
-## 코드 품질 및 아키텍쳐
+## 성능 최적화 계획 📋
 
-- UpdateProcessNetworkDat### Phase 1: 핵심 시스템 개발 (완료)
+> **📄 상세 계획서**: [PERFORMANCE_OPTIMIZATION_PLAN.md](./PERFORMANCE_OPTIMIZATION_PLAN.md) 참조  
+> **🗺️ 실행 로드맵**: [PERFORMANCE_OPTIMIZATION_ROADMAP.md](./PERFORMANCE_OPTIMIZATION_ROADMAP.md) 참조
+
+### Phase 1: 핵심 시스템 개발 (완료) ✅
 
 - ✅ AutoBlock 서비스 아키텍처 설계
 - ✅ IAutoBlockService 인터페이스 정의
@@ -13,14 +16,27 @@
 - ✅ 화이트리스트 관리 시스템
 - ✅ 테스트 프레임워크 구성
 - ✅ UI 통합 작업 (AutoBlock 탭 및 통계 표시)
-- ✅ AutoBlock UI 가시성 문제 해결 메서드 내 Dispatcher.InvokeAsync -비동기 작업(Task.Run)이 완료된 후 결과만 UI 스레드로 보내는 패턴이 더 효율적 -개선방안 -개선 방안: Task.Run 안에서 데이터 처리와 보안 분석(\_securityAnalyzer.AnalyzeConnectionsAsync(data))을 모두 수행하고, 최종적으로 UI 업데이트에 필요한 부분(\_processNetworkData.Clear(), \_securityAlerts.Clear())만 Dispatcher.InvokeAsync로 호출하는 방식으로 리팩토링
+- ✅ 자식 프로세스만 연결 차단할 경우 부모 프로세스까지 프로그램 리스트에 표시되지 않으며 AutoBlock 시스템과 차단된 연결 모두에서 차단 기록/내역이 표시되지 않는 문제 해결
 
-- 통계 데이터 업데이트 방식: UpdateStatistics와 UpdateStatisticsDisplay를 분리한 것은 좋으나, \_totalConnections, \_lowRiskCount와 같은 필드들을 직접 업데이트하고 있음.
-  이는 WPF의 MVVM(Model-View-ViewModel) 패턴과 충돌할 수 있다.
+### Phase 2: 성능 최적화 (진행 예정) 🚀
 
-  - 개선 방안: 이 통계 데이터들을 별도의 ViewModel 클래스로 분리하고, INotifyPropertyChanged 인터페이스를 구현하여 값이 변경될 때마다 UI가 자동으로 업데이트되도록 바인딩하는 것이 WPF의 정석적인 방법이다. 이렇게 하면 코드의 관심사 분리가 명확해지고 유지보수가 훨씬 쉬워진다.
+#### 즉시 개선 작업 (Week 1-2)
 
-- 코드 중복: StartMonitoring_Click과 Refresh_Click에서 \_processNetworkMapper.GetProcessNetworkDataAsync() 호출과 UpdateProcessNetworkDataAsync 호출이 중복
+- [ ] **UI 스레드 최적화**: UpdateTimer_Tick 비동기 패턴 개선
+- [ ] **메모리 사용량 개선**: 증분 업데이트로 ObservableCollection 최적화
+- [ ] **DB 쓰기 성능**: AutoBlock 배치 처리 구현
+
+#### 구조적 개선 (Week 3-5)
+
+- [ ] **캐싱 시스템**: WMI 쿼리 결과 캐시 구현
+- [ ] **MVVM 패턴 완성**: ViewModel 분리 및 데이터 바인딩 강화
+- [ ] **BackgroundService**: 백그라운드 처리 패턴 적용
+
+#### 고급 최적화 (Week 6-9)
+
+- [ ] **객체 풀링**: ProcessNetworkInfo 객체 재사용
+- [ ] **성능 모니터링**: 실시간 메트릭 수집 시스템
+- [ ] **연결 풀**: 데이터베이스 연결 최적화
 
 ## UI/UX 개선 작업
 
@@ -110,10 +126,9 @@ BlockConnection_Click, TerminateProcess_Click 수정
 - **차단 규칙 커스터마이징**: 사용자 정의 차단 규칙 추가 기능
 - **성능 모니터링**: AutoBlock 시스템 성능 지표 및 최적화
 - **ftp , tftp?** : AutoBlock 기능 테스트를 위한 방법 연구
-- 자식 프로세스만 연결 차단할 경우 부모 프로세스까지 프로그램 리스트에 표시되지 않으며
-  AutoBlock 시스템과 차단된 연결 모두에서 차단 기록/내역이 표시되지 않는 문제 해결
-- AutoBlock 시스템과 차단된 연결을 따로 두지 말고 묶는 방법 고려
-- 그룹화 프로세스에서 차단할 경우, 상세 프로세스에서 차단할 경우
+- ✅ 자식 프로세스만 연결 차단할 경우 부모 프로세스까지 프로그램 리스트에 표시되지 않으며 AutoBlock 시스템과 차단된 연결 모두에서 차단 기록/내역이 표시되지 않는 문제 해결
+- [ ] **AutoBlock 시스템 통합**: AutoBlock 시스템과 차단된 연결을 통합 관리하는 방법 연구
+- [ ] **차단 범위 최적화**: 그룹화 프로세스 vs 상세 프로세스 차단 전략 수립
 
 # autoblock.db 경로
 
