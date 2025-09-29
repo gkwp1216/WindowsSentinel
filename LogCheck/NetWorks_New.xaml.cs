@@ -60,6 +60,9 @@ namespace LogCheck
         private readonly AutoBlockStatisticsService _autoBlockStats;
         private readonly ObservableCollection<AutoBlockedConnection> _blockedConnections;
         private readonly ObservableCollection<AutoWhitelistEntry> _whitelistEntries;
+
+        // 통합 차단 시스템
+        private readonly IUnifiedBlockingService _unifiedBlockingService;
         private bool _isInitialized = false;
         private int _totalBlockedCount = 0;
         private int _level1BlockCount = 0;
@@ -229,6 +232,9 @@ namespace LogCheck
             var connectionString = $"Data Source={dbPath};";
             _autoBlockService = new AutoBlockService(connectionString);
             _autoBlockStats = new AutoBlockStatisticsService(connectionString);
+
+            // 통합 차단 서비스 초기화
+            _unifiedBlockingService = new UnifiedBlockingService(connectionString, _autoBlockService, _connectionManager);
 
             // XAML 로드 (이 시점에 SelectionChanged가 발생해도 컬렉션은 준비됨)
             InitializeComponent();
@@ -503,6 +509,10 @@ namespace LogCheck
                 // AutoBlock 서비스 초기화
                 await _autoBlockService.InitializeAsync();
                 AddLogMessage("AutoBlock 시스템이 초기화되었습니다.");
+
+                // 통합 차단 서비스 초기화
+                await _unifiedBlockingService.InitializeAsync();
+                AddLogMessage("통합 차단 서비스가 초기화되었습니다.");
 
                 // System Idle Process 자동 화이트리스트 추가
                 await EnsureSystemIdleProcessWhitelistAsync();
@@ -976,7 +986,7 @@ namespace LogCheck
         }
 
         /// <summary>
-        /// 연결 차단 버튼 클릭
+        /// 연결 차단 버튼 클릭 - 통합 차단 서비스 사용
         /// </summary>
         private async void BlockConnection_Click(object sender, RoutedEventArgs e)
         {
@@ -996,51 +1006,25 @@ namespace LogCheck
                     {
                         AddLogMessage($"연결 차단 시작: {connection.ProcessName} - {connection.RemoteAddress}:{connection.RemotePort}");
 
-                        // ⭐ AutoBlock 시스템을 통한 차단 (통계 연동)
-                        var decision = new BlockDecision
+                        // 🔥 통합 차단 서비스를 통한 차단 실행
+                        var blockRequest = new BlockRequest
                         {
+                            Source = BlockSource.Manual,
                             Level = BlockLevel.Warning,
                             Reason = "사용자 수동 차단 요청",
-                            ConfidenceScore = 1.0,
+                            UserNote = $"사용자가 직접 차단을 요청 - UI에서 수동 실행",
                             TriggeredRules = new List<string> { "Manual Block Request" },
-                            RecommendedAction = "사용자가 직접 차단을 요청했습니다.",
+                            ConfidenceScore = 1.0,
                             ThreatCategory = "User Action",
-                            AnalyzedAt = DateTime.Now
+                            RequestedAt = DateTime.Now
                         };
 
-                        var autoBlockSuccess = await _autoBlockService.BlockConnectionAsync(connection, decision.Level);
-                        var connectionSuccess = await _connectionManager.DisconnectProcessAsync(
-                            connection.ProcessId,
-                            "사용자 요청 - 보안 위협 탐지");
+                        var blockResult = await _unifiedBlockingService.BlockConnectionAsync(connection, blockRequest);
 
-                        if (autoBlockSuccess || connectionSuccess)
+                        if (blockResult.Success)
                         {
-                            // 차단된 연결 정보 생성 및 통계 기록 (부모 프로세스 정보 포함)
-                            var blockedConnection = new AutoBlockedConnection
-                            {
-                                ProcessName = connection.ProcessName,
-                                ProcessPath = connection.ProcessPath,
-                                ProcessId = connection.ProcessId,
-                                ParentProcessId = connection.ParentProcessId,
-                                ParentProcessName = connection.ParentProcessName,
-                                IsRelatedToChildBlock = false, // 직접 차단
-                                RemoteAddress = connection.RemoteAddress,
-                                RemotePort = connection.RemotePort,
-                                Protocol = connection.Protocol,
-                                BlockLevel = decision.Level,
-                                Reason = decision.Reason,
-                                BlockedAt = DateTime.Now,
-                                ConfidenceScore = decision.ConfidenceScore,
-                                IsBlocked = true,
-                                TriggeredRules = string.Join(", ", decision.TriggeredRules)
-                            };
-
-                            // 통계 시스템과 차단된 연결 목록에 기록
-                            _ = Task.Run(async () =>
-                            {
-                                await RecordBlockEventAsync(blockedConnection);
-                                await _autoBlockStats.AddBlockedConnectionAsync(blockedConnection);
-                            });
+                            AddLogMessage($"✅ [Unified-Block] 연결 차단 완료: {connection.ProcessName} -> {connection.RemoteAddress}:{connection.RemotePort}");
+                            AddLogMessage($"📋 실행된 작업: {string.Join(", ", blockResult.ExecutedActions ?? new List<string>())}");
 
                             // 통계 UI 업데이트
                             UpdateStatisticsDisplay();
@@ -1048,16 +1032,26 @@ namespace LogCheck
                             // 차단된 연결 목록 새로고침
                             _ = Task.Run(async () => await LoadBlockedConnectionsAsync());
 
-                            AddLogMessage($"✅ [Manual-Block] 연결 차단 완료: {connection.ProcessName} -> {connection.RemoteAddress}:{connection.RemotePort}");
-                            MessageBox.Show("연결 차단이 완료되었습니다.\n\nAutoBlock 통계에 기록되었습니다.", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show(
+                                $"연결 차단이 완료되었습니다.\n\n실행된 작업:\n• {string.Join("\n• ", blockResult.ExecutedActions ?? new List<string>())}",
+                                "성공",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
 
                             // NotifyIcon 사용하여 트레이 알림
                             ShowTrayNotification($"연결 차단 완료: {connection.ProcessName} - {connection.RemoteAddress}:{connection.RemotePort}");
                         }
                         else
                         {
-                            AddLogMessage("❌ 연결 차단에 실패했습니다.");
-                            MessageBox.Show("연결 차단에 실패했습니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                            var errorMsg = string.IsNullOrEmpty(blockResult.ErrorMessage) ? "알 수 없는 오류" : blockResult.ErrorMessage;
+                            AddLogMessage($"❌ 연결 차단 실패: {errorMsg}");
+
+                            if (blockResult.ExecutedActions?.Any() == true)
+                            {
+                                AddLogMessage($"📋 부분 실행된 작업: {string.Join(", ", blockResult.ExecutedActions)}");
+                            }
+
+                            MessageBox.Show($"연결 차단에 실패했습니다.\n\n오류: {errorMsg}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                 }

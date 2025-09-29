@@ -30,22 +30,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "NetWorks.xaml",
-              "DocumentMoniker": "C:\\My_Project\\WS_git\\LogCheck\\NetWorks.xaml",
-              "RelativeDocumentMoniker": "NetWorks.xaml",
-              "ToolTip": "C:\\My_Project\\WS_git\\LogCheck\\NetWorks.xaml",
-              "RelativeToolTip": "NetWorks.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-09-29T06:54:13.184Z"
             },
             {
               "$type": "Document",
@@ -57,6 +46,30 @@
               "RelativeToolTip": "MainWindows.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-09-22T12:43:21.696Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "NetWorks_New.xaml.cs",
+              "DocumentMoniker": "C:\\My_Project\\WS_git\\LogCheck\\NetWorks_New.xaml.cs",
+              "RelativeDocumentMoniker": "NetWorks_New.xaml.cs",
+              "ToolTip": "C:\\My_Project\\WS_git\\LogCheck\\NetWorks_New.xaml.cs",
+              "RelativeToolTip": "NetWorks_New.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T05:02:02.532Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NetWorks.xaml",
+              "DocumentMoniker": "C:\\My_Project\\WS_git\\LogCheck\\NetWorks.xaml",
+              "RelativeDocumentMoniker": "NetWorks.xaml",
+              "ToolTip": "C:\\My_Project\\WS_git\\LogCheck\\NetWorks.xaml",
+              "RelativeToolTip": "NetWorks.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-09-29T06:54:13.184Z"
             },
             {
               "$type": "Document",
@@ -80,19 +93,6 @@
               "ViewState": "AgIAADgBAAAAAAAAAAAnwFMBAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-22T12:46:47.344Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "NetWorks_New.xaml.cs",
-              "DocumentMoniker": "C:\\My_Project\\WS_git\\LogCheck\\NetWorks_New.xaml.cs",
-              "RelativeDocumentMoniker": "NetWorks_New.xaml.cs",
-              "ToolTip": "C:\\My_Project\\WS_git\\LogCheck\\NetWorks_New.xaml.cs",
-              "RelativeToolTip": "NetWorks_New.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-08T05:02:02.532Z",
-              "EditorCaption": ""
             }
           ]
         }

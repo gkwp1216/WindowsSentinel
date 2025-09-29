@@ -126,8 +126,13 @@ BlockConnection_Click, TerminateProcess_Click 수정
 - **차단 규칙 커스터마이징**: 사용자 정의 차단 규칙 추가 기능
 - **성능 모니터링**: AutoBlock 시스템 성능 지표 및 최적화
 - **ftp , tftp?** : AutoBlock 기능 테스트를 위한 방법 연구
-- ✅ 자식 프로세스만 연결 차단할 경우 부모 프로세스까지 프로그램 리스트에 표시되지 않으며 AutoBlock 시스템과 차단된 연결 모두에서 차단 기록/내역이 표시되지 않는 문제 해결
-- [ ] **AutoBlock 시스템 통합**: AutoBlock 시스템과 차단된 연결을 통합 관리하는 방법 연구
+- [x] **AutoBlock 시스템 통합**: AutoBlock 시스템과 차단된 연결을 통합 관리하는 방법 연구
+  - ✅ IUnifiedBlockingService 인터페이스 구현 완료
+  - ✅ UnifiedBlockingService 통합 서비스 구현 완료
+  - ✅ 통합 데이터베이스 스키마 (UnifiedBlockedConnections 테이블) 구현
+  - ✅ NetWorks_New.xaml.cs에서 통합 차단 서비스 사용으로 변경 완료
+  - ✅ 배치 처리, 이벤트 시스템, 통계 조회 등 모든 기능 통합
+  - ✅ 빌드 성공 및 컴파일 오류 해결
 - [ ] **차단 범위 최적화**: 그룹화 프로세스 vs 상세 프로세스 차단 전략 수립
 
 # autoblock.db 경로
