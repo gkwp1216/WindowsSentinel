@@ -180,16 +180,7 @@ namespace LogCheck
 
         // 캡처 서비스 연동
         private readonly ICaptureService _captureService;
-        private long _livePacketCount = 0; // 틱 간 누적 패킷 수
-
-
-        // 로그 파일 생성 비활성화
-        // private readonly string _logFilePath =
-        //     System.IO.Path.Combine(
-        //         AppDomain.CurrentDomain.BaseDirectory, // exe 기준 폴더   
-        //         @"..\..\..\monitoring_log_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt"
-        //         );
-
+        private long _livePacketCount = 0; // 틱 간 누적 패킷 
 
         private readonly NotifyIcon _notifyIcon;
         private bool _hubSubscribed = false;
@@ -230,12 +221,6 @@ namespace LogCheck
             var connectionString = $"Data Source={dbPath};";
             _autoBlockService = new AutoBlockService(connectionString);
             _autoBlockStats = new AutoBlockStatisticsService(connectionString);
-
-            // 로그 파일 경로 설정 비활성화
-            // _logFilePath = System.IO.Path.Combine(
-            //     AppDomain.CurrentDomain.BaseDirectory,
-            //     @"..\..\..\monitoring_log_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt"
-            // );
 
             // XAML 로드 (이 시점에 SelectionChanged가 발생해도 컬렉션은 준비됨)
             InitializeComponent();
@@ -284,27 +269,6 @@ namespace LogCheck
 
             // 트레이 메뉴 추가
             var contextMenu = new System.Windows.Forms.ContextMenuStrip();
-            // 로그 파일 생성 비활성화로 인한 로그 열기 메뉴 주석 처리
-            /*
-            contextMenu.Items.Add("로그 열기", null, (s, e) =>
-            {
-                try
-                {
-                    if (File.Exists(_logFilePath))
-                    {
-                        System.Diagnostics.Process.Start("notepad.exe", _logFilePath);
-                    }
-                    else
-                    {
-                        System.Windows.MessageBox.Show("아직 로그 파일이 없습니다.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"로그 열기 오류: {ex.Message}");
-                }
-            });
-            */
             contextMenu.Items.Add("종료", null, (s, e) =>
             {
                 _notifyIcon.Visible = false;

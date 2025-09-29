@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "91+Y/WrpDuA=",
+  "dgSpecHash": "HsRJCRoAg+Y=",
   "success": true,
-  "projectFilePath": "C:\\Users\\admin\\Documents\\KKW\\WS\\LogCheck\\LogCheck.csproj",
+  "projectFilePath": "C:\\Users\\admin\\Documents\\KKW\\WS_2\\LogCheck\\LogCheck.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\admin\\.nuget\\packages\\harfbuzzsharp\\2.8.2.3\\harfbuzzsharp.2.8.2.3.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\harfbuzzsharp.nativeassets.macos\\2.8.2.3\\harfbuzzsharp.nativeassets.macos.2.8.2.3.nupkg.sha512",
