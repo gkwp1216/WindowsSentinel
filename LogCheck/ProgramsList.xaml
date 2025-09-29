@@ -111,16 +111,18 @@
                             <Border Width="25" Height="25" 
                                     Background="Transparent"
                                     Cursor="Hand"
-                                    Margin="10,0,0,0" >
+                                    Margin="10,0,0,0"
+                                    ToolTipService.Placement="Right"
+                                    ToolTipService.HorizontalOffset="445"
+                                    ToolTipService.VerticalOffset="25"
+                                    ToolTipService.ShowDuration="6000">
                                 <materialDesign:PackIcon Kind="HelpCircleOutline"
                                                          Width="25" Height="25"
                                                          Foreground="{DynamicResource HelpMarkColor}"
                                                          HorizontalAlignment="Center"
                                                          VerticalAlignment="Center" />
                                 <Border.ToolTip>
-                                    <ToolTip Content="시스템에 설치된 모든 프로그램을 확인하고 관리할 수 있습니다."
-                                             Placement="MousePoint"
-                                             HorizontalOffset="430" VerticalOffset="15"/>
+                                    <ToolTip Content="시스템에 설치된 모든 프로그램을 확인하고 관리할 수 있습니다."/>
                                 </Border.ToolTip>
                             </Border>
                         </StackPanel>

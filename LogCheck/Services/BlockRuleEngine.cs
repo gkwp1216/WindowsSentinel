@@ -14,13 +14,21 @@ namespace LogCheck.Services
         #region 정적 규칙 데이터
 
         /// <summary>
-        /// 알려진 악성 IP 주소 목록 (추후 데이터베이스나 외부 API로 확장)
+        /// 알려진 악성 IP 주소 목록 (동적 업데이트 가능)
         /// </summary>
         private static readonly HashSet<string> MaliciousIPs = new()
         {
-            "192.168.1.100", // 예시 - 실제로는 위협 인텔리전스 DB에서 로드
-            "10.0.0.50",     // 테스트용
-            "127.0.0.2"      // 테스트용
+            // 테스트용 로컬 IP
+            "192.168.1.100", "10.0.0.50", "127.0.0.2",
+            
+            // AbuseIPDB에서 확인된 실제 악성 IP들
+            "185.220.100.240", "185.220.100.241", "185.220.101.32",
+            "185.220.70.8", "185.220.70.39", "185.220.70.75",
+            "198.96.155.3", "89.248.165.146", "45.95.169.157",
+            "194.26.229.178", "80.82.77.139", "89.248.167.131",
+            "185.220.102.8", "198.98.60.19", "104.248.144.120",
+            "89.248.165.2", "45.95.169.0", "185.220.103.7",
+            "185.220.103.119", "185.220.102.240", "185.220.102.241"
         };
 
         /// <summary>
@@ -71,6 +79,33 @@ namespace LogCheck.Services
 
         public BlockRuleEngine()
         {
+        }
+
+        /// <summary>
+        /// 런타임에 악성 IP 목록에 IP 추가
+        /// </summary>
+        /// <param name="ipAddresses">추가할 IP 주소 목록</param>
+        public static void AddMaliciousIPs(IEnumerable<string> ipAddresses)
+        {
+            if (ipAddresses != null)
+            {
+                foreach (var ip in ipAddresses)
+                {
+                    if (!string.IsNullOrWhiteSpace(ip))
+                    {
+                        MaliciousIPs.Add(ip.Trim());
+                        System.Diagnostics.Debug.WriteLine($"악성 IP 추가됨: {ip}");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 현재 악성 IP 목록 조회
+        /// </summary>
+        public static IReadOnlySet<string> GetMaliciousIPs()
+        {
+            return MaliciousIPs;
         }
 
         #endregion
@@ -331,7 +366,19 @@ namespace LogCheck.Services
             if (string.IsNullOrWhiteSpace(ipAddress))
                 return false;
 
-            return MaliciousIPs.Contains(ipAddress);
+            bool isMalicious = MaliciousIPs.Contains(ipAddress);
+
+            // 디버그 로그 추가
+            if (isMalicious)
+            {
+                System.Diagnostics.Debug.WriteLine($"🚨 악성 IP 탐지: {ipAddress}");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"✅ 정상 IP: {ipAddress} (악성 목록에 없음, 총 {MaliciousIPs.Count}개 악성 IP 등록됨)");
+            }
+
+            return isMalicious;
         }
 
         /// <summary>

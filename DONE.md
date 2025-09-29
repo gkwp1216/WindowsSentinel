@@ -18,9 +18,7 @@
 - UI/UX 가시성 및 네비게이션 개선
 
   - NetWorks_New 화면에 런타임 요약(NIC, BPF) 상시 표시 및 모니터링 상태 변동 시 갱신
-  - 상단 우측 설정 진입 버튼을 기어 아이콘(MaterialDesign PackIcon Cog)으로 변경
   - 액션 영역을 WrapPanel로 구성해 좁은 폭에서도 버튼이 잘리지 않도록 개선
-  - Setting 화면 좌측 상단에 뒤로가기(ArrowLeft) 버튼 추가: NetWorks_New로 복귀 경로 확보
   - 트레이 메뉴에 “설정” 항목 추가: 메인 창 표시 후 설정 페이지로 이동
 
 - 빌드/XAML 안정화
@@ -40,14 +38,11 @@
 
 ## 향후 개선 제안(선택)
 
-- 단축키 추가: 전역 Ctrl+, 으로 설정 열기
 - 테마 대비/가독성 미세 조정(라이트/다크)
 - 경고 정리: CS8618/CS8600/CS8622 및 분석 경고 선별적 해소
 - 최소 단위 테스트: 설정 저장/로드, BPF 검증 로직 등 핵심 경로 스모크 테스트
 
 # - 자식 프로세스에도 프로세스명 표시 (줄맞춤)
-
-# System Idle Process 분석 예외 처리 / System Idle Process 화이트리스트 처리
 
 ## AutoBlock 자동 차단 시스템 구축 완료 (2025.09.28)
 
@@ -73,8 +68,6 @@
   - 실시간 방화벽 제어 (netsh advfirewall 명령)
   - 프로세스 종료 및 연결 차단 기능
   - 통계 수집 및 히스토리 추적
-
-# - 같은 PID는 묶어서 표시되도록 수정
 
 # Windows Task Manager 방식으로 그룹 확장 상태 유지 문제 해결 (DataGrid → TreeView)
 
@@ -130,8 +123,6 @@
   - 새로운 차단 규칙 추가 용이성
   - 데이터베이스 스키마 확장성
 
-**🎉 최종 결과: 메인 네트워크 모니터링 화면에서 모든 네트워크 연결이 자동으로 분석되어 위험한 연결은 즉시 차단되고, 안전한 연결은 허용되는 완전한 자동 보안 시스템이 작동합니다.**
-
 ### 데이터베이스 스키마 설계
 
 - **BlockedConnections 테이블**
@@ -178,27 +169,27 @@
   - 새로운 차단 규칙 추가 용이성
   - 데이터베이스 스키마 확장성
 
-**🎉 최종 결과: 메인 네트워크 모니터링 화면에서 모든 네트워크 연결이 자동으로 분석되어 위험한 연결은 즉시 차단되고, 안전한 연결은 허용되는 완전한 자동 보안 시스템이 작동합니다.**
-
-### 🎯 AutoBlock UI 통합 완료 (2024-01-20)
-
-- **NetWorks_New.xaml UI 구조 확장 ✅**
-  - AutoBlock 통계 패널을 메인 화면 상단에 추가 완료
-  - 전용 AutoBlock 탭 생성 (차단된 연결 및 화이트리스트 관리)
-  - MaterialDesign 테마와 일관된 디자인 적용
+### 🎯 AutoBlock UI 통합 완료 (2025-09-29)
 
 - **실시간 데이터 바인딩 구현 ✅**
+
   - TotalBlockedCount, Level1/2/3BlockCount 통계 프로퍼티 완성
   - BlockedConnections, WhitelistEntries Observable 컬렉션 연결
   - LoadAutoBlockDataAsync() 및 UpdateAutoBlockStatistics() 메서드 구현
 
 - **사용자 인터랙션 기능 ✅**
-  - 화이트리스트 추가/제거 버튼 및 이벤트 핸들러 완성
+
   - 차단된 연결 상세 정보 표시 DataGrid 구현
   - 실시간 AutoBlock 서비스 상태 모니터링 활성화
 
 - **AutoBlock UI 가시성 문제 해결 완료 ✅**
   - XAML 컨트롤 이름 일관성 확보 (WhitelistDataGrid 연결 검증)
   - 이벤트 핸들러와 UI 요소 간 정확한 연결 완료
-  - 빌드 검증 성공 (경고만 존재, 컴파일 에러 없음)
 
+### 주요 완료 사항 (2025.09.28)
+
+- **AutoBlock 자동 차단 시스템 완전 구현**
+- **NetWorks_New.xaml.cs 메인 UI 통합**
+- **Rules.md 기반 3단계 차단 규칙 시스템**
+- **SQLite 데이터베이스 통합 및 실시간 통계**
+- **보안 알림 시스템 완전 연동**

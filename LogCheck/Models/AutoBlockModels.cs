@@ -1,3 +1,7 @@
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 namespace LogCheck.Models
 {
     /// <summary>
@@ -97,8 +101,10 @@ namespace LogCheck.Models
     /// <summary>
     /// 차단된 연결 정보 (자동 차단 시스템용)
     /// </summary>
-    public class AutoBlockedConnection
+    public class AutoBlockedConnection : INotifyPropertyChanged
     {
+        private bool _isSelected;
+
         /// <summary>
         /// 고유 식별자
         /// </summary>
@@ -183,6 +189,104 @@ namespace LogCheck.Models
         /// 위협 카테고리
         /// </summary>
         public string ThreatCategory { get; set; } = string.Empty;
+
+        /// <summary>
+        /// UI에서 선택 상태를 나타내는 속성
+        /// </summary>
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 차단 레벨의 텍스트 표현
+        /// </summary>
+        public string BlockLevelText
+        {
+            get
+            {
+                return BlockLevel switch
+                {
+                    BlockLevel.Immediate => "즉시 차단",
+                    BlockLevel.Warning => "경고 후 차단",
+                    BlockLevel.Monitor => "모니터링",
+                    _ => "알 수 없음"
+                };
+            }
+        }
+
+        /// <summary>
+        /// 차단 레벨에 따른 색상
+        /// </summary>
+        public string BlockLevelColor
+        {
+            get
+            {
+                return BlockLevel switch
+                {
+                    BlockLevel.Immediate => "#F44336", // Red - 즉시 차단
+                    BlockLevel.Warning => "#FF9800",   // Orange - 경고 후 차단
+                    BlockLevel.Monitor => "#2196F3",   // Blue - 모니터링
+                    _ => "#9E9E9E"                     // Gray - 알 수 없음
+                };
+            }
+        }
+
+        /// <summary>
+        /// 원격 주소와 포트를 합쳐서 표시
+        /// </summary>
+        public string RemoteEndpoint => $"{RemoteAddress}:{RemotePort}";
+
+        /// <summary>
+        /// 차단된 시간의 간략한 표현
+        /// </summary>
+        public string BlockedTimeText
+        {
+            get
+            {
+                var diff = DateTime.Now - BlockedAt;
+
+                if (diff.TotalMinutes < 1)
+                    return "방금 전";
+                else if (diff.TotalMinutes < 60)
+                    return $"{(int)diff.TotalMinutes}분 전";
+                else if (diff.TotalHours < 24)
+                    return $"{(int)diff.TotalHours}시간 전";
+                else if (diff.TotalDays < 30)
+                    return $"{(int)diff.TotalDays}일 전";
+                else
+                    return BlockedAt.ToString("yyyy-MM-dd");
+            }
+        }
+
+        /// <summary>
+        /// PropertyChanged 이벤트
+        /// </summary>
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        /// <summary>
+        /// PropertyChanged 이벤트를 발생시킵니다.
+        /// </summary>
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// 객체의 문자열 표현
+        /// </summary>
+        public override string ToString()
+        {
+            return $"{ProcessName} (PID:{ProcessId}) -> {RemoteAddress}:{RemotePort} [{BlockLevelText}]";
+        }
     }
 
     /// <summary>

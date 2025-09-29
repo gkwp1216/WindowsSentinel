@@ -100,16 +100,18 @@
                         <Border Width="25" Height="25" 
                                 Background="Transparent"
                                 Cursor="Hand"
-                                Margin="10,0,0,0" >
+                                Margin="10,0,0,0"
+                                ToolTipService.Placement="Right"
+                                ToolTipService.HorizontalOffset="435"
+                                ToolTipService.VerticalOffset="25"
+                                ToolTipService.ShowDuration="6000">
                             <materialDesign:PackIcon Kind="HelpCircleOutline"
                                                      Width="25" Height="25"
                                                      Foreground="{DynamicResource HelpMarkColor}"
                                                      HorizontalAlignment="Center"
                                                      VerticalAlignment="Center" />
                             <Border.ToolTip>
-                                <ToolTip Content="MalwareBazaar API를 통해 해시 기반 악성 여부를 확인합니다."
-                                         Placement="MousePoint"
-                                         HorizontalOffset="420" VerticalOffset="15"/>
+                                <ToolTip Content="MalwareBazaar API를 통해 해시 기반 악성 여부를 확인합니다."/>
                             </Border.ToolTip>
                         </Border>
                     </StackPanel>
