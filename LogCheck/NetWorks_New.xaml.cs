@@ -53,16 +53,13 @@ namespace LogCheck
         private readonly DispatcherTimer _updateTimer;
         private readonly ObservableCollection<ProcessNetworkInfo> _processNetworkData;
         private readonly ObservableCollection<SecurityAlert> _securityAlerts;
-        private readonly ObservableCollection<string> _logMessages;
+        private readonly LogMessageService _logService;
 
         // AutoBlock 시스템
         private readonly IAutoBlockService _autoBlockService;
         private readonly AutoBlockStatisticsService _autoBlockStats;
         private readonly ObservableCollection<AutoBlockedConnection> _blockedConnections;
         private readonly ObservableCollection<AutoWhitelistEntry> _whitelistEntries;
-
-        // 통합 차단 시스템
-        private readonly IUnifiedBlockingService _unifiedBlockingService;
         private bool _isInitialized = false;
         private int _totalBlockedCount = 0;
         private int _level1BlockCount = 0;
@@ -80,14 +77,6 @@ namespace LogCheck
         private int _udpCount = 0;
         private int _icmpCount = 0;
         private long _totalDataTransferred = 0;
-
-        // Phase 1 성능 모니터링 필드들
-        private long _initialMemoryUsage = 0;
-        private DateTime _performanceMonitoringStart = DateTime.Now;
-        private int _uiUpdateCount = 0;
-        private readonly System.Diagnostics.Stopwatch _uiUpdateStopwatch = new System.Diagnostics.Stopwatch();
-        private readonly Queue<TimeSpan> _recentUpdateTimes = new Queue<TimeSpan>();
-        private const int MAX_UPDATE_HISTORY = 20; // 최근 20회 업데이트 시간 추적
 
         // 바인딩용 공개 프로퍼티들
         public int TotalConnections
@@ -191,7 +180,16 @@ namespace LogCheck
 
         // 캡처 서비스 연동
         private readonly ICaptureService _captureService;
-        private long _livePacketCount = 0; // 틱 간 누적 패킷 
+        private long _livePacketCount = 0; // 틱 간 누적 패킷 수
+
+
+        // 로그 파일 생성 비활성화
+        // private readonly string _logFilePath =
+        //     System.IO.Path.Combine(
+        //         AppDomain.CurrentDomain.BaseDirectory, // exe 기준 폴더   
+        //         @"..\..\..\monitoring_log_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt"
+        //         );
+
 
         private readonly NotifyIcon _notifyIcon;
         private bool _hubSubscribed = false;
@@ -210,7 +208,7 @@ namespace LogCheck
             _systemProcessTreeNodes = new ObservableCollection<ProcessTreeNode>();
             _processNetworkData = new ObservableCollection<ProcessNetworkInfo>();
             _securityAlerts = new ObservableCollection<SecurityAlert>();
-            _logMessages = new ObservableCollection<string>();
+            _logService = new LogMessageService(Dispatcher.CurrentDispatcher);
             _chartSeries = new ObservableCollection<ISeries>();
             _chartXAxes = new ObservableCollection<Axis>();
             _chartYAxes = new ObservableCollection<Axis>();
@@ -233,8 +231,11 @@ namespace LogCheck
             _autoBlockService = new AutoBlockService(connectionString);
             _autoBlockStats = new AutoBlockStatisticsService(connectionString);
 
-            // 통합 차단 서비스 초기화
-            _unifiedBlockingService = new UnifiedBlockingService(connectionString, _autoBlockService, _connectionManager);
+            // 로그 파일 경로 설정 비활성화
+            // _logFilePath = System.IO.Path.Combine(
+            //     AppDomain.CurrentDomain.BaseDirectory,
+            //     @"..\..\..\monitoring_log_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt"
+            // );
 
             // XAML 로드 (이 시점에 SelectionChanged가 발생해도 컬렉션은 준비됨)
             InitializeComponent();
@@ -252,7 +253,7 @@ namespace LogCheck
             Task.Run(async () => await LoadBlockedConnectionsAsync());
 
             SecurityAlertsControl.ItemsSource = _securityAlerts;
-            LogMessagesControl.ItemsSource = _logMessages;
+            LogMessagesControl.ItemsSource = _logService.LogMessages;
             NetworkActivityChart.Series = _chartSeries;
             NetworkActivityChart.XAxes = _chartXAxes;
             NetworkActivityChart.YAxes = _chartYAxes;
@@ -267,10 +268,10 @@ namespace LogCheck
             // UI 초기화
             InitializeUI();
 
-            // 타이머 설정 - Phase 1 최적화: 3초 간격으로 단축, 백그라운드 우선순위
-            _updateTimer = new DispatcherTimer(DispatcherPriority.Background)
+            // 타이머 설정
+            _updateTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(3) // 5초에서 3초로 단축하여 더 반응적인 UI
+                Interval = TimeSpan.FromSeconds(5)
             };
             _updateTimer.Tick += UpdateTimer_Tick;
 
@@ -283,6 +284,27 @@ namespace LogCheck
 
             // 트레이 메뉴 추가
             var contextMenu = new System.Windows.Forms.ContextMenuStrip();
+            // 로그 파일 생성 비활성화로 인한 로그 열기 메뉴 주석 처리
+            /*
+            contextMenu.Items.Add("로그 열기", null, (s, e) =>
+            {
+                try
+                {
+                    if (File.Exists(_logFilePath))
+                    {
+                        System.Diagnostics.Process.Start("notepad.exe", _logFilePath);
+                    }
+                    else
+                    {
+                        System.Windows.MessageBox.Show("아직 로그 파일이 없습니다.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"로그 열기 오류: {ex.Message}");
+                }
+            });
+            */
             contextMenu.Items.Add("종료", null, (s, e) =>
             {
                 _notifyIcon.Visible = false;
@@ -297,9 +319,6 @@ namespace LogCheck
             // ProcessTreeNode 상태 관리 시스템 초기화 (작업 관리자 방식)
             ProcessTreeNode.ClearExpandedStates(); // 이전 세션 상태 초기화 (선택적)
             System.Diagnostics.Debug.WriteLine("[NetWorks_New] ProcessTreeNode 상태 관리 시스템 초기화됨");
-
-            // Phase 1 성능 모니터링 초기화
-            InitializePerformanceMonitoring();
 
             // 앱 종료 시 트레이 아이콘/타이머 정리 (종료 보장)
             System.Windows.Application.Current.Exit += (_, __) =>
@@ -508,11 +527,7 @@ namespace LogCheck
             {
                 // AutoBlock 서비스 초기화
                 await _autoBlockService.InitializeAsync();
-                AddLogMessage("AutoBlock 시스템이 초기화되었습니다.");
-
-                // 통합 차단 서비스 초기화
-                await _unifiedBlockingService.InitializeAsync();
-                AddLogMessage("통합 차단 서비스가 초기화되었습니다.");
+                _logService.LogSuccess("AutoBlock 시스템이 초기화되었습니다.");
 
                 // System Idle Process 자동 화이트리스트 추가
                 await EnsureSystemIdleProcessWhitelistAsync();
@@ -522,7 +537,7 @@ namespace LogCheck
             }
             catch (Exception ex)
             {
-                AddLogMessage($"AutoBlock 시스템 초기화 실패: {ex.Message}");
+                _logService.LogError($"AutoBlock 시스템 초기화 실패: {ex.Message}");
                 System.Diagnostics.Debug.WriteLine($"AutoBlock initialization error: {ex}");
             }
         }
@@ -549,16 +564,16 @@ namespace LogCheck
 
                     if (success)
                     {
-                        AddLogMessage("✅ System Idle Process가 자동으로 화이트리스트에 추가되었습니다.");
+                        _logService.LogSuccess("System Idle Process가 자동으로 화이트리스트에 추가되었습니다.");
                     }
                     else
                     {
-                        AddLogMessage("⚠️ System Idle Process 화이트리스트 추가 실패");
+                        _logService.LogWarning("System Idle Process 화이트리스트 추가 실패");
                     }
                 }
                 else
                 {
-                    AddLogMessage("ℹ️ System Idle Process가 이미 화이트리스트에 등록되어 있습니다.");
+                    _logService.LogInfo("System Idle Process가 이미 화이트리스트에 등록되어 있습니다.");
                 }
             }
             catch (Exception ex)
@@ -626,7 +641,7 @@ namespace LogCheck
                 SecurityAlertsControl.ItemsSource = _securityAlerts;
 
             if (LogMessagesControl != null)
-                LogMessagesControl.ItemsSource = _logMessages;
+                LogMessagesControl.ItemsSource = _logService.LogMessages;
 
             if (NetworkActivityChart != null)
             {
@@ -986,7 +1001,7 @@ namespace LogCheck
         }
 
         /// <summary>
-        /// 연결 차단 버튼 클릭 - 통합 차단 서비스 사용
+        /// 연결 차단 버튼 클릭
         /// </summary>
         private async void BlockConnection_Click(object sender, RoutedEventArgs e)
         {
@@ -1006,25 +1021,48 @@ namespace LogCheck
                     {
                         AddLogMessage($"연결 차단 시작: {connection.ProcessName} - {connection.RemoteAddress}:{connection.RemotePort}");
 
-                        // 🔥 통합 차단 서비스를 통한 차단 실행
-                        var blockRequest = new BlockRequest
+                        // ⭐ AutoBlock 시스템을 통한 차단 (통계 연동)
+                        var decision = new BlockDecision
                         {
-                            Source = BlockSource.Manual,
                             Level = BlockLevel.Warning,
                             Reason = "사용자 수동 차단 요청",
-                            UserNote = $"사용자가 직접 차단을 요청 - UI에서 수동 실행",
-                            TriggeredRules = new List<string> { "Manual Block Request" },
                             ConfidenceScore = 1.0,
+                            TriggeredRules = new List<string> { "Manual Block Request" },
+                            RecommendedAction = "사용자가 직접 차단을 요청했습니다.",
                             ThreatCategory = "User Action",
-                            RequestedAt = DateTime.Now
+                            AnalyzedAt = DateTime.Now
                         };
 
-                        var blockResult = await _unifiedBlockingService.BlockConnectionAsync(connection, blockRequest);
+                        var autoBlockSuccess = await _autoBlockService.BlockConnectionAsync(connection, decision.Level);
+                        var connectionSuccess = await _connectionManager.DisconnectProcessAsync(
+                            connection.ProcessId,
+                            "사용자 요청 - 보안 위협 탐지");
 
-                        if (blockResult.Success)
+                        if (autoBlockSuccess || connectionSuccess)
                         {
-                            AddLogMessage($"✅ [Unified-Block] 연결 차단 완료: {connection.ProcessName} -> {connection.RemoteAddress}:{connection.RemotePort}");
-                            AddLogMessage($"📋 실행된 작업: {string.Join(", ", blockResult.ExecutedActions ?? new List<string>())}");
+                            // 차단된 연결 정보 생성 및 통계 기록
+                            var blockedConnection = new AutoBlockedConnection
+                            {
+                                ProcessName = connection.ProcessName,
+                                ProcessPath = connection.ProcessPath,
+                                ProcessId = connection.ProcessId,
+                                RemoteAddress = connection.RemoteAddress,
+                                RemotePort = connection.RemotePort,
+                                Protocol = connection.Protocol,
+                                BlockLevel = decision.Level,
+                                Reason = decision.Reason,
+                                BlockedAt = DateTime.Now,
+                                ConfidenceScore = decision.ConfidenceScore,
+                                IsBlocked = true,
+                                TriggeredRules = string.Join(", ", decision.TriggeredRules)
+                            };
+
+                            // 통계 시스템과 차단된 연결 목록에 기록
+                            _ = Task.Run(async () =>
+                            {
+                                await RecordBlockEventAsync(blockedConnection);
+                                await _autoBlockStats.AddBlockedConnectionAsync(blockedConnection);
+                            });
 
                             // 통계 UI 업데이트
                             UpdateStatisticsDisplay();
@@ -1032,26 +1070,16 @@ namespace LogCheck
                             // 차단된 연결 목록 새로고침
                             _ = Task.Run(async () => await LoadBlockedConnectionsAsync());
 
-                            MessageBox.Show(
-                                $"연결 차단이 완료되었습니다.\n\n실행된 작업:\n• {string.Join("\n• ", blockResult.ExecutedActions ?? new List<string>())}",
-                                "성공",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Information);
+                            AddLogMessage($"✅ [Manual-Block] 연결 차단 완료: {connection.ProcessName} -> {connection.RemoteAddress}:{connection.RemotePort}");
+                            MessageBox.Show("연결 차단이 완료되었습니다.\n\nAutoBlock 통계에 기록되었습니다.", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
 
                             // NotifyIcon 사용하여 트레이 알림
                             ShowTrayNotification($"연결 차단 완료: {connection.ProcessName} - {connection.RemoteAddress}:{connection.RemotePort}");
                         }
                         else
                         {
-                            var errorMsg = string.IsNullOrEmpty(blockResult.ErrorMessage) ? "알 수 없는 오류" : blockResult.ErrorMessage;
-                            AddLogMessage($"❌ 연결 차단 실패: {errorMsg}");
-
-                            if (blockResult.ExecutedActions?.Any() == true)
-                            {
-                                AddLogMessage($"📋 부분 실행된 작업: {string.Join(", ", blockResult.ExecutedActions)}");
-                            }
-
-                            MessageBox.Show($"연결 차단에 실패했습니다.\n\n오류: {errorMsg}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                            AddLogMessage("❌ 연결 차단에 실패했습니다.");
+                            MessageBox.Show("연결 차단에 실패했습니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                 }
@@ -1153,89 +1181,44 @@ namespace LogCheck
         /// <summary>
         /// 타이머 틱 이벤트
         /// </summary>
-        // 업데이트 진행 중 플래그 (중복 실행 방지)
-        private volatile bool _isUpdating = false;
-
         private async void UpdateTimer_Tick(object? sender, EventArgs e)
         {
-            // 중복 실행 방지
-            if (_isUpdating)
-            {
-                System.Diagnostics.Debug.WriteLine("[NetWorks_New] UpdateTimer_Tick 중복 실행 방지됨");
-                return;
-            }
-
             try
             {
-                _isUpdating = true;
                 System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UpdateTimer_Tick 호출됨, 모니터링 상태: {_isMonitoring}");
 
                 if (_isMonitoring)
                 {
-                    // UI 스레드에서 패킷 카운터 업데이트 (빠른 작업)
+                    // 최근 틱 간 패킷 처리율 계산 및 상태 표시
                     var taken = Interlocked.Exchange(ref _livePacketCount, 0);
                     var secs = Math.Max(1, (int)_updateTimer.Interval.TotalSeconds);
                     var pps = taken / secs;
-                    if (MonitoringStatusText != null)
-                        MonitoringStatusText.Text = $"모니터링 중 ({pps} pps)";
+                    if (MonitoringStatusText != null) MonitoringStatusText.Text = $"모니터링 중 ({pps} pps)";
 
-                    // 백그라운드에서 데이터 처리 - UI 스레드 차단 방지
-                    _ = Task.Run(async () =>
+                    // 주기적으로 데이터 업데이트
+                    System.Diagnostics.Debug.WriteLine("[NetWorks_New] 프로세스 데이터 가져오기 시작");
+                    var data = await _processNetworkMapper.GetProcessNetworkDataAsync();
+                    System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 프로세스 데이터 가져오기 완료: {data?.Count ?? 0}개");
+
+                    // AutoBlock 분석 수행
+                    if (_autoBlockService != null && data?.Any() == true)
                     {
-                        try
-                        {
-                            System.Diagnostics.Debug.WriteLine("[NetWorks_New] 백그라운드 데이터 처리 시작");
+                        await AnalyzeConnectionsWithAutoBlockAsync(data);
+                    }
 
-                            // 데이터 로딩 (백그라운드)
-                            var data = await _processNetworkMapper.GetProcessNetworkDataAsync();
-                            System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 프로세스 데이터 가져오기 완료: {data?.Count ?? 0}개");
-
-                            // AutoBlock 분석 (백그라운드)
-                            if (_autoBlockService != null && data?.Any() == true)
-                            {
-                                await AnalyzeConnectionsWithAutoBlockAsync(data);
-                            }
-
-                            // UI 업데이트는 메인 스레드로 마샬링
-                            await UpdateProcessNetworkDataAsync(data ?? new List<ProcessNetworkInfo>());
-
-                            System.Diagnostics.Debug.WriteLine("[NetWorks_New] 백그라운드 데이터 처리 완료");
-                        }
-                        catch (Exception bgEx)
-                        {
-                            System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 백그라운드 처리 오류: {bgEx.Message}");
-
-                            // UI 스레드에서 로그 메시지 추가
-                            Dispatcher.Invoke(() => AddLogMessage($"데이터 처리 오류: {bgEx.Message}"),
-                                DispatcherPriority.Background);
-                        }
-                    });
+                    await UpdateProcessNetworkDataAsync(data ?? new List<ProcessNetworkInfo>());
                 }
 
-                // AutoBlock 통계 업데이트 (백그라운드, 1분마다)
-                if (_updateTimer != null && DateTime.Now.Second == 0)
+                // AutoBlock 통계 주기적 업데이트 (1분마다)
+                if (_updateTimer != null && DateTime.Now.Second == 0) // 매분 0초에 업데이트
                 {
-                    _ = Task.Run(async () =>
-                    {
-                        try
-                        {
-                            await UpdateAutoBlockStatisticsFromDatabase();
-                        }
-                        catch (Exception statsEx)
-                        {
-                            System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 통계 업데이트 오류: {statsEx.Message}");
-                        }
-                    });
+                    await UpdateAutoBlockStatisticsFromDatabase();
                 }
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 타이머 업데이트 오류: {ex.Message}");
                 AddLogMessage($"타이머 업데이트 오류: {ex.Message}");
-            }
-            finally
-            {
-                _isUpdating = false;
             }
         }
 
@@ -1259,9 +1242,6 @@ namespace LogCheck
             // System Idle Process 완전 제외 (실수로 종료되는 것 방지)
             data = data.Where(p => !IsSystemIdleProcess(p)).ToList();
             System.Diagnostics.Debug.WriteLine($"[NetWorks_New] System Idle Process 제외 후 데이터 개수: {data.Count}");
-
-            // 프로세스 계층 구조 정보 설정
-            SetProcessHierarchyInfo(data);
 
             // IsSystem 자동 판단
             foreach (var item in data)
@@ -1288,9 +1268,6 @@ namespace LogCheck
                 {
                     try
                     {
-                        // Phase 1 성능 측정 시작
-                        StartUIUpdateMeasurement();
-
                         System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 시작 - 기존 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
 
                         // 스마트 업데이트: 컬렉션을 완전히 지우지 않고 업데이트
@@ -1308,14 +1285,10 @@ namespace LogCheck
                         System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 완료 - 새로운 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
                         System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 그룹 업데이트 완료 - 일반 그룹: {_generalProcessGroups.Count}개, 시스템 그룹: {_systemProcessGroups.Count}개");
 
-                        // Phase 1 성능 측정 종료
-                        EndUIUpdateMeasurement();
                     }
                     catch (Exception ex)
                     {
                         System.Diagnostics.Debug.WriteLine($"UI 업데이트 중 오류: {ex.Message}");
-                        // 오류 발생 시에도 성능 측정 종료
-                        EndUIUpdateMeasurement();
                     }
                 }, DispatcherPriority.DataBind);
 
@@ -1386,32 +1359,16 @@ namespace LogCheck
         {
             try
             {
-                // 프로세스별로 그룹화 (활성 연결과 차단된 연결 모두 포함)
+                // 프로세스별로 그룹화
                 var groupedData = processes
                     .GroupBy(p => new { p.ProcessId, p.ProcessName })
                     .ToDictionary(g => g.Key, g => g.ToList());
 
                 System.Diagnostics.Debug.WriteLine($"[UpdateProcessTreeSmart] 그룹화된 프로세스: {groupedData.Count}개");
 
-                // 부모 프로세스 중 차단된 자식을 가진 경우를 추가로 확인
-                var processesWithBlockedChildren = processes
-                    .Where(p => p.HasBlockedChildren && !groupedData.ContainsKey(new { p.ProcessId, p.ProcessName }))
-                    .GroupBy(p => new { p.ProcessId, p.ProcessName })
-                    .ToList();
-
-                foreach (var parentGroup in processesWithBlockedChildren)
-                {
-                    if (!groupedData.ContainsKey(parentGroup.Key))
-                    {
-                        groupedData[parentGroup.Key] = parentGroup.ToList();
-                        System.Diagnostics.Debug.WriteLine($"[UpdateProcessTreeSmart] 차단된 자식을 가진 부모 프로세스 추가: {parentGroup.Key.ProcessName} ({parentGroup.Key.ProcessId})");
-                    }
-                }
-
-                // 1. 더 이상 존재하지 않는 프로세스 제거 (단, 차단된 자식을 가진 경우는 유지)
+                // 1. 더 이상 존재하지 않는 프로세스 제거
                 var nodesToRemove = treeNodeCollection
-                    .Where(node => !groupedData.ContainsKey(new { ProcessId = node.ProcessId, ProcessName = node.ProcessName }) &&
-                                   node.BlockedConnectionCount == 0) // 차단된 연결이 없는 경우만 제거
+                    .Where(node => !groupedData.ContainsKey(new { ProcessId = node.ProcessId, ProcessName = node.ProcessName }))
                     .ToList();
 
                 foreach (var node in nodesToRemove)
@@ -1431,23 +1388,14 @@ namespace LogCheck
                     {
                         // 기존 노드 업데이트 (IsExpanded 상태는 자동으로 유지됨)
                         existingNode.UpdateConnections(group.Value);
-                        existingNode.UpdateProcessInfo(group.Value.FirstOrDefault() ?? new ProcessNetworkInfo
-                        {
-                            ProcessId = group.Key.ProcessId,
-                            ProcessName = group.Key.ProcessName
-                        });
+                        existingNode.UpdateProcessInfo(group.Value.First());
 
-                        System.Diagnostics.Debug.WriteLine($"[UpdateProcessTreeSmart] 기존 노드 업데이트: {existingNode.ProcessName} ({existingNode.ProcessId}) - {group.Value.Count}개 연결 (활성: {existingNode.ConnectionCount}, 차단: {existingNode.BlockedConnectionCount}), 확장상태: {existingNode.IsExpanded}");
+                        System.Diagnostics.Debug.WriteLine($"[UpdateProcessTreeSmart] 기존 노드 업데이트: {existingNode.ProcessName} ({existingNode.ProcessId}) - {group.Value.Count}개 연결, 확장상태: {existingNode.IsExpanded}");
                     }
                     else
                     {
                         // 새 노드 생성
-                        var firstConnection = group.Value.FirstOrDefault() ?? new ProcessNetworkInfo
-                        {
-                            ProcessId = group.Key.ProcessId,
-                            ProcessName = group.Key.ProcessName
-                        };
-
+                        var firstConnection = group.Value.First();
                         var newNode = new ProcessTreeNode
                         {
                             ProcessId = group.Key.ProcessId,
@@ -1459,12 +1407,12 @@ namespace LogCheck
                         var savedState = ProcessTreeNode.GetSavedExpandedState(newNode.UniqueId);
                         newNode.IsExpanded = savedState;
 
-                        // 연결 정보 추가 (활성/차단 분리)
+                        // 연결 정보 추가
                         newNode.UpdateConnections(group.Value);
 
                         treeNodeCollection.Add(newNode);
 
-                        System.Diagnostics.Debug.WriteLine($"[UpdateProcessTreeSmart] 새 노드 생성: {newNode.ProcessName} ({newNode.ProcessId}) - {group.Value.Count}개 연결 (활성: {newNode.ConnectionCount}, 차단: {newNode.BlockedConnectionCount}), 확장상태: {newNode.IsExpanded} (복원됨: {savedState})");
+                        System.Diagnostics.Debug.WriteLine($"[UpdateProcessTreeSmart] 새 노드 생성: {newNode.ProcessName} ({newNode.ProcessId}) - {group.Value.Count}개 연결, 확장상태: {newNode.IsExpanded} (복원됨: {savedState})");
                     }
                 }
 
@@ -1632,86 +1580,21 @@ namespace LogCheck
         {
             try
             {
-                // 진짜 스마트 업데이트: 실제 변경사항만 처리하여 UI 성능 향상
-                // ProcessNetworkInfo의 경우 ProcessId로 비교하여 효율적 업데이트 수행
+                // ProcessNetworkInfo의 경우 객체 참조가 달라서 간단히 Clear & Add 방식 사용
+                // 하지만 CollectionView를 완전히 리셋하지 않도록 하나씩 처리
 
-                if (newItems == null || !newItems.Any())
+                // 기존 방식보다 부드럽게 업데이트
+                if (collection.Count == 0)
                 {
-                    if (collection.Any())
-                    {
-                        collection.Clear();
-                    }
-                    return;
-                }
-
-                // 빈 컬렉션이면 모든 항목 추가
-                if (!collection.Any())
-                {
+                    // 빈 컬렉션이면 그냥 추가
                     foreach (var item in newItems)
                     {
                         collection.Add(item);
                     }
-                    return;
-                }
-
-                // ProcessNetworkInfo 타입인 경우 ProcessId 기반 스마트 업데이트
-                if (typeof(T) == typeof(ProcessNetworkInfo))
-                {
-                    var existingProcesses = collection.Cast<ProcessNetworkInfo>().ToList();
-                    var newProcesses = newItems.Cast<ProcessNetworkInfo>().ToList();
-
-                    // 기존 항목 중 새 데이터에 없는 것들 제거
-                    var toRemove = existingProcesses
-                        .Where(existing => !newProcesses.Any(newProc =>
-                            newProc.ProcessId == existing.ProcessId &&
-                            newProc.ProcessName == existing.ProcessName))
-                        .Cast<T>()
-                        .ToList();
-
-                    foreach (var item in toRemove)
-                    {
-                        collection.Remove(item);
-                    }
-
-                    // 새로운 항목들 추가
-                    var toAdd = newProcesses
-                        .Where(newProc => !existingProcesses.Any(existing =>
-                            existing.ProcessId == newProc.ProcessId &&
-                            existing.ProcessName == newProc.ProcessName))
-                        .Cast<T>()
-                        .ToList();
-
-                    foreach (var item in toAdd)
-                    {
-                        collection.Add(item);
-                    }
-
-                    // 기존 항목들의 데이터 업데이트 (참조를 유지하면서 속성만 업데이트)
-                    foreach (var existingItem in existingProcesses)
-                    {
-                        var newData = newProcesses.FirstOrDefault(newProc =>
-                            newProc.ProcessId == existingItem.ProcessId &&
-                            newProc.ProcessName == existingItem.ProcessName);
-
-                        if (newData != null)
-                        {
-                            // 주요 속성들 업데이트
-                            existingItem.DataTransferred = newData.DataTransferred;
-                            existingItem.DataRate = newData.DataRate;
-                            existingItem.PacketsSent = newData.PacketsSent;
-                            existingItem.PacketsReceived = newData.PacketsReceived;
-                            existingItem.RiskLevel = newData.RiskLevel;
-                            existingItem.RiskDescription = newData.RiskDescription;
-                            existingItem.IsBlocked = newData.IsBlocked;
-                            existingItem.BlockedTime = newData.BlockedTime;
-                            existingItem.BlockReason = newData.BlockReason;
-                            existingItem.ConnectionState = newData.ConnectionState;
-                        }
-                    }
                 }
                 else
                 {
-                    // 다른 타입의 경우 기본 Clear/Add 방식 사용 (하위호환성)
+                    // 하나씩 제거하고 추가하여 UI 깜빡임 최소화
                     collection.Clear();
                     foreach (var item in newItems)
                     {
@@ -1722,8 +1605,6 @@ namespace LogCheck
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"스마트 업데이트 실패: {ex.Message}");
-
-                // 실패 시 안전한 Clear/Add 방식으로 폴백
                 collection.Clear();
                 foreach (var item in newItems)
                 {
@@ -1849,34 +1730,11 @@ namespace LogCheck
         }
 
         /// <summary>
-        /// 로그 메시지 추가
+        /// 로그 메시지 추가 (LogMessageService로 위임)
         /// </summary>
         private void AddLogMessage(string message)
         {
-            try
-            {
-                var timestamp = DateTime.Now.ToString("HH:mm:ss");
-                var logMessage = $"[{timestamp}] {message}";
-
-                // UI에 추가
-                Dispatcher.InvokeAsync(() =>
-                {
-                    _logMessages.Add(logMessage);
-
-                    // 로그 메시지가 너무 많아지면 오래된 것 제거
-                    while (_logMessages.Count > 100)
-                    {
-                        _logMessages.RemoveAt(0);
-                    }
-                });
-                // 파일 로그 생성 비활성화
-                // File.AppendAllText(_logFilePath, logMessage + Environment.NewLine);
-            }
-            catch (Exception ex)
-            {
-                // 로그 추가 실패 시 콘솔에 출력
-                System.Diagnostics.Debug.WriteLine($"로그 메시지 추가 실패: {ex.Message}");
-            }
+            _logService.AddLogMessage(message);
         }
 
         /// <summary>
@@ -2241,15 +2099,12 @@ namespace LogCheck
                                 {
                                     autoBlockedCount++;
 
-                                    // 차단된 연결 정보 생성 및 통계 기록 (부모 프로세스 정보 포함)
+                                    // 차단된 연결 정보 생성 및 통계 기록
                                     var blockedConnection = new AutoBlockedConnection
                                     {
                                         ProcessName = connection.ProcessName,
                                         ProcessPath = connection.ProcessPath,
                                         ProcessId = connection.ProcessId,
-                                        ParentProcessId = connection.ParentProcessId,
-                                        ParentProcessName = connection.ParentProcessName,
-                                        IsRelatedToChildBlock = false, // 그룹 차단
                                         RemoteAddress = connection.RemoteAddress,
                                         RemotePort = connection.RemotePort,
                                         Protocol = connection.Protocol,
@@ -3462,226 +3317,6 @@ namespace LogCheck
                 AddLogMessage($"❌ 내보내기 오류: {ex.Message}");
                 MessageBox.Show($"파일 내보내기 중 오류가 발생했습니다:\n{ex.Message}",
                     "오류", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        #endregion
-
-        #region 프로세스 계층 구조 헬퍼 메서드
-
-        /// <summary>
-        /// 프로세스 목록에 부모-자식 관계 정보를 설정
-        /// </summary>
-        /// <param name="processes">프로세스 목록</param>
-        private void SetProcessHierarchyInfo(List<ProcessNetworkInfo> processes)
-        {
-            try
-            {
-                // 각 프로세스에 대해 부모 프로세스 정보 설정
-                foreach (var process in processes)
-                {
-                    try
-                    {
-                        var parentInfo = GetParentProcessInfo(process.ProcessId);
-                        if (parentInfo.HasValue)
-                        {
-                            process.ParentProcessId = parentInfo.Value.pid;
-                            process.ParentProcessName = parentInfo.Value.name;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"부모 프로세스 정보 설정 실패 (PID: {process.ProcessId}): {ex.Message}");
-                    }
-                }
-
-                // 자식 프로세스 목록 설정 및 차단된 자식 확인
-                var processDict = processes.GroupBy(p => p.ProcessId).ToDictionary(g => g.Key, g => g.ToList());
-
-                foreach (var process in processes)
-                {
-                    if (process.ParentProcessId.HasValue && processDict.ContainsKey(process.ParentProcessId.Value))
-                    {
-                        var parentProcesses = processDict[process.ParentProcessId.Value];
-                        foreach (var parent in parentProcesses)
-                        {
-                            if (!parent.ChildProcessIds.Contains(process.ProcessId))
-                            {
-                                parent.ChildProcessIds.Add(process.ProcessId);
-                            }
-
-                            // 자식 프로세스 중 차단된 것이 있는지 확인
-                            if (process.IsBlocked && !parent.HasBlockedChildren)
-                            {
-                                parent.HasBlockedChildren = true;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"프로세스 계층 구조 설정 중 오류: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// 특정 프로세스의 부모 프로세스 정보를 가져옴
-        /// </summary>
-        /// <param name="processId">프로세스 ID</param>
-        /// <returns>부모 프로세스 정보 (PID, 프로세스명)</returns>
-        private (int pid, string name)? GetParentProcessInfo(int processId)
-        {
-            try
-            {
-                using var searcher = new System.Management.ManagementObjectSearcher($"SELECT ParentProcessId FROM Win32_Process WHERE ProcessId={processId}");
-                foreach (System.Management.ManagementObject obj in searcher.Get())
-                {
-                    int ppid = Convert.ToInt32(obj["ParentProcessId"]);
-                    if (ppid <= 0) return null;
-
-                    using var ps = new System.Management.ManagementObjectSearcher($"SELECT Name FROM Win32_Process WHERE ProcessId={ppid}");
-                    foreach (System.Management.ManagementObject pobj in ps.Get())
-                    {
-                        string name = pobj["Name"]?.ToString() ?? string.Empty;
-                        return (ppid, name.Replace(".exe", "", StringComparison.OrdinalIgnoreCase));
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"부모 프로세스 정보 조회 실패 (PID: {processId}): {ex.Message}");
-            }
-            return null;
-        }
-
-        #endregion
-
-        #region Phase 1 성능 모니터링 구현
-
-        /// <summary>
-        /// 성능 모니터링 시스템 초기화
-        /// </summary>
-        private void InitializePerformanceMonitoring()
-        {
-            try
-            {
-                // 초기 메모리 사용량 기록
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                GC.Collect();
-
-                _initialMemoryUsage = GC.GetTotalMemory(false);
-                _performanceMonitoringStart = DateTime.Now;
-
-                System.Diagnostics.Debug.WriteLine($"[성능 모니터링] 초기 메모리 사용량: {_initialMemoryUsage / (1024.0 * 1024.0):F2} MB");
-                AddLogMessage($"성능 모니터링 시작 - 초기 메모리: {_initialMemoryUsage / (1024.0 * 1024.0):F2} MB");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[성능 모니터링] 초기화 실패: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// UI 업데이트 성능 측정 시작
-        /// </summary>
-        private void StartUIUpdateMeasurement()
-        {
-            _uiUpdateStopwatch.Restart();
-        }
-
-        /// <summary>
-        /// UI 업데이트 성능 측정 종료 및 기록
-        /// </summary>
-        private void EndUIUpdateMeasurement()
-        {
-            _uiUpdateStopwatch.Stop();
-            _uiUpdateCount++;
-
-            var updateTime = _uiUpdateStopwatch.Elapsed;
-            _recentUpdateTimes.Enqueue(updateTime);
-
-            // 최대 히스토리 개수 유지
-            while (_recentUpdateTimes.Count > MAX_UPDATE_HISTORY)
-            {
-                _recentUpdateTimes.Dequeue();
-            }
-
-            // 5분마다 성능 리포트 출력
-            if (_uiUpdateCount % 100 == 0) // 3초 * 100 = 약 5분
-            {
-                LogPerformanceReport();
-            }
-        }
-
-        /// <summary>
-        /// 성능 리포트 출력
-        /// </summary>
-        private void LogPerformanceReport()
-        {
-            try
-            {
-                var currentMemory = GC.GetTotalMemory(false);
-                var memoryDelta = currentMemory - _initialMemoryUsage;
-                var memoryDeltaPercent = (memoryDelta / (double)_initialMemoryUsage) * 100;
-
-                var avgUpdateTime = _recentUpdateTimes.Count > 0
-                    ? TimeSpan.FromTicks((long)_recentUpdateTimes.Average(t => t.Ticks))
-                    : TimeSpan.Zero;
-
-                var uptime = DateTime.Now - _performanceMonitoringStart;
-
-                var report = $"[성능 리포트] " +
-                           $"실행시간: {uptime:hh\\:mm\\:ss}, " +
-                           $"UI 업데이트: {_uiUpdateCount}회, " +
-                           $"평균 업데이트 시간: {avgUpdateTime.TotalMilliseconds:F1}ms, " +
-                           $"메모리 변화: {memoryDelta / (1024.0 * 1024.0):+0.0;-0.0} MB ({memoryDeltaPercent:+0.0;-0.0}%), " +
-                           $"현재 메모리: {currentMemory / (1024.0 * 1024.0):F1} MB";
-
-                System.Diagnostics.Debug.WriteLine(report);
-                AddLogMessage(report);
-
-                // 메모리 사용량이 100MB 이상 증가한 경우 경고
-                if (memoryDelta > 100 * 1024 * 1024)
-                {
-                    AddLogMessage($"⚠️ 메모리 사용량이 초기 대비 {memoryDelta / (1024.0 * 1024.0):F1} MB 증가했습니다. 메모리 누수 가능성을 확인하세요.");
-                }
-
-                // 평균 업데이트 시간이 100ms를 초과하는 경우 경고
-                if (avgUpdateTime.TotalMilliseconds > 100)
-                {
-                    AddLogMessage($"⚠️ UI 업데이트 평균 시간이 {avgUpdateTime.TotalMilliseconds:F1}ms입니다. UI 응답성이 저하될 수 있습니다.");
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[성능 리포트] 생성 실패: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// 수동 가비지 컬렉션 실행 (메모리 정리)
-        /// </summary>
-        private void ForceGarbageCollection()
-        {
-            try
-            {
-                var beforeMemory = GC.GetTotalMemory(false);
-
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                GC.Collect();
-
-                var afterMemory = GC.GetTotalMemory(false);
-                var freedMemory = beforeMemory - afterMemory;
-
-                System.Diagnostics.Debug.WriteLine($"[가비지 컬렉션] {freedMemory / (1024.0 * 1024.0):F1} MB 정리됨");
-                AddLogMessage($"메모리 정리: {freedMemory / (1024.0 * 1024.0):F1} MB 해제");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[가비지 컬렉션] 실행 실패: {ex.Message}");
             }
         }
 

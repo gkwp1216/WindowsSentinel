@@ -19,13 +19,6 @@ namespace LogCheck.Services
         private bool _isInitialized = false;
         private bool _disposed = false;
 
-        // 배치 처리를 위한 필드들
-        private readonly List<BlockActionRecord> _pendingBlockActions = new List<BlockActionRecord>();
-        private readonly object _batchLock = new object();
-        private readonly System.Threading.Timer _batchTimer;
-        private const int BATCH_SIZE = 50; // 배치 크기
-        private const int BATCH_INTERVAL_MS = 5000; // 5초마다 배치 처리
-
         // 데이터베이스 테이블 생성 SQL
         private const string CreateBlockedConnectionsTableSql = @"
             CREATE TABLE IF NOT EXISTS BlockedConnections (
@@ -33,9 +26,6 @@ namespace LogCheck.Services
                 ProcessName TEXT NOT NULL,
                 ProcessPath TEXT,
                 ProcessId INTEGER NOT NULL,
-                ParentProcessId INTEGER NULL,
-                ParentProcessName TEXT NULL,
-                IsRelatedToChildBlock BOOLEAN DEFAULT 0,
                 RemoteAddress TEXT NOT NULL,
                 RemotePort INTEGER NOT NULL,
                 LocalPort INTEGER,
@@ -76,10 +66,6 @@ namespace LogCheck.Services
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
             _ruleEngine = new BlockRuleEngine();
             _whitelist = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-            // 배치 처리 타이머 초기화 (5초마다 실행)
-            _batchTimer = new System.Threading.Timer(ProcessPendingBatch, null,
-                BATCH_INTERVAL_MS, BATCH_INTERVAL_MS);
         }
 
         #endregion
@@ -182,7 +168,7 @@ namespace LogCheck.Services
             }
 
             // 차단 기록 저장
-            LogBlockActionAsync(processInfo, level, success, errorMessage);
+            await LogBlockActionAsync(processInfo, level, success, errorMessage);
 
             return success;
         }
@@ -650,216 +636,42 @@ namespace LogCheck.Services
         }
 
         /// <summary>
-        /// 차단 기록을 배치 큐에 추가 (즉시 DB 쓰기 대신 배치 처리)
+        /// 차단 기록 저장
         /// </summary>
-        private void LogBlockActionAsync(ProcessNetworkInfo processInfo, BlockLevel level, bool success, string errorMessage)
-        {
-            var record = new BlockActionRecord(processInfo, level, success, errorMessage ?? string.Empty, DateTime.Now);
-
-            lock (_batchLock)
-            {
-                _pendingBlockActions.Add(record);
-
-                // 배치 크기가 임계값에 도달하면 즉시 처리
-                if (_pendingBlockActions.Count >= BATCH_SIZE)
-                {
-                    _ = Task.Run(async () => await ProcessBatchNow());
-                }
-            }
-        }
-
-        /// <summary>
-        /// 타이머 콜백에서 호출되는 배치 처리 메서드
-        /// </summary>
-        private async void ProcessPendingBatch(object? state)
-        {
-            await ProcessBatchNow();
-        }
-
-        /// <summary>
-        /// 현재 대기 중인 배치를 즉시 처리
-        /// </summary>
-        private async Task ProcessBatchNow()
-        {
-            List<BlockActionRecord> batchToProcess;
-
-            lock (_batchLock)
-            {
-                if (_pendingBlockActions.Count == 0)
-                    return;
-
-                batchToProcess = new List<BlockActionRecord>(_pendingBlockActions);
-                _pendingBlockActions.Clear();
-            }
-
-            try
-            {
-                await ProcessBlockActionBatch(batchToProcess);
-                System.Diagnostics.Debug.WriteLine($"[AutoBlockService] 배치 처리 완료: {batchToProcess.Count}개 레코드");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[AutoBlockService] 배치 처리 실패: {ex.Message}");
-
-                // 실패한 배치를 다시 큐에 추가 (재시도)
-                lock (_batchLock)
-                {
-                    _pendingBlockActions.InsertRange(0, batchToProcess);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 배치로 블록 액션 레코드들을 데이터베이스에 저장
-        /// </summary>
-        private async Task ProcessBlockActionBatch(List<BlockActionRecord> records)
-        {
-            if (!records.Any()) return;
-
-            try
-            {
-                using var connection = new SqliteConnection(_connectionString);
-                await connection.OpenAsync();
-
-                using var transaction = connection.BeginTransaction();
-
-                foreach (var record in records)
-                {
-                    var command = connection.CreateCommand();
-                    command.Transaction = transaction;
-                    command.CommandText = @"
-                        INSERT INTO BlockedConnections 
-                        (ProcessName, ProcessPath, ProcessId, ParentProcessId, ParentProcessName, IsRelatedToChildBlock,
-                         RemoteAddress, RemotePort, LocalPort, Protocol, BlockLevel, Reason, IsBlocked, ErrorMessage, BlockedAt)
-                        VALUES 
-                        (@processName, @processPath, @processId, @parentProcessId, @parentProcessName, @isRelatedToChildBlock,
-                         @remoteAddress, @remotePort, @localPort, @protocol, @blockLevel, @reason, @isBlocked, @errorMessage, @blockedAt)";
-
-                    var processInfo = record.ProcessInfo;
-                    command.Parameters.AddWithValue("@processName", processInfo.ProcessName ?? string.Empty);
-                    command.Parameters.AddWithValue("@processPath", processInfo.ProcessPath ?? string.Empty);
-                    command.Parameters.AddWithValue("@processId", processInfo.ProcessId);
-                    command.Parameters.AddWithValue("@parentProcessId", processInfo.ParentProcessId.HasValue ? (object)processInfo.ParentProcessId.Value : DBNull.Value);
-                    command.Parameters.AddWithValue("@parentProcessName", processInfo.ParentProcessName ?? string.Empty);
-                    command.Parameters.AddWithValue("@isRelatedToChildBlock", processInfo.HasBlockedChildren);
-                    command.Parameters.AddWithValue("@remoteAddress", processInfo.RemoteAddress ?? string.Empty);
-                    command.Parameters.AddWithValue("@remotePort", processInfo.RemotePort);
-                    command.Parameters.AddWithValue("@localPort", processInfo.LocalPort);
-                    command.Parameters.AddWithValue("@protocol", processInfo.Protocol ?? "TCP");
-                    command.Parameters.AddWithValue("@blockLevel", (int)record.Level);
-                    command.Parameters.AddWithValue("@reason", $"Level {(int)record.Level} block");
-                    command.Parameters.AddWithValue("@isBlocked", record.Success);
-                    command.Parameters.AddWithValue("@errorMessage", record.ErrorMessage);
-                    command.Parameters.AddWithValue("@blockedAt", record.Timestamp);
-
-                    await command.ExecuteNonQueryAsync();
-
-                    // 부모 프로세스가 있고 자식 프로세스가 차단된 경우, 부모 프로세스 정보도 업데이트
-                    if (processInfo.ParentProcessId.HasValue && record.Success)
-                    {
-                        await UpdateParentProcessBlockStatusInTransaction(connection, transaction,
-                            processInfo.ParentProcessId.Value, processInfo.ParentProcessName ?? string.Empty);
-                    }
-                }
-
-                transaction.Commit();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Failed to process block action batch: {ex.Message}");
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// 부모 프로세스의 차단된 자식 상태 업데이트
-        /// </summary>
-        private async Task UpdateParentProcessBlockStatus(int parentProcessId, string parentProcessName)
+        private async Task LogBlockActionAsync(ProcessNetworkInfo processInfo, BlockLevel level, bool success, string errorMessage)
         {
             try
             {
                 using var connection = new SqliteConnection(_connectionString);
                 await connection.OpenAsync();
 
-                // 이미 해당 부모 프로세스의 연관 차단 기록이 있는지 확인
-                var checkCommand = connection.CreateCommand();
-                checkCommand.CommandText = @"
-                    SELECT COUNT(*) FROM BlockedConnections 
-                    WHERE ProcessId = @parentProcessId AND IsRelatedToChildBlock = 1";
-                checkCommand.Parameters.AddWithValue("@parentProcessId", parentProcessId);
+                var command = connection.CreateCommand();
+                command.CommandText = @"
+                    INSERT INTO BlockedConnections 
+                    (ProcessName, ProcessPath, ProcessId, RemoteAddress, RemotePort, LocalPort, 
+                     Protocol, BlockLevel, Reason, IsBlocked, ErrorMessage, BlockedAt)
+                    VALUES 
+                    (@processName, @processPath, @processId, @remoteAddress, @remotePort, @localPort,
+                     @protocol, @blockLevel, @reason, @isBlocked, @errorMessage, @blockedAt)";
 
-                var existingCount = Convert.ToInt32(await checkCommand.ExecuteScalarAsync());
+                command.Parameters.AddWithValue("@processName", processInfo.ProcessName ?? string.Empty);
+                command.Parameters.AddWithValue("@processPath", processInfo.ProcessPath ?? string.Empty);
+                command.Parameters.AddWithValue("@processId", processInfo.ProcessId);
+                command.Parameters.AddWithValue("@remoteAddress", processInfo.RemoteAddress ?? string.Empty);
+                command.Parameters.AddWithValue("@remotePort", processInfo.RemotePort);
+                command.Parameters.AddWithValue("@localPort", processInfo.LocalPort);
+                command.Parameters.AddWithValue("@protocol", processInfo.Protocol ?? "TCP");
+                command.Parameters.AddWithValue("@blockLevel", (int)level);
+                command.Parameters.AddWithValue("@reason", $"Level {(int)level} block");
+                command.Parameters.AddWithValue("@isBlocked", success);
+                command.Parameters.AddWithValue("@errorMessage", errorMessage ?? string.Empty);
+                command.Parameters.AddWithValue("@blockedAt", DateTime.Now);
 
-                // 연관 차단 기록이 없으면 새로 생성
-                if (existingCount == 0)
-                {
-                    var insertCommand = connection.CreateCommand();
-                    insertCommand.CommandText = @"
-                        INSERT INTO BlockedConnections 
-                        (ProcessName, ProcessPath, ProcessId, ParentProcessId, ParentProcessName, IsRelatedToChildBlock,
-                         RemoteAddress, RemotePort, LocalPort, Protocol, BlockLevel, Reason, IsBlocked, ErrorMessage, BlockedAt)
-                        VALUES 
-                        (@processName, @processPath, @processId, NULL, '', 1,
-                         'N/A', 0, 0, 'N/A', 2, 'Parent process with blocked child', 1, '', @blockedAt)";
-
-                    insertCommand.Parameters.AddWithValue("@processName", parentProcessName ?? "Unknown Parent");
-                    insertCommand.Parameters.AddWithValue("@processPath", string.Empty);
-                    insertCommand.Parameters.AddWithValue("@processId", parentProcessId);
-                    insertCommand.Parameters.AddWithValue("@blockedAt", DateTime.Now);
-
-                    await insertCommand.ExecuteNonQueryAsync();
-                    System.Diagnostics.Debug.WriteLine($"부모 프로세스 차단 상태 기록 생성: {parentProcessName} (PID: {parentProcessId})");
-                }
+                await command.ExecuteNonQueryAsync();
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"부모 프로세스 차단 상태 업데이트 실패: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// 트랜잭션 내에서 부모 프로세스의 차단된 자식 상태 업데이트
-        /// </summary>
-        private async Task UpdateParentProcessBlockStatusInTransaction(SqliteConnection connection, SqliteTransaction transaction, int parentProcessId, string parentProcessName)
-        {
-            try
-            {
-                // 이미 해당 부모 프로세스의 연관 차단 기록이 있는지 확인
-                var checkCommand = connection.CreateCommand();
-                checkCommand.Transaction = transaction;
-                checkCommand.CommandText = @"
-                    SELECT COUNT(*) FROM BlockedConnections 
-                    WHERE ProcessId = @parentProcessId AND IsRelatedToChildBlock = 1";
-                checkCommand.Parameters.AddWithValue("@parentProcessId", parentProcessId);
-
-                var existingCount = Convert.ToInt32(await checkCommand.ExecuteScalarAsync());
-
-                // 연관 차단 기록이 없으면 새로 생성
-                if (existingCount == 0)
-                {
-                    var insertCommand = connection.CreateCommand();
-                    insertCommand.Transaction = transaction;
-                    insertCommand.CommandText = @"
-                        INSERT INTO BlockedConnections 
-                        (ProcessName, ProcessPath, ProcessId, ParentProcessId, ParentProcessName, IsRelatedToChildBlock,
-                         RemoteAddress, RemotePort, LocalPort, Protocol, BlockLevel, Reason, IsBlocked, ErrorMessage, BlockedAt)
-                        VALUES 
-                        (@processName, @processPath, @processId, NULL, '', 1,
-                         'N/A', 0, 0, 'N/A', 2, 'Parent process with blocked child', 1, '', @blockedAt)";
-
-                    insertCommand.Parameters.AddWithValue("@processName", parentProcessName ?? "Unknown Parent");
-                    insertCommand.Parameters.AddWithValue("@processPath", string.Empty);
-                    insertCommand.Parameters.AddWithValue("@processId", parentProcessId);
-                    insertCommand.Parameters.AddWithValue("@blockedAt", DateTime.Now);
-
-                    await insertCommand.ExecuteNonQueryAsync();
-                    System.Diagnostics.Debug.WriteLine($"부모 프로세스 차단 상태 기록 생성 (트랜잭션): {parentProcessName} (PID: {parentProcessId})");
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"부모 프로세스 차단 상태 업데이트 실패 (트랜잭션): {ex.Message}");
-                throw;
+                System.Diagnostics.Debug.WriteLine($"Failed to log block action: {ex.Message}");
             }
         }
 
@@ -901,15 +713,4 @@ namespace LogCheck.Services
 
         #endregion
     }
-
-    /// <summary>
-    /// 배치 처리를 위한 차단 액션 레코드
-    /// </summary>
-    internal record BlockActionRecord(
-        ProcessNetworkInfo ProcessInfo,
-        BlockLevel Level,
-        bool Success,
-        string ErrorMessage,
-        DateTime Timestamp
-    );
 }

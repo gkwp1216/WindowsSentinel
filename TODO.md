@@ -1,42 +1,139 @@
 # 작업 목록 (TODO)
 
-## 성능 최적화 계획 📋
+## 🚨 긴급 - 네트워크 차단 시스템 영구 적용 문제
 
-> **📄 상세 계획서**: [PERFORMANCE_OPTIMIZATION_PLAN.md](./PERFORMANCE_OPTIMIZATION_PLAN.md) 참조  
-> **🗺️ 실행 로드맵**: [PERFORMANCE_OPTIMIZATION_ROADMAP.md](./PERFORMANCE_OPTIMIZATION_ROADMAP.md) 참조
+### 문제 현황
 
-### Phase 1: 핵심 시스템 개발 (완료) ✅
+- ✅ 그룹화 프로세스에서 자식 프로세스 차단 기능 작동 확인
+- ❌ 차단한 연결이 시스템 재부팅 후 다시 정상 작동함 (카카오톡 사례)
+- ❌ AutoBlock 시스템에 차단 기록이 표시되지 않음
+- ❌ 차단 목록에서 확인 불가능
+- ❌ 이벤트 뷰어에서도 확인 불가능
 
-- ✅ AutoBlock 서비스 아키텍처 설계
-- ✅ IAutoBlockService 인터페이스 정의
-- ✅ BlockRuleEngine 구현
-- ✅ AutoBlockService 핵심 기능
-- ✅ 데이터베이스 스키마 및 Repository 패턴
-- ✅ 실시간 패킷 분석 및 자동 차단
-- ✅ 화이트리스트 관리 시스템
-- ✅ 테스트 프레임워크 구성
-- ✅ UI 통합 작업 (AutoBlock 탭 및 통계 표시)
-- ✅ 자식 프로세스만 연결 차단할 경우 부모 프로세스까지 프로그램 리스트에 표시되지 않으며 AutoBlock 시스템과 차단된 연결 모두에서 차단 기록/내역이 표시되지 않는 문제 해결
+### 🎯 우선순위 1: 영구 차단 시스템 구현
 
-### Phase 2: 성능 최적화 (진행 예정) 🚀
+#### Phase 1: 영구 방화벽 규칙 시스템 (진행 중)
 
-#### 즉시 개선 작업 (Week 1-2)
+- [ ] **PersistentFirewallManager 클래스 생성**
 
-- [ ] **UI 스레드 최적화**: UpdateTimer_Tick 비동기 패턴 개선
-- [ ] **메모리 사용량 개선**: 증분 업데이트로 ObservableCollection 최적화
-- [ ] **DB 쓰기 성능**: AutoBlock 배치 처리 구현
+  - Windows 방화벽에 영구 규칙 추가/제거
+  - 프로세스 경로 기반 차단
+  - IP/포트 기반 차단
+  - 규칙 이름 체계 구축 (`AutoBlock_ProcessName_YYYYMMDD`)
 
-#### 구조적 개선 (Week 3-5)
+- [ ] **차단 규칙 재적용 시스템**
+  - 앱 시작 시 차단 목록을 DB에서 로드
+  - 기존 방화벽 규칙 확인 및 복구
+  - 누락된 규칙 자동 재생성
 
-- [ ] **캐싱 시스템**: WMI 쿼리 결과 캐시 구현
-- [ ] **MVVM 패턴 완성**: ViewModel 분리 및 데이터 바인딩 강화
-- [ ] **BackgroundService**: 백그라운드 처리 패턴 적용
+#### Phase 2: 차단 시스템 통합 (진행 중)
 
-#### 고급 최적화 (Week 6-9)
+- [ ] **BlockGroupConnections_Click 개선**
 
-- [ ] **객체 풀링**: ProcessNetworkInfo 객체 재사용
-- [ ] **성능 모니터링**: 실시간 메트릭 수집 시스템
-- [ ] **연결 풀**: 데이터베이스 연결 최적화
+  - 디버깅 로그 강화 (`🔄 [DEBUG]` 메시지)
+  - 실제 방화벽 규칙 생성 연동
+  - AutoBlock 통계 시스템 연동 확인
+  - Windows 이벤트 로그 기록
+
+- [ ] **차단 정책 관리 개선**
+  - "영구 차단" vs "임시 차단" 옵션
+  - 차단 범위 설정 (프로세스/IP/포트 단위)
+  - 차단 해제 시 방화벽 규칙도 제거
+
+#### Phase 3: 데이터베이스 및 UI 연동
+
+- [ ] **AutoBlockStatisticsService 강화**
+
+  - `RecordBlockEventAsync` 및 `AddBlockedConnectionAsync` 디버깅
+  - 데이터베이스 기록 확인 로그
+  - 차단 규칙 메타데이터 저장
+
+- [ ] **차단 관리 UI 개선**
+  - 차단된 연결 목록에 "방화벽 규칙 상태" 표시
+  - 영구 차단 규칙 관리 섹션
+  - 차단 규칙 일괄 적용/해제 기능
+
+### 🔧 기술적 구현 계획
+
+#### 1. PersistentFirewallManager 구조
+
+```csharp
+public class PersistentFirewallManager
+{
+    Task<bool> AddPermanentBlockRule(string processPath, string ruleName)
+    Task<bool> AddPermanentIPBlockRule(string ipAddress, int port, string protocol, string ruleName)
+    Task<bool> RemoveBlockRule(string ruleName)
+    Task<List<string>> GetActiveBlockRules()
+    Task RestoreBlockRulesFromDatabase()
+}
+```
+
+#### 2. 앱 시작 시 규칙 복구
+
+```csharp
+protected override async void OnStartup(StartupEventArgs e)
+{
+    await _persistentFirewallManager.RestoreBlockRulesFromDatabase();
+    base.OnStartup(e);
+}
+```
+
+#### 3. 디버깅 및 로깅 시스템 강화
+
+- 차단 작업 시 상세 로그 기록
+- 방화벽 규칙 추가/제거 성공/실패 로그
+- Windows 이벤트 뷰어에 사용자 정의 이벤트 기록
+- AutoBlock 탭에서 실시간 작업 로그 표시
+
+### 📋 테스트 계획
+
+#### 단계별 검증 항목
+
+1. **규칙 생성 테스트**
+
+   - [ ] 카카오톡 프로세스 차단 규칙 생성
+   - [ ] Windows 방화벽에서 규칙 확인
+   - [ ] 카카오톡 연결 차단 확인
+
+2. **영구성 테스트**
+
+   - [ ] 시스템 재부팅 후 규칙 유지 확인
+   - [ ] 앱 재시작 시 차단 목록 복구 확인
+   - [ ] 방화벽 규칙과 DB 데이터 일치 확인
+
+3. **UI 연동 테스트**
+   - [ ] AutoBlock 탭에서 차단 내역 표시
+   - [ ] 차단 통계 업데이트 확인
+   - [ ] 차단 해제 기능 테스트
+
+### 🎯 완료 기준
+
+- ✅ 차단한 프로세스가 시스템 재부팅 후에도 계속 차단됨
+- ✅ AutoBlock 탭에서 차단 내역 확인 가능
+- ✅ Windows 방화벽에 영구 규칙 생성됨
+- ✅ 차단 해제 시 방화벽 규칙도 함께 제거됨
+- ✅ 이벤트 뷰어에서 차단 작업 로그 확인 가능
+
+---
+
+## 기존 코드 품질 개선 (우선순위 낮음)
+
+### 아키텍처 개선
+
+- UpdateProcessNetworkData 메서드 내 Dispatcher.InvokeAsync 최적화
+  - 비동기 작업(Task.Run)이 완료된 후 결과만 UI 스레드로 보내는 패턴으로 개선
+  - Task.Run 안에서 데이터 처리와 보안 분석을 모두 수행하고, 최종 UI 업데이트만 Dispatcher.InvokeAsync로 호출
+
+### MVVM 패턴 적용
+
+- 통계 데이터를 별도의 ViewModel 클래스로 분리
+- INotifyPropertyChanged 인터페이스 구현
+- 값 변경 시 UI 자동 업데이트 바인딩
+
+### 코드 중복 제거
+
+- StartMonitoring_Click과 Refresh_Click 메서드 공통 로직 추출
+- \_processNetworkMapper.GetProcessNetworkDataAsync() 호출 부분 통합
 
 ## UI/UX 개선 작업
 
@@ -114,10 +211,77 @@ BlockConnection_Click, TerminateProcess_Click 수정
 - 차단 우회 시도 탐지
 - 로그 무결성 검증
 
+---
+
+## 🔧 코드 리팩토링 작업 (진행 중)
+
+### 🎯 우선순위 2: 중복 코드 패턴 리팩토링
+
+#### Phase 1: 공통 서비스 클래스 생성
+
+- ✅ **LogMessageService 클래스 생성**
+
+  - ✅ AddLogMessage 메서드 통일 완료
+  - ✅ 로그 메시지 포맷 표준화 (타임스탬프, 로그 레벨)
+  - ✅ 최대 로그 개수 제한 공통 관리 (기본값: 100개)
+  - ✅ 파일 로그 기능 통합 (옵션)
+  - ✅ NetWorks_New에서 LogMessageService 적용 완료
+  - 🔄 ThreatIntelligence에서 LogMessageService 적용 (이벤트 핸들러 오류 수정 필요)
+
+- ✅ **StatisticsService 클래스 생성**
+  - ✅ UpdateStatistics 로직 공통화 완료
+  - ✅ NetworkStatisticsService, ThreatIntelligenceStatisticsService 구현
+  - ✅ IStatisticsProvider 인터페이스 정의
+  - ✅ 바인딩 가능한 통계 ViewModel 제공
+  - 🔄 실제 페이지 적용 진행 중
+
+#### Phase 2: UI 패턴 통합
+
+- ✅ **BasePageViewModel 추상 클래스 생성**
+
+  - ✅ INotifyPropertyChanged 구현
+  - ✅ 공통 로그 메시지 관리 (LogMessageService 통합)
+  - ✅ 공통 통계 데이터 바인딩 (IStatisticsProvider 통합)
+  - ✅ 공통 초기화/정리 패턴
+  - ✅ NetworkPageViewModel 특화 클래스 추가
+  - 🔄 실제 페이지에 적용 진행 중
+
+- ✅ **NavigationService 개선**
+  - ✅ 사이드바 네비게이션 로직 공통화 (SidebarNavigationService)
+  - ✅ INavigable 인터페이스 활용
+  - ✅ OnNavigatedTo/From 생명주기 관리 (PageLifecycleManager)
+  - ✅ MainNavigationService 구현 완료
+  - 🔄 실제 MainWindows에 적용 진행 중
+
+#### Phase 3: 중복 제거 항목
+
+**🔍 발견된 중복 패턴 및 해결 상태:**
+
+1. ✅ **AddLogMessage 메서드**: NetWorks_New(89회), ThreatIntelligence(22회) → LogMessageService로 통합
+2. ✅ **UpdateStatistics 메서드**: 2개 파일 → NetworkStatisticsService/ThreatIntelligenceStatisticsService로 통합
+3. ✅ **ObservableCollection<string> \_logMessages**: 중복된 로그 컬렉션 → LogMessageService.LogMessages로 통합
+4. ✅ **LogMessagesControl.ItemsSource**: 동일한 바인딩 패턴 → 공통 서비스 바인딩으로 통합
+5. 🔄 **Dispatcher.InvokeAsync 패턴**: BasePageViewModel.SafeInvokeUI/SafeInvokeUIAsync로 통합 (적용 진행 중)
+6. 🔄 **이벤트 구독/해제 패턴**: BasePageViewModel에서 공통 패턴 제공 (적용 진행 중)
+
+#### Phase 4: 성능 최적화
+
+- [ ] **Dispatcher 호출 최적화**
+
+  - UI 업데이트 배치 처리
+  - 불필요한 Dispatcher 호출 제거
+  - 백그라운드 작업과 UI 작업 분리
+
+- [ ] **컬렉션 업데이트 최적화**
+  - Clear() 대신 스마트 업데이트 적용
+  - UI 깜빡임 최소화
+  - 메모리 사용량 개선
+
+---
+
 ### 우선순위 작업 (TODO)
 
 - 안되는 기능들 작동하게끔 작업 ( 그래프는 잘 안되는데? )
-- 시스템 프로세스는 추가 경고 표시 및 추가 정렬 (색상 추가, 따로 분리 ) // 생각해볼것
 - 보안 경고 팝업 구현: 보안 이벤트 발생 시 표시될 팝업 컴포넌트 설계 및 경고 레벨별 UX 흐름 정의
 
 ### 우선순위 작업 (TODO)
@@ -125,15 +289,29 @@ BlockConnection_Click, TerminateProcess_Click 수정
 - **AutoBlock UI 개선**: 차단된 연결 상세 정보 표시 페이지
 - **차단 규칙 커스터마이징**: 사용자 정의 차단 규칙 추가 기능
 - **성능 모니터링**: AutoBlock 시스템 성능 지표 및 최적화
-- **ftp , tftp?** : AutoBlock 기능 테스트를 위한 방법 연구
-- [x] **AutoBlock 시스템 통합**: AutoBlock 시스템과 차단된 연결을 통합 관리하는 방법 연구
-  - ✅ IUnifiedBlockingService 인터페이스 구현 완료
-  - ✅ UnifiedBlockingService 통합 서비스 구현 완료
-  - ✅ 통합 데이터베이스 스키마 (UnifiedBlockedConnections 테이블) 구현
-  - ✅ NetWorks_New.xaml.cs에서 통합 차단 서비스 사용으로 변경 완료
-  - ✅ 배치 처리, 이벤트 시스템, 통계 조회 등 모든 기능 통합
-  - ✅ 빌드 성공 및 컴파일 오류 해결
-- [ ] **차단 범위 최적화**: 그룹화 프로세스 vs 상세 프로세스 차단 전략 수립
+- **WS 테스트 방식 연구** : AutoBlock 기능 테스트를 위한 방법 연구. ftp , tftp?
+- 자식 프로세스만 연결 차단할 경우 AutoBlock 시스템과 차단된 연결 모두에서 차단 기록/내역이 표시되지 않는 문제 해결
+- AutoBlock 시스템과 차단된 연결을 따로 두지 말고 묶는 방법 고려
+- 프로세스 종료가 작동하지 않고 있음
+- 보안 상태 및 차트 부분 재디자인
+- **최적화 작업** : 렉 굉장히 심함
+- **일회성 차단 문제**
+  - 단순히 메모리 내에서 연결을 끊는 것을 넘어,
+    Windows 방화벽(Windows Defender Firewall) 서비스에 영구적인 새 규칙을 등록하도록 변경
+    (**COM Interop**을 사용하여 NetFwPublicTypeLib에 접근)
+  - C# 프로세스 내부가 아닌, OS수준의 영구적인 차단 매커니즘 사용 필요
+  - 당연하게도 UI까지 구현 필요
+- **영구 규칙 관리**
+  - Windows Firewall API를 활용
+  - COM Interop을 통한 Windows Firewall API 직접 호출
+    - C# 프로젝트에 NetFwPublicTypeLib 또는 NetFwTypeLib 참조를 추가하고,
+      INetFwRule 및 INetFwPolicy2 인터페이스를 사용하여 방화벽 규칙을 프로그래밍 방식으로 생성, 수정, 삭제하는 방법
+  - 필수 구현 사항 및 관리자 권한
+    - 고유 이름 부여: 모든 WS 생성 규칙에는 WS*[프로세스명]*[원격IP]\_[Port]와 같이 고유하고 식별 가능한 **이름(Name)**을 부여
+    - 규칙 저장: WS가 종료될 때, 차단 규칙의 목록을 **파일(예: JSON 또는 XML)**로 저장하여 영구 보존
+    - WS 시작 시 복구: WS가 재시작되면, 저장된 파일 목록을 읽어 방화벽에서 해당 규칙이 존재하는지 확인하는 로직을 추가
+    - 차단 해제 시 삭제: 사용자가 UI에서 차단을 해제하거나, 프로세스가 종료되어 더 이상 차단이 필요 없을 때는
+      방화벽에서 해당 고유 이름의 규칙을 삭제
 
 # autoblock.db 경로
 

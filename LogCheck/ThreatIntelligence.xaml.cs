@@ -1,9 +1,9 @@
-using LogCheck.Models;
-using LogCheck.Services;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using LogCheck.Models;
+using LogCheck.Services;
 
 namespace LogCheck
 {
@@ -13,7 +13,7 @@ namespace LogCheck
         private readonly RealTimeIPBlocker _ipBlocker;
         private readonly NetworkConnectionManager _connectionManager;
         private readonly ObservableCollection<BlockedIPAddress> _blockedIPs;
-        private readonly ObservableCollection<string> _logMessages;
+        private readonly LogMessageService _logService;
         private ThreatLookupResult? _currentThreatResult;
         private BlockedIPAddress? _selectedBlockedIP;
 
@@ -28,11 +28,11 @@ namespace LogCheck
 
             // 컬렉션 초기화
             _blockedIPs = new ObservableCollection<BlockedIPAddress>();
-            _logMessages = new ObservableCollection<string>();
+            _logService = new LogMessageService(this.Dispatcher);
 
             // UI 바인딩
             BlockedIPsDataGrid.ItemsSource = _blockedIPs;
-            LogMessagesControl.ItemsSource = _logMessages;
+            LogMessagesControl.ItemsSource = _logService.LogMessages;
 
             // 이벤트 구독
             SubscribeToEvents();
@@ -619,25 +619,12 @@ namespace LogCheck
             LoadingOverlay.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// 로그 메시지 추가 (LogMessageService로 위임)
+        /// </summary>
         private void AddLogMessage(string message)
         {
-            try
-            {
-                var timestamp = DateTime.Now.ToString("HH:mm:ss");
-                var logMessage = $"[{timestamp}] {message}";
-
-                _logMessages.Add(logMessage);
-
-                // 로그 메시지가 너무 많아지면 오래된 것 제거
-                while (_logMessages.Count > 100)
-                {
-                    _logMessages.RemoveAt(0);
-                }
-            }
-            catch (Exception ex)
-            {
-                // 로그 추가 중 오류가 발생해도 무시
-            }
+            _logService.AddLogMessage(message);
         }
 
         #endregion

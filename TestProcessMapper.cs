@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using LogCheck.Services;
 
-namespace LogCheck.Test
+namespace LogCheck
 {
     class Program
     {
