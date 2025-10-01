@@ -1,56 +1,118 @@
-# TODO - WindowsSentinel 개발 작업 목록
+# 작업 목록 (TODO)
 
-## 🔥 긴급 수정 필요
+## 🚨 긴급 - 네트워크 차단 시스템 영구 적용 문제
 
-- [ ] AutoBlock 기능 오류 수정 (테스트 실패)
-- [ ] 네트워크 모니터링 성능 최적화
-- [ ] 메모리 누수 문제 해결
+### 문제 현황
 
-## 🛠️ 핵심 기능 개발
+- ✅ 그룹화 프로세스에서 자식 프로세스 차단 기능 작동 확인
+- ❌ 차단한 연결이 시스템 재부팅 후 다시 정상 작동함 (카카오톡 사례)
+- ❌ AutoBlock 시스템에 차단 기록이 표시되지 않음
+- ❌ 차단 목록에서 확인 불가능
+- ❌ 이벤트 뷰어에서도 확인 불가능
 
-- [ ] 실시간 위협 탐지 엔진 구현
-- [ ] 사용자 인터페이스 개선
-- [ ] 로깅 시스템 강화
+### 🎯 우선순위 1: 영구 차단 시스템 구현
 
-## 📊 성능 최적화
+#### Phase 1: 영구 방화벽 규칙 시스템 (진행 중)
 
-- [x] **프로세스 목록 로딩 최적화** (2025-10-01 완료)
-  - ✅ 병렬 레지스트리 처리 구현
-  - ✅ 배치 UI 업데이트 시스템
-  - ✅ 지연 로딩 및 캐싱 적용
-  - ✅ 90% 성능 향상 달성
-- [ ] 데이터베이스 쿼리 최적화
-- [ ] UI 응답성 개선
-- [ ] 백그라운드 프로세스 최적화
+- [ ] **PersistentFirewallManager 클래스 생성**
 
-## � 최근 완료된 최적화 작업 (2025-10-01)
+  - Windows 방화벽에 영구 규칙 추가/제거
+  - 프로세스 경로 기반 차단
+  - IP/포트 기반 차단
+  - 규칙 이름 체계 구축 (`AutoBlock_ProcessName_YYYYMMDD`)
 
-### ProgramsList 성능 최적화
+- [ ] **차단 규칙 재적용 시스템**
+  - 앱 시작 시 차단 목록을 DB에서 로드
+  - 기존 방화벽 규칙 확인 및 복구
+  - 누락된 규칙 자동 재생성
 
-**문제점**: 프로세스 목록 로딩 시 UI 블로킹 및 긴 대기시간
-**해결책**:
+#### Phase 2: 차단 시스템 통합 (진행 중)
 
-1. **병렬 처리**: 레지스트리 키를 병렬로 처리하여 속도 향상
-2. **배치 업데이트**: 50개씩 배치로 UI 업데이트하여 응답성 개선
-3. **지연 로딩**: 필요한 정보만 우선 로드
-4. **캐싱**: 신뢰할 수 있는 발행자 정보 캐시
-5. **빠른 필터링**: 시스템 업데이트 조기 제외
+- [ ] **BlockGroupConnections_Click 개선**
 
-**성능 개선 결과**:
+  - 디버깅 로그 강화 (`🔄 [DEBUG]` 메시지)
+  - 실제 방화벽 규칙 생성 연동
+  - AutoBlock 통계 시스템 연동 확인
+  - Windows 이벤트 로그 기록
 
-- 로딩 시간: 15초 → 2-3초 (80% 단축)
-- UI 응답성: 완전 블로킹 → 실시간 업데이트
-- 메모리 사용량: 30% 감소
-- CPU 사용률: 멀티코어 활용으로 효율성 증대
+- [ ] **차단 정책 관리 개선**
+  - "영구 차단" vs "임시 차단" 옵션
+  - 차단 범위 설정 (프로세스/IP/포트 단위)
+  - 차단 해제 시 방화벽 규칙도 제거
 
-**구현된 최적화 메서드**:
+#### Phase 3: 데이터베이스 및 UI 연동
 
-- `CollectInstalledPrograms()` - 병렬 처리 버전
-- `ProcessRegistryKeyOptimized()` - 최적화된 레지스트리 처리
-- `ExtractProgramInfoOptimized()` - 성능 개선된 정보 추출
-- `BatchUpdateProgramList()` - 배치 UI 업데이트
-- `ParseInstallDateOptimized()` - 빠른 날짜 파싱
-- `CalculateSecurityLevelOptimized()` - 효율적인 보안 계산
+- [ ] **AutoBlockStatisticsService 강화**
+
+  - `RecordBlockEventAsync` 및 `AddBlockedConnectionAsync` 디버깅
+  - 데이터베이스 기록 확인 로그
+  - 차단 규칙 메타데이터 저장
+
+- [ ] **차단 관리 UI 개선**
+  - 차단된 연결 목록에 "방화벽 규칙 상태" 표시
+  - 영구 차단 규칙 관리 섹션
+  - 차단 규칙 일괄 적용/해제 기능
+
+### 🔧 기술적 구현 계획
+
+#### 1. PersistentFirewallManager 구조
+
+```csharp
+public class PersistentFirewallManager
+{
+    Task<bool> AddPermanentBlockRule(string processPath, string ruleName)
+    Task<bool> AddPermanentIPBlockRule(string ipAddress, int port, string protocol, string ruleName)
+    Task<bool> RemoveBlockRule(string ruleName)
+    Task<List<string>> GetActiveBlockRules()
+    Task RestoreBlockRulesFromDatabase()
+}
+```
+
+#### 2. 앱 시작 시 규칙 복구
+
+```csharp
+protected override async void OnStartup(StartupEventArgs e)
+{
+    await _persistentFirewallManager.RestoreBlockRulesFromDatabase();
+    base.OnStartup(e);
+}
+```
+
+#### 3. 디버깅 및 로깅 시스템 강화
+
+- 차단 작업 시 상세 로그 기록
+- 방화벽 규칙 추가/제거 성공/실패 로그
+- Windows 이벤트 뷰어에 사용자 정의 이벤트 기록
+- AutoBlock 탭에서 실시간 작업 로그 표시
+
+### 📋 테스트 계획
+
+#### 단계별 검증 항목
+
+1. **규칙 생성 테스트**
+
+   - [ ] 카카오톡 프로세스 차단 규칙 생성
+   - [ ] Windows 방화벽에서 규칙 확인
+   - [ ] 카카오톡 연결 차단 확인
+
+2. **영구성 테스트**
+
+   - [ ] 시스템 재부팅 후 규칙 유지 확인
+   - [ ] 앱 재시작 시 차단 목록 복구 확인
+   - [ ] 방화벽 규칙과 DB 데이터 일치 확인
+
+3. **UI 연동 테스트**
+   - [ ] AutoBlock 탭에서 차단 내역 표시
+   - [ ] 차단 통계 업데이트 확인
+   - [ ] 차단 해제 기능 테스트
+
+### 🎯 완료 기준
+
+- ✅ 차단한 프로세스가 시스템 재부팅 후에도 계속 차단됨
+- ✅ AutoBlock 탭에서 차단 내역 확인 가능
+- ✅ Windows 방화벽에 영구 규칙 생성됨
+- ✅ 차단 해제 시 방화벽 규칙도 함께 제거됨
+- ✅ 이벤트 뷰어에서 차단 작업 로그 확인 가능
 
 ---
 

@@ -7,7 +7,7 @@ using LogCheck.Services;
 
 namespace LogCheck
 {
-    public partial class ThreatIntelligence : Page, INavigable
+    public partial class ThreatIntelligence : Page, LogCheck.Models.INavigable
     {
         private readonly AbuseIPDBClient _abuseIPDBClient;
         private readonly RealTimeIPBlocker _ipBlocker;

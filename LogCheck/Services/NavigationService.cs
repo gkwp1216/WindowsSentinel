@@ -131,7 +131,7 @@ namespace LogCheck.Services
         {
             try
             {
-                if (page is INavigable navigablePage)
+                if (page is LogCheck.Models.INavigable navigablePage)
                 {
                     navigablePage.OnNavigatedTo();
                 }
@@ -152,7 +152,7 @@ namespace LogCheck.Services
         {
             try
             {
-                if (page is INavigable navigablePage)
+                if (page is LogCheck.Models.INavigable navigablePage)
                 {
                     navigablePage.OnNavigatedFrom();
                 }
