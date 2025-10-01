@@ -297,26 +297,34 @@ namespace LogCheck.ViewModels
 
         #region Program Collection
         /// <summary>
-        /// 레지스트리에서 설치된 프로그램 정보 수집
+        /// 레지스트리에서 설치된 프로그램 정보 수집 (최적화된 병렬 처리)
         /// </summary>
         [SupportedOSPlatform("windows")]
-        private void CollectInstalledPrograms()
+        private async void CollectInstalledPrograms()
         {
             try
             {
-                LogService.AddLogMessage("📋 설치된 프로그램 정보 수집 시작");
+                LogService.AddLogMessage("⚡ 설치된 프로그램 정보 수집 시작 (최적화된 버전)");
+                var startTime = DateTime.Now;
 
                 string[] registryKeys = {
                     @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
                     @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
                 };
 
-                foreach (string keyPath in registryKeys)
-                {
-                    ProcessRegistryKey(Registry.LocalMachine, keyPath);
-                }
+                // 병렬 처리로 레지스트리 키 동시 처리
+                var tasks = registryKeys.Select(keyPath =>
+                    Task.Run(() => ProcessRegistryKeyOptimized(Registry.LocalMachine, keyPath))
+                ).ToArray();
 
-                LogService.AddLogMessage($"📊 총 {_programList.Count}개 프로그램 수집 완료");
+                var results = await Task.WhenAll(tasks);
+
+                // 결과 병합 및 배치 UI 업데이트
+                var allPrograms = results.SelectMany(r => r).ToList();
+                await BatchUpdateProgramList(allPrograms);
+
+                var elapsedTime = DateTime.Now - startTime;
+                LogService.AddLogMessage($"⚡ 총 {_programList.Count}개 프로그램 수집 완료 (소요시간: {elapsedTime.TotalSeconds:F2}초)");
             }
             catch (Exception ex)
             {
@@ -325,7 +333,38 @@ namespace LogCheck.ViewModels
         }
 
         /// <summary>
-        /// 레지스트리 키 처리
+        /// 배치 UI 업데이트 (성능 최적화)
+        /// </summary>
+        private async Task BatchUpdateProgramList(List<ProgramInfo> programs)
+        {
+            const int batchSize = 50; // 한 번에 50개씩 처리
+
+            for (int i = 0; i < programs.Count; i += batchSize)
+            {
+                var batch = programs.Skip(i).Take(batchSize);
+
+                await App.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    foreach (var program in batch)
+                    {
+                        if (!_processedPrograms.Contains(program.Name))
+                        {
+                            _processedPrograms.Add(program.Name);
+                            _programList.Add(program);
+                        }
+                    }
+                });
+
+                // UI 응답성을 위한 짧은 지연
+                if (i + batchSize < programs.Count)
+                {
+                    await Task.Delay(10);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 레지스트리 키 처리 (기존 방식 - 호환성 유지)
         /// </summary>
         [SupportedOSPlatform("windows")]
         private void ProcessRegistryKey(RegistryKey baseKey, string keyPath)
@@ -364,8 +403,62 @@ namespace LogCheck.ViewModels
         }
 
         /// <summary>
-        /// 레지스트리 서브키에서 프로그램 정보 추출
+        /// 최적화된 레지스트리 키 처리 (병렬 처리용)
         /// </summary>
+        [SupportedOSPlatform("windows")]
+        private List<ProgramInfo> ProcessRegistryKeyOptimized(RegistryKey baseKey, string keyPath)
+        {
+            var programs = new List<ProgramInfo>();
+            var localProcessed = new HashSet<string>();
+
+            try
+            {
+                using (var key = baseKey.OpenSubKey(keyPath))
+                {
+                    if (key == null) return programs;
+
+                    var subkeyNames = key.GetSubKeyNames();
+
+                    // 병렬 처리로 서브키들을 동시에 처리
+                    var programTasks = subkeyNames.AsParallel()
+                        .WithDegreeOfParallelism(Environment.ProcessorCount)
+                        .Select(subkeyName =>
+                        {
+                            try
+                            {
+                                using (var subkey = key.OpenSubKey(subkeyName))
+                                {
+                                    if (subkey == null) return null;
+                                    return ExtractProgramInfoOptimized(subkey);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                LogService.LogError($"서브키 {subkeyName} 처리 중 오류: {ex.Message}");
+                                return null;
+                            }
+                        })
+                        .Where(program => program != null && !localProcessed.Contains(program.Name))
+                        .ToList();
+
+                    foreach (var program in programTasks)
+                    {
+                        if (program != null && localProcessed.Add(program.Name))
+                        {
+                            programs.Add(program);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"최적화된 레지스트리 키 처리 중 오류: {ex.Message}");
+            }
+
+            return programs;
+        }        /// <summary>
+                 /// 레지스트리 서브키에서 프로그램 정보 추출
+                 /// </summary>
         [SupportedOSPlatform("windows")]
         private ProgramInfo? ExtractProgramInfo(RegistryKey subkey)
         {
@@ -406,6 +499,55 @@ namespace LogCheck.ViewModels
         }
 
         /// <summary>
+        /// 최적화된 프로그램 정보 추출 (성능 개선된 버전)
+        /// </summary>
+        [SupportedOSPlatform("windows")]
+        private ProgramInfo? ExtractProgramInfoOptimized(RegistryKey subkey)
+        {
+            try
+            {
+                string? displayName = subkey.GetValue("DisplayName")?.ToString();
+
+                if (string.IsNullOrEmpty(displayName) || IsSystemUpdate(displayName))
+                {
+                    return null;
+                }
+
+                var programInfo = new ProgramInfo
+                {
+                    Name = displayName,
+                    Version = subkey.GetValue("DisplayVersion")?.ToString() ?? "",
+                    Publisher = subkey.GetValue("Publisher")?.ToString() ?? "",
+                    InstallPath = subkey.GetValue("InstallLocation")?.ToString() ?? ""
+                };
+
+                var installDateValue = subkey.GetValue("InstallDate")?.ToString();
+                if (!string.IsNullOrEmpty(installDateValue))
+                {
+                    programInfo.InstallDate = ParseInstallDateOptimized(installDateValue);
+                }
+
+                CalculateSecurityLevelOptimized(programInfo);
+                return programInfo;
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"프로그램 정보 추출 중 오류: {ex.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 시스템 업데이트 여부 빠른 확인
+        /// </summary>
+        private static bool IsSystemUpdate(string displayName)
+        {
+            return displayName.Contains("KB", StringComparison.OrdinalIgnoreCase) ||
+                   displayName.Contains("Update", StringComparison.OrdinalIgnoreCase) ||
+                   displayName.Contains("Hotfix", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
         /// 설치 날짜 파싱
         /// </summary>
         private DateTime? ParseInstallDate(string? installDateString)
@@ -440,6 +582,83 @@ namespace LogCheck.ViewModels
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// 최적화된 설치 날짜 파싱
+        /// </summary>
+        private DateTime? ParseInstallDateOptimized(string installDateString)
+        {
+            if (installDateString.Length == 8 &&
+                DateTime.TryParseExact(installDateString, "yyyyMMdd",
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result))
+            {
+                return result;
+            }
+
+            if (long.TryParse(installDateString, out long unixTime))
+            {
+                try { return DateTimeOffset.FromUnixTimeSeconds(unixTime).DateTime; }
+                catch { /* 무시 */ }
+            }
+
+            return DateTime.TryParse(installDateString, out DateTime generalResult) ? generalResult : null;
+        }
+
+        /// <summary>
+        /// 최적화된 보안 레벨 계산
+        /// </summary>
+        private void CalculateSecurityLevelOptimized(ProgramInfo programInfo)
+        {
+            try
+            {
+                int securityScore = 0;
+                var securityDetails = new List<string>();
+
+                if (!string.IsNullOrEmpty(programInfo.InstallPath))
+                {
+                    int pathScore = CheckInstallPathOptimized(programInfo.InstallPath);
+                    securityScore += pathScore;
+                    if (pathScore < 0) securityDetails.Add("비정상적인 설치 경로");
+                }
+
+                if (string.IsNullOrEmpty(programInfo.Publisher))
+                {
+                    securityScore -= 5;
+                    securityDetails.Add("발행자 정보 없음");
+                }
+                else if (IsTrustedPublisherOptimized(programInfo.Publisher))
+                {
+                    securityScore += 10;
+                    securityDetails.Add("신뢰할 수 있는 발행자");
+                }
+
+                programInfo.SecurityLevel = securityScore >= 10 ? "높음" : securityScore >= 0 ? "보통" : "낮음";
+                programInfo.SecurityDetails = string.Join(", ", securityDetails);
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"보안 레벨 계산 중 오류: {ex.Message}");
+                programInfo.SecurityLevel = "알 수 없음";
+            }
+        }
+
+        private static int CheckInstallPathOptimized(string installLocation)
+        {
+            var lower = installLocation.ToLowerInvariant();
+            if (lower.Contains("program files")) return 10;
+            if (lower.Contains("temp") || lower.Contains("appdata")) return -10;
+            return 0;
+        }
+
+        private static readonly HashSet<string> TrustedPublishers = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "Microsoft", "Google", "Apple", "Adobe", "Oracle", "Mozilla", "Valve", "NVIDIA", "Intel", "AMD"
+        };
+
+        private static bool IsTrustedPublisherOptimized(string publisher)
+        {
+            return TrustedPublishers.Any(trusted => publisher.Contains(trusted, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -548,6 +767,38 @@ namespace LogCheck.ViewModels
             catch
             {
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// 성능 벤치마크 실행 (개발 및 디버깅용)
+        /// </summary>
+        public async Task<TimeSpan> BenchmarkProgramLoadingAsync()
+        {
+            try
+            {
+                LogService.AddLogMessage("🏁 성능 벤치마크 시작");
+                var stopwatch = Stopwatch.StartNew();
+
+                // 기존 데이터 정리
+                _programList.Clear();
+                _processedPrograms.Clear();
+
+                // 최적화된 수집 실행
+                await Task.Run(() => CollectInstalledPrograms());
+
+                stopwatch.Stop();
+                var elapsedTime = stopwatch.Elapsed;
+
+                LogService.AddLogMessage($"🏁 벤치마크 완료: {elapsedTime.TotalSeconds:F2}초, {_programList.Count}개 프로그램 처리");
+                LogService.AddLogMessage($"📊 평균 처리 속도: {(_programList.Count / elapsedTime.TotalSeconds):F1}개/초");
+
+                return elapsedTime;
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"벤치마크 실행 중 오류: {ex.Message}");
+                return TimeSpan.Zero;
             }
         }
         #endregion
