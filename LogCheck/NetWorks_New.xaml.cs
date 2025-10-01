@@ -190,8 +190,6 @@ namespace LogCheck
         //         @"..\..\..\monitoring_log_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt"
         //         );
 
-
-        private readonly NotifyIcon _notifyIcon;
         private bool _hubSubscribed = false;
 
         // 간단한 그룹 확장 상태 관리
@@ -275,43 +273,7 @@ namespace LogCheck
             };
             _updateTimer.Tick += UpdateTimer_Tick;
 
-            // _notifyIcon 초기화
-            _notifyIcon = new NotifyIcon
-            {
-                Icon = System.Drawing.SystemIcons.Information,
-                Visible = true
-            };
-
-            // 트레이 메뉴 추가
-            var contextMenu = new System.Windows.Forms.ContextMenuStrip();
-            // 로그 파일 생성 비활성화로 인한 로그 열기 메뉴 주석 처리
-            /*
-            contextMenu.Items.Add("로그 열기", null, (s, e) =>
-            {
-                try
-                {
-                    if (File.Exists(_logFilePath))
-                    {
-                        System.Diagnostics.Process.Start("notepad.exe", _logFilePath);
-                    }
-                    else
-                    {
-                        System.Windows.MessageBox.Show("아직 로그 파일이 없습니다.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"로그 열기 오류: {ex.Message}");
-                }
-            });
-            */
-            contextMenu.Items.Add("종료", null, (s, e) =>
-            {
-                _notifyIcon.Visible = false;
-                _notifyIcon.Dispose();
-                System.Windows.Application.Current.Shutdown();
-            });
-            _notifyIcon.ContextMenuStrip = contextMenu;
+            // 트레이 아이콘은 App.xaml.cs에서 관리됩니다
 
             // 로그 메시지 추가
             AddLogMessage("네트워크 보안 모니터링 시스템 초기화 완료");
@@ -320,12 +282,10 @@ namespace LogCheck
             ProcessTreeNode.ClearExpandedStates(); // 이전 세션 상태 초기화 (선택적)
             System.Diagnostics.Debug.WriteLine("[NetWorks_New] ProcessTreeNode 상태 관리 시스템 초기화됨");
 
-            // 앱 종료 시 트레이 아이콘/타이머 정리 (종료 보장)
+            // 앱 종료 시 타이머 정리 (종료 보장)
             System.Windows.Application.Current.Exit += (_, __) =>
             {
                 try { _updateTimer?.Stop(); } catch { }
-                try { _notifyIcon.Visible = false; } catch { }
-                try { _notifyIcon.Dispose(); } catch { }
             };
 
             // 허브 상태에 따라 초기 UI 업데이트
@@ -353,8 +313,6 @@ namespace LogCheck
             this.Unloaded += (_, __) =>
             {
                 try { _updateTimer?.Stop(); } catch { }
-                try { _notifyIcon.Visible = false; } catch { }
-                try { _notifyIcon.Dispose(); } catch { }
                 UnsubscribeHub();
             };
         }
@@ -1091,22 +1049,20 @@ namespace LogCheck
             }
         }
 
-        // 트레이 알림 (BalloonTip) 표시 함수
+        // 트레이 알림 (BalloonTip) 표시 함수 - App.xaml.cs의 전역 트레이 아이콘을 사용
         private void ShowTrayNotification(string message)
         {
-            // NotifyIcon 객체 생성
-            using (var notifyIcon = new NotifyIcon())
+            try
             {
-                notifyIcon.Icon = System.Drawing.SystemIcons.Information;  // 아이콘 설정 (정보 아이콘)
-                notifyIcon.Visible = true;  // 아이콘 표시
-
-                // 트레이 알림 표시
-                notifyIcon.BalloonTipTitle = "네트워크 보안 알림";
-                notifyIcon.BalloonTipText = message;
-                notifyIcon.ShowBalloonTip(3000);  // 3초 동안 표시
-
-                // 잠시 대기 후 트레이 아이콘 제거
-                System.Threading.Tasks.Task.Delay(3000).ContinueWith(t => notifyIcon.Dispose());
+                // App.xaml.cs의 App 클래스에서 트레이 알림 표시
+                if (System.Windows.Application.Current is App app)
+                {
+                    app.ShowBalloonTip("네트워크 보안 알림", message, ToolTipIcon.Info);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"트레이 알림 표시 실패: {ex.Message}");
             }
         }
 
@@ -1780,6 +1736,40 @@ namespace LogCheck
         {
             // 페이지에서 이동할 때 호출
             Shutdown();
+        }
+
+        /// <summary>
+        /// WindowsSentinel 아이콘을 로드합니다
+        /// </summary>
+        private System.Drawing.Icon TryLoadWindowsSentinelIcon()
+        {
+            try
+            {
+                // 여러 경로에서 아이콘을 찾아서 로드
+                var possiblePaths = new[]
+                {
+                    System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "WindowsSentinel.ico"),
+                    System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "IconTexture", "WindowsSentinel.ico"),
+                    System.IO.Path.Combine(Environment.CurrentDirectory, "WindowsSentinel.ico"),
+                    System.IO.Path.Combine(Environment.CurrentDirectory, "IconTexture", "WindowsSentinel.ico")
+                };
+
+                foreach (var path in possiblePaths)
+                {
+                    if (System.IO.File.Exists(path))
+                    {
+                        System.Diagnostics.Debug.WriteLine($"NetWorks_New 아이콘 로드 성공: {path}");
+                        return new System.Drawing.Icon(path);
+                    }
+                }
+
+                System.Diagnostics.Debug.WriteLine("NetWorks_New: WindowsSentinel 아이콘을 찾을 수 없음. 기본 아이콘 사용.");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"NetWorks_New 아이콘 로드 오류: {ex.Message}");
+            }
+            return System.Drawing.SystemIcons.Application;
         }
         private void ShowSecurityAlertToast(SecurityAlert alert)
         {
@@ -2637,277 +2627,9 @@ namespace LogCheck
             }
         }
 
-        /// <summary>
-        /// AutoBlock 테스트 버튼 클릭
-        /// </summary>
-        private async void TestAutoBlock_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                AddLogMessage("🧪 AutoBlock 시스템 테스트를 시작합니다...");
-
-                var testResults = new List<string>();
-
-                // 1. System Idle Process 위장 테스트
-                AddLogMessage("1️⃣ System Idle Process 위장 탐지 테스트 중...");
-                var forgeryTests = AutoBlockTestHelper.GetSystemIdleProcessForgeryTests();
-                foreach (var testCase in forgeryTests)
-                {
-                    var result = await _autoBlockService.AnalyzeConnectionAsync(testCase);
-                    var message = $"   {testCase.ProcessName} (PID:{testCase.ProcessId}) → {result.Level} ({result.ConfidenceScore:P1})";
-                    testResults.Add(message);
-                    AddLogMessage(message);
-                }
-
-                // 2. 의심스러운 포트 테스트
-                AddLogMessage("2️⃣ 의심스러운 포트 탐지 테스트 중...");
-                var portTests = AutoBlockTestHelper.GetSuspiciousPortTests();
-                foreach (var testCase in portTests)
-                {
-                    var result = await _autoBlockService.AnalyzeConnectionAsync(testCase);
-                    var message = $"   {testCase.ProcessName}:{testCase.RemotePort} → {result.Level} ({result.ConfidenceScore:P1})";
-                    testResults.Add(message);
-                    AddLogMessage(message);
-                }
-
-                // 3. 정상 연결 테스트 (허용되어야 함)
-                AddLogMessage("3️⃣ 정상 연결 테스트 중...");
-                var legitimateTests = AutoBlockTestHelper.GetLegitimateTests();
-                foreach (var testCase in legitimateTests)
-                {
-                    var result = await _autoBlockService.AnalyzeConnectionAsync(testCase);
-                    var message = $"   {testCase.ProcessName} → {result.Level} ({result.ConfidenceScore:P1})";
-                    testResults.Add(message);
-                    AddLogMessage(message);
-                }
-
-                // 4. 정상적인 System Idle Process 테스트
-                AddLogMessage("4️⃣ 정상적인 System Idle Process 테스트 중...");
-                var legitimateIdleTests = AutoBlockTestHelper.GetLegitimateSystemIdleProcessTests();
-                foreach (var testCase in legitimateIdleTests)
-                {
-                    var result = await _autoBlockService.AnalyzeConnectionAsync(testCase);
-                    var message = $"   정상 System Idle Process (PID:{testCase.ProcessId}) → {result.Level} ({result.ConfidenceScore:P1})";
-                    testResults.Add(message);
-                    AddLogMessage(message);
-                }
-
-                // 데이터 새로고침
-                await LoadAutoBlockDataAsync();
-
-                AddLogMessage($"✅ AutoBlock 테스트 완료! 총 {testResults.Count}건 테스트됨");
-
-                // 테스트 결과 요약 다이얼로그
-                var summary = string.Join("\n", testResults);
-                MessageBox.Show(
-                    $"AutoBlock 테스트가 완료되었습니다!\n\n테스트 결과:\n{summary.Substring(0, Math.Min(500, summary.Length))}...\n\n자세한 결과는 로그를 확인하세요.",
-                    "AutoBlock 테스트 완료",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                AddLogMessage($"❌ AutoBlock 테스트 실행 오류: {ex.Message}");
-                MessageBox.Show($"테스트 실행 중 오류가 발생했습니다:\n{ex.Message}", "테스트 오류", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
         #endregion
 
-        #region AbuseIPDB AutoBlock Testing
 
-        private async void TestAutoBlockWithAbuseIP_Click(object sender, RoutedEventArgs e)
-        {
-            if (!_isMonitoring)
-            {
-                MessageBox.Show("모니터링이 시작되지 않았습니다. 먼저 모니터링을 시작하세요.",
-                    "모니터링 필요", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            var result = MessageBox.Show(
-                "AbuseIPDB의 실제 악성 IP에 연결을 시도하여 AutoBlock 기능을 테스트합니다.\n" +
-                "이 작업은 실제 보안 위협 IP와 통신을 시도하므로 주의가 필요합니다.\n\n" +
-                "계속하시겠습니까?",
-                "AbuseIPDB AutoBlock 테스트",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-
-            if (result != MessageBoxResult.Yes)
-                return;
-
-            // UI 버튼 참조
-            var button = sender as System.Windows.Controls.Button;
-            AbuseIPTestService? abuseService = null;
-
-            try
-            {
-                AddLogMessage("🔍 AbuseIPDB AutoBlock 테스트 시작...");
-
-                // UI 버튼 비활성화
-                if (button != null)
-                {
-                    button.IsEnabled = false;
-                    button.Content = "테스트 진행중...";
-                }
-
-                // AbuseIPDB 서비스 초기화 (API 키는 선택사항, 없어도 알려진 악성 IP 사용)
-                abuseService = new AbuseIPTestService("");
-
-                AddLogMessage("📡 AbuseIPDB에서 의심스러운 IP 목록 조회 중...");
-                var suspiciousIPs = await abuseService.GetSuspiciousIPsAsync(3);
-
-                // ⭐ 중요: BlockRuleEngine에 AbuseIPDB IP들을 악성 목록에 추가
-                BlockRuleEngine.AddMaliciousIPs(suspiciousIPs);
-                AddLogMessage($"🛡️ {suspiciousIPs.Count}개 악성 IP가 차단 목록에 추가되었습니다."); if (!suspiciousIPs.Any())
-                {
-                    AddLogMessage("⚠️ 의심스러운 IP를 가져올 수 없습니다. 알려진 악성 IP를 사용합니다.");
-                }
-
-                AddLogMessage($"🎯 테스트 대상 IP: {string.Join(", ", suspiciousIPs)}");
-
-                var testResults = new List<string>();
-                var totalTests = suspiciousIPs.Count * 3; // IP당 3개 포트 테스트
-                var completedTests = 0;
-
-                // 각 IP에 대해 테스트 수행
-                foreach (var ip in suspiciousIPs)
-                {
-                    AddLogMessage($"🔄 {ip} 연결 테스트 시작");
-
-                    // IP 정보 조회
-                    var ipInfo = await abuseService.CheckIPAsync(ip);
-                    AddLogMessage($"📊 {ip} - 위험도: {ipInfo.AbuseConfidencePercentage}%, 국가: {ipInfo.CountryCode}");
-
-                    // 통계 기록 전 상태 저장
-                    var statsBefore = await _autoBlockStats.GetCurrentStatisticsAsync();
-
-                    // 다양한 포트로 연결 시도
-                    var testPorts = new[] { 80, 443, 22 };
-                    foreach (var port in testPorts)
-                    {
-                        completedTests++;
-                        if (button != null)
-                            button.Content = $"테스트 진행중... ({completedTests}/{totalTests})";
-
-                        var connectionResult = await TestSingleIPConnection(ip, port);
-                        testResults.Add($"{ip}:{port} - {connectionResult}");
-
-                        // 각 연결 시도 후 잠시 대기 (패킷 캡처 및 분석 시간 확보)
-                        await Task.Delay(2000);
-                    }
-
-                    // 통계 변화 확인
-                    await Task.Delay(1000); // 통계 업데이트 대기
-                    var statsAfter = await _autoBlockStats.GetCurrentStatisticsAsync();
-
-                    if (statsAfter.TotalBlocked > statsBefore.TotalBlocked)
-                    {
-                        var blockedCount = statsAfter.TotalBlocked - statsBefore.TotalBlocked;
-                        AddLogMessage($"✅ {ip} 테스트로 {blockedCount}개 연결이 차단되었습니다!");
-                        testResults.Add($"🛡️ {ip} → {blockedCount}개 연결 차단됨");
-                    }
-                    else
-                    {
-                        AddLogMessage($"⚠️ {ip} 테스트에서 차단된 연결이 감지되지 않았습니다.");
-                        testResults.Add($"⚪ {ip} → 차단 감지 안됨");
-                    }
-
-                    AddLogMessage($"✅ {ip} 테스트 완료");
-                }
-
-                // 최종 통계 업데이트
-                UpdateStatisticsDisplay();
-
-                // 테스트 결과 요약
-                var summary = string.Join("\n", testResults);
-                AddLogMessage("🎉 AbuseIPDB AutoBlock 테스트 완료!");
-                AddLogMessage($"📈 테스트 결과:\n{summary}");
-
-                MessageBox.Show(
-                    $"AbuseIPDB AutoBlock 테스트가 완료되었습니다!\n\n" +
-                    $"테스트 결과:\n{summary}\n\n" +
-                    $"자세한 결과는 로그를 확인하세요.",
-                    "테스트 완료",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                AddLogMessage($"❌ AbuseIPDB 테스트 실행 오류: {ex.Message}");
-                MessageBox.Show($"테스트 실행 중 오류가 발생했습니다:\n{ex.Message}",
-                    "테스트 오류", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                // UI 버튼 복원
-                if (button != null)
-                {
-                    button.IsEnabled = true;
-                    button.Content = "AutoBlock 테스트";
-                }
-
-                // AbuseIPDB 서비스 정리
-                abuseService?.Dispose();
-            }
-        }
-
-        private async Task<string> TestSingleIPConnection(string ip, int port)
-        {
-            try
-            {
-                AddLogMessage($"🔌 연결 시도: {ip}:{port}");
-
-                using var client = new System.Net.Sockets.TcpClient();
-                var connectTask = client.ConnectAsync(ip, port);
-
-                // 10초 타임아웃으로 충분한 패킷 캡처 시간 확보
-                if (await Task.WhenAny(connectTask, Task.Delay(10000)) == connectTask)
-                {
-                    if (client.Connected)
-                    {
-                        AddLogMessage($"✅ 연결 성공: {ip}:{port}");
-
-                        // 실제 데이터 송신으로 더 많은 트래픽 생성
-                        try
-                        {
-                            var stream = client.GetStream();
-                            var data = System.Text.Encoding.UTF8.GetBytes("GET / HTTP/1.1\r\nHost: test\r\nUser-Agent: LogCheck-AutoBlockTest/1.0\r\n\r\n");
-                            await stream.WriteAsync(data, 0, data.Length);
-
-                            // 응답 읽기 시도
-                            var buffer = new byte[1024];
-                            stream.ReadTimeout = 3000;
-                            var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-
-                            if (bytesRead > 0)
-                            {
-                                AddLogMessage($"📦 응답 수신: {bytesRead} bytes");
-                            }
-
-                            // 연결 유지로 더 많은 패킷 생성
-                            await Task.Delay(3000);
-                        }
-                        catch (Exception dataEx)
-                        {
-                            AddLogMessage($"⚠️ 데이터 송수신 오류: {dataEx.Message}");
-                        }
-
-                        return "연결 성공";
-                    }
-                }
-
-                AddLogMessage($"⏱️ 연결 타임아웃: {ip}:{port}");
-                return "타임아웃";
-            }
-            catch (Exception ex)
-            {
-                AddLogMessage($"❌ 연결 실패: {ip}:{port} - {ex.Message}");
-                return $"실패: {ex.Message}";
-            }
-        }
-
-        #endregion
 
         #region Blocked Connections Management
 

@@ -1712,7 +1712,6 @@ C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\LightTheme.bam
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\Vaccine.baml
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\Logs.g.cs
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\MainWindows.g.cs
-C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\NetWorks.g.cs
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\NetWorks_New.g.cs
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\ProgramsList.g.cs
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\Recoverys.g.cs
@@ -1726,7 +1725,6 @@ C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\LogCheck_Marku
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\App.baml
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\Logs.baml
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\MainWindows.baml
-C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\NetWorks.baml
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\NetWorks_New.baml
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\ProgramsList.baml
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\Recoverys.baml

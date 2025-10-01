@@ -7,10 +7,6 @@
 - **핵심 목표:** 실시간 위협 탐지 → 자동 차단 → 지능형 학습을 통한 포괄적 네트워크 보안 시스템 구축
 - **기술 기반:** 기존 완성된 UI 인프라와 ProcessNetworkMapper를 활용한 점진적 확장
 
----
-
----
-
 ## 2. Phase 1: 자동 차단 시스템 기본 인프라 구축 (1-2주)
 
 ### 2.1. 목표 (Objective)
@@ -61,7 +57,6 @@
     - [x] ProcessNetworkInfo 모델 확장 (위험도, 차단 상태 등)
     - [x] Settings에 자동 차단 설정 추가
     - [x] 기본 테스트 케이스 작성
-    - [x] AutoBlockTestHelper 종합 테스트 시스템 구축
 
 ---
 
@@ -129,7 +124,7 @@
 
 ### 4.2. 핵심 기술 및 구성 요소 (Key Technologies/Components)
 
-- **GeoIPService**: MaxMind GeoIP2 또는 무료 GeoIP API 연동
+- **GeoIPService**: MaxMind GeoIP2 또는 무료 GeoIP API 연동 (IP 주소에 대한 국가 및 지역을 문자열 형식으로 가져옴)
 - **DigitalSignatureValidator**: Authenticode 서명 검증
 - **PatternLearningEngine**: 사용자 승인 패턴 학습 및 자동 화이트리스트
 - **PerformanceMonitor**: 시스템 성능 영향 최소화
@@ -246,7 +241,6 @@
 
 **📊 테스트 시스템 완성:**
 
-- **AutoBlockTestHelper**: 종합 테스트 도구
 - **성능 테스트**: 대량 연결 분석 (1000+ connections/sec)
 - **시나리오 테스트**: 위조, 악성, 정상 연결 구분 검증
 - **실시간 검증**: UI에서 즉시 테스트 결과 확인
@@ -285,7 +279,6 @@
   - [x] System Idle Process 위장 탐지 구현
   - [x] 기본 방화벽 제어 모듈 구현
   - [x] MonitoringHub 기본 통합
-  - [x] AutoBlockTestHelper 테스트 시스템 구축
 
 ### Week 3-4: Phase 2 시스템 통합
 
