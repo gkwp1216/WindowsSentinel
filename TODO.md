@@ -120,10 +120,6 @@ protected override async void OnStartup(StartupEventArgs e)
 
 ### 아키텍처 개선
 
-- UpdateProcessNetworkData 메서드 내 Dispatcher.InvokeAsync 최적화
-  - 비동기 작업(Task.Run)이 완료된 후 결과만 UI 스레드로 보내는 패턴으로 개선
-  - Task.Run 안에서 데이터 처리와 보안 분석을 모두 수행하고, 최종 UI 업데이트만 Dispatcher.InvokeAsync로 호출
-
 ### MVVM 패턴 적용
 
 - 통계 데이터를 별도의 ViewModel 클래스로 분리

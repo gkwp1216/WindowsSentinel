@@ -1195,20 +1195,50 @@ namespace LogCheck
             data ??= new List<ProcessNetworkInfo>();
             System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UpdateProcessNetworkDataAsync 호출됨, 데이터 개수: {data.Count}");
 
-            // System Idle Process 완전 제외 (실수로 종료되는 것 방지)
-            data = data.Where(p => !IsSystemIdleProcess(p)).ToList();
-            System.Diagnostics.Debug.WriteLine($"[NetWorks_New] System Idle Process 제외 후 데이터 개수: {data.Count}");
-
-            // IsSystem 자동 판단
-            foreach (var item in data)
+            // Task.Run에서 모든 데이터 처리와 보안 분석 수행
+            var processedData = await Task.Run(async () =>
             {
-                item.IsSystem = IsSystemProcess(item.ProcessName, item.ProcessId);
-            }
+                try
+                {
+                    // 1. System Idle Process 완전 제외 (실수로 종료되는 것 방지)
+                    var filteredData = data.Where(p => !IsSystemIdleProcess(p)).ToList();
+                    System.Diagnostics.Debug.WriteLine($"[NetWorks_New] System Idle Process 제외 후 데이터 개수: {filteredData.Count}");
 
-            var general = data.Where(p => !p.IsSystem).ToList();
-            var system = data.Where(p => p.IsSystem).ToList(); // System Idle Process는 이미 data에서 제외됨
+                    // 2. IsSystem 자동 판단
+                    foreach (var item in filteredData)
+                    {
+                        item.IsSystem = IsSystemProcess(item.ProcessName, item.ProcessId);
+                    }
 
-            System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 일반 프로세스: {general.Count}개, 시스템 프로세스: {system.Count}개");
+                    // 3. 데이터 분류
+                    var general = filteredData.Where(p => !p.IsSystem).ToList();
+                    var system = filteredData.Where(p => p.IsSystem).ToList();
+
+                    System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 일반 프로세스: {general.Count}개, 시스템 프로세스: {system.Count}개");
+
+                    // 4. 보안 분석 수행
+                    var alerts = await _securityAnalyzer.AnalyzeConnectionsAsync(filteredData);
+
+                    return new
+                    {
+                        FilteredData = filteredData,
+                        General = general,
+                        System = system,
+                        SecurityAlerts = alerts
+                    };
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"백그라운드 데이터 처리 중 오류: {ex.Message}");
+                    return new
+                    {
+                        FilteredData = new List<ProcessNetworkInfo>(),
+                        General = new List<ProcessNetworkInfo>(),
+                        System = new List<ProcessNetworkInfo>(),
+                        SecurityAlerts = new List<SecurityAlert>()
+                    };
+                }
+            });
 
             try
             {
@@ -1220,6 +1250,7 @@ namespace LogCheck
                 if (Dispatcher.HasShutdownStarted)
                     return;
 
+                // 최종 UI 업데이트만 Dispatcher에서 수행
                 await Dispatcher.InvokeAsync(() =>
                 {
                     try
@@ -1227,16 +1258,21 @@ namespace LogCheck
                         System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 시작 - 기존 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
 
                         // 스마트 업데이트: 컬렉션을 완전히 지우지 않고 업데이트
-                        UpdateCollectionSmart(_generalProcessData, general);
-                        UpdateCollectionSmart(_systemProcessData, system);
+                        UpdateCollectionSmart(_generalProcessData, processedData.General);
+                        UpdateCollectionSmart(_systemProcessData, processedData.System);
 
                         // PID별 그룹화된 데이터 업데이트 (기존)
-                        UpdateProcessGroups(_generalProcessGroups, general);
-                        UpdateProcessGroups(_systemProcessGroups, system);
+                        UpdateProcessGroups(_generalProcessGroups, processedData.General);
+                        UpdateProcessGroups(_systemProcessGroups, processedData.System);
 
                         // 작업 관리자 방식의 TreeView 업데이트 (새로운 방식)
-                        UpdateProcessTreeSmart(_processTreeNodes, general);
-                        UpdateProcessTreeSmart(_systemProcessTreeNodes, system);
+                        UpdateProcessTreeSmart(_processTreeNodes, processedData.General);
+                        UpdateProcessTreeSmart(_systemProcessTreeNodes, processedData.System);
+
+                        // 통계, 차트, 보안 알림 업데이트
+                        UpdateStatistics(processedData.FilteredData);
+                        UpdateChart(processedData.FilteredData);
+                        UpdateSecurityAlerts(processedData.SecurityAlerts);
 
                         System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 완료 - 새로운 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
                         System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 그룹 업데이트 완료 - 일반 그룹: {_generalProcessGroups.Count}개, 시스템 그룹: {_systemProcessGroups.Count}개");
@@ -1266,45 +1302,6 @@ namespace LogCheck
                 System.Diagnostics.Debug.WriteLine($"UpdateProcessNetworkDataAsync Dispatcher 호출 중 예외: {ex.Message}");
                 return;
             }
-
-            UpdateStatistics(data);
-            UpdateChart(data);
-            _ = Task.Run(async () =>
-            {
-                try
-                {
-                    var alerts = await _securityAnalyzer.AnalyzeConnectionsAsync(data);
-
-                    // 애플리케이션이 종료 중인지 확인
-                    if (System.Windows.Application.Current?.Dispatcher?.HasShutdownStarted == true)
-                        return;
-
-                    // UI가 아직 유효한지 확인
-                    if (Dispatcher.HasShutdownStarted)
-                        return;
-
-                    await Dispatcher.InvokeAsync(() =>
-                    {
-                        try
-                        {
-                            UpdateSecurityAlerts(alerts);
-                        }
-                        catch (Exception ex)
-                        {
-                            System.Diagnostics.Debug.WriteLine($"보안 알림 업데이트 중 오류: {ex.Message}");
-                        }
-                    });
-                }
-                catch (TaskCanceledException)
-                {
-                    // 종료 시 발생하는 TaskCanceledException은 무시
-                    System.Diagnostics.Debug.WriteLine("보안 분석 Task: TaskCanceledException 발생 (정상 종료 과정)");
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"보안 분석 Task 예외: {ex.Message}");
-                }
-            });
         }
 
         /// <summary>
