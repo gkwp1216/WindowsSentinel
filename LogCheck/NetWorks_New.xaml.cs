@@ -60,6 +60,10 @@ namespace LogCheck
         private readonly AutoBlockStatisticsService _autoBlockStats;
         private readonly ObservableCollection<AutoBlockedConnection> _blockedConnections;
         private readonly ObservableCollection<AutoWhitelistEntry> _whitelistEntries;
+
+        // 영구 방화벽 차단 시스템
+        private PersistentFirewallManager? _persistentFirewallManager;
+        private readonly ObservableCollection<FirewallRuleInfo> _firewallRules;
         private bool _isInitialized = false;
         private int _totalBlockedCount = 0;
         private int _level1BlockCount = 0;
@@ -163,6 +167,8 @@ namespace LogCheck
             set { _uniqueIPs = value; OnPropertyChanged(); }
         }
 
+        public ObservableCollection<FirewallRuleInfo> FirewallRules => _firewallRules;
+
         public ObservableCollection<AutoBlockedConnection> BlockedConnections => _blockedConnections;
         public ObservableCollection<AutoWhitelistEntry> WhitelistEntries => _whitelistEntries;
 
@@ -214,6 +220,7 @@ namespace LogCheck
             // AutoBlock 컬렉션 초기화
             _blockedConnections = new ObservableCollection<AutoBlockedConnection>();
             _whitelistEntries = new ObservableCollection<AutoWhitelistEntry>();
+            _firewallRules = new ObservableCollection<FirewallRuleInfo>();
 
             // 서비스 초기화
             // 전역 허브의 인스턴스를 사용하여 중복 실행 방지
@@ -308,6 +315,12 @@ namespace LogCheck
             _ = Task.Run(async () =>
             {
                 await InitializeAutoBlockStatisticsAsync();
+            });
+
+            // 방화벽 관리 초기화 (비동기)
+            _ = Task.Run(async () =>
+            {
+                await InitializeFirewallManagementAsync();
             });
 
             this.Unloaded += (_, __) =>
@@ -961,10 +974,23 @@ namespace LogCheck
                 var button = sender as Controls.Button;
                 if (button?.Tag is ProcessNetworkInfo connection)
                 {
+                    // 영구 차단 옵션 선택 다이얼로그
+                    var blockOptions = ShowPermanentBlockDialog(connection);
+                    if (blockOptions == null) return; // 사용자가 취소함
+
+                    if (blockOptions.UsePermanentBlock)
+                    {
+                        // 영구 방화벽 차단 적용
+                        await ApplyPermanentBlockAsync(connection, blockOptions);
+                        return; // 영구 차단 완료 후 메서드 종료
+                    }
+
+                    // 기존 임시 차단 로직 진행
                     var result = MessageBox.Show(
-                        $"프로세스 '{connection.ProcessName}' (PID: {connection.ProcessId})의 네트워크 연결을 차단하시겠습니까?\n\n" +
-                        $"연결 정보: {connection.RemoteAddress}:{connection.RemotePort} ({connection.Protocol})",
-                        "연결 차단 확인",
+                        $"프로세스 '{connection.ProcessName}' (PID: {connection.ProcessId})의 네트워크 연결을 임시 차단하시겠습니까?\n\n" +
+                        $"연결 정보: {connection.RemoteAddress}:{connection.RemotePort} ({connection.Protocol})\n\n" +
+                        "참고: 임시 차단은 프로그램 재시작 시 해제됩니다.",
+                        "임시 연결 차단 확인",
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Question);
 
@@ -3076,6 +3102,8 @@ namespace LogCheck
 
         #endregion
 
+
+
         #region INotifyPropertyChanged Implementation
 
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -3085,5 +3113,566 @@ namespace LogCheck
 
         #endregion
 
+        #region 영구 방화벽 차단 기능
+
+        /// <summary>
+        /// 영구 차단 옵션 선택 다이얼로그 표시
+        /// </summary>
+        private PermanentBlockOptions? ShowPermanentBlockDialog(ProcessNetworkInfo networkInfo)
+        {
+            try
+            {
+                var dialog = new Window
+                {
+                    Title = "네트워크 차단 방식 선택",
+                    Width = 500,
+                    Height = 400,
+                    ResizeMode = ResizeMode.NoResize,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                    Owner = Window.GetWindow(this)
+                };
+
+                var stackPanel = new StackPanel { Margin = new Thickness(20) };
+
+                // 제목
+                stackPanel.Children.Add(new TextBlock
+                {
+                    Text = "차단 방식을 선택하세요:",
+                    FontSize = 16,
+                    FontWeight = FontWeights.SemiBold,
+                    Margin = new Thickness(0, 0, 0, 15)
+                });
+
+                // 프로세스 정보
+                var infoPanelBorder = new Border
+                {
+                    Background = new SolidColorBrush(MediaColor.FromRgb(240, 240, 240)),
+                    Margin = new Thickness(0, 0, 0, 20),
+                    Padding = new Thickness(10)
+                };
+                var infoPanel = new StackPanel();
+                infoPanel.Children.Add(new TextBlock
+                {
+                    Text = $"프로세스: {networkInfo.ProcessName} (PID: {networkInfo.ProcessId})",
+                    FontWeight = FontWeights.SemiBold,
+                    Margin = new Thickness(0, 0, 0, 5)
+                });
+                infoPanel.Children.Add(new TextBlock
+                {
+                    Text = $"연결: {networkInfo.RemoteAddress}:{networkInfo.RemotePort} ({networkInfo.Protocol})",
+                    FontSize = 11,
+                    Foreground = MediaBrushes.DarkGray
+                });
+                if (!string.IsNullOrEmpty(networkInfo.ProcessPath))
+                {
+                    infoPanel.Children.Add(new TextBlock
+                    {
+                        Text = $"경로: {networkInfo.ProcessPath}",
+                        FontSize = 10,
+                        Foreground = MediaBrushes.Gray,
+                        TextWrapping = TextWrapping.Wrap
+                    });
+                }
+                infoPanelBorder.Child = infoPanel;
+                stackPanel.Children.Add(infoPanelBorder);
+
+                // 차단 방식 선택
+                var tempRadio = new System.Windows.Controls.RadioButton
+                {
+                    Content = "임시 차단 (기존 방식)\n• 프로그램 재시작 시 해제됨\n• 즉시 적용",
+                    IsChecked = true,
+                    Margin = new Thickness(0, 5, 0, 10),
+                    Padding = new Thickness(5)
+                };
+
+                var permanentRadio = new System.Windows.Controls.RadioButton
+                {
+                    Content = "영구 차단 (Windows 방화벽)\n• 프로그램 재시작 후에도 유지\n• 관리자 권한 필요",
+                    Margin = new Thickness(0, 5, 0, 15),
+                    Padding = new Thickness(5)
+                };
+
+                stackPanel.Children.Add(tempRadio);
+                stackPanel.Children.Add(permanentRadio);
+
+                // 영구 차단 상세 옵션
+                var permanentOptionsPanel = new StackPanel
+                {
+                    Margin = new Thickness(20, 0, 0, 15),
+                    IsEnabled = false
+                };
+
+                var processRadio = new System.Windows.Controls.RadioButton
+                {
+                    Content = $"프로세스 경로 차단\n{networkInfo.ProcessPath}",
+                    IsChecked = true,
+                    Margin = new Thickness(0, 5, 0, 5),
+                    GroupName = "BlockType"
+                };
+
+                var ipRadio = new System.Windows.Controls.RadioButton
+                {
+                    Content = $"IP 주소 차단\n{networkInfo.RemoteAddress}",
+                    Margin = new Thickness(0, 5, 0, 5),
+                    GroupName = "BlockType"
+                };
+
+                var portRadio = new System.Windows.Controls.RadioButton
+                {
+                    Content = $"포트 차단\n{networkInfo.RemotePort} ({networkInfo.Protocol})",
+                    Margin = new Thickness(0, 5, 0, 5),
+                    GroupName = "BlockType"
+                };
+
+                permanentOptionsPanel.Children.Add(new TextBlock
+                {
+                    Text = "영구 차단 유형:",
+                    FontWeight = FontWeights.SemiBold,
+                    Margin = new Thickness(0, 0, 0, 10)
+                });
+                permanentOptionsPanel.Children.Add(processRadio);
+                permanentOptionsPanel.Children.Add(ipRadio);
+                permanentOptionsPanel.Children.Add(portRadio);
+
+                stackPanel.Children.Add(permanentOptionsPanel);
+
+                // 영구 차단 선택 시 옵션 패널 활성화
+                permanentRadio.Checked += (s, e) => permanentOptionsPanel.IsEnabled = true;
+                tempRadio.Checked += (s, e) => permanentOptionsPanel.IsEnabled = false;
+
+                // 버튼들
+                var buttonPanel = new StackPanel
+                {
+                    Orientation = System.Windows.Controls.Orientation.Horizontal,
+                    HorizontalAlignment = System.Windows.HorizontalAlignment.Right,
+                    Margin = new Thickness(0, 20, 0, 0)
+                };
+
+                var okButton = new System.Windows.Controls.Button
+                {
+                    Content = "확인",
+                    Width = 80,
+                    Height = 30,
+                    Margin = new Thickness(0, 0, 10, 0)
+                };
+
+                var cancelButton = new System.Windows.Controls.Button
+                {
+                    Content = "취소",
+                    Width = 80,
+                    Height = 30
+                };
+
+                PermanentBlockOptions? result = null;
+
+                okButton.Click += (s, e) =>
+                {
+                    result = new PermanentBlockOptions
+                    {
+                        UsePermanentBlock = permanentRadio.IsChecked == true
+                    };
+
+                    if (result.UsePermanentBlock)
+                    {
+                        if (processRadio.IsChecked == true)
+                            result.BlockType = NetworkBlockType.ProcessPath;
+                        else if (ipRadio.IsChecked == true)
+                            result.BlockType = NetworkBlockType.IPAddress;
+                        else if (portRadio.IsChecked == true)
+                            result.BlockType = NetworkBlockType.Port;
+                    }
+
+                    dialog.DialogResult = true;
+                    dialog.Close();
+                };
+
+                cancelButton.Click += (s, e) =>
+                {
+                    dialog.DialogResult = false;
+                    dialog.Close();
+                };
+
+                buttonPanel.Children.Add(okButton);
+                buttonPanel.Children.Add(cancelButton);
+                stackPanel.Children.Add(buttonPanel);
+
+                dialog.Content = stackPanel;
+
+                return dialog.ShowDialog() == true ? result : null;
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"❌ 차단 옵션 다이얼로그 오류: {ex.Message}");
+                return new PermanentBlockOptions { UsePermanentBlock = false }; // 기본값: 임시 차단
+            }
+        }
+
+        /// <summary>
+        /// 영구 방화벽 차단 적용
+        /// </summary>
+        private async Task ApplyPermanentBlockAsync(ProcessNetworkInfo networkInfo, PermanentBlockOptions options)
+        {
+            try
+            {
+                AddLogMessage($"🔒 영구 차단 시작: {networkInfo.ProcessName} ({networkInfo.RemoteAddress}:{networkInfo.RemotePort})");
+
+                // PersistentFirewallManager 초기화 (필요시)
+                if (_persistentFirewallManager == null)
+                {
+                    _persistentFirewallManager = new PersistentFirewallManager("LogCheck_NetworkBlock");
+                    var initResult = await _persistentFirewallManager.InitializeAsync();
+
+                    if (!initResult)
+                    {
+                        AddLogMessage("❌ 방화벽 관리자 초기화 실패: 관리자 권한이 필요합니다.");
+                        MessageBox.Show("방화벽 규칙을 생성하려면 관리자 권한이 필요합니다.\n프로그램을 관리자 권한으로 다시 실행해주세요.",
+                            "권한 부족", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                }
+
+                bool success = false;
+                string blockDescription = "";
+
+                switch (options.BlockType)
+                {
+                    case NetworkBlockType.ProcessPath:
+                        if (!string.IsNullOrEmpty(networkInfo.ProcessPath))
+                        {
+                            success = await _persistentFirewallManager.AddPermanentProcessBlockRuleAsync(
+                                networkInfo.ProcessPath, networkInfo.ProcessName);
+                            blockDescription = $"프로세스 경로: {networkInfo.ProcessPath}";
+                        }
+                        break;
+
+                    case NetworkBlockType.IPAddress:
+                        if (!string.IsNullOrEmpty(networkInfo.RemoteAddress) &&
+                            networkInfo.RemoteAddress != "0.0.0.0" &&
+                            networkInfo.RemoteAddress != "127.0.0.1")
+                        {
+                            success = await _persistentFirewallManager.AddPermanentIPBlockRuleAsync(
+                                networkInfo.RemoteAddress,
+                                $"LogCheck - {networkInfo.ProcessName}에서 {networkInfo.RemoteAddress}로의 연결 차단");
+                            blockDescription = $"IP 주소: {networkInfo.RemoteAddress}";
+                        }
+                        break;
+
+                    case NetworkBlockType.Port:
+                        if (networkInfo.RemotePort > 0 && networkInfo.RemotePort < 65536)
+                        {
+                            int protocol = networkInfo.Protocol.ToUpper() == "TCP" ? 6 : 17; // TCP=6, UDP=17
+                            success = await _persistentFirewallManager.AddPermanentPortBlockRuleAsync(
+                                networkInfo.RemotePort, protocol,
+                                $"LogCheck - {networkInfo.ProcessName}에서 {networkInfo.RemotePort}({networkInfo.Protocol}) 포트 차단");
+                            blockDescription = $"포트: {networkInfo.RemotePort} ({networkInfo.Protocol})";
+                        }
+                        break;
+                }
+
+                if (success)
+                {
+                    // AutoBlock 시스템과 연동하여 통계 기록
+                    var decision = new BlockDecision
+                    {
+                        Level = BlockLevel.Immediate, // 영구 차단은 최고 등급으로 기록
+                        Reason = $"사용자 영구 차단 요청 - {blockDescription}",
+                        ConfidenceScore = 1.0,
+                        TriggeredRules = new List<string> { "Manual Permanent Block" },
+                        RecommendedAction = "Windows 방화벽을 통한 영구 차단 적용됨",
+                        ThreatCategory = "User Permanent Block",
+                        AnalyzedAt = DateTime.Now
+                    };
+
+                    // 차단된 연결 정보 생성 및 통계 기록
+                    var blockedConnection = new AutoBlockedConnection
+                    {
+                        ProcessName = networkInfo.ProcessName,
+                        ProcessPath = networkInfo.ProcessPath,
+                        ProcessId = networkInfo.ProcessId,
+                        RemoteAddress = networkInfo.RemoteAddress,
+                        RemotePort = networkInfo.RemotePort,
+                        Protocol = networkInfo.Protocol,
+                        BlockLevel = decision.Level,
+                        Reason = decision.Reason,
+                        BlockedAt = DateTime.Now,
+                        ConfidenceScore = decision.ConfidenceScore,
+                        IsBlocked = true,
+                        TriggeredRules = string.Join(", ", decision.TriggeredRules)
+                    };
+
+                    // 통계 시스템에 기록
+                    _ = Task.Run(async () =>
+                    {
+                        await RecordBlockEventAsync(blockedConnection);
+                        await _autoBlockStats.AddBlockedConnectionAsync(blockedConnection);
+                    });
+
+                    // 통계 UI 업데이트
+                    UpdateStatisticsDisplay();
+
+                    // 차단된 연결 목록 새로고침
+                    _ = Task.Run(async () => await LoadBlockedConnectionsAsync());
+
+                    AddLogMessage($"✅ 영구 차단 규칙 생성 완료: {blockDescription}");
+                    MessageBox.Show($"영구 차단 규칙이 Windows 방화벽에 추가되었습니다.\n\n" +
+                                  $"차단 대상: {blockDescription}\n" +
+                                  $"프로세스: {networkInfo.ProcessName} (PID: {networkInfo.ProcessId})\n\n" +
+                                  "이 규칙은 프로그램 재시작 후에도 유지됩니다.",
+                        "영구 차단 완료", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // 트레이 알림
+                    ShowTrayNotification($"영구 차단 완료: {networkInfo.ProcessName} - {blockDescription}");
+                }
+                else
+                {
+                    AddLogMessage($"❌ 영구 차단 규칙 생성 실패: {blockDescription}");
+                    MessageBox.Show($"방화벽 규칙 생성에 실패했습니다.\n\n" +
+                                  $"대상: {blockDescription}\n" +
+                                  "관리자 권한을 확인하고 다시 시도해주세요.",
+                        "차단 실패", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"❌ 영구 차단 적용 오류: {ex.Message}");
+                MessageBox.Show($"영구 차단 적용 중 오류가 발생했습니다:\n{ex.Message}",
+                    "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        #endregion
+
+        #region 방화벽 규칙 관리 UI 이벤트
+
+        /// <summary>
+        /// 방화벽 규칙 새로고침 버튼 클릭
+        /// </summary>
+        private async void RefreshFirewallRules_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                AddLogMessage("🔄 방화벽 규칙 새로고침 중...");
+                await LoadFirewallRulesAsync();
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"❌ 방화벽 규칙 새로고침 오류: {ex.Message}");
+                MessageBox.Show($"방화벽 규칙을 새로고침하는 중 오류가 발생했습니다:\n{ex.Message}",
+                    "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// 모든 방화벽 규칙 제거 버튼 클릭
+        /// </summary>
+        private async void RemoveAllFirewallRules_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var result = MessageBox.Show(
+                    "LogCheck에서 생성한 모든 방화벽 규칙을 제거하시겠습니까?\n\n" +
+                    "이 작업은 되돌릴 수 없습니다.",
+                    "모든 규칙 제거 확인",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    if (_persistentFirewallManager != null)
+                    {
+                        AddLogMessage("🗑️ 모든 LogCheck 방화벽 규칙 제거 중...");
+
+                        var removedCount = await _persistentFirewallManager.RemoveAllLogCheckRulesAsync();
+
+                        AddLogMessage($"✅ {removedCount}개의 방화벽 규칙이 제거되었습니다.");
+                        MessageBox.Show($"{removedCount}개의 방화벽 규칙이 제거되었습니다.",
+                            "제거 완료", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        // 목록 새로고침
+                        await LoadFirewallRulesAsync();
+                    }
+                    else
+                    {
+                        MessageBox.Show("방화벽 관리자가 초기화되지 않았습니다.",
+                            "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"❌ 방화벽 규칙 일괄 제거 오류: {ex.Message}");
+                MessageBox.Show($"방화벽 규칙을 제거하는 중 오류가 발생했습니다:\n{ex.Message}",
+                    "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// 개별 방화벽 규칙 제거 버튼 클릭
+        /// </summary>
+        private async void RemoveFirewallRule_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is System.Windows.Controls.Button button && button.Tag is FirewallRuleInfo rule)
+                {
+                    var result = MessageBox.Show(
+                        $"다음 방화벽 규칙을 제거하시겠습니까?\n\n" +
+                        $"규칙명: {rule.Name}\n" +
+                        $"설명: {rule.Description}",
+                        "규칙 제거 확인",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        if (_persistentFirewallManager != null)
+                        {
+                            AddLogMessage($"🗑️ 방화벽 규칙 제거: {rule.Name}");
+
+                            var success = await _persistentFirewallManager.RemoveBlockRuleAsync(rule.Name);
+
+                            if (success)
+                            {
+                                AddLogMessage($"✅ 방화벽 규칙 '{rule.Name}' 제거 완료");
+                                MessageBox.Show($"방화벽 규칙이 제거되었습니다:\n{rule.Name}",
+                                    "제거 완료", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                                // 목록 새로고침
+                                await LoadFirewallRulesAsync();
+                            }
+                            else
+                            {
+                                AddLogMessage($"⚠️ 방화벽 규칙 '{rule.Name}' 제거 실패");
+                                MessageBox.Show($"방화벽 규칙 제거에 실패했습니다:\n{rule.Name}",
+                                    "제거 실패", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("방화벽 관리자가 초기화되지 않았습니다.",
+                                "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"❌ 방화벽 규칙 제거 오류: {ex.Message}");
+                MessageBox.Show($"방화벽 규칙을 제거하는 중 오류가 발생했습니다:\n{ex.Message}",
+                    "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// 방화벽 규칙 목록 로드
+        /// </summary>
+        private async Task LoadFirewallRulesAsync()
+        {
+            try
+            {
+                // PersistentFirewallManager 초기화 (필요시)
+                if (_persistentFirewallManager == null)
+                {
+                    _persistentFirewallManager = new PersistentFirewallManager("LogCheck_NetworkBlock");
+                    var initResult = await _persistentFirewallManager.InitializeAsync();
+
+                    if (!initResult)
+                    {
+                        SafeInvokeUI(() =>
+                        {
+                            var adminStatusText = FindName("AdminStatusText") as TextBlock;
+                            if (adminStatusText != null)
+                                adminStatusText.Text = "권한 부족";
+                        });
+                        return;
+                    }
+                }
+
+                var rules = await _persistentFirewallManager.GetLogCheckRulesAsync();
+
+                SafeInvokeUI(() =>
+                {
+                    _firewallRules.Clear();
+                    foreach (var rule in rules)
+                    {
+                        _firewallRules.Add(rule);
+                    }
+
+                    // UI 상태 업데이트
+                    var firewallRuleCountText = FindName("FirewallRuleCountText") as TextBlock;
+                    if (firewallRuleCountText != null)
+                        firewallRuleCountText.Text = $"{_firewallRules.Count}개";
+
+                    var adminStatusText = FindName("AdminStatusText") as TextBlock;
+                    if (adminStatusText != null)
+                        adminStatusText.Text = "정상";
+
+                    var noRulesPanel = FindName("NoRulesPanel") as Border;
+                    if (noRulesPanel != null)
+                        noRulesPanel.Visibility = _firewallRules.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+                });
+
+                AddLogMessage($"📋 방화벽 규칙 {_firewallRules.Count}개 로드 완료");
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"❌ 방화벽 규칙 로드 오류: {ex.Message}");
+                SafeInvokeUI(() =>
+                {
+                    var adminStatusText = FindName("AdminStatusText") as TextBlock;
+                    if (adminStatusText != null)
+                        adminStatusText.Text = "오류";
+
+                    var firewallRuleCountText = FindName("FirewallRuleCountText") as TextBlock;
+                    if (firewallRuleCountText != null)
+                        firewallRuleCountText.Text = "0개";
+                });
+            }
+        }
+
+        /// <summary>
+        /// 관리자 권한 및 초기 방화벽 규칙 로드
+        /// </summary>
+        private async Task InitializeFirewallManagementAsync()
+        {
+            try
+            {
+                await LoadFirewallRulesAsync();
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"❌ 방화벽 관리 초기화 오류: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+    }
+
+    /// <summary>
+    /// 영구 차단 옵션
+    /// </summary>
+    public class PermanentBlockOptions
+    {
+        public bool UsePermanentBlock { get; set; }
+        public NetworkBlockType BlockType { get; set; }
+    }
+
+    /// <summary>
+    /// 네트워크 차단 옵션
+    /// </summary>
+    public class NetworkBlockOptions
+    {
+        public NetworkBlockType BlockType { get; set; }
+    }
+
+    /// <summary>
+    /// 네트워크 차단 유형
+    /// </summary>
+    public enum NetworkBlockType
+    {
+        ProcessPath,
+        IPAddress,
+        Port
     }
 }
