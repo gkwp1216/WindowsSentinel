@@ -1300,7 +1300,6 @@ C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\LightTheme.baml
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\Vaccine.baml
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\Logs.g.cs
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\MainWindows.g.cs
-C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\NetWorks.g.cs
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\NetWorks_New.g.cs
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\ProgramsList.g.cs
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\Recoverys.g.cs
@@ -1311,10 +1310,6 @@ C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\App.g.cs
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\LogCheck_MarkupCompile.cache
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\LogCheck_MarkupCompile.lref
-C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\App.baml
-C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\Logs.baml
-C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\MainWindows.baml
-C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\NetWorks.baml
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\NetWorks_New.baml
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\ProgramsList.baml
 C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\Recoverys.baml
@@ -1743,3 +1738,6 @@ C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\refint\LogChec
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\LogCheck.pdb
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
 C:\Users\admin\Documents\KKW\WS\LogCheck\obj\Debug\net8.0-windows\ref\LogCheck.dll
+C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\App.baml
+C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\Logs.baml
+C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\MainWindows.baml
