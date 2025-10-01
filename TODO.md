@@ -257,8 +257,8 @@ BlockConnection_Click, TerminateProcess_Click 수정
 2. ✅ **UpdateStatistics 메서드**: 2개 파일 → NetworkStatisticsService/ThreatIntelligenceStatisticsService로 통합
 3. ✅ **ObservableCollection<string> \_logMessages**: 중복된 로그 컬렉션 → LogMessageService.LogMessages로 통합
 4. ✅ **LogMessagesControl.ItemsSource**: 동일한 바인딩 패턴 → 공통 서비스 바인딩으로 통합
-5. 🔄 **Dispatcher.InvokeAsync 패턴**: BasePageViewModel.SafeInvokeUI/SafeInvokeUIAsync로 통합 (적용 진행 중)
-6. 🔄 **이벤트 구독/해제 패턴**: BasePageViewModel에서 공통 패턴 제공 (적용 진행 중)
+5. ✅ **Dispatcher.InvokeAsync 패턴**: BasePageViewModel.SafeInvokeUI/SafeInvokeUIAsync로 통합 완료
+6. ✅ **이벤트 구독/해제 패턴**: BasePageViewModel에서 공통 패턴 제공 완료
 
 #### Phase 4: 성능 최적화
 

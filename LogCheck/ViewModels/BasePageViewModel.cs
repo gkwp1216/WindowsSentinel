@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 using LogCheck.Services;
@@ -193,6 +195,87 @@ namespace LogCheck.ViewModels
             // 파생 클래스에서 오버라이드하여 커스텀 오류 처리 구현
         }
 
+        #region 이벤트 관리 패턴
+
+        private readonly List<(object source, string eventName, Delegate handler)> _subscribedEvents = new();
+
+        /// <summary>
+        /// 이벤트 구독 및 자동 추적
+        /// </summary>
+        protected void SubscribeEvent<T>(T source, string eventName, Delegate handler) where T : class
+        {
+            if (source == null || handler == null) return;
+
+            try
+            {
+                var eventInfo = typeof(T).GetEvent(eventName);
+                if (eventInfo != null)
+                {
+                    eventInfo.AddEventHandler(source, handler);
+                    _subscribedEvents.Add((source, eventName, handler));
+                    LogService.AddLogMessage($"이벤트 구독: {typeof(T).Name}.{eventName}");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"이벤트 구독 실패: {typeof(T).Name}.{eventName} - {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 특정 이벤트 해제
+        /// </summary>
+        protected void UnsubscribeEvent<T>(T source, string eventName, Delegate handler) where T : class
+        {
+            if (source == null || handler == null) return;
+
+            try
+            {
+                var eventInfo = typeof(T).GetEvent(eventName);
+                if (eventInfo != null)
+                {
+                    eventInfo.RemoveEventHandler(source, handler);
+                    _subscribedEvents.RemoveAll(e => ReferenceEquals(e.source, source) &&
+                                                     e.eventName == eventName &&
+                                                     e.handler == handler);
+                    LogService.AddLogMessage($"이벤트 해제: {typeof(T).Name}.{eventName}");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError($"이벤트 해제 실패: {typeof(T).Name}.{eventName} - {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 모든 구독된 이벤트 자동 해제
+        /// </summary>
+        protected virtual void UnsubscribeAllEvents()
+        {
+            var eventsToRemove = new List<(object source, string eventName, Delegate handler)>(_subscribedEvents);
+
+            foreach (var (source, eventName, handler) in eventsToRemove)
+            {
+                try
+                {
+                    var eventInfo = source.GetType().GetEvent(eventName);
+                    if (eventInfo != null)
+                    {
+                        eventInfo.RemoveEventHandler(source, handler);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogService.LogError($"이벤트 자동 해제 실패: {source.GetType().Name}.{eventName} - {ex.Message}");
+                }
+            }
+
+            _subscribedEvents.Clear();
+            LogService.AddLogMessage("모든 이벤트 구독 해제 완료");
+        }
+
+        #endregion
+
         /// <summary>
         /// PropertyChanged 이벤트
         /// </summary>
@@ -214,6 +297,7 @@ namespace LogCheck.ViewModels
             if (!_disposed)
             {
                 _disposed = true;
+                UnsubscribeAllEvents(); // 모든 이벤트 자동 해제
                 Cleanup();
                 _logService?.Dispose();
             }

@@ -482,7 +482,7 @@ namespace LogCheck
 
         private void OnAbuseIPDBError(object sender, string error)
         {
-            Dispatcher.Invoke(() =>
+            SafeInvokeUI(() =>
             {
                 AddLogMessage($"AbuseIPDB 오류: {error}");
             });
@@ -490,7 +490,7 @@ namespace LogCheck
 
         private void OnThreatDataReceived(object sender, ThreatIntelligenceData threatData)
         {
-            Dispatcher.Invoke(() =>
+            SafeInvokeUI(() =>
             {
                 AddLogMessage($"새로운 위협 정보 수신: {threatData.IPAddress} (점수: {threatData.AbuseConfidenceScore})");
             });
@@ -498,7 +498,7 @@ namespace LogCheck
 
         private void OnIPBlocked(object sender, BlockedIPAddress blockedIP)
         {
-            Dispatcher.Invoke(() =>
+            SafeInvokeUI(() =>
             {
                 AddLogMessage($"IP {blockedIP.IPAddress}가 차단되었습니다: {blockedIP.Reason}");
                 LoadBlockedIPs();
@@ -508,7 +508,7 @@ namespace LogCheck
 
         private void OnIPUnblocked(object sender, string ipAddress)
         {
-            Dispatcher.Invoke(() =>
+            SafeInvokeUI(() =>
             {
                 AddLogMessage($"IP {ipAddress}의 차단이 해제되었습니다.");
                 LoadBlockedIPs();
@@ -518,7 +518,7 @@ namespace LogCheck
 
         private void OnIPBlockerError(object sender, string error)
         {
-            Dispatcher.Invoke(() =>
+            SafeInvokeUI(() =>
             {
                 AddLogMessage($"IP 차단 시스템 오류: {error}");
             });
@@ -526,7 +526,7 @@ namespace LogCheck
 
         private void OnThreatDetected(object sender, ThreatLookupResult threatResult)
         {
-            Dispatcher.Invoke(() =>
+            SafeInvokeUI(() =>
             {
                 AddLogMessage($"새로운 위협 탐지: {threatResult.IPAddress} (점수: {threatResult.ThreatScore})");
             });
@@ -674,6 +674,56 @@ namespace LogCheck
             catch (Exception ex)
             {
                 AddLogMessage($"시스템 종료 중 오류: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+        #region SafeInvokeUI Pattern (BasePageViewModel 패턴 적용)
+
+        /// <summary>
+        /// 안전한 UI 업데이트 헬퍼 메서드 (BasePageViewModel 패턴)
+        /// </summary>
+        /// <param name="action">UI 업데이트 액션</param>
+        private void SafeInvokeUI(Action action)
+        {
+            try
+            {
+                if (Dispatcher.CheckAccess())
+                {
+                    action();
+                }
+                else
+                {
+                    Dispatcher.InvokeAsync(action);
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"❌ UI 업데이트 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 안전한 비동기 UI 업데이트 헬퍼 메서드 (BasePageViewModel 패턴)
+        /// </summary>
+        /// <param name="action">UI 업데이트 액션</param>
+        private async Task SafeInvokeUIAsync(Action action)
+        {
+            try
+            {
+                if (Dispatcher.CheckAccess())
+                {
+                    action();
+                }
+                else
+                {
+                    await Dispatcher.InvokeAsync(action);
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"❌ 비동기 UI 업데이트 오류: {ex.Message}");
             }
         }
 

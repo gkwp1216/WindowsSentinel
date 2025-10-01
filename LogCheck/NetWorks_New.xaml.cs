@@ -372,37 +372,30 @@ namespace LogCheck
                 if (Dispatcher.HasShutdownStarted)
                     return;
 
-                Dispatcher.Invoke(() =>
+                SafeInvokeUI(() =>
                 {
-                    try
+                    _isMonitoring = running;
+
+                    // UI 요소들이 유효한지 확인
+                    if (StartMonitoringButton != null)
+                        StartMonitoringButton.Visibility = running ? Visibility.Collapsed : Visibility.Visible;
+                    if (StopMonitoringButton != null)
+                        StopMonitoringButton.Visibility = running ? Visibility.Visible : Visibility.Collapsed;
+                    if (MonitoringStatusText != null)
+                        MonitoringStatusText.Text = running ? "모니터링 중" : "대기 중";
+
+                    if (MonitoringStatusIndicator != null)
+                        MonitoringStatusIndicator.Fill = new SolidColorBrush(running ? Colors.Green : Colors.Gray);
+
+                    if (running)
                     {
-                        _isMonitoring = running;
-
-                        // UI 요소들이 유효한지 확인
-                        if (StartMonitoringButton != null)
-                            StartMonitoringButton.Visibility = running ? Visibility.Collapsed : Visibility.Visible;
-                        if (StopMonitoringButton != null)
-                            StopMonitoringButton.Visibility = running ? Visibility.Visible : Visibility.Collapsed;
-                        if (MonitoringStatusText != null)
-                            MonitoringStatusText.Text = running ? "모니터링 중" : "대기 중";
-
-                        if (MonitoringStatusIndicator != null)
-                            MonitoringStatusIndicator.Fill = new SolidColorBrush(running ? Colors.Green : Colors.Gray);
-
-                        if (running)
-                        {
-                            // 런타임 구성 갱신
-                            UpdateRuntimeConfigText();
-                            _updateTimer?.Start();
-                        }
-                        else
-                        {
-                            _updateTimer?.Stop();
-                        }
+                        // 런타임 구성 갱신
+                        UpdateRuntimeConfigText();
+                        _updateTimer?.Start();
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        System.Diagnostics.Debug.WriteLine($"UI 업데이트 중 오류: {ex.Message}");
+                        _updateTimer?.Stop();
                     }
                 });
             }
@@ -1250,44 +1243,36 @@ namespace LogCheck
                 if (Dispatcher.HasShutdownStarted)
                     return;
 
-                // 최종 UI 업데이트만 Dispatcher에서 수행
-                await Dispatcher.InvokeAsync(() =>
+                // 최종 UI 업데이트만 SafeInvokeUIAsync에서 수행 (BasePageViewModel 패턴 적용)
+                await SafeInvokeUIAsync(() =>
                 {
-                    try
-                    {
-                        System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 시작 - 기존 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
+                    System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 시작 - 기존 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
 
-                        // 스마트 업데이트: 컬렉션을 완전히 지우지 않고 업데이트
-                        UpdateCollectionSmart(_generalProcessData, processedData.General);
-                        UpdateCollectionSmart(_systemProcessData, processedData.System);
+                    // 스마트 업데이트: 컬렉션을 완전히 지우지 않고 업데이트
+                    UpdateCollectionSmart(_generalProcessData, processedData.General);
+                    UpdateCollectionSmart(_systemProcessData, processedData.System);
 
-                        // PID별 그룹화된 데이터 업데이트 (기존)
-                        UpdateProcessGroups(_generalProcessGroups, processedData.General);
-                        UpdateProcessGroups(_systemProcessGroups, processedData.System);
+                    // PID별 그룹화된 데이터 업데이트 (기존)
+                    UpdateProcessGroups(_generalProcessGroups, processedData.General);
+                    UpdateProcessGroups(_systemProcessGroups, processedData.System);
 
-                        // 작업 관리자 방식의 TreeView 업데이트 (새로운 방식)
-                        UpdateProcessTreeSmart(_processTreeNodes, processedData.General);
-                        UpdateProcessTreeSmart(_systemProcessTreeNodes, processedData.System);
+                    // 작업 관리자 방식의 TreeView 업데이트 (새로운 방식)
+                    UpdateProcessTreeSmart(_processTreeNodes, processedData.General);
+                    UpdateProcessTreeSmart(_systemProcessTreeNodes, processedData.System);
 
-                        // 통계, 차트, 보안 알림 업데이트
-                        UpdateStatistics(processedData.FilteredData);
-                        UpdateChart(processedData.FilteredData);
-                        UpdateSecurityAlerts(processedData.SecurityAlerts);
+                    // 통계, 차트, 보안 알림 업데이트
+                    UpdateStatistics(processedData.FilteredData);
+                    UpdateChart(processedData.FilteredData);
+                    UpdateSecurityAlerts(processedData.SecurityAlerts);
 
-                        System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 완료 - 새로운 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
-                        System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 그룹 업데이트 완료 - 일반 그룹: {_generalProcessGroups.Count}개, 시스템 그룹: {_systemProcessGroups.Count}개");
-
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"UI 업데이트 중 오류: {ex.Message}");
-                    }
-                }, DispatcherPriority.DataBind);
+                    System.Diagnostics.Debug.WriteLine($"[NetWorks_New] UI 업데이트 완료 - 새로운 일반 프로세스: {_generalProcessData.Count}개, 시스템 프로세스: {_systemProcessData.Count}개");
+                    System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 그룹 업데이트 완료 - 일반 그룹: {_generalProcessGroups.Count}개, 시스템 그룹: {_systemProcessGroups.Count}개");
+                });
 
                 // 간단한 상태 복원 시도
                 _ = Task.Delay(100).ContinueWith(_ =>
                 {
-                    Dispatcher.BeginInvoke(() => RestoreGroupStates(), DispatcherPriority.Background);
+                    SafeInvokeUI(() => RestoreGroupStates());
                 });
 
             }
@@ -1592,7 +1577,7 @@ namespace LogCheck
                     }
 
                     // UI 스레드에서 차트 업데이트
-                    System.Windows.Application.Current.Dispatcher.BeginInvoke(() =>
+                    SafeInvokeUI(() =>
                     {
                         try
                         {
@@ -2407,7 +2392,7 @@ namespace LogCheck
                                 IsResolved = false
                             };
 
-                            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                            SafeInvokeUI(() =>
                             {
                                 _securityAlerts.Insert(0, alert);
                                 // 알림 목록 크기 제한
@@ -3036,6 +3021,56 @@ namespace LogCheck
                 AddLogMessage($"❌ 내보내기 오류: {ex.Message}");
                 MessageBox.Show($"파일 내보내기 중 오류가 발생했습니다:\n{ex.Message}",
                     "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        #endregion
+
+        #region SafeInvokeUI Pattern (BasePageViewModel 패턴 적용)
+
+        /// <summary>
+        /// 안전한 UI 업데이트 헬퍼 메서드 (BasePageViewModel 패턴)
+        /// </summary>
+        /// <param name="action">UI 업데이트 액션</param>
+        private void SafeInvokeUI(Action action)
+        {
+            try
+            {
+                if (Dispatcher.CheckAccess())
+                {
+                    action();
+                }
+                else
+                {
+                    Dispatcher.InvokeAsync(action);
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"❌ UI 업데이트 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 안전한 비동기 UI 업데이트 헬퍼 메서드 (BasePageViewModel 패턴)
+        /// </summary>
+        /// <param name="action">UI 업데이트 액션</param>
+        private async Task SafeInvokeUIAsync(Action action)
+        {
+            try
+            {
+                if (Dispatcher.CheckAccess())
+                {
+                    action();
+                }
+                else
+                {
+                    await Dispatcher.InvokeAsync(action);
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"❌ 비동기 UI 업데이트 오류: {ex.Message}");
             }
         }
 
