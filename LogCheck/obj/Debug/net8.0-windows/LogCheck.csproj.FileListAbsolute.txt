@@ -1556,9 +1556,6 @@ C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\App.g.cs
 C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
 C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\LogCheck_MarkupCompile.cache
 C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\LogCheck_MarkupCompile.lref
-C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\LogCheck.dll
-C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\refint\LogCheck.dll
-C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\LogCheck.pdb
 C:\Users\admin\Documents\KKW\WS_2\LogCheck\bin\Debug\net8.0-windows\LogCheck.exe
 C:\Users\admin\Documents\KKW\WS_2\LogCheck\bin\Debug\net8.0-windows\WindowsSentinel.ico
 C:\Users\admin\Documents\KKW\WS_2\LogCheck\bin\Debug\net8.0-windows\LogCheck.deps.json
@@ -1640,5 +1637,8 @@ C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\LogCheck.Gen
 C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.CoreCompileInputs.cache
 C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\LogCheck.sourcelink.json
 C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\LogCheck.csproj.Up2Date
+C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\LogCheck.dll
+C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\refint\LogCheck.dll
+C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\LogCheck.pdb
 C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
 C:\Users\admin\Documents\KKW\WS_2\LogCheck\obj\Debug\net8.0-windows\ref\LogCheck.dll
