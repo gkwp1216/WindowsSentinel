@@ -355,15 +355,6 @@ BlockConnection_Click, TerminateProcess_Click 수정
 - 프로세스 종료가 작동하지 않고 있음
 - 보안 상태 및 차트 부분 재디자인
 
-- **최적화 작업** : 렉 굉장히 심함
-
-- ✅ **일회성 차단 문제 해결** _(2025-10-01 완료)_
-
-  - ✅ Windows 방화벽(Windows Defender Firewall) 서비스에 영구적인 새 규칙 등록
-  - ✅ **COM Interop**을 사용하여 HNetCfg.FwPolicy2에 접근
-  - ✅ C# 프로세스 내부가 아닌, OS수준의 영구적인 차단 매커니즘 구현
-  - ✅ 사용자 친화적 UI 구현 완료
-
 - ✅ **영구 규칙 관리 기반 구축** _(2025-10-01 완료)_
   - ✅ Windows Firewall API 활용
   - ✅ 동적 COM Interop을 통한 Windows Firewall API 직접 호출
