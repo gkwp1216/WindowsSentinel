@@ -1186,58 +1186,61 @@
                             
                             <!-- 방화벽 서브탭 -->
                             <TabItem Header="방화벽">
+                                <!-- 방화벽 규칙 관리 서브 탭들 -->
+                                <TabControl>
+                                    <!-- LogCheck 방화벽 규칙 탭 -->
+                                    <TabItem Header="LogCheck 규칙">
+                                        <Grid Margin="10">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
 
-                        <Grid Margin="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
+                                            <!-- 방화벽 관리 헤더 및 컨트롤 -->
+                                            <Border Grid.Row="0" Background="{DynamicResource SecondaryBackgroundColor}" 
+                                                    CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
 
-                            <!-- 방화벽 관리 헤더 및 컨트롤 -->
-                            <Border Grid.Row="0" Background="{DynamicResource SecondaryBackgroundColor}" 
-                                    CornerRadius="8" Padding="15" Margin="0,0,0,10">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+                                                    <!-- 정보 및 통계 -->
+                                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <materialDesign:PackIcon Kind="Information" 
+                                                                               VerticalAlignment="Center"
+                                                                               Foreground="{DynamicResource PrimaryColor}"
+                                                                               Width="20" Height="20"
+                                                                               Margin="0,0,10,0"/>
+                                                        <TextBlock VerticalAlignment="Center"
+                                                                   Foreground="{DynamicResource ForegroundColor}">
+                                                            <Run Text="LogCheck 방화벽 규칙:"/>
+                                                            <Run x:Name="FirewallRuleCountText" Text="0개" FontWeight="Bold"/>
+                                                            <Run Text=" | 관리자 권한:"/>
+                                                            <Run x:Name="AdminStatusText" Text="확인 중..." FontWeight="Bold"/>
+                                                        </TextBlock>
+                                                    </StackPanel>
 
-                                    <!-- 정보 및 통계 -->
-                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <materialDesign:PackIcon Kind="Information" 
-                                                               VerticalAlignment="Center"
-                                                               Foreground="{DynamicResource PrimaryColor}"
-                                                               Width="20" Height="20"
-                                                               Margin="0,0,10,0"/>
-                                        <TextBlock VerticalAlignment="Center"
-                                                   Foreground="{DynamicResource ForegroundColor}">
-                                            <Run Text="영구 방화벽 규칙:"/>
-                                            <Run x:Name="FirewallRuleCountText" Text="0개" FontWeight="Bold"/>
-                                            <Run Text=" | 관리자 권한:"/>
-                                            <Run x:Name="AdminStatusText" Text="확인 중..." FontWeight="Bold"/>
-                                        </TextBlock>
-                                    </StackPanel>
+                                                    <!-- 관리 버튼들 -->
+                                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                        <Button Content="규칙 새로고침"
+                                                                Style="{DynamicResource MaterialDesignRaisedButton}"
+                                                                Background="#2196F3"
+                                                                Foreground="White"
+                                                                Margin="0,0,10,0"
+                                                                Click="RefreshFirewallRules_Click"/>
+                                                        <Button Content="모든 규칙 제거"
+                                                                Style="{DynamicResource MaterialDesignRaisedButton}"
+                                                                Background="#F44336"
+                                                                Foreground="White"
+                                                                Click="RemoveAllFirewallRules_Click"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
 
-                                    <!-- 관리 버튼들 -->
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <Button Content="규칙 새로고침"
-                                                Style="{DynamicResource MaterialDesignRaisedButton}"
-                                                Background="#2196F3"
-                                                Foreground="White"
-                                                Margin="0,0,10,0"
-                                                Click="RefreshFirewallRules_Click"/>
-                                        <Button Content="모든 규칙 제거"
-                                                Style="{DynamicResource MaterialDesignRaisedButton}"
-                                                Background="#F44336"
-                                                Foreground="White"
-                                                Click="RemoveAllFirewallRules_Click"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-
-                            <!-- 방화벽 규칙 목록 -->
-                            <Border Grid.Row="1" Background="{DynamicResource BackgroundColor}" 
-                                    CornerRadius="8" Padding="10">
+                                            <!-- LogCheck 방화벽 규칙 목록 -->
+                                            <Border Grid.Row="1" Background="{DynamicResource BackgroundColor}" 
+                                                    CornerRadius="8" Padding="10">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
