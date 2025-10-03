@@ -25,6 +25,7 @@
         <converters:SafeGroupConverter x:Key="SafeGroupConverter"/>
         <converters:FilePathToIconConverter x:Key="FilePathToIconConverter"/>
 
+
         <!-- 프로세스 상태별 색상 -->
         <SolidColorBrush x:Key="ProcessNormalColor" Color="#4CAF50"/>
         <SolidColorBrush x:Key="ProcessWarningColor" Color="#FF9800"/>
@@ -957,379 +958,590 @@
                         </TabItem.Header>
                         
                         <!-- 보안 관리 서브 탭들 -->
-                        <TabControl>
-                            
-                            <!-- 차단 목록 서브탭 -->
-                            <TabItem Header="차단 목록">
-                        
-                        <Grid Margin="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <!-- 헤더 -->
-                            <TextBlock Grid.Row="0" Text="차단된 연결 관리" FontSize="20" FontWeight="Bold" 
-                                       Foreground="{DynamicResource PrimaryHueMidBrush}" Margin="0,0,0,15"/>
-
-                            <!-- 필터 및 컨트롤 -->
-                            <Border Grid.Row="1" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,0,15">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <materialDesign:PackIcon Kind="Filter" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                        <ComboBox x:Name="BlockedFilterComboBox" Width="150" Margin="0,0,10,0"
-                                                  materialDesign:HintAssist.Hint="필터 선택"
-                                                  SelectionChanged="BlockedFilter_SelectionChanged">
-                                            <ComboBoxItem Content="전체 보기" IsSelected="True"/>
-                                            <ComboBoxItem Content="수동 차단"/>
-                                            <ComboBoxItem Content="자동 차단"/>
-                                            <ComboBoxItem Content="그룹 차단"/>
-                                            <ComboBoxItem Content="오늘"/>
-                                            <ComboBoxItem Content="최근 7일"/>
-                                        </ComboBox>
-
-                                        <TextBox x:Name="BlockedSearchTextBox" Width="200" Margin="10,0,0,0"
-                                                 materialDesign:HintAssist.Hint="IP 또는 프로세스 검색"
-                                                 TextChanged="BlockedSearch_TextChanged"/>
+                        <TabControl TabStripPlacement="Left" Margin="10">
+                            <!-- 차단된 연결 관리 서브탭 -->
+                            <TabItem>
+                                <TabItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="NetworkOff" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                        <TextBlock Text="차단된 연결" VerticalAlignment="Center"/>
                                     </StackPanel>
+                                </TabItem.Header>
+                                
+                                <Grid Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
 
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
-                                        <Button Content="새로고침" 
-                                                Style="{DynamicResource RefreshButtonStyle}"
-                                                Click="RefreshBlockedList_Click"
-                                                Width="80" Height="32" Margin="0,0,10,0"/>
-                                        
-                                        <Button Content="선택 해제" 
-                                                Style="{DynamicResource RefreshButtonStyle}"
+                                    <!-- 제목 및 통계 -->
+                                    <Border Grid.Row="0" Background="{DynamicResource SecondaryBackgroundColor}" 
+                                            CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="차단된 네트워크 연결 관리" 
+                                                           FontWeight="Bold" FontSize="16"
+                                                           Foreground="{DynamicResource PrimaryForegroundColor}"/>
+                                                <TextBlock x:Name="BlockedCountText" 
+                                                           Text="총 0개의 연결이 차단됨"
+                                                           FontSize="12"
+                                                           Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                           Margin="0,5,0,0"/>
+                                            </StackPanel>
+                                            
+                                            <TextBlock Grid.Column="1" x:Name="BlockedSummaryText"
+                                                       Text="위험: 0, 의심: 0, 기타: 0"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="0,0,20,0"/>
+                                            
+                                            <Button Grid.Column="2" Content="새로고침"
+                                                    Style="{DynamicResource MaterialDesignRaisedButton}"
+                                                    Background="#2196F3"
+                                                    Foreground="White"
+                                                    Click="RefreshBlockedConnections_Click"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- 필터 및 검색 -->
+                                    <Border Grid.Row="1" Background="{DynamicResource BackgroundColor}" 
+                                            CornerRadius="8" Padding="10" Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="200"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <TextBlock Grid.Column="0" Text="필터:" 
+                                                       VerticalAlignment="Center" 
+                                                       Margin="0,0,10,0"
+                                                       Foreground="{DynamicResource PrimaryForegroundColor}"/>
+                                            
+                                            <ComboBox Grid.Column="1" x:Name="BlockedFilterComboBox"
+                                                      SelectedIndex="0"
+                                                      SelectionChanged="BlockedFilter_SelectionChanged">
+                                                <ComboBoxItem Content="전체"/>
+                                                <ComboBoxItem Content="위험"/>
+                                                <ComboBoxItem Content="의심스러운"/>
+                                                <ComboBoxItem Content="차단됨"/>
+                                            </ComboBox>
+                                            
+                                            <TextBlock Grid.Column="2" Text="검색:" 
+                                                       VerticalAlignment="Center" 
+                                                       Margin="20,0,10,0"
+                                                       Foreground="{DynamicResource PrimaryForegroundColor}"/>
+                                            
+                                            <TextBox Grid.Column="3" x:Name="BlockedSearchTextBox"
+                                                     materialDesign:HintAssist.Hint="IP 주소 또는 프로세스명으로 검색"
+                                                     TextChanged="BlockedSearch_TextChanged"
+                                                     Margin="0,0,10,0"/>
+                                            
+                                            <Button Grid.Column="4" Content="검색 지우기"
+                                                    Style="{DynamicResource MaterialDesignOutlinedButton}"
+                                                    Click="ClearBlockedSearch_Click"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- 차단된 연결 DataGrid -->
+                                    <DataGrid Grid.Row="2" x:Name="BlockedConnectionsDataGrid"
+                                              ItemsSource="{Binding BlockedConnections}"
+                                              AutoGenerateColumns="False"
+                                              HeadersVisibility="Column"
+                                              GridLinesVisibility="Horizontal"
+                                              CanUserResizeColumns="True"
+                                              Background="{DynamicResource DataGridBackgroundColor}"
+                                              Foreground="{DynamicResource DataGridForegroundColor}"
+                                              SelectionMode="Extended"
+                                              Margin="0,0,0,10">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="차단 시간" 
+                                                                Binding="{Binding BlockedAt, StringFormat=yyyy-MM-dd HH:mm:ss}" 
+                                                                Width="130"/>
+                                            <DataGridTextColumn Header="원격 IP" 
+                                                                Binding="{Binding RemoteIP}" 
+                                                                Width="120"/>
+                                            <DataGridTextColumn Header="포트" 
+                                                                Binding="{Binding RemotePort}" 
+                                                                Width="60"/>
+                                            <DataGridTextColumn Header="프로토콜" 
+                                                                Binding="{Binding Protocol}" 
+                                                                Width="70"/>
+                                            <DataGridTextColumn Header="프로세스" 
+                                                                Binding="{Binding ProcessName}" 
+                                                                Width="150"/>
+                                            <DataGridTextColumn Header="차단 사유" 
+                                                                Binding="{Binding BlockReason}" 
+                                                                Width="*"/>
+                                            <DataGridTextColumn Header="위험도" 
+                                                                Binding="{Binding RiskLevel}" 
+                                                                Width="80"/>
+                                            <DataGridCheckBoxColumn Header="영구차단" 
+                                                                    Binding="{Binding IsPermanent}" 
+                                                                    Width="70"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+
+                                    <!-- 액션 버튼들 -->
+                                    <StackPanel Grid.Row="3" Orientation="Horizontal" 
+                                                HorizontalAlignment="Right">
+                                        <Button Content="선택된 항목 차단 해제"
+                                                Style="{DynamicResource MaterialDesignRaisedButton}"
+                                                Background="#4CAF50"
+                                                Foreground="White"
                                                 Click="UnblockSelected_Click"
-                                                Width="80" Height="32" Margin="0,0,10,0"
-                                                Background="#4CAF50" Foreground="White"/>
-                                        
-                                        <Button Content="전체 삭제" 
-                                                Style="{DynamicResource RefreshButtonStyle}"
-                                                Click="ClearAllBlocked_Click"
-                                                Width="80" Height="32"
-                                                Background="#F44336" Foreground="White"/>
-                                    </StackPanel>
-
-                                    <TextBlock Grid.Column="2" x:Name="BlockedCountText" 
-                                               Text="총 0개 차단됨" 
-                                               VerticalAlignment="Center" 
-                                               FontWeight="Bold" 
-                                               Foreground="{DynamicResource PrimaryHueMidBrush}"/>
-                                </Grid>
-                            </Border>
-
-                            <!-- 차단된 연결 목록 -->
-                            <Border Grid.Row="2" Background="{DynamicResource CardBackgroundColor}" CornerRadius="12" 
-                                    BorderBrush="#E0E0E0" BorderThickness="1">
-                                <DataGrid x:Name="BlockedConnectionsDataGrid"
-                                          AutoGenerateColumns="False"
-                                          CanUserAddRows="False"
-                                          CanUserDeleteRows="False"
-                                          GridLinesVisibility="Horizontal"
-                                          HeadersVisibility="Column"
-                                          SelectionMode="Extended"
-                                          AlternatingRowBackground="#F9F9F9"
-                                          RowBackground="White"
-                                          BorderThickness="0"
-                                          FontSize="12">
-                                    <DataGrid.Columns>
-                                        <DataGridCheckBoxColumn Header="선택" Width="50" Binding="{Binding IsSelected}"/>
-                                        
-                                        <DataGridTextColumn Header="차단 시간" Width="130" Binding="{Binding BlockedAt, StringFormat={}{0:MM/dd HH:mm:ss}}">
-                                            <DataGridTextColumn.CellStyle>
-                                                <Style TargetType="DataGridCell">
-                                                    <Setter Property="ToolTip" Value="{Binding BlockedAt, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"/>
-                                                </Style>
-                                            </DataGridTextColumn.CellStyle>
-                                        </DataGridTextColumn>
-                                        
-                                        <DataGridTextColumn Header="프로세스" Width="120" Binding="{Binding ProcessName}">
-                                            <DataGridTextColumn.CellStyle>
-                                                <Style TargetType="DataGridCell">
-                                                    <Setter Property="ToolTip" Value="{Binding ProcessPath}"/>
-                                                </Style>
-                                            </DataGridTextColumn.CellStyle>
-                                        </DataGridTextColumn>
-                                        
-                                        <DataGridTextColumn Header="PID" Width="60" Binding="{Binding ProcessId}"/>
-                                        
-                                        <DataGridTextColumn Header="원격 주소" Width="120" Binding="{Binding RemoteAddress}">
-                                            <DataGridTextColumn.CellStyle>
-                                                <Style TargetType="DataGridCell">
-                                                    <Setter Property="Foreground" Value="#D32F2F"/>
-                                                    <Setter Property="FontWeight" Value="Bold"/>
-                                                </Style>
-                                            </DataGridTextColumn.CellStyle>
-                                        </DataGridTextColumn>
-                                        
-                                        <DataGridTextColumn Header="포트" Width="60" Binding="{Binding RemotePort}"/>
-                                        
-                                        <DataGridTextColumn Header="프로토콜" Width="70" Binding="{Binding Protocol}"/>
-                                        
-                                        <DataGridTextColumn Header="차단 레벨" Width="80" Binding="{Binding BlockLevel}">
-                                            <DataGridTextColumn.CellStyle>
-                                                <Style TargetType="DataGridCell">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding BlockLevel}" Value="Immediate">
-                                                            <Setter Property="Background" Value="#FFCDD2"/>
-                                                            <Setter Property="Foreground" Value="#D32F2F"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding BlockLevel}" Value="Warning">
-                                                            <Setter Property="Background" Value="#FFF3E0"/>
-                                                            <Setter Property="Foreground" Value="#F57C00"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding BlockLevel}" Value="Monitor">
-                                                            <Setter Property="Background" Value="#E8F5E8"/>
-                                                            <Setter Property="Foreground" Value="#388E3C"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </DataGridTextColumn.CellStyle>
-                                        </DataGridTextColumn>
-                                        
-                                        <DataGridTextColumn Header="차단 이유" Width="200" Binding="{Binding Reason}">
-                                            <DataGridTextColumn.CellStyle>
-                                                <Style TargetType="DataGridCell">
-                                                    <Setter Property="ToolTip" Value="{Binding TriggeredRules}"/>
-                                                </Style>
-                                            </DataGridTextColumn.CellStyle>
-                                        </DataGridTextColumn>
-                                        
-                                        <DataGridTextColumn Header="신뢰도" Width="60" Binding="{Binding ConfidenceScore, StringFormat={}{0:P0}}">
-                                            <DataGridTextColumn.CellStyle>
-                                                <Style TargetType="DataGridCell">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ConfidenceScore}" Value="1">
-                                                            <Setter Property="Foreground" Value="#D32F2F"/>
-                                                            <Setter Property="FontWeight" Value="Bold"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </DataGridTextColumn.CellStyle>
-                                        </DataGridTextColumn>
-
-                                        <DataGridTemplateColumn Header="작업" Width="100">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Button Content="🔓" ToolTip="차단 해제"
-                                                                Style="{DynamicResource MaterialDesignIconButton}"
-                                                                Click="UnblockConnection_Click"
-                                                                Tag="{Binding}"
-                                                                Width="30" Height="30" Margin="0,0,5,0"/>
-                                                        <Button Content="📋" ToolTip="상세 정보"
-                                                                Style="{DynamicResource MaterialDesignIconButton}"
-                                                                Click="ShowBlockedDetails_Click"
-                                                                Tag="{Binding}"
-                                                                Width="30" Height="30"/>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                    </DataGrid.Columns>
-
-                                    <DataGrid.RowStyle>
-                                        <Style TargetType="DataGridRow">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding BlockLevel}" Value="Immediate">
-                                                    <Setter Property="Background" Value="#FFEBEE"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding BlockLevel}" Value="Warning">
-                                                    <Setter Property="Background" Value="#FFF8E1"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGrid.RowStyle>
-                                </DataGrid>
-                            </Border>
-
-                            <!-- 하단 정보 -->
-                            <Border Grid.Row="3" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="8" Padding="15" Margin="0,15,0,0">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <materialDesign:PackIcon Kind="Information" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#2196F3"/>
-                                        <TextBlock x:Name="BlockedSummaryText" 
-                                                   Text="차단된 연결이 표시됩니다. 선택하여 일괄 해제하거나 개별 관리가 가능합니다." 
-                                                   VerticalAlignment="Center" Foreground="#666"/>
-                                    </StackPanel>
-
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Button Content="📊 통계 보기" 
-                                                Style="{DynamicResource MaterialDesignRaisedButton}"
-                                                Background="#2196F3" Foreground="White"
-                                                Click="ShowBlockedStatistics_Click"
                                                 Margin="0,0,10,0"/>
-                                        <Button Content="📤 내보내기" 
+                                        <Button Content="화이트리스트에 추가"
                                                 Style="{DynamicResource MaterialDesignRaisedButton}"
-                                                Background="#4CAF50" Foreground="White"
-                                                Click="ExportBlockedList_Click"/>
+                                                Background="#2196F3"
+                                                Foreground="White"
+                                                Click="AddToWhitelistSelected_Click"
+                                                Margin="0,0,10,0"/>
+                                        <Button Content="영구 차단으로 전환"
+                                                Style="{DynamicResource MaterialDesignRaisedButton}"
+                                                Background="#FF9800"
+                                                Foreground="White"
+                                                Click="MakePermanentBlock_Click"
+                                                Margin="0,0,10,0"/>
+                                        <Button Content="선택된 항목 삭제"
+                                                Style="{DynamicResource MaterialDesignRaisedButton}"
+                                                Background="#F44336"
+                                                Foreground="White"
+                                                Click="DeleteSelectedBlocked_Click"/>
                                     </StackPanel>
                                 </Grid>
-                            </Border>
-                            </Grid>
                             </TabItem>
-                            
-                            <!-- 방화벽 서브탭 -->
-                            <TabItem Header="방화벽">
-                                <!-- 방화벽 규칙 관리 서브 탭들 -->
-                                <TabControl>
-                                    <!-- LogCheck 방화벽 규칙 탭 -->
-                                    <TabItem Header="LogCheck 규칙">
-                                        <Grid Margin="10">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
 
-                                            <!-- 방화벽 관리 헤더 및 컨트롤 -->
-                                            <Border Grid.Row="0" Background="{DynamicResource SecondaryBackgroundColor}" 
-                                                    CornerRadius="8" Padding="15" Margin="0,0,0,10">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-
-                                                    <!-- 정보 및 통계 -->
-                                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                                        <materialDesign:PackIcon Kind="Information" 
-                                                                               VerticalAlignment="Center"
-                                                                               Foreground="{DynamicResource PrimaryColor}"
-                                                                               Width="20" Height="20"
-                                                                               Margin="0,0,10,0"/>
-                                                        <TextBlock VerticalAlignment="Center"
-                                                                   Foreground="{DynamicResource ForegroundColor}">
-                                                            <Run Text="LogCheck 방화벽 규칙:"/>
-                                                            <Run x:Name="FirewallRuleCountText" Text="0개" FontWeight="Bold"/>
-                                                            <Run Text=" | 관리자 권한:"/>
-                                                            <Run x:Name="AdminStatusText" Text="확인 중..." FontWeight="Bold"/>
-                                                        </TextBlock>
-                                                    </StackPanel>
-
-                                                    <!-- 관리 버튼들 -->
-                                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                                        <Button Content="규칙 새로고침"
-                                                                Style="{DynamicResource MaterialDesignRaisedButton}"
-                                                                Background="#2196F3"
-                                                                Foreground="White"
-                                                                Margin="0,0,10,0"
-                                                                Click="RefreshFirewallRules_Click"/>
-                                                        <Button Content="모든 규칙 제거"
-                                                                Style="{DynamicResource MaterialDesignRaisedButton}"
-                                                                Background="#F44336"
-                                                                Foreground="White"
-                                                                Click="RemoveAllFirewallRules_Click"/>
-                                                    </StackPanel>
-                                                </Grid>
-                                            </Border>
-
-                                            <!-- LogCheck 방화벽 규칙 목록 -->
-                                            <Border Grid.Row="1" Background="{DynamicResource BackgroundColor}" 
-                                                    CornerRadius="8" Padding="10">
-                                <Grid>
+                            <!-- 보안 경고 및 분석 서브탭 -->
+                            <TabItem>
+                                <TabItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Alert" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                        <TextBlock Text="보안 경고" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TabItem.Header>
+                                
+                                <Grid Margin="10">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Grid.Row="0" Text="LogCheck 방화벽 규칙 목록" 
-                                               FontWeight="Bold" FontSize="14"
-                                               Margin="0,0,0,10"
-                                               Foreground="{DynamicResource PrimaryForegroundColor}"/>
+                                    <!-- 보안 경고 제목 -->
+                                    <Border Grid.Row="0" Background="{DynamicResource SecondaryBackgroundColor}" 
+                                            CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                        <TextBlock Text="실시간 보안 경고 및 위협 분석" 
+                                                   FontWeight="Bold" FontSize="16"
+                                                   Foreground="{DynamicResource PrimaryForegroundColor}"
+                                                   HorizontalAlignment="Center"/>
+                                    </Border>
 
-                                    <DataGrid Grid.Row="1" x:Name="FirewallRulesDataGrid"
+                                    <!-- 보안 경고 목록 -->
+                                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                        <ItemsControl x:Name="SecurityAlertsItemControl" 
+                                                      ItemsSource="{Binding SecurityAlerts}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#FF9800" 
+                                                            CornerRadius="8" Padding="15" Margin="0,0,0,10"
+                                                            BorderThickness="1" BorderBrush="#E0E0E0">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            
+                                                            <materialDesign:PackIcon Grid.Column="0" 
+                                                                                     Kind="{Binding AlertIcon}" 
+                                                                                     Foreground="White"
+                                                                                     VerticalAlignment="Top"
+                                                                                     Margin="0,0,15,0"/>
+                                                            
+                                                            <StackPanel Grid.Column="1">
+                                                                <TextBlock Text="{Binding Title}" 
+                                                                           Foreground="White" 
+                                                                           FontWeight="Bold" 
+                                                                           FontSize="14"
+                                                                           Margin="0,0,0,5"/>
+                                                                <TextBlock Text="{Binding Description}" 
+                                                                           Foreground="White" 
+                                                                           FontSize="12"
+                                                                           TextWrapping="Wrap"
+                                                                           Margin="0,0,0,8"/>
+                                                                <TextBlock Text="{Binding RecommendedAction}" 
+                                                                           Foreground="White" 
+                                                                           FontSize="11"
+                                                                           FontStyle="Italic"
+                                                                           TextWrapping="Wrap"/>
+                                                            </StackPanel>
+                                                            
+                                                            <TextBlock Grid.Column="2" 
+                                                                       Text="{Binding Timestamp, StringFormat=HH:mm:ss}" 
+                                                                       Foreground="White"
+                                                                       FontSize="10"
+                                                                       VerticalAlignment="Top"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </ScrollViewer>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </TabItem>
+                    
+                    <!-- 🛡️ 방화벽 메인 탭 -->
+                    <TabItem>
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Shield" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock Text="🛡️ 방화벽" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        
+                        <!-- 방화벽 서브 탭들 -->
+                        <TabControl TabStripPlacement="Left" Margin="10">
+                            <!-- 방화벽 규칙 관리 서브탭 -->
+                            <TabItem>
+                                <TabItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Security" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                        <TextBlock Text="규칙 관리" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TabItem.Header>
+                                
+                                <Grid Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- 제목 및 방화벽 상태 -->
+                                    <Border Grid.Row="0" Background="{DynamicResource SecondaryBackgroundColor}" 
+                                            CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="Windows 방화벽 규칙 관리" 
+                                                           FontWeight="Bold" FontSize="16"
+                                                           Foreground="{DynamicResource PrimaryForegroundColor}"/>
+                                                <TextBlock x:Name="FirewallStatusText" 
+                                                           Text="방화벽 상태: 확인 중..."
+                                                           FontSize="12"
+                                                           Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                           Margin="0,5,0,0"/>
+                                            </StackPanel>
+                                            
+                                            <TextBlock Grid.Column="1" x:Name="FirewallRuleCountText"
+                                                       Text="관리 규칙: 0개"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="0,0,20,0"/>
+                                            
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                                <Button Content="Windows 방화벽 규칙"
+                                                        Style="{DynamicResource MaterialDesignRaisedButton}"
+                                                        Background="#4CAF50"
+                                                        Foreground="White"
+                                                        Click="OpenWindowsFirewallRules_Click"
+                                                        Margin="0,0,10,0"
+                                                        ToolTip="Windows 고급 보안이 포함된 방화벽을 엽니다"/>
+                                                <Button Content="규칙 새로고침"
+                                                        Style="{DynamicResource MaterialDesignRaisedButton}"
+                                                        Background="#2196F3"
+                                                        Foreground="White"
+                                                        Click="RefreshFirewallRules_Click"
+                                                        ToolTip="사용자 정의 방화벽 규칙을 새로고침합니다"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- 새 규칙 추가 -->
+                                    <Border Grid.Row="1" Background="{DynamicResource BackgroundColor}" 
+                                            CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                        <Expander Header="새 방화벽 규칙 추가" 
+                                                  FontWeight="SemiBold"
+                                                  Foreground="{DynamicResource PrimaryForegroundColor}">
+                                            <Grid Margin="0,10,0,0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBlock Grid.Row="0" Grid.Column="0" Text="규칙 이름:" 
+                                                           VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="NewRuleNameTextBox"
+                                                         materialDesign:HintAssist.Hint="규칙 이름 입력"
+                                                         Margin="0,0,20,10"/>
+                                                
+                                                <TextBlock Grid.Row="0" Grid.Column="2" Text="대상 IP:" 
+                                                           VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                                <TextBox Grid.Row="0" Grid.Column="3" x:Name="NewRuleIPTextBox"
+                                                         materialDesign:HintAssist.Hint="IP 주소 또는 범위"
+                                                         Margin="0,0,0,10"/>
+                                                
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Text="포트:" 
+                                                           VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="NewRulePortTextBox"
+                                                         materialDesign:HintAssist.Hint="포트 번호 (선택사항)"
+                                                         Margin="0,0,20,10"/>
+                                                
+                                                <TextBlock Grid.Row="1" Grid.Column="2" Text="프로토콜:" 
+                                                           VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                                <ComboBox Grid.Row="1" Grid.Column="3" x:Name="NewRuleProtocolComboBox"
+                                                          SelectedIndex="0" Margin="0,0,0,10">
+                                                    <ComboBoxItem Content="TCP"/>
+                                                    <ComboBoxItem Content="UDP"/>
+                                                    <ComboBoxItem Content="Any"/>
+                                                </ComboBox>
+                                                
+                                                <TextBlock Grid.Row="2" Grid.Column="0" Text="액션:" 
+                                                           VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                                <ComboBox Grid.Row="2" Grid.Column="1" x:Name="NewRuleActionComboBox"
+                                                          SelectedIndex="0" Margin="0,0,20,0">
+                                                    <ComboBoxItem Content="차단 (Block)"/>
+                                                    <ComboBoxItem Content="허용 (Allow)"/>
+                                                </ComboBox>
+                                                
+                                                <Button Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" 
+                                                        Content="규칙 추가"
+                                                        Style="{DynamicResource MaterialDesignRaisedButton}"
+                                                        Background="#4CAF50"
+                                                        Foreground="White"
+                                                        HorizontalAlignment="Right"
+                                                        Click="AddFirewallRule_Click"/>
+                                            </Grid>
+                                        </Expander>
+                                    </Border>
+
+                                    <!-- 방화벽 규칙 DataGrid -->
+                                    <DataGrid Grid.Row="2" x:Name="FirewallRulesDataGrid"
                                               ItemsSource="{Binding FirewallRules}"
                                               AutoGenerateColumns="False"
                                               HeadersVisibility="Column"
                                               GridLinesVisibility="Horizontal"
                                               CanUserResizeColumns="True"
-                                              CanUserSortColumns="True"
                                               Background="{DynamicResource DataGridBackgroundColor}"
-                                              Foreground="{DynamicResource DataGridForegroundColor}">
+                                              Foreground="{DynamicResource DataGridForegroundColor}"
+                                              SelectionMode="Extended"
+                                              Margin="0,0,0,10">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="규칙 이름" 
-                                                              Binding="{Binding Name}" 
-                                                              Width="200"/>
-                                            <DataGridTextColumn Header="설명" 
-                                                              Binding="{Binding Description}" 
-                                                              Width="*"/>
-                                            <DataGridTextColumn Header="응용프로그램" 
-                                                              Binding="{Binding ApplicationName}" 
-                                                              Width="150"/>
-                                            <DataGridTextColumn Header="원격 주소" 
-                                                              Binding="{Binding RemoteAddresses}" 
-                                                              Width="100"/>
+                                                                Binding="{Binding RuleName}" 
+                                                                Width="200"/>
+                                            <DataGridTextColumn Header="대상 IP" 
+                                                                Binding="{Binding TargetIP}" 
+                                                                Width="120"/>
                                             <DataGridTextColumn Header="포트" 
-                                                              Binding="{Binding RemotePorts}" 
-                                                              Width="80"/>
+                                                                Binding="{Binding Port}" 
+                                                                Width="80"/>
                                             <DataGridTextColumn Header="프로토콜" 
-                                                              Binding="{Binding ProtocolName}" 
-                                                              Width="80"/>
+                                                                Binding="{Binding Protocol}" 
+                                                                Width="80"/>
+                                            <DataGridTextColumn Header="액션" 
+                                                                Binding="{Binding Action}" 
+                                                                Width="80"/>
                                             <DataGridTextColumn Header="방향" 
-                                                              Binding="{Binding DirectionName}" 
-                                                              Width="80"/>
+                                                                Binding="{Binding Direction}" 
+                                                                Width="80"/>
                                             <DataGridCheckBoxColumn Header="활성" 
-                                                                  Binding="{Binding Enabled}" 
-                                                                  Width="60"/>
+                                                                    Binding="{Binding IsEnabled}" 
+                                                                    Width="60"/>
                                             <DataGridTextColumn Header="생성일" 
-                                                              Binding="{Binding CreatedDate, StringFormat='{}{0:yyyy-MM-dd HH:mm}'}" 
-                                                              Width="120"/>
-                                            <DataGridTemplateColumn Header="작업" Width="100">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <Button Content="삭제"
-                                                                Style="{DynamicResource MaterialDesignRaisedButton}"
-                                                                Background="#F44336"
-                                                                Foreground="White"
-                                                                FontSize="10"
-                                                                Height="25"
-                                                                Click="RemoveFirewallRule_Click"
-                                                                Tag="{Binding}"/>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
+                                                                Binding="{Binding CreatedAt, StringFormat=yyyy-MM-dd}" 
+                                                                Width="100"/>
+                                            <DataGridTextColumn Header="설명" 
+                                                                Binding="{Binding Description}" 
+                                                                Width="*"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
 
-                                    <!-- 규칙이 없을 때 표시 -->
-                                    <Border Grid.Row="1" x:Name="NoRulesPanel" 
-                                            Background="Transparent" 
-                                            Visibility="Collapsed">
-                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <materialDesign:PackIcon Kind="Shield" 
-                                                                   Width="64" Height="64"
-                                                                   Foreground="{DynamicResource SecondaryForegroundColor}"
-                                                                   HorizontalAlignment="Center"
-                                                                   Margin="0,0,0,20"/>
-                                            <TextBlock Text="등록된 방화벽 규칙이 없습니다." 
-                                                       HorizontalAlignment="Center"
-                                                       FontSize="16"
-                                                       Foreground="{DynamicResource SecondaryForegroundColor}"
+                                    <!-- 액션 버튼들 -->
+                                    <StackPanel Grid.Row="3" Orientation="Horizontal" 
+                                                HorizontalAlignment="Right">
+                                        <Button Content="선택된 규칙 활성화"
+                                                Style="{DynamicResource MaterialDesignRaisedButton}"
+                                                Background="#4CAF50"
+                                                Foreground="White"
+                                                Click="EnableSelectedRules_Click"
+                                                Margin="0,0,10,0"/>
+                                        <Button Content="선택된 규칙 비활성화"
+                                                Style="{DynamicResource MaterialDesignRaisedButton}"
+                                                Background="#FF9800"
+                                                Foreground="White"
+                                                Click="DisableSelectedRules_Click"
+                                                Margin="0,0,10,0"/>
+                                        <Button Content="선택된 규칙 삭제"
+                                                Style="{DynamicResource MaterialDesignRaisedButton}"
+                                                Background="#F44336"
+                                                Foreground="White"
+                                                Click="DeleteSelectedRules_Click"/>
+                                    </StackPanel>
+                                </Grid>
+                            </TabItem>
+
+                            <!-- 방화벽 상태 및 로그 서브탭 -->
+                            <TabItem>
+                                <TabItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Monitor" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                        <TextBlock Text="상태 및 로그" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TabItem.Header>
+                                
+                                <Grid Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- 방화벽 상태 요약 -->
+                                    <Border Grid.Row="0" Background="{DynamicResource SecondaryBackgroundColor}" 
+                                            CornerRadius="8" Padding="15" Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                                                <TextBlock Text="방화벽 상태" 
+                                                           FontWeight="Bold" FontSize="14"
+                                                           Foreground="{DynamicResource PrimaryForegroundColor}"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,0,0,10"/>
+                                                <TextBlock x:Name="FirewallDomainStatusText" Text="도메인: 활성" 
+                                                           Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                           HorizontalAlignment="Center" Margin="0,2"/>
+                                                <TextBlock x:Name="FirewallPrivateStatusText" Text="개인: 활성" 
+                                                           Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                           HorizontalAlignment="Center" Margin="0,2"/>
+                                                <TextBlock x:Name="FirewallPublicStatusText" Text="공용: 활성" 
+                                                           Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                           HorizontalAlignment="Center" Margin="0,2"/>
+                                            </StackPanel>
+                                            
+                                            <StackPanel Grid.Column="1" Margin="0,0,20,0">
+                                                <TextBlock Text="차단 통계" 
+                                                           FontWeight="Bold" FontSize="14"
+                                                           Foreground="{DynamicResource PrimaryForegroundColor}"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,0,0,10"/>
+                                                <TextBlock x:Name="BlockedConnectionsCountText" Text="총 차단: 0" 
+                                                           Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                           HorizontalAlignment="Center" Margin="0,2"/>
+                                                <TextBlock x:Name="BlockedInboundCountText" Text="인바운드: 0" 
+                                                           Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                           HorizontalAlignment="Center" Margin="0,2"/>
+                                                <TextBlock x:Name="BlockedOutboundCountText" Text="아웃바운드: 0" 
+                                                           Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                           HorizontalAlignment="Center" Margin="0,2"/>
+                                            </StackPanel>
+                                            
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="규칙 통계" 
+                                                           FontWeight="Bold" FontSize="14"
+                                                           Foreground="{DynamicResource PrimaryForegroundColor}"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="0,0,0,10"/>
+                                                <TextBlock x:Name="ActiveRulesCountText" Text="활성 규칙: 0" 
+                                                           Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                           HorizontalAlignment="Center" Margin="0,2"/>
+                                                <TextBlock x:Name="CustomRulesCountText" Text="사용자 규칙: 0" 
+                                                           Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                           HorizontalAlignment="Center" Margin="0,2"/>
+                                                <TextBlock x:Name="LastUpdateTimeText" Text="마지막 업데이트: 없음" 
+                                                           Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                           HorizontalAlignment="Center" Margin="0,2"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- 방화벽 로그 -->
+                                    <Border Grid.Row="1" Background="{DynamicResource BackgroundColor}" 
+                                            CornerRadius="8" Padding="15">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            
+                                            <TextBlock Grid.Row="0" Text="방화벽 활동 로그" 
+                                                       FontWeight="Bold" FontSize="14"
+                                                       Foreground="{DynamicResource PrimaryForegroundColor}"
                                                        Margin="0,0,0,10"/>
-                                            <TextBlock Text="네트워크 연결을 차단하면 자동으로 규칙이 생성됩니다." 
-                                                       HorizontalAlignment="Center"
-                                                       FontSize="12"
-                                                       Foreground="{DynamicResource SecondaryForegroundColor}"/>
-                                        </StackPanel>
+                                            
+                                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                                <ItemsControl x:Name="FirewallLogsItemControl">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource SecondaryBackgroundColor}" 
+                                                                    CornerRadius="4" Padding="10" Margin="0,0,0,5">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    
+                                                                    <TextBlock Grid.Column="0" 
+                                                                               Text="{Binding Timestamp, StringFormat=HH:mm:ss}" 
+                                                                               Foreground="{DynamicResource SecondaryForegroundColor}"
+                                                                               FontSize="11"
+                                                                               VerticalAlignment="Top"
+                                                                               Margin="0,0,10,0"/>
+                                                                    
+                                                                    <TextBlock Grid.Column="1" 
+                                                                               Text="{Binding Message}" 
+                                                                               Foreground="{DynamicResource PrimaryForegroundColor}"
+                                                                               FontSize="12"
+                                                                               TextWrapping="Wrap"/>
+                                                                    
+                                                                    <Border Grid.Column="2" 
+                                                                            Background="#2196F3"
+                                                                            CornerRadius="2" Padding="4,2">
+                                                                        <TextBlock Text="{Binding LogLevel}" 
+                                                                                   Foreground="White" 
+                                                                                   FontSize="10"/>
+                                                                    </Border>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </ScrollViewer>
+                                        </Grid>
                                     </Border>
                                 </Grid>
-                            </Border>
-                            </Grid>
                             </TabItem>
                         </TabControl>
                     </TabItem>
