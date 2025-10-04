@@ -6,8 +6,10 @@ namespace LogCheck
     public enum MessageType
     {
         Info,
+        Information,
         Success,
         Warning,
-        Error
+        Error,
+        Critical
     }
 }

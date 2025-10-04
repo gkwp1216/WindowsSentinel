@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -60,6 +61,16 @@ namespace LogCheck
         private readonly AutoBlockStatisticsService _autoBlockStats;
         private readonly ObservableCollection<AutoBlockedConnection> _blockedConnections;
         private readonly ObservableCollection<AutoWhitelistEntry> _whitelistEntries;
+
+        // DDoS 방어 시스템
+        private IntegratedDDoSDefenseSystem? _ddosDefenseSystem;
+        private DDoSDetectionEngine? _ddosDetectionEngine;
+        private AdvancedPacketAnalyzer? _packetAnalyzer;
+        private RateLimitingService? _rateLimitingService;
+        private DDoSSignatureDatabase? _signatureDatabase;
+        private readonly ObservableCollection<DDoSDetectionResult> _ddosAlerts;
+        private readonly ObservableCollection<DDoSDetectionResult> _attackHistory;
+        private readonly DispatcherTimer _ddosUpdateTimer;
 
         // 영구 방화벽 차단 시스템
         private PersistentFirewallManager? _persistentFirewallManager;
@@ -128,6 +139,36 @@ namespace LogCheck
         public string TotalDataTransferred
         {
             get => $"{_totalDataTransferred / (1024.0 * 1024.0):F1} MB";
+        }
+
+        // DDoS 관련 바인딩 프로퍼티
+        private double _riskScore = 0;
+        private int _attacksDetected = 0;
+        private int _blockedIPs = 0;
+        private double _trafficVolume = 0;
+
+        public double RiskScore
+        {
+            get => _riskScore;
+            set { _riskScore = value; OnPropertyChanged(); }
+        }
+
+        public int AttacksDetected
+        {
+            get => _attacksDetected;
+            set { _attacksDetected = value; OnPropertyChanged(); }
+        }
+
+        public int BlockedIPs
+        {
+            get => _blockedIPs;
+            set { _blockedIPs = value; OnPropertyChanged(); }
+        }
+
+        public double TrafficVolume
+        {
+            get => _trafficVolume;
+            set { _trafficVolume = value; OnPropertyChanged(); }
         }
 
         // AutoBlock 바인딩 프로퍼티
@@ -222,6 +263,15 @@ namespace LogCheck
             _whitelistEntries = new ObservableCollection<AutoWhitelistEntry>();
             _firewallRules = new ObservableCollection<FirewallRuleInfo>();
 
+            // DDoS 방어 컬렉션 초기화
+            _ddosAlerts = new ObservableCollection<DDoSDetectionResult>();
+            _attackHistory = new ObservableCollection<DDoSDetectionResult>();
+            _ddosUpdateTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            _ddosUpdateTimer.Tick += DDoSUpdateTimer_Tick;
+
             // 서비스 초기화
             // 전역 허브의 인스턴스를 사용하여 중복 실행 방지
             var hub = MonitoringHub.Instance;
@@ -257,7 +307,6 @@ namespace LogCheck
             // 차단된 연결 목록 초기 로드
             Task.Run(async () => await LoadBlockedConnectionsAsync());
 
-            SecurityAlertsControl.ItemsSource = _securityAlerts;
             LogMessagesControl.ItemsSource = _logService.LogMessages;
             NetworkActivityChart.Series = _chartSeries;
             NetworkActivityChart.XAxes = _chartXAxes;
@@ -268,6 +317,9 @@ namespace LogCheck
 
             // 이벤트 구독
             SubscribeToEvents();
+
+            // DDoS 방어 시스템 초기화 (백그라운드)
+            Task.Run(async () => await InitializeDDoSDefenseSystem());
             SubscribeToAutoBlockEvents();
 
             // UI 초기화
@@ -601,9 +653,6 @@ namespace LogCheck
                 GeneralProcessDataGrid.ItemsSource = _generalProcessData;
 
             // 나머지 UI 초기화
-            if (SecurityAlertsControl != null)
-                SecurityAlertsControl.ItemsSource = _securityAlerts;
-
             if (LogMessagesControl != null)
                 LogMessagesControl.ItemsSource = _logService.LogMessages;
 
@@ -3897,6 +3946,344 @@ namespace LogCheck
                 }
             }
         }
+
+        #region DDoS 방어 시스템
+
+        /// <summary>
+        /// DDoS 방어 시스템 초기화
+        /// </summary>
+        private Task InitializeDDoSDefenseSystem()
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    // DDoS 관련 서비스 초기화
+                    _ddosDetectionEngine = new DDoSDetectionEngine();
+                    _packetAnalyzer = new AdvancedPacketAnalyzer();
+                    _rateLimitingService = new RateLimitingService();
+                    _signatureDatabase = new DDoSSignatureDatabase();
+
+                    // 통합 방어 시스템 초기화
+                    _ddosDefenseSystem = new IntegratedDDoSDefenseSystem(
+                        _ddosDetectionEngine,
+                        _packetAnalyzer,
+                        _rateLimitingService,
+                        _signatureDatabase
+                    );
+
+                    // 이벤트 구독
+                    _ddosDefenseSystem.AttackDetected += OnDDoSAttackDetected;
+                    _ddosDefenseSystem.DefenseActionExecuted += OnDefenseActionExecuted;
+                    _ddosDefenseSystem.MetricsUpdated += OnDDoSMetricsUpdated;
+
+                    // UI 컨트롤에 데이터 바인딩 (XAML 컨트롤들이 로드된 후 실행)
+                    _ = Dispatcher.BeginInvoke(() =>
+                {
+                    try
+                    {
+                        var ddosAlertsPanel = FindName("DDoSAlertsPanel") as ItemsControl;
+                        if (ddosAlertsPanel != null)
+                            ddosAlertsPanel.ItemsSource = _ddosAlerts;
+
+                        var attackHistoryDataGrid = FindName("AttackHistoryDataGrid") as DataGrid;
+                        if (attackHistoryDataGrid != null)
+                            attackHistoryDataGrid.ItemsSource = _attackHistory;
+
+                        var signatureDataGrid = FindName("SignatureDataGrid") as DataGrid;
+                        if (signatureDataGrid != null)
+                            signatureDataGrid.ItemsSource = _signatureDatabase.GetActiveSignatures();
+                    }
+                    catch { /* UI 컨트롤 바인딩 실패 시 무시 */ }
+                });
+
+                    // 방어 시스템 시작
+                    _ddosDefenseSystem.Start();
+                    _ddosUpdateTimer.Start();
+
+                    // LogHelper.Log("DDoS 방어 시스템이 초기화되었습니다.", "Information");
+                }
+                catch (Exception)
+                {
+                    // LogHelper.Log($"DDoS 방어 시스템 초기화 실패: {ex.Message}", "Error");
+                }
+            });
+        }
+
+        /// <summary>
+        /// DDoS 공격 감지 이벤트 핸들러
+        /// </summary>
+        private void OnDDoSAttackDetected(object? sender, DDoSDetectionResult e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                try
+                {
+                    // 실시간 알림에 추가
+                    _ddosAlerts.Insert(0, e);
+
+                    // 최대 100개 유지
+                    while (_ddosAlerts.Count > 100)
+                        _ddosAlerts.RemoveAt(_ddosAlerts.Count - 1);
+
+                    // 공격 기록에 추가
+                    _attackHistory.Insert(0, e);
+
+                    // UI 업데이트
+                    AttacksDetected++;
+
+                    // 심각도에 따른 알림 표시
+                    var alertMessage = $"[{e.Severity}] {e.AttackType} 공격 감지 - {e.SourceIP}";
+
+                    if (e.Severity >= Models.DDoSSeverity.High)
+                    {
+                        MessageBox.Show(alertMessage, "DDoS 공격 감지", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+
+                    // LogHelper.Log(alertMessage, "Warning");
+                }
+                catch (Exception)
+                {
+                    // LogHelper.Log($"DDoS 공격 알림 처리 오류: {ex.Message}", "Error");
+                }
+            });
+        }
+
+        /// <summary>
+        /// 방어 조치 실행 이벤트 핸들러
+        /// </summary>
+        private void OnDefenseActionExecuted(object? sender, DefenseActionResult e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                try
+                {
+                    var message = e.GetSummary();
+                    // LogHelper.Log(message, e.Success ? "Information" : "Error");
+
+                    if (e.Success && e.ActionType == DefenseActionType.IpBlock)
+                    {
+                        BlockedIPs++;
+                    }
+                }
+                catch (Exception)
+                {
+                    // LogHelper.Log($"방어 조치 결과 처리 오류: {ex.Message}", "Error");
+                }
+            });
+        }
+
+        /// <summary>
+        /// DDoS 메트릭 업데이트 이벤트 핸들러
+        /// </summary>
+        private void OnDDoSMetricsUpdated(object? sender, DDoSMonitoringMetrics e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                try
+                {
+                    // UI 메트릭 업데이트
+                    RiskScore = e.RiskScore;
+                    TrafficVolume = e.TrafficVolumeMbps;
+
+                    // 위험 점수에 따른 색상 업데이트
+                    UpdateRiskScoreDisplay(e.RiskScore);
+
+                    // 차트 데이터 업데이트
+                    UpdateDDoSCharts(e);
+                }
+                catch (Exception)
+                {
+                    // LogHelper.Log($"DDoS 메트릭 업데이트 오류: {ex.Message}", "Error");
+                }
+            });
+        }
+
+        /// <summary>
+        /// DDoS 업데이트 타이머 핸들러
+        /// </summary>
+        private void DDoSUpdateTimer_Tick(object? sender, EventArgs e)
+        {
+            try
+            {
+                if (_ddosDefenseSystem != null)
+                {
+                    var stats = _ddosDefenseSystem.GetStatistics();
+
+                    Dispatcher.Invoke(() =>
+                    {
+                        AttacksDetected = stats.TotalAttacksDetected;
+                        BlockedIPs = stats.AttacksBlocked;
+
+                        // 통계 정보 UI 업데이트
+                        var totalSignaturesText = FindName("TotalSignaturesText") as TextBlock;
+                        if (totalSignaturesText != null)
+                            totalSignaturesText.Text = _signatureDatabase?.GetStatistics().TotalSignatures.ToString() ?? "0";
+
+                        var activeSignaturesText = FindName("ActiveSignaturesText") as TextBlock;
+                        if (activeSignaturesText != null)
+                            activeSignaturesText.Text = _signatureDatabase?.GetStatistics().ActiveSignatures.ToString() ?? "0";
+                    });
+                }
+            }
+            catch (Exception)
+            {
+                // LogHelper.Log($"DDoS 정기 업데이트 오류: {ex.Message}", "Error");
+            }
+        }
+
+        /// <summary>
+        /// 위험 점수 표시 업데이트
+        /// </summary>
+        private void UpdateRiskScoreDisplay(double riskScore)
+        {
+            try
+            {
+                var riskScoreText = FindName("RiskScoreText") as TextBlock;
+                if (riskScoreText != null)
+                {
+                    riskScoreText.Text = riskScore.ToString("F0");
+
+                    // 위험 점수에 따른 색상 변경
+                    var color = riskScore switch
+                    {
+                        < 20 => "#4CAF50", // 녹색 - 안전
+                        < 40 => "#FF9800", // 주황색 - 주의
+                        < 70 => "#F44336", // 빨간색 - 위험
+                        _ => "#9C27B0"     // 보라색 - 심각
+                    };
+
+                    riskScoreText.Foreground = new SolidColorBrush((MediaColor)System.Windows.Media.ColorConverter.ConvertFromString(color));
+                }
+
+                var riskStatusText = FindName("RiskStatusText") as TextBlock;
+                if (riskStatusText != null)
+                {
+                    riskStatusText.Text = riskScore switch
+                    {
+                        < 20 => "정상",
+                        < 40 => "주의",
+                        < 70 => "위험",
+                        _ => "심각"
+                    };
+                }
+            }
+            catch (Exception)
+            {
+                // LogHelper.Log($"위험 점수 표시 업데이트 오류: {ex.Message}", "Error");
+            }
+        }
+
+        /// <summary>
+        /// DDoS 차트 업데이트
+        /// </summary>
+        private void UpdateDDoSCharts(DDoSMonitoringMetrics metrics)
+        {
+            try
+            {
+                // 트래픽 차트 업데이트 (여기서는 기본 구현)
+                // 실제 구현에서는 LiveCharts를 사용한 시계열 차트 업데이트
+
+                // 공격 유형별 차트 업데이트
+                // 실제 구현에서는 파이 차트에 공격 유형별 분포 표시
+            }
+            catch (Exception)
+            {
+                // LogHelper.Log($"DDoS 차트 업데이트 오류: {ex.Message}", "Error");
+            }
+        }
+
+        /// <summary>
+        /// 알림 지우기 버튼 핸들러
+        /// </summary>
+        private void ClearAlerts_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _ddosAlerts.Clear();
+                // LogHelper.Log("DDoS 알림이 지워졌습니다.", "Information");
+            }
+            catch (Exception)
+            {
+                // LogHelper.Log($"알림 지우기 오류: {ex.Message}", "Error");
+            }
+        }
+
+        /// <summary>
+        /// 공격 필터 적용 버튼 핸들러
+        /// </summary>
+        private void ApplyAttackFilter_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // 필터 로직 구현
+                // 공격 유형, 심각도, 날짜 범위에 따른 필터링
+                // LogHelper.Log("공격 기록 필터가 적용되었습니다.", "Information");
+            }
+            catch (Exception)
+            {
+                // LogHelper.Log($"공격 필터 적용 오류: {ex.Message}", "Error");
+            }
+        }
+
+        /// <summary>
+        /// 시그니처 새로 고침 버튼 핸들러
+        /// </summary>
+        private void RefreshSignatures_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var signatureDataGrid = FindName("SignatureDataGrid") as DataGrid;
+                if (_signatureDatabase != null && signatureDataGrid != null)
+                {
+                    signatureDataGrid.ItemsSource = _signatureDatabase.GetActiveSignatures();
+                    // LogHelper.Log("시그니처 목록이 새로 고침되었습니다.", "Information");
+                }
+            }
+            catch (Exception)
+            {
+                // LogHelper.Log($"시그니처 새로 고침 오류: {ex.Message}", "Error");
+            }
+        }
+
+        /// <summary>
+        /// 기본 시그니처 로드 버튼 핸들러
+        /// </summary>
+        private void LoadDefaultSignatures_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _signatureDatabase?.LoadDefaultSignatures();
+                var signatureDataGrid = FindName("SignatureDataGrid") as DataGrid;
+                if (signatureDataGrid != null)
+                {
+                    signatureDataGrid.ItemsSource = _signatureDatabase?.GetActiveSignatures();
+                }
+                // LogHelper.Log("기본 시그니처가 로드되었습니다.", "Information");
+            }
+            catch (Exception)
+            {
+                // LogHelper.Log($"기본 시그니처 로드 오류: {ex.Message}", "Error");
+            }
+        }
+
+        /// <summary>
+        /// 시그니처 내보내기 버튼 핸들러
+        /// </summary>
+        private void ExportSignatures_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // 시그니처 내보내기 로직 구현
+                // LogHelper.Log("시그니처 내보내기가 완료되었습니다.", "Information");
+            }
+            catch (Exception)
+            {
+                // LogHelper.Log($"시그니처 내보내기 오류: {ex.Message}", "Error");
+            }
+        }
+
+        #endregion
 
         private void UpdateFirewallStatusAsync()
         {

@@ -1559,8 +1559,9 @@
                         <TabControl>
                             <!-- AutoBlock 서브탭 -->
                             <TabItem Header="AutoBlock">
-                                <!-- 보안 상태 및 차트 / 로그 및 상태 -->
-                                <Grid>
+                                <!-- 스크롤 가능한 대시보드 -->
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                    <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="1.5*"/>
                                         <RowDefinition Height="1*"/>
@@ -1571,7 +1572,6 @@
                                     <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="10,10,10,0" BorderBrush="#C2C2C2" BorderThickness="1" ClipToBounds="True">
                                         <Grid Margin="10">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
@@ -1630,7 +1630,7 @@
                                                 </StackPanel>
                                             </Border>
 
-                                            <Border Grid.Column="1" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                                            <Border Grid.Column="1" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="10,0,0,0">
                                                 <StackPanel>
                                                     <TextBlock Text="실시간 네트워크 활동" HorizontalAlignment="Center" Foreground="{DynamicResource ForegroundColor}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
                                                     <lvc:CartesianChart x:Name="NetworkActivityChart"
@@ -1641,27 +1641,6 @@
                                                                         Background="White"                                                             
                                                                         LegendPosition="Hidden"
                                                                         TooltipPosition="Hidden"/>
-                                                </StackPanel>
-                                            </Border>
-
-                                            <Border Grid.Column="2" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,0,0">
-                                                <StackPanel>
-                                                    <TextBlock Text="보안 경고 및 권장 조치" Foreground="{DynamicResource ForegroundColor}" HorizontalAlignment="Center" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                                                    <ScrollViewer Height="150" VerticalScrollBarVisibility="Auto">
-                                                        <ItemsControl x:Name="SecurityAlertsControl">
-                                                            <ItemsControl.ItemTemplate>
-                                                                <DataTemplate>
-                                                                    <Border Background="Gray" CornerRadius="6" Padding="10" Margin="0,0,0,8">
-                                                                        <StackPanel>
-                                                                            <TextBlock Text="{Binding Title}" Foreground="White" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                                                                            <TextBlock Text="{Binding Description}" Foreground="White" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,8"/>
-                                                                            <TextBlock Text="{Binding RecommendedAction}" Foreground="White" FontSize="11" FontStyle="Italic"/>
-                                                                        </StackPanel>
-                                                                    </Border>
-                                                                </DataTemplate>
-                                                            </ItemsControl.ItemTemplate>
-                                                        </ItemsControl>
-                                                    </ScrollViewer>
                                                 </StackPanel>
                                             </Border>
                                         </Grid>
@@ -1758,6 +1737,7 @@
                                         </Grid>
                                     </Border>
                                 </Grid>
+                                </ScrollViewer>
                             </TabItem>
                             
                             <!-- 실시간 모니터링 서브탭 -->
@@ -1768,6 +1748,287 @@
                                                VerticalAlignment="Center" 
                                                FontSize="16"
                                                Foreground="{DynamicResource SecondaryForegroundColor}"/>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </TabItem>
+
+                    <!-- 🛡️ DDoS 방어 탭 -->
+                    <TabItem>
+                        <TabItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Shield" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock Text="🛡️ DDoS 방어" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        
+                        <!-- DDoS 방어 서브 탭들 -->
+                        <TabControl>
+                            <!-- 실시간 모니터링 서브탭 -->
+                            <TabItem Header="실시간 모니터링">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="200"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- 상단: DDoS 상태 대시보드 -->
+                                    <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="10" BorderBrush="#C2C2C2" BorderThickness="1" Padding="15">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- 위험 점수 -->
+                                            <Border Grid.Column="0" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="위험 점수" HorizontalAlignment="Center" Foreground="{DynamicResource ForegroundColor}" FontSize="14" FontWeight="SemiBold"/>
+                                                    <TextBlock x:Name="RiskScoreText" Text="0" HorizontalAlignment="Center" Foreground="#4CAF50" FontSize="24" FontWeight="Bold" Margin="0,5,0,0"/>
+                                                    <TextBlock x:Name="RiskStatusText" Text="정상" HorizontalAlignment="Center" Foreground="{DynamicResource SecondaryForegroundColor}" FontSize="12"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- 공격 감지 수 -->
+                                            <Border Grid.Column="1" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="감지된 공격" HorizontalAlignment="Center" Foreground="{DynamicResource ForegroundColor}" FontSize="14" FontWeight="SemiBold"/>
+                                                    <TextBlock x:Name="AttacksDetectedText" Text="0" HorizontalAlignment="Center" Foreground="#FF9800" FontSize="24" FontWeight="Bold" Margin="0,5,0,0"/>
+                                                    <TextBlock Text="건" HorizontalAlignment="Center" Foreground="{DynamicResource SecondaryForegroundColor}" FontSize="12"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- 차단된 IP -->
+                                            <Border Grid.Column="2" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,10,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="차단된 IP" HorizontalAlignment="Center" Foreground="{DynamicResource ForegroundColor}" FontSize="14" FontWeight="SemiBold"/>
+                                                    <TextBlock x:Name="BlockedIPsText" Text="0" HorizontalAlignment="Center" Foreground="#F44336" FontSize="24" FontWeight="Bold" Margin="0,5,0,0"/>
+                                                    <TextBlock Text="개" HorizontalAlignment="Center" Foreground="{DynamicResource SecondaryForegroundColor}" FontSize="12"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- 트래픽 볼륨 -->
+                                            <Border Grid.Column="3" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15">
+                                                <StackPanel>
+                                                    <TextBlock Text="트래픽 볼륨" HorizontalAlignment="Center" Foreground="{DynamicResource ForegroundColor}" FontSize="14" FontWeight="SemiBold"/>
+                                                    <TextBlock x:Name="TrafficVolumeText" Text="0.0" HorizontalAlignment="Center" Foreground="#2196F3" FontSize="24" FontWeight="Bold" Margin="0,5,0,0"/>
+                                                    <TextBlock Text="Mbps" HorizontalAlignment="Center" Foreground="{DynamicResource SecondaryForegroundColor}" FontSize="12"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- 중간: 실시간 차트 -->
+                                    <Border Grid.Row="1" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="10,0,10,10" BorderBrush="#C2C2C2" BorderThickness="1">
+                                        <Grid Margin="15">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- 트래픽 차트 -->
+                                            <Border Grid.Column="0" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="10" Margin="0,0,5,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="트래픽 모니터링" HorizontalAlignment="Center" Foreground="{DynamicResource ForegroundColor}" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                                    <lvc:CartesianChart x:Name="TrafficChart" Height="120"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- 공격 유형별 차트 -->
+                                            <Border Grid.Column="1" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="10" Margin="5,0,0,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="공격 유형 분포" HorizontalAlignment="Center" Foreground="{DynamicResource ForegroundColor}" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                                    <lvc:PieChart x:Name="AttackTypeChart" Height="120"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- 하단: 실시간 로그 -->
+                                    <Border Grid.Row="2" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="10,0,10,20" BorderBrush="#C2C2C2" BorderThickness="1">
+                                        <Grid Margin="15">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <!-- 헤더 -->
+                                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                                                <TextBlock Text="실시간 DDoS 알림" Foreground="{DynamicResource ForegroundColor}" FontSize="16" FontWeight="SemiBold"/>
+                                                <Button x:Name="ClearAlertsButton" Content="지우기" Style="{DynamicResource RefreshButtonStyle}" Margin="10,0,0,0" Click="ClearAlerts_Click" Width="60" Height="25"/>
+                                            </StackPanel>
+
+                                            <!-- 알림 목록 -->
+                                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                                <ItemsControl x:Name="DDoSAlertsPanel">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="{DynamicResource BackgroundColor}" CornerRadius="5" Padding="10" Margin="0,2">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <!-- 심각도 아이콘 -->
+                                                                    <Border Grid.Column="0" Background="{Binding SeverityColor}" CornerRadius="3" Padding="5" Margin="0,0,10,0">
+                                                                        <materialDesign:PackIcon Kind="{Binding SeverityIcon}" Foreground="White" Width="16" Height="16"/>
+                                                                    </Border>
+
+                                                                    <!-- 메시지 내용 -->
+                                                                    <StackPanel Grid.Column="1">
+                                                                        <TextBlock Text="{Binding Title}" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor}"/>
+                                                                        <TextBlock Text="{Binding Description}" Foreground="{DynamicResource SecondaryForegroundColor}" TextWrapping="Wrap"/>
+                                                                        <TextBlock Text="{Binding SourceIP, StringFormat='출발지: {0}'}" Foreground="{DynamicResource SecondaryForegroundColor}" FontSize="11"/>
+                                                                    </StackPanel>
+
+                                                                    <!-- 시간 -->
+                                                                    <TextBlock Grid.Column="2" Text="{Binding Timestamp, StringFormat='{}{0:HH:mm:ss}'}" 
+                                                                               Foreground="{DynamicResource SecondaryForegroundColor}" FontSize="11" VerticalAlignment="Top"/>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </ScrollViewer>
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+                            </TabItem>
+
+                            <!-- 공격 기록 서브탭 -->
+                            <TabItem Header="공격 기록">
+                                <Grid Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- 필터 영역 -->
+                                    <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,0,10" BorderBrush="#C2C2C2" BorderThickness="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <ComboBox x:Name="AttackTypeFilterComboBox" Width="150" materialDesign:HintAssist.Hint="공격 유형" Margin="0,0,10,0">
+                                                <ComboBoxItem Content="모든 유형" IsSelected="True"/>
+                                                <ComboBoxItem Content="SYN Flood"/>
+                                                <ComboBoxItem Content="UDP Flood"/>
+                                                <ComboBoxItem Content="HTTP Flood"/>
+                                                <ComboBoxItem Content="Slowloris"/>
+                                            </ComboBox>
+                                            
+                                            <ComboBox x:Name="SeverityFilterComboBox" Width="120" materialDesign:HintAssist.Hint="심각도" Margin="0,0,10,0">
+                                                <ComboBoxItem Content="모든 심각도" IsSelected="True"/>
+                                                <ComboBoxItem Content="낮음"/>
+                                                <ComboBoxItem Content="보통"/>
+                                                <ComboBoxItem Content="높음"/>
+                                                <ComboBoxItem Content="심각"/>
+                                            </ComboBox>
+                                            
+                                            <DatePicker x:Name="StartDatePicker" Width="120" materialDesign:HintAssist.Hint="시작 날짜" Margin="0,0,10,0"/>
+                                            <DatePicker x:Name="EndDatePicker" Width="120" materialDesign:HintAssist.Hint="종료 날짜" Margin="0,0,10,0"/>
+                                            
+                                            <Button x:Name="ApplyFilterButton" Content="필터 적용" Style="{DynamicResource RefreshButtonStyle}" Click="ApplyAttackFilter_Click"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- 공격 기록 목록 -->
+                                    <DataGrid Grid.Row="1" x:Name="AttackHistoryDataGrid" 
+                                              Background="{DynamicResource DataGridBackgroundColor}"
+                                              Foreground="{DynamicResource DataGridForegroundColor}"
+                                              AutoGenerateColumns="False"
+                                              CanUserAddRows="False"
+                                              CanUserDeleteRows="False"
+                                              IsReadOnly="True"
+                                              SelectionMode="Single"
+                                              GridLinesVisibility="Horizontal"
+                                              HeadersVisibility="Column">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="시간" Binding="{Binding DetectedAt, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}" Width="140"/>
+                                            <DataGridTextColumn Header="공격 유형" Binding="{Binding AttackType}" Width="120"/>
+                                            <DataGridTextColumn Header="심각도" Binding="{Binding Severity}" Width="80"/>
+                                            <DataGridTextColumn Header="출발지 IP" Binding="{Binding SourceIP}" Width="120"/>
+                                            <DataGridTextColumn Header="대상" Binding="{Binding TargetIP}" Width="120"/>
+                                            <DataGridTextColumn Header="포트" Binding="{Binding TargetPort}" Width="80"/>
+                                            <DataGridTextColumn Header="패킷 수" Binding="{Binding PacketCount, StringFormat='{}{0:N0}'}" Width="100"/>
+                                            <DataGridTextColumn Header="공격 점수" Binding="{Binding AttackScore, StringFormat='{}{0:F1}'}" Width="100"/>
+                                            <DataGridTextColumn Header="설명" Binding="{Binding AttackDescription}" Width="*"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </TabItem>
+
+                            <!-- 시그니처 관리 서브탭 -->
+                            <TabItem Header="시그니처 관리">
+                                <Grid Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- 시그니처 통계 -->
+                                    <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,0,10" BorderBrush="#C2C2C2" BorderThickness="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                                                <TextBlock Text="총 시그니처" Foreground="{DynamicResource ForegroundColor}" FontSize="12"/>
+                                                <TextBlock x:Name="TotalSignaturesText" Text="0" Foreground="{DynamicResource ForegroundColor}" FontSize="20" FontWeight="Bold"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                                                <TextBlock Text="활성 시그니처" Foreground="{DynamicResource ForegroundColor}" FontSize="12"/>
+                                                <TextBlock x:Name="ActiveSignaturesText" Text="0" Foreground="#4CAF50" FontSize="20" FontWeight="Bold"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                                                <TextBlock Text="매칭 성공률" Foreground="{DynamicResource ForegroundColor}" FontSize="12"/>
+                                                <TextBlock x:Name="MatchSuccessRateText" Text="0%" Foreground="#2196F3" FontSize="20" FontWeight="Bold"/>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="3" HorizontalAlignment="Center">
+                                                <TextBlock Text="마지막 업데이트" Foreground="{DynamicResource ForegroundColor}" FontSize="12"/>
+                                                <TextBlock x:Name="LastUpdateText" Text="-" Foreground="{DynamicResource SecondaryForegroundColor}" FontSize="12"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- 시그니처 목록 -->
+                                    <DataGrid Grid.Row="1" x:Name="SignatureDataGrid"
+                                              Background="{DynamicResource DataGridBackgroundColor}"
+                                              Foreground="{DynamicResource DataGridForegroundColor}"
+                                              AutoGenerateColumns="False"
+                                              CanUserAddRows="False"
+                                              CanUserDeleteRows="False"
+                                              IsReadOnly="True"
+                                              SelectionMode="Single"
+                                              GridLinesVisibility="Horizontal"
+                                              HeadersVisibility="Column">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="120"/>
+                                            <DataGridTextColumn Header="이름" Binding="{Binding Name}" Width="200"/>
+                                            <DataGridTextColumn Header="공격 유형" Binding="{Binding AttackType}" Width="120"/>
+                                            <DataGridTextColumn Header="심각도" Binding="{Binding Severity}" Width="80"/>
+                                            <DataGridCheckBoxColumn Header="활성화" Binding="{Binding IsActive}" Width="70"/>
+                                            <DataGridTextColumn Header="매칭 횟수" Binding="{Binding MatchCount}" Width="100"/>
+                                            <DataGridTextColumn Header="설명" Binding="{Binding Description}" Width="*"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+
+                                    <!-- 시그니처 관리 버튼들 -->
+                                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                                        <Button x:Name="RefreshSignaturesButton" Content="새로 고침" Style="{DynamicResource RefreshButtonStyle}" Margin="0,0,10,0" Click="RefreshSignatures_Click"/>
+                                        <Button x:Name="LoadDefaultSignaturesButton" Content="기본 시그니처 로드" Style="{DynamicResource RefreshButtonStyle}" Margin="0,0,10,0" Click="LoadDefaultSignatures_Click"/>
+                                        <Button x:Name="ExportSignaturesButton" Content="내보내기" Style="{DynamicResource RefreshButtonStyle}" Click="ExportSignatures_Click"/>
+                                    </StackPanel>
                                 </Grid>
                             </TabItem>
                         </TabControl>

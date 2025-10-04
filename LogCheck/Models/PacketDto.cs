@@ -1,6 +1,6 @@
 namespace LogCheck.Models
 {
-    public enum ProtocolKind { TCP, UDP, ICMP, Other }
+    // ProtocolKind은 DDoSAttackTypes.cs에 정의됨
 
     public class PacketDto
     {

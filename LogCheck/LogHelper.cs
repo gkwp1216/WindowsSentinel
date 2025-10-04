@@ -37,7 +37,7 @@ namespace LogCheck
             {
                 throw new ArgumentNullException(nameof(message), "로그 메시지는 null이거나 비어있을 수 없습니다.");
             }
-            Log("INFO", message);
+            Log(message, MessageType.Info);
         }
 
         public static void LogWarning(string message)
@@ -46,7 +46,7 @@ namespace LogCheck
             {
                 throw new ArgumentNullException(nameof(message), "로그 메시지는 null이거나 비어있을 수 없습니다.");
             }
-            Log("WARN", message);
+            Log(message, MessageType.Warning);
         }
 
         public static void LogError(string message, Exception? ex = null)
@@ -59,15 +59,11 @@ namespace LogCheck
             string errorMessage = ex != null
                 ? $"{message}\n예외: {ex.Message}\n스택 추적: {ex.StackTrace}"
                 : message;
-            Log("ERROR", errorMessage);
+            Log(errorMessage, MessageType.Error);
         }
 
-        private static void Log(string level, string message)
+        public static void Log(string message, MessageType messageType)
         {
-            if (string.IsNullOrEmpty(level))
-            {
-                throw new ArgumentNullException(nameof(level), "로그 레벨은 null이거나 비어있을 수 없습니다.");
-            }
             if (string.IsNullOrEmpty(message))
             {
                 throw new ArgumentNullException(nameof(message), "로그 메시지는 null이거나 비어있을 수 없습니다.");
@@ -75,6 +71,7 @@ namespace LogCheck
 
             try
             {
+                string level = messageType.ToString().ToUpper();
                 string logMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] [{level}] {message}\n";
 
                 // 콘솔에 출력

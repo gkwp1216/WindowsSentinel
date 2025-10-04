@@ -59,6 +59,14 @@ namespace LogCheck.Services
         #region Public Methods
 
         /// <summary>
+        /// 네트워크 연결 데이터 분석 (동기 래퍼)
+        /// </summary>
+        public List<DDoSAlert> AnalyzeConnections(List<ProcessNetworkInfo> connections)
+        {
+            return AnalyzeConnectionsAsync(connections).Result;
+        }
+
+        /// <summary>
         /// 네트워크 연결 데이터를 분석하여 DDoS 공격 탐지
         /// </summary>
         public async Task<List<DDoSAlert>> AnalyzeConnectionsAsync(List<ProcessNetworkInfo> connections)
@@ -506,32 +514,9 @@ namespace LogCheck.Services
         public DateTime? ResolvedAt { get; set; }
     }
 
-    /// <summary>
-    /// DDoS 공격 유형
-    /// </summary>
-    public enum DDoSAttackType
-    {
-        SynFlood,
-        UdpFlood,
-        ConnectionFlood,
-        SlowLoris,
-        BandwidthFlood,
-        HttpFlood,
-        IcmpFlood,
-        SmurfAttack,
-        PingOfDeath
-    }
+    // DDoSAttackType은 Models/DDoSAttackTypes.cs에 정의됨
 
-    /// <summary>
-    /// DDoS 공격 심각도
-    /// </summary>
-    public enum DDoSSeverity
-    {
-        Low,
-        Medium,
-        High,
-        Critical
-    }
+    // DDoSSeverity는 Models/DDoSAttackTypes.cs에 정의됨
 
     /// <summary>
     /// 연결 추적기

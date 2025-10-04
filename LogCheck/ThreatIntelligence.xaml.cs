@@ -480,7 +480,7 @@ namespace LogCheck
 
         #region 서비스 이벤트 핸들러
 
-        private void OnAbuseIPDBError(object sender, string error)
+        private void OnAbuseIPDBError(object? sender, string error)
         {
             SafeInvokeUI(() =>
             {
@@ -488,7 +488,7 @@ namespace LogCheck
             });
         }
 
-        private void OnThreatDataReceived(object sender, ThreatIntelligenceData threatData)
+        private void OnThreatDataReceived(object? sender, ThreatIntelligenceData threatData)
         {
             SafeInvokeUI(() =>
             {
@@ -496,7 +496,7 @@ namespace LogCheck
             });
         }
 
-        private void OnIPBlocked(object sender, BlockedIPAddress blockedIP)
+        private void OnIPBlocked(object? sender, BlockedIPAddress blockedIP)
         {
             SafeInvokeUI(() =>
             {
@@ -506,7 +506,7 @@ namespace LogCheck
             });
         }
 
-        private void OnIPUnblocked(object sender, string ipAddress)
+        private void OnIPUnblocked(object? sender, string ipAddress)
         {
             SafeInvokeUI(() =>
             {
@@ -516,7 +516,7 @@ namespace LogCheck
             });
         }
 
-        private void OnIPBlockerError(object sender, string error)
+        private void OnIPBlockerError(object? sender, string error)
         {
             SafeInvokeUI(() =>
             {
@@ -524,7 +524,7 @@ namespace LogCheck
             });
         }
 
-        private void OnThreatDetected(object sender, ThreatLookupResult threatResult)
+        private void OnThreatDetected(object? sender, ThreatLookupResult threatResult)
         {
             SafeInvokeUI(() =>
             {
@@ -655,7 +655,7 @@ namespace LogCheck
             {
                 AddLogMessage("위협 정보 관리 페이지를 떠났습니다.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // 오류 무시
             }

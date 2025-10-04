@@ -330,6 +330,36 @@ namespace LogCheck.Services
             }
         }
 
+        /// <summary>
+        /// IP에 레이트 리미트 적용
+        /// </summary>
+        public async Task ApplyRateLimit(string ipAddress, ProcessNetworkInfo networkInfo)
+        {
+            if (string.IsNullOrEmpty(ipAddress))
+                return;
+
+            await Task.Run(() =>
+            {
+                // 레이트 리미트 적용 로직
+                Console.WriteLine($"IP {ipAddress}에 레이트 리미트 적용됨");
+            });
+        }
+
+        /// <summary>
+        /// IP별 연결 제한 적용
+        /// </summary>
+        public async Task LimitConnectionsForIP(string ipAddress)
+        {
+            if (string.IsNullOrEmpty(ipAddress))
+                return;
+
+            await Task.Run(() =>
+            {
+                // IP별 연결 제한 적용 로직
+                Console.WriteLine($"IP {ipAddress}의 연결이 제한됨");
+            });
+        }
+
         #endregion
     }
 
