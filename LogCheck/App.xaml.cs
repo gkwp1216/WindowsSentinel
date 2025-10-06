@@ -142,6 +142,28 @@ namespace LogCheck
                 var bpf = string.IsNullOrWhiteSpace(s.BpfFilter) ? "tcp or udp or icmp" : s.BpfFilter;
                 string? nic = s.AutoSelectNic ? null : (string.IsNullOrWhiteSpace(s.SelectedNicId) ? null : s.SelectedNicId);
 
+                // 방화벽 규칙 복구 (애플리케이션 시작 시)
+                try
+                {
+                    var persistentFirewallManager = new PersistentFirewallManager();
+                    var restoredCount = await persistentFirewallManager.RestoreBlockRulesFromDatabase();
+
+                    if (restoredCount > 0)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"시작 시 {restoredCount}개의 방화벽 규칙을 복구했습니다.");
+                        _notifyIcon?.ShowBalloonTip(3000, "Windows Sentinel",
+                            $"{restoredCount}개의 차단 규칙이 복구되었습니다.", ToolTipIcon.Info);
+                    }
+
+                    // 정기 동기화 시작
+                    persistentFirewallManager.StartPeriodicSynchronization();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"방화벽 규칙 복구 실패: {ex.Message}");
+                    // 복구 실패는 애플리케이션 시작을 방해하지 않음
+                }
+
                 if (s.AutoStartMonitoring)
                 {
                     await MonitoringHub.Instance.StartAsync(bpf, nic);

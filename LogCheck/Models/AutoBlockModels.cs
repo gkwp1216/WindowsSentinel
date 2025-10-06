@@ -395,4 +395,147 @@ namespace LogCheck.Models
         /// </summary>
         public double AutoBlockSuccessRate { get; set; }
     }
+
+    /// <summary>
+    /// 영구적으로 차단된 연결 정보 (방화벽 규칙과 연동)
+    /// </summary>
+    public class PermanentBlockedConnection : INotifyPropertyChanged
+    {
+        private bool _isPermanentlyBlocked;
+        private bool _firewallRuleExists;
+
+        /// <summary>
+        /// 프로세스 이름
+        /// </summary>
+        public string ProcessName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 프로세스 경로
+        /// </summary>
+        public string ProcessPath { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 원격 주소
+        /// </summary>
+        public string RemoteAddress { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 원격 포트
+        /// </summary>
+        public int RemotePort { get; set; }
+
+        /// <summary>
+        /// 프로토콜 (TCP/UDP)
+        /// </summary>
+        public string Protocol { get; set; } = "TCP";
+
+        /// <summary>
+        /// 차단 레벨
+        /// </summary>
+        public int BlockLevel { get; set; }
+
+        /// <summary>
+        /// 차단 이유
+        /// </summary>
+        public string Reason { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 첫 차단 시간
+        /// </summary>
+        public DateTime FirstBlockedAt { get; set; }
+
+        /// <summary>
+        /// 마지막 차단 시간
+        /// </summary>
+        public DateTime LastBlockedAt { get; set; }
+
+        /// <summary>
+        /// 차단 횟수
+        /// </summary>
+        public int BlockCount { get; set; }
+
+        /// <summary>
+        /// 영구 차단 여부
+        /// </summary>
+        public bool IsPermanentlyBlocked
+        {
+            get => _isPermanentlyBlocked;
+            set
+            {
+                if (_isPermanentlyBlocked != value)
+                {
+                    _isPermanentlyBlocked = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(StatusText));
+                    OnPropertyChanged(nameof(StatusColor));
+                }
+            }
+        }
+
+        /// <summary>
+        /// 방화벽 규칙 존재 여부
+        /// </summary>
+        public bool FirewallRuleExists
+        {
+            get => _firewallRuleExists;
+            set
+            {
+                if (_firewallRuleExists != value)
+                {
+                    _firewallRuleExists = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(StatusText));
+                    OnPropertyChanged(nameof(StatusColor));
+                }
+            }
+        }
+
+        /// <summary>
+        /// UI 표시용 상태 텍스트
+        /// </summary>
+        public string StatusText
+        {
+            get
+            {
+                if (FirewallRuleExists && IsPermanentlyBlocked)
+                    return "영구 차단 중";
+                else if (IsPermanentlyBlocked && !FirewallRuleExists)
+                    return "규칙 복구 필요";
+                else if (!IsPermanentlyBlocked)
+                    return "임시 차단";
+                else
+                    return "상태 불명";
+            }
+        }
+
+        /// <summary>
+        /// UI 표시용 상태 색상
+        /// </summary>
+        public string StatusColor
+        {
+            get
+            {
+                if (FirewallRuleExists && IsPermanentlyBlocked)
+                    return "#F44336"; // 빨간색 - 영구 차단 중
+                else if (IsPermanentlyBlocked && !FirewallRuleExists)
+                    return "#FF9800"; // 주황색 - 복구 필요
+                else if (!IsPermanentlyBlocked)
+                    return "#4CAF50"; // 초록색 - 임시 차단
+                else
+                    return "#9E9E9E"; // 회색 - 상태 불명
+            }
+        }
+
+        /// <summary>
+        /// 연결 식별자 (중복 제거용)
+        /// </summary>
+        public string ConnectionId => $"{ProcessName}_{RemoteAddress}_{RemotePort}_{Protocol}";
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
 }

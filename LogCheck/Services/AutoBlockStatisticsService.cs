@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using LogCheck.Models;
 using Microsoft.Data.Sqlite;
@@ -403,6 +404,98 @@ namespace LogCheck.Services
             cmd.Parameters.AddWithValue("@TriggeredRules", connection.TriggeredRules ?? string.Empty);
 
             await cmd.ExecuteNonQueryAsync();
+        }
+
+        /// <summary>
+        /// 영구 차단된 연결 목록을 가져옵니다 (방화벽 규칙과 연결된)
+        /// </summary>
+        public async Task<List<PermanentBlockedConnection>> GetPermanentlyBlockedConnectionsAsync()
+        {
+            var connections = new List<PermanentBlockedConnection>();
+
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+
+            var sql = @"
+                SELECT DISTINCT 
+                    bc.ProcessName, 
+                    bc.ProcessPath, 
+                    bc.RemoteAddress, 
+                    bc.RemotePort, 
+                    bc.Protocol,
+                    bc.BlockLevel,
+                    bc.Reason,
+                    bc.BlockedAt,
+                    COUNT(*) as BlockCount,
+                    MAX(bc.BlockedAt) as LastBlockedAt
+                FROM BlockedConnections bc 
+                WHERE bc.BlockedAt > datetime('now', '-30 days')
+                GROUP BY bc.ProcessName, bc.ProcessPath, bc.RemoteAddress, bc.RemotePort, bc.Protocol
+                ORDER BY LastBlockedAt DESC";
+
+            using var cmd = new SqliteCommand(sql, connection);
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                var blockedConnection = new PermanentBlockedConnection
+                {
+                    ProcessName = reader.GetString(0),
+                    ProcessPath = reader.IsDBNull(1) ? "" : reader.GetString(1),
+                    RemoteAddress = reader.GetString(2),
+                    RemotePort = reader.GetInt32(3),
+                    Protocol = reader.IsDBNull(4) ? "TCP" : reader.GetString(4),
+                    BlockLevel = reader.GetInt32(5),
+                    Reason = reader.GetString(6),
+                    FirstBlockedAt = DateTime.Parse(reader.GetString(7)),
+                    LastBlockedAt = DateTime.Parse(reader.GetString(9)),
+                    BlockCount = reader.GetInt32(8),
+                    IsPermanentlyBlocked = true, // 데이터베이스에서 가져온 것은 영구 차단으로 간주
+                    FirewallRuleExists = false // 이후 PersistentFirewallManager로 확인
+                };
+
+                connections.Add(blockedConnection);
+            }
+
+            return connections;
+        }
+
+        /// <summary>
+        /// 영구 차단 연결의 방화벽 규칙 존재 여부 업데이트
+        /// </summary>
+        [SupportedOSPlatform("windows")]
+        public async Task<List<PermanentBlockedConnection>> UpdateFirewallRuleStatusAsync(
+            List<PermanentBlockedConnection> connections)
+        {
+            try
+            {
+                var firewallManager = new PersistentFirewallManager();
+                await firewallManager.InitializeAsync();
+
+                foreach (var connection in connections)
+                {
+                    // 프로세스 경로 기반 규칙 확인
+                    if (!string.IsNullOrEmpty(connection.ProcessPath))
+                    {
+                        var processRuleExists = await firewallManager.RuleExistsAsync(
+                            $"LogCheck_Block_{connection.ProcessName}");
+                        connection.FirewallRuleExists = processRuleExists;
+                    }
+                    // IP 기반 규칙 확인
+                    else if (!string.IsNullOrEmpty(connection.RemoteAddress))
+                    {
+                        var ipRuleExists = await firewallManager.RuleExistsAsync(
+                            $"LogCheck_Block_IP_{connection.RemoteAddress}");
+                        connection.FirewallRuleExists = ipRuleExists;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to update firewall rule status: {ex.Message}");
+            }
+
+            return connections;
         }
     }
 
