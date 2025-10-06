@@ -36,7 +36,7 @@ namespace LogCheck.Services
         public ToastType Type { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public int DisplayDurationMs { get; set; }
-        
+
         public bool IsVisible
         {
             get => _isVisible;
@@ -190,14 +190,14 @@ namespace LogCheck.Services
                 }
 
                 ActiveToasts.Add(toast);
-                
+
                 // UI 컨트롤 생성 및 컨테이너에 추가
                 if (_containerStack != null)
                 {
                     var toastControl = new SimpleToastControl(toast);
-                    
+
                     _containerStack.Children.Insert(0, toastControl); // 상단에 추가
-                    
+
                     // 닫기 이벤트 처리
                     toastControl.ToastClosed += (s, e) =>
                     {

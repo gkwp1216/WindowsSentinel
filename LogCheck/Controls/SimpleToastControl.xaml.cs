@@ -15,7 +15,7 @@ namespace LogCheck.Controls
     public partial class SimpleToastControl : System.Windows.Controls.UserControl
     {
         private DispatcherTimer? _autoHideTimer;
-        
+
         public ToastNotification? ToastData { get; private set; }
         public event EventHandler? ToastClosed;
 
@@ -38,7 +38,7 @@ namespace LogCheck.Controls
             // 색상 설정
             var backgroundColor = GetBackgroundColor(ToastData.Type);
             var borderColor = GetBorderColor(ToastData.Type);
-            
+
             ToastBorder.Background = new SolidColorBrush(backgroundColor);
             ToastBorder.BorderBrush = new SolidColorBrush(borderColor);
 
@@ -80,13 +80,13 @@ namespace LogCheck.Controls
             {
                 Interval = TimeSpan.FromMilliseconds(ToastData.DisplayDurationMs)
             };
-            
+
             _autoHideTimer.Tick += (s, e) =>
             {
                 _autoHideTimer?.Stop();
                 CloseToast();
             };
-            
+
             _autoHideTimer.Start();
         }
 

@@ -1,5 +1,83 @@
 # 작업 목록 (TODO)
 
+## 🚀 **작업 우선순위** _(2025-10-06 업데이트)_
+
+### **우선순위 1: 보안 상태 통합 대시보드** 📊
+
+**🎯 목표:** 산발적인 보안 정보를 하나의 직관적 대시보드로 통합  
+**📅 예상 소요:** 2-3일 | **⭐ 사용자 가치:** ⭐⭐⭐⭐⭐  
+**💡 주요 기능:**
+
+- 실시간 보안 지표 카드 (위험도/차단수/트래픽/DDoS상태)
+- 통합 위험도 트렌드 차트 (시간별/일별)
+- 최근 보안 이벤트 및 차단된 상위 IP 목록
+
+### **우선순위 2: AutoBlock UI 완전 통합** 🔗
+
+**🎯 목표:** 영구 차단 시스템과 AutoBlock 탭의 완전한 UI 연동  
+**📅 예상 소요:** 1-2일 | **⭐ 사용자 가치:** ⭐⭐⭐⭐  
+**💡 주요 기능:**
+
+- 영구 차단 목록 UI 통합 (임시/영구 필터링)
+- 방화벽 규칙 동기화 및 개별 해제 기능
+- 차단 유형별 통계 및 성공률 추적
+
+### **우선순위 3: Toast 알림 시스템 확장** 🔔
+
+**🎯 목표:** NetWorks_New에서 전체 시스템으로 Toast 확장  
+**📅 예상 소요:** 1일 | **⭐ 사용자 가치:** ⭐⭐⭐  
+**✅ 완료:** NetWorks_New MessageBox → Toast 대체 완료  
+**💡 확장 대상:**
+
+- PersistentFirewallManager 방화벽 규칙 작업 피드백
+- DDoS 탐지 시스템 실시간 위협 알림
+- AutoBlock 자동 차단 보안 이벤트
+
+### **우선순위 4: 영구 차단 시스템 완성** 🛡️
+
+**🎯 목표:** 미완료된 영구 차단 기능 완전 구현  
+**📅 예상 소요:** 1-2일 | **⭐ 사용자 가치:** ⭐⭐⭐⭐  
+**💡 미완료 기능:**
+
+- 앱 시작 시 방화벽 규칙 자동 복구
+- AutoBlockStatisticsService 영구/임시 차단 통계 분리
+- Windows Event Viewer 통합 로깅 완성
+
+### **우선순위 5: 코드 품질 및 성능 최적화** ⚡
+
+**🎯 목표:** 194개 경고 해결 및 성능 개선  
+**📅 예상 소요:** 지속적 | **⭐ 사용자 가치:** ⭐⭐  
+**💡 개선사항:**
+
+- nullable 필드 경고 해결 (MainWindows.xaml.cs)
+- async 메서드 경고 해결 (실제 await 필요성 검토)
+- 대용량 로그 데이터 페이징 및 메모리 최적화
+
+---
+
+## 📊 **현재 프로젝트 상태 요약** _(2025-10-06)_
+
+### **✅ 완료된 핵심 시스템 (Enterprise+ 수준)**
+
+- **DDoS 방어**: 7개 공격 패턴 탐지, Rate Limiting, 패킷 분석 ⭐⭐⭐⭐⭐
+- **영구 차단**: Windows Firewall COM Interop, 재부팅 후 유지 ⭐⭐⭐⭐⭐
+- **Toast 알림**: MessageBox 대체, 전문적 UX ⭐⭐⭐⭐⭐
+- **위험도 시각화**: 5단계 자동 색상, 테마 연동 ⭐⭐⭐⭐
+- **실시간 모니터링**: 네트워크 트래픽, 프로세스 분석 ⭐⭐⭐⭐
+
+### **🔄 진행 중 작업**
+
+- **보안 대시보드**: 통합 보안 상태 시각화 (우선순위 1)
+- **AutoBlock 통합**: 영구/임시 차단 통합 UI (우선순위 2)
+- **Toast 확장**: 전체 시스템 알림 적용 (우선순위 3)
+
+### **🎯 다음 마일스톤**
+
+**목표:** 2025-10-08까지 보안 대시보드 완성  
+**성과 지표:** 사용자가 한 화면에서 모든 보안 상태 파악 가능
+
+---
+
 ## 🎯 **WindowsSentinel 보안 시스템 현황** _(2025-10-06 업데이트)_
 
 ### 🏆 **프로젝트 보안 수준: Enterprise+ 달성** _(중급 → 고급 → Enterprise+)_
@@ -19,6 +97,13 @@
 - ✅ **시스템 재부팅 후 차단 유지** - 영구 차단 문제 완전 해결
 - ✅ **자동 복구 시스템** - 앱 시작 시 규칙 자동 복구
 - ✅ **24시간 동기화** - 방화벽↔데이터베이스 자동 정합성
+
+**【Toast 알림 시스템】** _(2025-10-06 완성)_ 🆕
+
+- ✅ **Toast 알림 서비스 완성** - 5가지 알림 타입 (성공/경고/오류/정보/보안)
+- ✅ **MessageBox 대체 완료** - NetWorks_New 차단/종료 작업 비침습적 알림
+- ✅ **테마 연동 UI** - SimpleToastControl 자동 색상 및 애니메이션
+- ✅ **스마트 스택 관리** - 최대 4개 Toast 동시 표시, 자동 위치 조정
 
 **【UI/UX 시스템】** _(2025-10-06 완성)_
 
@@ -104,28 +189,57 @@ SecurityRiskLevelToColorConverter  // 하위 호환성
 
 ---
 
-## 🎯 **다음 우선순위 작업** _(2025-10-06 업데이트)_
+## 🚀 **즉시 시작 가능한 작업** _(2025-10-06)_
 
-### **우선순위 1: Toast 알림 시스템 구현** 🔔
+### **Step 1: 보안 대시보드 프로젝트 시작** �
 
-**🎯 목표:** MessageBox를 대체하는 전문적인 비침습적 알림 시스템
+```bash
+# 새 파일 생성 계획
+LogCheck/SecurityDashboard.xaml        # 대시보드 UI
+LogCheck/SecurityDashboard.xaml.cs     # 코드비하인드
+LogCheck/ViewModels/SecurityDashboardViewModel.cs  # MVVM 패턴
+```
 
-**현재 문제점:**
+### **Step 2: AutoBlock UI 통합** 🔗
 
-- BlockConnection_Click, TerminateProcess_Click에서 MessageBox 사용 → 사용자 작업 흐름 중단
-- 차단/종료 작업 결과에 대한 부적절한 피드백 방식
-- Enterprise급 애플리케이션에 부적합한 UX
+```bash
+# 수정 대상 파일
+LogCheck/AutoBlock.xaml                 # 영구/임시 필터 UI 추가
+LogCheck/AutoBlock.xaml.cs              # 영구 차단 목록 연동
+LogCheck/ViewModels/AutoBlockViewModel.cs  # 통합 데이터 모델
+```
 
-**구현 계획:**
+### **Step 3: Toast 시스템 확장** 🔔
+
+```bash
+# 적용 대상 파일 (우선순위)
+LogCheck/Services/PersistentFirewallManager.cs  # 방화벽 작업 피드백
+LogCheck/Services/DDoSDetectionEngine.cs        # 위협 탐지 알림
+LogCheck/Services/AutoBlockStatisticsService.cs # 자동 차단 이벤트
+```
+
+---
+
+## ✅ **Toast 알림 시스템 완성** _(2025-10-06)_ 🎉
+
+**🎯 완료된 기능:**
+
+- ✅ **ToastNotificationService** - 5가지 알림 타입 싱글톤 서비스
+- ✅ **SimpleToastControl** - 테마 연동 UI 컴포넌트
+- ✅ **MainWindows 통합** - 우측 상단 Toast 컨테이너 (Z-Index 1100)
+- ✅ **NetWorks_New 적용** - MessageBox → Toast 완전 대체
+- ✅ **빌드 성공** - 194 warnings, 0 errors
+
+**🔧 구현된 핵심 기능:**
 
 ```csharp
-// ToastNotificationService.cs 아키텍처
+// ToastNotificationService.cs 완성본
 public class ToastNotificationService
 {
-    ShowSuccess(string title, string message)   // 🟢 성공 (3초)
-    ShowWarning(string title, string message)   // 🟡 경고 (4초)
-    ShowError(string title, string message)     // 🔴 오류 (5초)
-    ShowInfo(string title, string message)      // 🔵 정보 (3초)
+    ShowSuccessAsync(string message)    // 🟢 성공 (3초)
+    ShowWarningAsync(string message)    // 🟡 경고 (4초)
+    ShowErrorAsync(string message)      // 🔴 오류 (5초)
+    ShowInfoAsync(string message)       // 🔵 정보 (3초)
     ShowSecurity(string title, string message)  // 🛡️ 보안 이벤트 (6초)
 }
 

@@ -1,11 +1,11 @@
-﻿using LogCheck.Services;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using LogCheck.Services;
 // using System.Windows.Forms; // Tray handled by App
 
 namespace LogCheck
@@ -51,7 +51,7 @@ namespace LogCheck
             guideElements = new List<FrameworkElement>
             {
                 securityStatusSection,
-                SecurityLogButton,
+                SecurityDashboardButton,
                 ModificationHistoryButton,
                 InstalledProgramsButton,
                 SecurityRecoveryButton
@@ -412,6 +412,13 @@ namespace LogCheck
             HelpButton.Visibility = Visibility.Collapsed;
         }
 
+        [SupportedOSPlatform("windows")]
+        private void SecurityDashboard_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new SecurityDashboard());
+            HelpButton.Visibility = Visibility.Collapsed;
+        }
+
         /// <summary>
         /// 보안 상태 초기화
         /// </summary>
@@ -685,7 +692,8 @@ namespace LogCheck
         {
             // Toast 서비스 초기화 (컨테이너는 Loaded 이벤트에서 설정)
             var toastService = ToastNotificationService.Instance;
-            
+
+
             Loaded += (s, e) =>
             {
                 // UI 로드 후 ToastStack 컨테이너 설정
@@ -693,8 +701,9 @@ namespace LogCheck
                 {
                     toastService.SetContainer(toastStack);
                 }
-                
+
                 // 테스트용 환영 메시지 (선택사항)
+
                 Dispatcher.InvokeAsync(async () =>
                 {
                     await Task.Delay(1500); // UI 로드 완료 대기

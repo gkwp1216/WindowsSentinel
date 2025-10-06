@@ -899,11 +899,11 @@ namespace LogCheck
             try
             {
                 // sender 우선 사용하여 XAML 이름(null 가능) 의존 제거
-                var combo = sender as Controls.ComboBox ?? ProtocolFilterComboBox;
+                var combo = sender as System.Windows.Controls.ComboBox ?? ProtocolFilterComboBox;
                 if (combo == null) return;
 
                 string? protocol = null;
-                if (combo.SelectedItem is Controls.ComboBoxItem cbi)
+                if (combo.SelectedItem is System.Windows.Controls.ComboBoxItem cbi)
                     protocol = cbi.Content?.ToString();
                 else
                     protocol = combo.SelectedItem?.ToString();
@@ -1089,7 +1089,7 @@ namespace LogCheck
                             _ = Task.Run(async () => await LoadBlockedConnectionsAsync());
 
                             AddLogMessage($"✅ [Manual-Block] 연결 차단 완료: {connection.ProcessName} -> {connection.RemoteAddress}:{connection.RemotePort}");
-                            
+
                             // Toast 성공 알림
                             await ToastNotificationService.Instance.ShowSuccessAsync(
                                 "차단 성공",
