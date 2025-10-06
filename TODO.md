@@ -361,15 +361,31 @@ protected override async void OnStartup(StartupEventArgs e)
     공격자들은 이 프로세스의 이름을 교묘하게 위장하여 악성코드를 숨기는 경우가 종종 있음. 예) System ldle Process (Idle의 I가 소문자 L)  or System Idle Process.exe (정상 프로세스는 .exe 확장자가 없음)
     프로세스의 실행 경로, 디지털 서명, PID 등을 종합적으로 분석하여 이러한 위장 악성코드를 정확히 걸러낼 수 있는 로직을 갖추어야 함
 
-# 차트 데이터 개선
+# ✅ 차트 데이터 개선 완료 (2025.10.06)
 
-UpdateChart에서 연결 수 대신 데이터 전송량 기반으로 변경
+**📊 실시간 트래픽 차트 개선 완료:**
+
+- 연결 수 → 데이터 전송량(MB) 기반 차트로 전환
+- 동적 Y축 스케일링 (자동 MB/GB 단위 변환)
+- 트래픽 패턴 분석 (정상/고용량/초고용량 자동 분류)
+- 차트 제목 및 설명 개선 ("📊 실시간 트래픽 모니터링")
+
+**구현된 핵심 기능:**
+
+```csharp
+// 개선된 UpdateChart - 실제 트래픽 반영
 private void UpdateChart(List<ProcessNetworkInfo> data)
 {
-var chartData = data.GroupBy(x => x.ConnectionStartTime.Hour)
-.Select(g => g.Sum(x => x.DataTransferred))
-.ToList();
+    var groupedByHour = data.GroupBy(x => x.ConnectionStartTime.Hour)
+        .ToDictionary(g => g.Key, g => g.Sum(x => x.DataTransferred) / (1024.0 * 1024.0));
+    // + 트래픽 패턴 분석, 동적 Y축 조정, 고급 통계 로깅
 }
+
+// 새로운 유틸리티 메서드들
+- FormatBytes(): 바이트 크기 자동 포맷 (GB/MB/KB)
+- CalculateDynamicMaxLimit(): 동적 Y축 최대값 계산
+- AnalyzeTrafficPattern(): 트래픽 패턴 분석 (🔴🟠🟡🟢🔵)
+```
 
 # MessageBox를 Toast/Snackbar로 교체
 

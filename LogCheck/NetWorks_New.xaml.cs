@@ -696,8 +696,8 @@ namespace LogCheck
         {
             try
             {
-                // 샘플 데이터로 차트 초기화 (0-25 범위의 현실적인 데이터)
-                var sampleData = new List<double> { 2, 3, 1, 5, 8, 12, 18, 22, 20, 15, 10, 5 };
+                // 실제 트래픽 기반 샘플 데이터 (MB 단위)
+                var sampleData = new List<double> { 0.5, 1.2, 0.3, 2.1, 4.8, 8.5, 15.2, 23.7, 18.9, 12.3, 6.7, 2.4 };
                 var currentTime = DateTime.Now;
                 var sampleLabels = new List<string>();
                 for (int i = 0; i < 12; i++)
@@ -709,16 +709,18 @@ namespace LogCheck
                 var lineSeries = new LineSeries<double>
                 {
                     Values = sampleData,
-                    Name = "Network Activity",
-                    Stroke = new SolidColorPaint(SKColors.DodgerBlue, 2),
-                    Fill = new SolidColorPaint(SKColors.DodgerBlue.WithAlpha(20)),
-                    GeometrySize = 3,
-                    GeometryStroke = new SolidColorPaint(SKColors.DodgerBlue, 1),
+                    Name = "Network Traffic (MB)",
+                    Stroke = new SolidColorPaint(SKColors.DeepSkyBlue, 3), // 더 굵은 선
+                    Fill = new SolidColorPaint(SKColors.DeepSkyBlue.WithAlpha(30)), // 투명도 증가
+                    GeometrySize = 4, // 포인트 크기 증가
+                    GeometryStroke = new SolidColorPaint(SKColors.DeepSkyBlue, 2),
                     GeometryFill = new SolidColorPaint(SKColors.White),
-                    LineSmoothness = 0.2, // 부드러운 곡선
-                    DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-                    DataLabelsSize = 7,
-                    DataLabelsPosition = LiveChartsCore.Measure.DataLabelsPosition.Top
+                    LineSmoothness = 0.3, // 부드러운 곡선 강화
+                    DataLabelsPaint = new SolidColorPaint(SKColors.DarkBlue),
+                    DataLabelsSize = 8,
+                    DataLabelsPosition = LiveChartsCore.Measure.DataLabelsPosition.Top,
+                    // 데이터 라벨 포맷 (MB 단위 표시)
+                    DataLabelsFormatter = point => $"{point.PrimaryValue:F1}MB"
                 };
 
                 _chartSeries.Add(lineSeries);
@@ -737,26 +739,30 @@ namespace LogCheck
                     ShowSeparatorLines = true
                 });
 
-                // Y축 설정 개선 (수치 뭉침 현상 해결)  
+                // Y축 설정: 데이터 전송량 (MB) 기준으로 개선
                 _chartYAxes.Add(new Axis
                 {
-                    Name = "Connections",
-                    NameTextSize = 8,
-                    NamePaint = new SolidColorPaint(SKColors.DarkGray),
+                    Name = "Traffic (MB)",
+                    NameTextSize = 9,
+                    NamePaint = new SolidColorPaint(SKColors.DarkSlateBlue),
                     TextSize = 8,
                     LabelsPaint = new SolidColorPaint(SKColors.Black),
-                    SeparatorsPaint = new SolidColorPaint(SKColors.LightGray, 1),
+                    SeparatorsPaint = new SolidColorPaint(SKColors.LightSteelBlue, 1),
                     MinLimit = 0,
-                    MaxLimit = 300, // 고정 최대값으로 일관된 스케일
-                    MinStep = 50, // 50단위 간격
-                    ForceStepToMin = true,
+                    MaxLimit = null, // 동적 최대값으로 유연한 스케일
+                    MinStep = 5, // 5MB 단위 간격
+                    ForceStepToMin = false,
                     ShowSeparatorLines = true,
                     Labeler = value =>
                     {
-                        // 50의 배수만 표시하여 뭉침 방지
-                        if (value % 50 == 0)
-                            return value.ToString("0");
-                        return "";
+                        // MB/GB 단위로 자동 변환 표시
+                        if (value >= 1024)
+                            return $"{value / 1024:F1}GB";
+                        else if (value >= 1)
+                            return $"{value:F0}MB";
+                        else if (value > 0)
+                            return $"{value:F1}MB";
+                        return "0";
                     }
                 });
             }
@@ -836,13 +842,15 @@ namespace LogCheck
         /// </summary>
         private async void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            try {
+            try
+            {
                 AddLogMessage("데이터 새로고침 중...");
                 var data = await _processNetworkMapper.GetProcessNetworkDataAsync();
                 await UpdateProcessNetworkDataAsync(data);
                 AddLogMessage("데이터 새로고침이 완료되었습니다.");
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 AddLogMessage($"새로고침 오류: {ex.Message}");
                 MessageBox.Show($"데이터 새로고침 중 오류가 발생했습니다:{ex.Message}",
                     "오류", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -1532,10 +1540,11 @@ namespace LogCheck
                         case SecurityRiskLevel.Low: low++; break;
                         case SecurityRiskLevel.Medium: medium++; break;
                         case SecurityRiskLevel.High: high++; break;
-                        case SecurityRiskLevel.Critical: high++; break; 
-                        // Critical도 위험에 포함
+                        case SecurityRiskLevel.Critical: high++; break;
+                            // Critical도 위험에 포함
                     }
-                    switch (x.Protocol.ToUpperInvariant()) {
+                    switch (x.Protocol.ToUpperInvariant())
+                    {
                         case "TCP": tcp++; break;
                         case "UDP": udp++; break;
                         case "ICMP": icmp++; break;
@@ -1549,14 +1558,14 @@ namespace LogCheck
                 UdpCount = udp;
                 IcmpCount = icmp;
                 _totalDataTransferred = transferred;
-                
+
                 OnPropertyChanged(nameof(TotalDataTransferred));
-                
+
                 if (ActiveConnectionsText != null)
                     ActiveConnectionsText.Text = total.ToString();
                 if (DangerousConnectionsText != null)
                     DangerousConnectionsText.Text = (high).ToString();
-                
+
                 UpdateStatisticsDisplay();
             }
             catch (Exception ex) { AddLogMessage($"통계 업데이트 오류: {ex.Message}"); }
@@ -1594,7 +1603,7 @@ namespace LogCheck
             {
                 collection.Clear();
                 foreach (var item in newItems)
-                    collection.Add(item); 
+                    collection.Add(item);
             }
             catch (Exception ex)
             {
@@ -1606,7 +1615,7 @@ namespace LogCheck
         }
 
         /// <summary>
-        /// 차트 업데이트
+        /// 실시간 트래픽 기반 차트 업데이트 (데이터 전송량 기준)
         /// </summary>
         private void UpdateChart(List<ProcessNetworkInfo> data)
         {
@@ -1614,12 +1623,13 @@ namespace LogCheck
             {
                 if (_chartSeries.Count == 0 || !(_chartSeries[0] is LineSeries<double> lineSeries))
                     return;
-                
+
                 data ??= new List<ProcessNetworkInfo>();
 
+                // 데이터 전송량 기반 시간별 그룹화 (MB 단위)
                 var groupedByHour = data
                     .GroupBy(x => x.ConnectionStartTime.Hour)
-                    .ToDictionary(g => g.Key, g => g.Count());
+                    .ToDictionary(g => g.Key, g => g.Sum(x => x.DataTransferred) / (1024.0 * 1024.0)); // MB 변환
 
                 var chartData = new List<double>();
                 var timeLabels = new List<string>();
@@ -1630,21 +1640,35 @@ namespace LogCheck
                     var timeSlot = currentTime.AddHours(-22 + (i * 2));
                     int hour = timeSlot.Hour;
 
-                    groupedByHour.TryGetValue(hour, out int count);
-
-                    // Y축 범위에 맞게 제한
-                    chartData.Add(Math.Clamp(count, 0, 25));
+                    groupedByHour.TryGetValue(hour, out double trafficMB);
+                    chartData.Add(Math.Round(trafficMB, 2));
                     timeLabels.Add(timeSlot.ToString("HH"));
                 }
-                SafeInvokeUI(() => {
+
+                // 트래픽 패턴 분석
+                var (pattern, peakValue, peakHour) = AnalyzeTrafficPattern(data);
+
+                // 동적 Y축 최대값 계산
+                var dynamicMaxLimit = CalculateDynamicMaxLimit(chartData);
+
+                SafeInvokeUI(() =>
+                {
                     lineSeries.Values = chartData;
                     if (_chartXAxes.Count > 0)
                         _chartXAxes[0].Labels = timeLabels;
-                }); 
+
+                    // Y축 최대값 동적 조정
+                    if (_chartYAxes.Count > 0)
+                        _chartYAxes[0].MaxLimit = dynamicMaxLimit;
+
+                    // 고급 통계 로깅
+                    var totalTraffic = data.Sum(x => x.DataTransferred);
+                    AddLogMessage($"📊 트래픽 분석: {pattern} | 총 {FormatBytes(totalTraffic)} | 피크 {peakValue:F1}MB ({peakHour:00}시)");
+                });
             }
             catch (Exception ex)
             {
-                AddLogMessage($"차트 업데이트 오류: {ex.Message}"); 
+                AddLogMessage($"차트 업데이트 오류: {ex.Message}");
             }
         }
 
@@ -4315,6 +4339,81 @@ namespace LogCheck
             {
                 AddLogMessage($"❌ 방화벽 상태 업데이트 오류: {ex.Message}");
             }
+        }
+
+        #endregion
+
+        #region 차트 유틸리티 메서드
+
+        /// <summary>
+        /// 바이트 크기를 인간이 읽기 쉬운 형태로 변환
+        /// </summary>
+        /// <param name="bytes">바이트 크기</param>
+        /// <returns>포맷된 문자열 (예: "1.2GB", "500MB", "15.3KB")</returns>
+        private static string FormatBytes(long bytes)
+        {
+            const double GB = 1024 * 1024 * 1024;
+            const double MB = 1024 * 1024;
+            const double KB = 1024;
+
+            if (bytes >= GB)
+                return $"{bytes / GB:F1}GB";
+            else if (bytes >= MB)
+                return $"{bytes / MB:F1}MB";
+            else if (bytes >= KB)
+                return $"{bytes / KB:F1}KB";
+            else
+                return $"{bytes}B";
+        }
+
+        /// <summary>
+        /// 차트 데이터의 동적 Y축 최대값 계산
+        /// </summary>
+        /// <param name="data">차트 데이터</param>
+        /// <returns>적절한 최대값</returns>
+        private static double CalculateDynamicMaxLimit(IEnumerable<double> data)
+        {
+            if (!data.Any()) return 100; // 기본값
+
+            var maxValue = data.Max();
+
+            // 최대값의 120%를 상한으로 설정하되, 적절한 단위로 반올림
+            var targetMax = maxValue * 1.2;
+
+            if (targetMax <= 10) return Math.Ceiling(targetMax);
+            if (targetMax <= 100) return Math.Ceiling(targetMax / 10) * 10;
+            if (targetMax <= 1000) return Math.Ceiling(targetMax / 100) * 100;
+
+            return Math.Ceiling(targetMax / 1000) * 1000;
+        }
+
+        /// <summary>
+        /// 트래픽 패턴 분석 (피크/정상/저조)
+        /// </summary>
+        /// <param name="data">프로세스 네트워크 데이터</param>
+        /// <returns>패턴 분석 결과</returns>
+        private static (string Pattern, double PeakValue, int PeakHour) AnalyzeTrafficPattern(List<ProcessNetworkInfo> data)
+        {
+            if (!data.Any()) return ("정상", 0, DateTime.Now.Hour);
+
+            var hourlyTraffic = data
+                .GroupBy(x => x.ConnectionStartTime.Hour)
+                .Select(g => new { Hour = g.Key, Traffic = g.Sum(x => x.DataTransferred) / (1024.0 * 1024.0) })
+                .OrderByDescending(x => x.Traffic)
+                .FirstOrDefault();
+
+            if (hourlyTraffic == null) return ("정상", 0, DateTime.Now.Hour);
+
+            var pattern = hourlyTraffic.Traffic switch
+            {
+                > 1000 => "🔴 초고용량", // 1GB 이상
+                > 500 => "🟠 고용량",   // 500MB 이상
+                > 100 => "🟡 중용량",   // 100MB 이상
+                > 10 => "🟢 정상",      // 10MB 이상
+                _ => "🔵 저조"          // 10MB 미만
+            };
+
+            return (pattern, hourlyTraffic.Traffic, hourlyTraffic.Hour);
         }
 
         #endregion

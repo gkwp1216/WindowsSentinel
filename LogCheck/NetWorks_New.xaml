@@ -1632,7 +1632,8 @@
 
                                             <Border Grid.Column="1" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="10,0,0,0">
                                                 <StackPanel>
-                                                    <TextBlock Text="실시간 네트워크 활동" HorizontalAlignment="Center" Foreground="{DynamicResource ForegroundColor}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                                    <TextBlock Text="📊 실시간 트래픽 모니터링" HorizontalAlignment="Center" Foreground="{DynamicResource ForegroundColor}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                                    <TextBlock Text="(데이터 전송량 기준, MB 단위)" HorizontalAlignment="Center" Foreground="{DynamicResource ForegroundColor}" FontSize="10" Opacity="0.7" Margin="0,0,0,10"/>
                                                     <lvc:CartesianChart x:Name="NetworkActivityChart"
                                                                         Width="240" Height="160"
                                                                         Series="{Binding ChartSeries}" 
