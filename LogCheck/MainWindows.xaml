@@ -41,6 +41,20 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!-- Toast Notification Container (최상위 레이어) -->
+        <Grid x:Name="ToastNotificationContainer" 
+              Grid.RowSpan="3" 
+              IsHitTestVisible="False" 
+              Panel.ZIndex="1100"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Top"
+              Margin="0,20,20,0">
+            <StackPanel x:Name="ToastStack" 
+                        Orientation="Vertical"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"/>
+        </Grid>
+
         <Canvas x:Name="GuideOverlay" Background="#80000000" Visibility="Collapsed" Panel.ZIndex="999">
             <Canvas x:Name="MaskLayer"/>
 

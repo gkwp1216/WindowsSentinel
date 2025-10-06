@@ -1,6 +1,7 @@
 ﻿using LogCheck.Services;
 using System.ComponentModel;
 using System.Runtime.Versioning;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -29,6 +30,7 @@ namespace LogCheck
             InitializeComponent();
             InitializeGuide();
             InitializeSecurityStatus();
+            InitializeToastNotifications();
             this.SizeChanged += OnWindowSizeChanged;
         }
 
@@ -674,6 +676,31 @@ namespace LogCheck
                 Hide(); // 트레이로 이동
             }
             // Cancel이면 아무것도 하지 않음
+        }
+
+        /// <summary>
+        /// Toast 알림 시스템 초기화
+        /// </summary>
+        private void InitializeToastNotifications()
+        {
+            // Toast 서비스 초기화 (컨테이너는 Loaded 이벤트에서 설정)
+            var toastService = ToastNotificationService.Instance;
+            
+            Loaded += (s, e) =>
+            {
+                // UI 로드 후 ToastStack 컨테이너 설정
+                if (FindName("ToastStack") is StackPanel toastStack)
+                {
+                    toastService.SetContainer(toastStack);
+                }
+                
+                // 테스트용 환영 메시지 (선택사항)
+                Dispatcher.InvokeAsync(async () =>
+                {
+                    await Task.Delay(1500); // UI 로드 완료 대기
+                    await toastService.ShowInfoAsync("Windows Sentinel", "보안 모니터링이 시작되었습니다.");
+                });
+            };
         }
     }
 }

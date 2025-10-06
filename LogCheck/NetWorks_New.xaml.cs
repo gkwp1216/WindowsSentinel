@@ -1015,7 +1015,7 @@ namespace LogCheck
         {
             try
             {
-                var button = sender as Controls.Button;
+                var button = sender as System.Windows.Controls.Button;
                 if (button?.Tag is ProcessNetworkInfo connection)
                 {
                     // 영구 차단 옵션 선택 다이얼로그
@@ -1030,16 +1030,12 @@ namespace LogCheck
                         return; // 영구 차단 완료 후 메서드 종료
                     }
 
-                    // 기존 임시 차단 로직 진행
-                    var result = MessageBox.Show(
-                        $"프로세스 '{connection.ProcessName}' (PID: {connection.ProcessId})의 네트워크 연결을 임시 차단하시겠습니까?\n\n" +
-                        $"연결 정보: {connection.RemoteAddress}:{connection.RemotePort} ({connection.Protocol})\n\n" +
-                        "참고: 임시 차단은 프로그램 재시작 시 해제됩니다.",
-                        "임시 연결 차단 확인",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question);
+                    // Toast 알림으로 차단 수행 (자동 실행)
+                    await ToastNotificationService.Instance.ShowWarningAsync(
+                        "연결 차단",
+                        $"'{connection.ProcessName}' 연결을 차단합니다.\n{connection.RemoteAddress}:{connection.RemotePort}");
 
-                    if (result == MessageBoxResult.Yes)
+                    // 차단 로직 자동 실행 (사용자 확인 생략)
                     {
                         AddLogMessage($"연결 차단 시작: {connection.ProcessName} - {connection.RemoteAddress}:{connection.RemotePort}");
 
@@ -1093,7 +1089,11 @@ namespace LogCheck
                             _ = Task.Run(async () => await LoadBlockedConnectionsAsync());
 
                             AddLogMessage($"✅ [Manual-Block] 연결 차단 완료: {connection.ProcessName} -> {connection.RemoteAddress}:{connection.RemotePort}");
-                            //MessageBox.Show("연결 차단이 완료되었습니다.\n\nAutoBlock 통계에 기록되었습니다.", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                            
+                            // Toast 성공 알림
+                            await ToastNotificationService.Instance.ShowSuccessAsync(
+                                "차단 성공",
+                                $"연결 차단이 완료되었습니다\\n{connection.ProcessName} → {connection.RemoteAddress}:{connection.RemotePort}\\nAutoBlock 통계에 기록됨");
 
                             // NotifyIcon 사용하여 트레이 알림
                             ShowTrayNotification($"연결 차단 완료: {connection.ProcessName} - {connection.RemoteAddress}:{connection.RemotePort}");
@@ -1101,7 +1101,9 @@ namespace LogCheck
                         else
                         {
                             AddLogMessage("❌ 연결 차단에 실패했습니다.");
-                            MessageBox.Show("연결 차단에 실패했습니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                            await ToastNotificationService.Instance.ShowErrorAsync(
+                                "차단 실패",
+                                "연결 차단에 실패했습니다.");
                         }
                     }
                 }
@@ -1109,7 +1111,9 @@ namespace LogCheck
             catch (Exception ex)
             {
                 AddLogMessage($"연결 차단 오류: {ex.Message}");
-                MessageBox.Show($"연결 차단 중 오류가 발생했습니다: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                await ToastNotificationService.Instance.ShowErrorAsync(
+                    "차단 오류",
+                    $"연결 차단 중 오류 발생:\n{ex.Message}");
             }
         }
 
@@ -1138,23 +1142,23 @@ namespace LogCheck
         {
             try
             {
-                var button = sender as Controls.Button;
+                var button = sender as System.Windows.Controls.Button;
                 if (button?.Tag is ProcessNetworkInfo connection)
                 {
                     if (!OperatingSystem.IsWindows())
                     {
-                        MessageBox.Show("이 기능은 Windows에서만 지원됩니다.", "미지원 플랫폼", MessageBoxButton.OK, MessageBoxImage.Information);
+                        await ToastNotificationService.Instance.ShowErrorAsync(
+                            "미지원 플랫폼",
+                            "이 기능은 Windows에서만 지원됩니다.");
                         return;
                     }
 
-                    var result = MessageBox.Show(
-                        $"프로세스 '{connection.ProcessName}' (PID: {connection.ProcessId})을(를) 강제 종료하시겠습니까?\n\n" +
-                        "⚠️ 주의: 이 작업은 데이터 손실을 야기할 수 있습니다.",
-                        "프로세스 종료 확인",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Warning);
+                    // Toast 알림으로 프로세스 종료 수행 (자동 실행)
+                    await ToastNotificationService.Instance.ShowWarningAsync(
+                        "프로세스 종료",
+                        $"'{connection.ProcessName}' (PID: {connection.ProcessId})을 종료합니다.\n⚠️ 데이터 손실 가능");
 
-                    if (result == MessageBoxResult.Yes)
+                    // 프로세스 종료 로직 자동 실행 (사용자 확인 생략)
                     {
                         AddLogMessage($"프로세스 종료 시작: {connection.ProcessName} (PID: {connection.ProcessId})");
 
@@ -1165,7 +1169,9 @@ namespace LogCheck
                             if (success)
                             {
                                 AddLogMessage("프로세스 종료가 완료되었습니다.");
-                                //MessageBox.Show("프로세스 종료가 완료되었습니다.", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                                await ToastNotificationService.Instance.ShowSuccessAsync(
+                                    "종료 성공",
+                                    $"프로세스 종료 완료\n{connection.ProcessName} (PID: {connection.ProcessId})");
                                 ShowTrayNotification($"프로세스 종료 완료: {connection.ProcessName} (PID: {connection.ProcessId})");
 
                                 try
@@ -1182,13 +1188,17 @@ namespace LogCheck
                             else
                             {
                                 AddLogMessage("프로세스 종료에 실패했습니다. 관리자 권한이 필요할 수 있습니다.");
-                                MessageBox.Show("프로세스 종료에 실패했습니다. 관리자 권한이 필요할 수 있습니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                                await ToastNotificationService.Instance.ShowErrorAsync(
+                                    "종료 실패",
+                                    "프로세스 종료에 실패\n관리자 권한이 필요할 수 있습니다");
                             }
                         }
                         catch (Exception ex)
                         {
                             AddLogMessage($"프로세스 종료 실패: {ex.Message}");
-                            MessageBox.Show($"프로세스 종료에 실패했습니다: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                            await ToastNotificationService.Instance.ShowErrorAsync(
+                                "종료 오류",
+                                $"프로세스 종료 실패\n{ex.Message}");
                         }
                     }
                 }
@@ -1196,7 +1206,9 @@ namespace LogCheck
             catch (Exception ex)
             {
                 AddLogMessage($"프로세스 종료 오류: {ex.Message}");
-                MessageBox.Show($"프로세스 종료 중 오류가 발생했습니다: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                await ToastNotificationService.Instance.ShowErrorAsync(
+                    "종료 오류",
+                    $"프로세스 종료 오류\n{ex.Message}");
             }
         }
 

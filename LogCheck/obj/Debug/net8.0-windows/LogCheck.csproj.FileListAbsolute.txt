@@ -1941,3 +1941,7 @@ C:\Users\김기원\Documents\카카오톡 받은 파일\LogCheck_1005\LogCheck\o
 C:\Users\김기원\Documents\카카오톡 받은 파일\LogCheck_1005\LogCheck\obj\Debug\net8.0-windows\LogCheck.pdb
 C:\Users\김기원\Documents\카카오톡 받은 파일\LogCheck_1005\LogCheck\obj\Debug\net8.0-windows\LogCheck.genruntimeconfig.cache
 C:\Users\김기원\Documents\카카오톡 받은 파일\LogCheck_1005\LogCheck\obj\Debug\net8.0-windows\ref\LogCheck.dll
+C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\Controls\ToastNotificationControl.baml
+C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\Controls\ToastNotificationControl.g.cs
+C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\Controls\SimpleToastControl.baml
+C:\My_Project\WS\LogCheck\obj\Debug\net8.0-windows\Controls\SimpleToastControl.g.cs
