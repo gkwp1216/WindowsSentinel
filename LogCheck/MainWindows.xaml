@@ -31,6 +31,59 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
 
+        <!-- 사이드바 버튼 스타일 -->
+        <Style x:Key="SidebarButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,12"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E3F2FD"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#BBDEFB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 사이드바 슬라이드 애니메이션 -->
+        <Storyboard x:Key="ShowSidebar">
+            <DoubleAnimation Storyboard.TargetName="SidebarTransform" 
+                           Storyboard.TargetProperty="X" 
+                           From="-250" To="0" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        
+        <Storyboard x:Key="HideSidebar">
+            <DoubleAnimation Storyboard.TargetName="SidebarTransform" 
+                           Storyboard.TargetProperty="X" 
+                           From="0" To="-250" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
         <DropShadowEffect x:Key="ShadowEffect" BlurRadius="10" Color="Black" ShadowDepth="4" Opacity="0.3" />
     </Window.Resources>
 
@@ -40,6 +93,131 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
+        <!-- 토글형 사이드바 -->
+        <Border x:Name="Sidebar" 
+                Grid.RowSpan="3" 
+                Width="250"
+                Background="{DynamicResource BackgroundColor}" 
+                BorderBrush="#E0E0E0" 
+                BorderThickness="0,0,1,0"
+                HorizontalAlignment="Left"
+                Panel.ZIndex="1050">
+            <Border.RenderTransform>
+                <TranslateTransform x:Name="SidebarTransform" X="-250"/>
+            </Border.RenderTransform>
+            
+            <ScrollViewer VerticalScrollBarVisibility="Auto" 
+                          HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Margin="0,20,0,20">
+                    <!-- 로고 영역 -->
+                    <StackPanel Margin="0,0,0,30" HorizontalAlignment="Center">
+                        <TextBlock Text="🛡️" 
+                                   FontSize="32" 
+                                   HorizontalAlignment="Center" 
+                                   Margin="0,0,0,10"/>
+                        <TextBlock Text="WindowsSentinel" 
+                                   FontSize="16" 
+                                   FontWeight="Bold" 
+                                   Foreground="{DynamicResource ForegroundColor}" 
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- 내비게이션 메뉴 -->
+                    <StackPanel>
+                        <Button Style="{StaticResource SidebarButtonStyle}" 
+                                Click="SecurityDashboard_Click" 
+                                Cursor="Hand">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE8C7;" 
+                                           FontFamily="Segoe MDL2 Assets" 
+                                           FontSize="18" 
+                                           Margin="0,0,15,0" 
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="악성 프로그램 탐지" 
+                                           FontSize="14" 
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource SidebarButtonStyle}" 
+                                Click="NetWorksNew_Click" 
+                                Cursor="Hand">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE704;" 
+                                           FontFamily="Segoe MDL2 Assets" 
+                                           FontSize="18" 
+                                           Margin="0,0,15,0" 
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="네트워크 보안" 
+                                           FontSize="14" 
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource SidebarButtonStyle}" 
+                                Click="AutoBlock_Click" 
+                                Cursor="Hand">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE72E;" 
+                                           FontFamily="Segoe MDL2 Assets" 
+                                           FontSize="18" 
+                                           Margin="0,0,15,0" 
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="자동 차단 시스템" 
+                                           FontSize="14" 
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource SidebarButtonStyle}" 
+                                Click="Recoverys_Click" 
+                                Cursor="Hand">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE777;" 
+                                           FontFamily="Segoe MDL2 Assets" 
+                                           FontSize="18" 
+                                           Margin="0,0,15,0" 
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="시스템 복구" 
+                                           FontSize="14" 
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource SidebarButtonStyle}" 
+                                Click="ProgramList_Click" 
+                                Cursor="Hand">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE8B7;" 
+                                           FontFamily="Segoe MDL2 Assets" 
+                                           FontSize="18" 
+                                           Margin="0,0,15,0" 
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="설치된 프로그램" 
+                                           FontSize="14" 
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource SidebarButtonStyle}" 
+                                Click="BtnLog_Click" 
+                                Cursor="Hand">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE7C3;" 
+                                           FontFamily="Segoe MDL2 Assets" 
+                                           FontSize="18" 
+                                           Margin="0,0,15,0" 
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="보안 로그" 
+                                           FontSize="14" 
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
 
         <!-- Toast Notification Container (최상위 레이어) -->
         <Grid x:Name="ToastNotificationContainer" 
@@ -116,10 +294,20 @@
                         Margin="10,10,0,10" 
                         HorizontalAlignment="Left">
 
+                    <Button x:Name="MenuToggleButton"
+                        Style="{DynamicResource NavIconButtonStyle}"
+                        Cursor="Hand"
+                        Click="MenuToggle_Click" 
+                        ToolTip="메뉴">
+                        <TextBlock Text="&#xE700;" 
+                               Style="{StaticResource NavIconStyle}"/>
+                    </Button>
+
                     <Button Style="{DynamicResource NavIconButtonStyle}"
                         Cursor="Hand"
                         Click="BtnHome_click" 
-                        ToolTip="홈">
+                        ToolTip="홈"
+                        Margin="5,0,0,0">
                         <TextBlock Text="&#xE80F;" 
                                Style="{StaticResource NavIconStyle}"/>
                     </Button>
@@ -299,52 +487,14 @@
         <!-- Main Buttons Grid -->
         <Border x:Name="mainButtonsGrid" CornerRadius="12" Grid.Row="2" Margin="20,10,20,20">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- 설치된 프로그램 버튼 (행/열 변경) -->
-                <Button x:Name="InstalledProgramsButton"
-                    Grid.Row="1" Grid.Column="0" 
-                    Margin="0,10,10,0"
-                    Style="{DynamicResource MainButtonStyle}" 
-                    Cursor="Hand"
-                    Click="NetWorksNew_Click">
-                    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
-                        <TextBlock Text="&#xE704;" 
-                             Style="{StaticResource MaterialIconStyle}"/>
-                        <TextBlock Text="네트워크 모니터링"                          
-                               TextAlignment="Center"
-                               FontSize="25"
-                               FontWeight="SemiBold"/>
-
-                    </StackPanel>
-                </Button>
-
-                <!-- 네트워크 접속 내역 버튼 -->
-                <Button x:Name="ModificationHistoryButton"
-                    Grid.Row="0" Grid.Column="1" 
-                    Margin="10,0,0,10"
-                    Style="{DynamicResource MainButtonStyle}" 
-                    Cursor="Hand"
-                    Click="ProgramList_Click">
-                    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
-                        <TextBlock Text="&#xE71D;" 
-                               Style="{StaticResource MaterialIconStyle}"/>
-                        <TextBlock Text="설치된 프로그램 목록" 
-                               TextAlignment="Center"
-                               FontSize="25" 
-                               FontWeight="SemiBold"/>
-
-                    </StackPanel>
-                </Button>
-
-                <!-- 보안 상태 대시보드 버튼 -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>                <!-- 악성 프로그램 탐지 버튼 -->
                 <Button x:Name="SecurityDashboardButton"
                     Grid.Row="0" Grid.Column="0" 
                     Margin="0,0,10,10"
@@ -352,31 +502,66 @@
                     Cursor="Hand"
                     Click="SecurityDashboard_Click">
                     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
-                        <TextBlock Text="&#xE7C3;" 
+                        <TextBlock Text="&#xE8C7;" 
                                Style="{StaticResource MaterialIconStyle}"/>
-                        <TextBlock Text="보안 상태 대시보드" 
+                        <TextBlock Text="악성 프로그램 탐지" 
                                TextAlignment="Center"
                                FontSize="25" 
                                FontWeight="SemiBold"/>
                     </StackPanel>
                 </Button>
 
-                <!-- 보안 복구 버튼 -->
-                <Button x:Name="SecurityRecoveryButton"
-                    Grid.Row="1" Grid.Column="1" 
-                    Margin="10,10,0,0"
+                <!-- 네트워크 보안 버튼 (1x2) -->
+                <Button x:Name="NetworkSecurityButton"
+                    Grid.Row="0" Grid.Column="1" 
+                    Margin="5,0,5,10"
                     Style="{DynamicResource MainButtonStyle}" 
                     Cursor="Hand"
-                    Click="SecurityRecovery_Click">
+                    Click="NetWorksNew_Click">
                     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
-                        <TextBlock Text="&#xE946;" 
+                        <TextBlock Text="&#xE704;" 
                                Style="{StaticResource MaterialIconStyle}"/>
-                        <TextBlock Text="보안 프로그램 복구" 
+                        <TextBlock Text="네트워크 보안" 
                                TextAlignment="Center"
                                FontSize="25" 
                                FontWeight="SemiBold"/>
                     </StackPanel>
                 </Button>
+
+                <!-- AutoBlock 시스템 버튼 (2x1) -->
+                <Button x:Name="AutoBlockButton"
+                    Grid.Row="1" Grid.Column="0" 
+                    Margin="0,10,10,0"
+                    Style="{DynamicResource MainButtonStyle}" 
+                    Cursor="Hand"
+                    Click="AutoBlock_Click">
+                    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
+                        <TextBlock Text="&#xE72E;" 
+                               Style="{StaticResource MaterialIconStyle}"/>
+                        <TextBlock Text="자동 차단 시스템" 
+                               TextAlignment="Center"
+                               FontSize="25" 
+                               FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- 시스템 복구 버튼 (2x2) -->
+                <Button x:Name="RecoveryButton"
+                    Grid.Row="1" Grid.Column="1" 
+                    Margin="10,10,0,0"
+                    Style="{DynamicResource MainButtonStyle}" 
+                    Cursor="Hand"
+                    Click="Recoverys_Click">
+                    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
+                        <TextBlock Text="&#xE777;" 
+                               Style="{StaticResource MaterialIconStyle}"/>
+                        <TextBlock Text="시스템 복구" 
+                               TextAlignment="Center"
+                               FontSize="25" 
+                               FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Button>
+
             </Grid>
         </Border>
     </Grid>

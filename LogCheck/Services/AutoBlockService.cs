@@ -58,6 +58,13 @@ namespace LogCheck.Services
         #region 생성자
 
         /// <summary>
+        /// AutoBlockService 기본 생성자 (기본 데이터베이스 경로 사용)
+        /// </summary>
+        public AutoBlockService() : this("Data Source=autoblock.db")
+        {
+        }
+
+        /// <summary>
         /// AutoBlockService 생성자
         /// </summary>
         /// <param name="connectionString">SQLite 데이터베이스 연결 문자열</param>
@@ -688,6 +695,114 @@ namespace LogCheck.Services
             }
             catch
             {
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region UI 지원 메소드
+
+        /// <summary>
+        /// 차단된 연결 목록 조회 (UI용)
+        /// </summary>
+        public async Task<List<AutoBlockedConnection>> GetBlockedConnectionsAsync()
+        {
+            var connections = new List<AutoBlockedConnection>();
+
+            try
+            {
+                using var connection = new SqliteConnection(_connectionString);
+                await connection.OpenAsync();
+
+                const string sql = @"
+                    SELECT ProcessName, ProcessPath, ProcessId, RemoteAddress, RemotePort, 
+                           LocalPort, Protocol, BlockLevel, Reason, TriggeredRules, 
+                           ConfidenceScore, BlockedAt, IsBlocked, ErrorMessage, 
+                           UserAction, ThreatCategory
+                    FROM BlockedConnections 
+                    WHERE IsBlocked = 1 
+                    ORDER BY BlockedAt DESC";
+
+                using var command = new SqliteCommand(sql, connection);
+                using var reader = await command.ExecuteReaderAsync();
+
+                while (await reader.ReadAsync())
+                {
+                    var blockedConnection = new AutoBlockedConnection
+                    {
+                        ProcessName = reader.GetString(reader.GetOrdinal("ProcessName")),
+                        ProcessPath = reader.IsDBNull(reader.GetOrdinal("ProcessPath")) ? string.Empty : reader.GetString(reader.GetOrdinal("ProcessPath")),
+                        ProcessId = reader.GetInt32(reader.GetOrdinal("ProcessId")),
+                        RemoteAddress = reader.GetString(reader.GetOrdinal("RemoteAddress")),
+                        RemotePort = reader.GetInt32(reader.GetOrdinal("RemotePort")),
+                        LocalPort = reader.IsDBNull(reader.GetOrdinal("LocalPort")) ? 0 : reader.GetInt32(reader.GetOrdinal("LocalPort")),
+                        Protocol = reader.IsDBNull(reader.GetOrdinal("Protocol")) ? "TCP" : reader.GetString(reader.GetOrdinal("Protocol")),
+                        BlockLevel = (BlockLevel)reader.GetInt32(reader.GetOrdinal("BlockLevel")),
+                        Reason = reader.GetString(reader.GetOrdinal("Reason")),
+                        TriggeredRules = reader.IsDBNull(reader.GetOrdinal("TriggeredRules")) ? string.Empty : reader.GetString(reader.GetOrdinal("TriggeredRules")),
+                        ConfidenceScore = reader.IsDBNull(reader.GetOrdinal("ConfidenceScore")) ? 0.0 : reader.GetDouble(reader.GetOrdinal("ConfidenceScore")),
+                        BlockedAt = DateTime.Parse(reader.GetString(reader.GetOrdinal("BlockedAt"))),
+                        IsBlocked = reader.GetBoolean(reader.GetOrdinal("IsBlocked")),
+                        ErrorMessage = reader.IsDBNull(reader.GetOrdinal("ErrorMessage")) ? string.Empty : reader.GetString(reader.GetOrdinal("ErrorMessage")),
+                        UserAction = reader.IsDBNull(reader.GetOrdinal("UserAction")) ? string.Empty : reader.GetString(reader.GetOrdinal("UserAction")),
+                        ThreatCategory = reader.IsDBNull(reader.GetOrdinal("ThreatCategory")) ? string.Empty : reader.GetString(reader.GetOrdinal("ThreatCategory")),
+                        FirewallRuleExists = false // 기본값, 필요시 실제 방화벽 상태 확인
+                    };
+
+                    connections.Add(blockedConnection);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to get blocked connections: {ex.Message}");
+            }
+
+            return connections;
+        }
+
+        /// <summary>
+        /// 특정 연결의 차단 해제 (UI용)
+        /// </summary>
+        public async Task<bool> UnblockConnectionAsync(string remoteAddress)
+        {
+            try
+            {
+                using var connection = new SqliteConnection(_connectionString);
+                await connection.OpenAsync();
+
+                const string sql = @"
+                    UPDATE BlockedConnections 
+                    SET IsBlocked = 0, UserAction = 'Unblocked by user', 
+                        BlockedAt = CURRENT_TIMESTAMP 
+                    WHERE RemoteAddress = @remoteAddress AND IsBlocked = 1";
+
+                using var command = new SqliteCommand(sql, connection);
+                command.Parameters.AddWithValue("@remoteAddress", remoteAddress);
+
+                var rowsAffected = await command.ExecuteNonQueryAsync();
+                return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to unblock connection: {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 화이트리스트에 주소 추가 (UI용 오버로드)
+        /// </summary>
+        public async Task<bool> AddAddressToWhitelistAsync(string address, string reason)
+        {
+            try
+            {
+                // 임시로 프로세스 경로로 처리 (실제로는 IP 주소 화이트리스트 테이블이 필요)
+                return await AddToWhitelistAsync(address, reason);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to add address to whitelist: {ex.Message}");
                 return false;
             }
         }

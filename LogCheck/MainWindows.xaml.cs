@@ -18,11 +18,14 @@ namespace LogCheck
         private int guideStep = 0;
         private List<FrameworkElement> guideElements = new();
         private List<string> guideDescriptions = new();
-        private FrameworkElement currentTargetElement;
+        private FrameworkElement? currentTargetElement;
 
         // 보안 상태 업데이트를 위한 타이머
-        private DispatcherTimer securityStatusTimer;
-        private SecurityAnalyzer securityAnalyzer;
+        private DispatcherTimer? securityStatusTimer;
+        private SecurityAnalyzer? securityAnalyzer;
+
+        // 사이드바 토글 상태
+        private bool isSidebarVisible = false;
 
         [SupportedOSPlatform("windows")]
         public MainWindows()
@@ -50,20 +53,12 @@ namespace LogCheck
         {
             guideElements = new List<FrameworkElement>
             {
-                securityStatusSection,
-                SecurityDashboardButton,
-                ModificationHistoryButton,
-                InstalledProgramsButton,
-                SecurityRecoveryButton
+                securityStatusSection
             };
 
             guideDescriptions = new List<string>
             {
-                "시스템의 전반적인 보안 상태를\n확인할 수 있습니다.",
-                "파일 해시 기반 악성 프로그램\n검사 결과를 확인할 수 있습니다.",
-                "시스템에 설치된 모든 프로그램을\n확인하고 관리할 수 있습니다.",
-                "실시간 네트워크 모니터링을 하고\n보안 위협을 탐지합니다.",
-                "Windows Defender, 방화벽 등\n보안 프로그램을 정상화 합니다."
+                "시스템의 전반적인 보안 상태를\n확인할 수 있습니다."
             };
         }
 
@@ -397,13 +392,7 @@ namespace LogCheck
             HelpButton.Visibility = Visibility.Collapsed;
         }
 
-        [SupportedOSPlatform("windows")]
-        private void SecurityRecovery_Click(object sender, RoutedEventArgs e)
-        {
-            // Recovery 페이지로 네비게이션
-            NavigateToPage(new Recoverys());
-            HelpButton.Visibility = Visibility.Collapsed;
-        }
+
 
         [SupportedOSPlatform("windows")]
         private void Vaccine_Click(object sender, RoutedEventArgs e)
@@ -418,6 +407,15 @@ namespace LogCheck
             NavigateToPage(new SecurityDashboard());
             HelpButton.Visibility = Visibility.Collapsed;
         }
+
+        [SupportedOSPlatform("windows")]
+        private void AutoBlock_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new AutoBlock());
+            HelpButton.Visibility = Visibility.Collapsed;
+        }
+
+
 
         /// <summary>
         /// 보안 상태 초기화
@@ -710,6 +708,38 @@ namespace LogCheck
                     await toastService.ShowInfoAsync("Windows Sentinel", "보안 모니터링이 시작되었습니다.");
                 });
             };
+        }
+
+        [SupportedOSPlatform("windows")]
+        private void MenuToggle_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleSidebar();
+        }
+
+        [SupportedOSPlatform("windows")]
+        private void ToggleSidebar()
+        {
+            if (isSidebarVisible)
+            {
+                // 사이드바 숨기기
+                var hideStoryboard = (System.Windows.Media.Animation.Storyboard)FindResource("HideSidebar");
+                hideStoryboard.Begin();
+                isSidebarVisible = false;
+            }
+            else
+            {
+                // 사이드바 보이기
+                var showStoryboard = (System.Windows.Media.Animation.Storyboard)FindResource("ShowSidebar");
+                showStoryboard.Begin();
+                isSidebarVisible = true;
+            }
+        }
+
+        [SupportedOSPlatform("windows")]
+        private void Recoverys_Click(object sender, RoutedEventArgs e)
+        {
+            NavigateToPage(new Recoverys());
+            HelpButton.Visibility = Visibility.Collapsed;
         }
     }
 }

@@ -191,6 +191,11 @@ namespace LogCheck.Models
         public string ThreatCategory { get; set; } = string.Empty;
 
         /// <summary>
+        /// 방화벽 규칙 존재 여부 (임시 차단용)
+        /// </summary>
+        public bool FirewallRuleExists { get; set; } = false;
+
+        /// <summary>
         /// UI에서 선택 상태를 나타내는 속성
         /// </summary>
         public bool IsSelected
