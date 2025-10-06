@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\My_Project\\WS\\LogCheck\\LogCheck.csproj": {}
+    "C:\\Users\\김기원\\Documents\\카카오톡 받은 파일\\LogCheck_1005\\LogCheck\\LogCheck.csproj": {}
   },
   "projects": {
-    "C:\\My_Project\\WS\\LogCheck\\LogCheck.csproj": {
+    "C:\\Users\\김기원\\Documents\\카카오톡 받은 파일\\LogCheck_1005\\LogCheck\\LogCheck.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\My_Project\\WS\\LogCheck\\LogCheck.csproj",
+        "projectUniqueName": "C:\\Users\\김기원\\Documents\\카카오톡 받은 파일\\LogCheck_1005\\LogCheck\\LogCheck.csproj",
         "projectName": "LogCheck",
-        "projectPath": "C:\\My_Project\\WS\\LogCheck\\LogCheck.csproj",
+        "projectPath": "C:\\Users\\김기원\\Documents\\카카오톡 받은 파일\\LogCheck_1005\\LogCheck\\LogCheck.csproj",
         "packagesPath": "C:\\Users\\김기원\\.nuget\\packages\\",
-        "outputPath": "C:\\My_Project\\WS\\LogCheck\\obj\\",
+        "outputPath": "C:\\Users\\김기원\\Documents\\카카오톡 받은 파일\\LogCheck_1005\\LogCheck\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

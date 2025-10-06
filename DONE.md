@@ -138,11 +138,13 @@
 ### 패킷 레벨 고도화 작업 완료 ✅
 
 - **고급 패킷 분석 엔진 구현**
+
   - AdvancedPacketAnalyzer.cs: TCP 플래그 분석, 패킷 크기 분포 모니터링
   - DDoS 시그니처 매칭 시스템 (7가지 패턴: SYN Flood, UDP Flood, Connection Flood, Slowloris, HTTP Flood 등)
   - 실시간 패킷 타이밍 분석 및 이상 탐지 알고리즘
 
 - **통합 DDoS 방어 시스템 구축**
+
   - IntegratedDDoSDefenseSystem.cs: 다층 방어 시스템 통합
   - DDoSDetectionEngine, RateLimitingService 연동
   - 실시간 공격 탐지 → 자동 차단 → 복구 프로세스 완전 자동화
@@ -155,14 +157,43 @@
 ### UI/UX 대시보드 개선 완료 ✅
 
 - **대시보드 레이아웃 최적화**
+
   - "보안 경고 및 권장 조치" 탭 제거 → 더 직관적인 2컬럼 레이아웃
   - AutoBlock 탭 전체에 ScrollViewer 추가 → 모든 내용 스크롤 가능
   - 그리드 구조 3컬럼 → 2컬럼 재조정으로 화면 공간 효율성 향상
 
 - **컴파일 오류 완전 해결**
+
   - ThreatIntelligence.xaml.cs: 이벤트 핸들러 Null 허용 타입 수정
   - NetWorks_New.xaml.cs: 비동기 메서드 구조 개선
   - SecurityAlertsControl 참조 완전 제거 → 빌드 성공 (0 오류)
+
+## 🔧 Edge 브라우저 차단 오류 수정 완료 (2025.10.06)
+
+### 주요 개선사항 ✅
+
+- **사용자 경험 개선**
+
+  - 침입적 MessageBox 팝업 → 비침입적 트레이 알림으로 전면 변경
+  - 연결 차단, 그룹 차단, 프로세스 종료 시 트레이 알림 통합 적용
+  - 작업 완료 알림의 일관성 확보 및 사용성 향상
+
+- **프로세스 종료 로직 통합**
+
+  - TreeView, GroupView, CollectionViewGroup 모든 UI 요소에서 통일된 처리
+  - `TerminateProcessByPidAsync` 메서드로 통합하여 Edge 프로세스 안정적 종료
+  - PID 기반 처리로 프로세스 식별 정확성 향상
+
+- **성능 최적화**
+  - 통계 계산 로직 LINQ → 단일 루프 최적화 (Edge 다중 연결 대응)
+  - Critical 레벨을 High 위험도에 포함시켜 위험도 분류 정확성 향상
+  - 차트 업데이트 로직 간소화로 실시간 성능 개선
+
+### 기술적 개선사항 ✅
+
+- **영구 차단 피드백 강화**: 방화벽 규칙 적용 완료 시 트레이 알림 추가
+- **에러 처리 간소화**: try-catch 블록 축약 및 코드 가독성 향상
+- **UI 업데이트 최적화**: 컬렉션 업데이트 로직 단순화로 깜빡임 현상 제거
 
 - **사용자 경험 개선**
   - 대시보드 내용 완전 표시 (잘림 현상 해결)

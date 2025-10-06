@@ -836,29 +836,16 @@ namespace LogCheck
         /// </summary>
         private async void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
+            try {
                 AddLogMessage("데이터 새로고침 중...");
-
-                if (_isMonitoring)
-                {
-                    // 현재 데이터 새로고침
-                    var data = await _processNetworkMapper.GetProcessNetworkDataAsync();
-                    await UpdateProcessNetworkDataAsync(data);
-                }
-                else
-                {
-                    // 모니터링이 중지된 상태에서 새로고침
-                    var data = await _processNetworkMapper.GetProcessNetworkDataAsync();
-                    await UpdateProcessNetworkDataAsync(data);
-                }
-
+                var data = await _processNetworkMapper.GetProcessNetworkDataAsync();
+                await UpdateProcessNetworkDataAsync(data);
                 AddLogMessage("데이터 새로고침이 완료되었습니다.");
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 AddLogMessage($"새로고침 오류: {ex.Message}");
-                MessageBox.Show($"데이터 새로고침 중 오류가 발생했습니다: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"데이터 새로고침 중 오류가 발생했습니다:{ex.Message}",
+                    "오류", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -1031,6 +1018,7 @@ namespace LogCheck
                     {
                         // 영구 방화벽 차단 적용
                         await ApplyPermanentBlockAsync(connection, blockOptions);
+                        ShowTrayNotification($"영구 차단 완료: {connection.ProcessName} - {connection.RemoteAddress}:{connection.RemotePort}");
                         return; // 영구 차단 완료 후 메서드 종료
                     }
 
@@ -1097,7 +1085,7 @@ namespace LogCheck
                             _ = Task.Run(async () => await LoadBlockedConnectionsAsync());
 
                             AddLogMessage($"✅ [Manual-Block] 연결 차단 완료: {connection.ProcessName} -> {connection.RemoteAddress}:{connection.RemotePort}");
-                            MessageBox.Show("연결 차단이 완료되었습니다.\n\nAutoBlock 통계에 기록되었습니다.", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                            //MessageBox.Show("연결 차단이 완료되었습니다.\n\nAutoBlock 통계에 기록되었습니다.", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
 
                             // NotifyIcon 사용하여 트레이 알림
                             ShowTrayNotification($"연결 차단 완료: {connection.ProcessName} - {connection.RemoteAddress}:{connection.RemotePort}");
@@ -1169,7 +1157,9 @@ namespace LogCheck
                             if (success)
                             {
                                 AddLogMessage("프로세스 종료가 완료되었습니다.");
-                                MessageBox.Show("프로세스 종료가 완료되었습니다.", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                                //MessageBox.Show("프로세스 종료가 완료되었습니다.", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                                ShowTrayNotification($"프로세스 종료 완료: {connection.ProcessName} (PID: {connection.ProcessId})");
+
                                 try
                                 {
                                     // 종료된 프로세스를 UI에서 즉시 반영
@@ -1533,35 +1523,44 @@ namespace LogCheck
             try
             {
                 data ??= new List<ProcessNetworkInfo>();
-
-                // 프로퍼티를 통해 업데이트하여 자동으로 UI가 갱신되도록 함
-                TotalConnections = data.Count;
-                LowRiskCount = data.Count(x => x.RiskLevel == SecurityRiskLevel.Low);
-                MediumRiskCount = data.Count(x => x.RiskLevel == SecurityRiskLevel.Medium);
-                HighRiskCount = data.Count(x => x.RiskLevel == SecurityRiskLevel.High);
-                TcpCount = data.Count(x => x.Protocol == "TCP");
-                UdpCount = data.Count(x => x.Protocol == "UDP");
-                IcmpCount = data.Count(x => x.Protocol == "ICMP");
-                _totalDataTransferred = data.Sum(x => x.DataTransferred);
-
-                // TotalDataTransferred는 계산된 프로퍼티이므로 수동으로 알림
+                int total = 0, low = 0, medium = 0, high = 0, tcp = 0, udp = 0, icmp = 0; long transferred = 0;
+                foreach (var x in data)
+                {
+                    total++; transferred += x.DataTransferred;
+                    switch (x.RiskLevel)
+                    {
+                        case SecurityRiskLevel.Low: low++; break;
+                        case SecurityRiskLevel.Medium: medium++; break;
+                        case SecurityRiskLevel.High: high++; break;
+                        case SecurityRiskLevel.Critical: high++; break; 
+                        // Critical도 위험에 포함
+                    }
+                    switch (x.Protocol.ToUpperInvariant()) {
+                        case "TCP": tcp++; break;
+                        case "UDP": udp++; break;
+                        case "ICMP": icmp++; break;
+                    }
+                }
+                TotalConnections = total;
+                LowRiskCount = low;
+                MediumRiskCount = medium;
+                HighRiskCount = high;
+                TcpCount = tcp;
+                UdpCount = udp;
+                IcmpCount = icmp;
+                _totalDataTransferred = transferred;
+                
                 OnPropertyChanged(nameof(TotalDataTransferred));
-
-                // UI 업데이트
+                
                 if (ActiveConnectionsText != null)
-                    ActiveConnectionsText.Text = TotalConnections.ToString();
+                    ActiveConnectionsText.Text = total.ToString();
                 if (DangerousConnectionsText != null)
-                    DangerousConnectionsText.Text = (HighRiskCount + data.Count(x => x.RiskLevel == SecurityRiskLevel.Critical)).ToString();
-
-                // 통계 표시 업데이트
+                    DangerousConnectionsText.Text = (high).ToString();
+                
                 UpdateStatisticsDisplay();
             }
-            catch (Exception ex)
-            {
-                AddLogMessage($"통계 업데이트 오류: {ex.Message}");
-            }
+            catch (Exception ex) { AddLogMessage($"통계 업데이트 오류: {ex.Message}"); }
         }
-
         /// <summary>
         /// 통계 표시 업데이트
         /// </summary>
@@ -1593,36 +1592,16 @@ namespace LogCheck
         {
             try
             {
-                // ProcessNetworkInfo의 경우 객체 참조가 달라서 간단히 Clear & Add 방식 사용
-                // 하지만 CollectionView를 완전히 리셋하지 않도록 하나씩 처리
-
-                // 기존 방식보다 부드럽게 업데이트
-                if (collection.Count == 0)
-                {
-                    // 빈 컬렉션이면 그냥 추가
-                    foreach (var item in newItems)
-                    {
-                        collection.Add(item);
-                    }
-                }
-                else
-                {
-                    // 하나씩 제거하고 추가하여 UI 깜빡임 최소화
-                    collection.Clear();
-                    foreach (var item in newItems)
-                    {
-                        collection.Add(item);
-                    }
-                }
+                collection.Clear();
+                foreach (var item in newItems)
+                    collection.Add(item); 
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"스마트 업데이트 실패: {ex.Message}");
                 collection.Clear();
                 foreach (var item in newItems)
-                {
                     collection.Add(item);
-                }
             }
         }
 
@@ -1633,53 +1612,39 @@ namespace LogCheck
         {
             try
             {
-                if (_chartSeries.Count > 0 && _chartSeries[0] is LineSeries<double> lineSeries)
+                if (_chartSeries.Count == 0 || !(_chartSeries[0] is LineSeries<double> lineSeries))
+                    return;
+                
+                data ??= new List<ProcessNetworkInfo>();
+
+                var groupedByHour = data
+                    .GroupBy(x => x.ConnectionStartTime.Hour)
+                    .ToDictionary(g => g.Key, g => g.Count());
+
+                var chartData = new List<double>();
+                var timeLabels = new List<string>();
+                var currentTime = DateTime.Now;
+
+                for (int i = 0; i < 12; i++)
                 {
-                    data ??= new List<ProcessNetworkInfo>();
-                    var chartData = new List<double>();
-                    var currentTime = DateTime.Now;
+                    var timeSlot = currentTime.AddHours(-22 + (i * 2));
+                    int hour = timeSlot.Hour;
 
-                    // 최근 12개 시간대의 데이터 생성 (2시간 간격)
-                    for (int i = 0; i < 12; i++)
-                    {
-                        var timeSlot = currentTime.AddHours(-22 + (i * 2));
-                        var hourData = data.Count(x =>
-                            Math.Abs((x.ConnectionStartTime - timeSlot).TotalHours) < 1);
+                    groupedByHour.TryGetValue(hour, out int count);
 
-                        // Y축 설정에 맞는 범위로 제한 (0-25)
-                        var normalizedData = Math.Max(0, Math.Min(25, hourData));
-                        chartData.Add(normalizedData);
-                    }
-
-                    // UI 스레드에서 차트 업데이트
-                    SafeInvokeUI(() =>
-                    {
-                        try
-                        {
-                            lineSeries.Values = chartData;
-
-                            // X축 레이블도 실시간으로 업데이트
-                            if (_chartXAxes.Count > 0)
-                            {
-                                var timeLabels = new List<string>();
-                                for (int i = 0; i < 12; i++)
-                                {
-                                    var timeSlot = currentTime.AddHours(-22 + (i * 2));
-                                    timeLabels.Add(timeSlot.ToString("HH"));
-                                }
-                                _chartXAxes[0].Labels = timeLabels;
-                            }
-                        }
-                        catch (Exception uiEx)
-                        {
-                            AddLogMessage($"차트 UI 업데이트 오류: {uiEx.Message}");
-                        }
-                    });
+                    // Y축 범위에 맞게 제한
+                    chartData.Add(Math.Clamp(count, 0, 25));
+                    timeLabels.Add(timeSlot.ToString("HH"));
                 }
+                SafeInvokeUI(() => {
+                    lineSeries.Values = chartData;
+                    if (_chartXAxes.Count > 0)
+                        _chartXAxes[0].Labels = timeLabels;
+                }); 
             }
             catch (Exception ex)
             {
-                AddLogMessage($"차트 업데이트 오류: {ex.Message}");
+                AddLogMessage($"차트 업데이트 오류: {ex.Message}"); 
             }
         }
 
@@ -2189,7 +2154,8 @@ namespace LogCheck
 
                         if (blockedCount > 0)
                         {
-                            MessageBox.Show($"그룹 차단이 완료되었습니다.\n\n차단된 연결: {blockedCount}개\nAutoBlock 통계 기록: {autoBlockedCount}개", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                            //MessageBox.Show($"그룹 차단이 완료되었습니다.\n\n차단된 연결: {blockedCount}개\nAutoBlock 통계 기록: {autoBlockedCount}개", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                            ShowTrayNotification($"그룹 차단 완료: {processNode.ProcessName} - {blockedCount}개 연결 차단됨");
 
                             // UI 새로고침
                             await RefreshProcessData();
@@ -2215,52 +2181,92 @@ namespace LogCheck
         {
             try
             {
-                // TreeView 방식: Button의 Tag에서 ProcessTreeNode 가져오기
                 var button = sender as System.Windows.Controls.Button;
-                var processNode = button?.Tag as ProcessTreeNode;
 
-                if (processNode != null)
+
+                int? pid = null;
+                string? pname = null;
+
+
+                // TreeView 기반 (ProcessTreeNode)
+                if (button?.Tag is ProcessTreeNode node)
                 {
-                    var result = MessageBox.Show(
-                        $"프로세스 '{processNode.ProcessName}' (PID: {processNode.ProcessId})을(를) 강제 종료하시겠습니까?\n\n" +
-                        $"이 작업은 되돌릴 수 없으며, 해당 프로세스의 모든 연결({processNode.Connections.Count}개)이 함께 종료됩니다.\n" +
-                        $"시스템 프로세스인 경우 시스템 불안정을 야기할 수 있습니다.",
-                        "프로세스 종료 확인",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Warning);
-
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        try
-                        {
-                            var process = System.Diagnostics.Process.GetProcessById(processNode.ProcessId);
-
-                            string processInfo = $"프로세스명: {process.ProcessName}, PID: {process.Id}, 시작시간: {process.StartTime}";
-
-                            process.Kill();
-                            process.WaitForExit(5000); // 5초 대기
-
-                            AddLogMessage($"프로세스 종료 성공 - {processInfo}");
-
-                            // UI 새로고침
-                            await RefreshProcessData();
-                        }
-                        catch (ArgumentException)
-                        {
-                            AddLogMessage($"프로세스 종료 실패: PID {processNode.ProcessId}에 해당하는 프로세스를 찾을 수 없습니다.");
-                        }
-                        catch (System.ComponentModel.Win32Exception ex)
-                        {
-                            AddLogMessage($"프로세스 종료 실패: 권한이 부족하거나 시스템에서 보호하는 프로세스입니다. ({ex.Message})");
-                            MessageBox.Show("프로세스 종료 권한이 부족합니다. 관리자 권한으로 실행하세요.", "권한 부족", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        }
-                    }
+                    pid = node.ProcessId;
+                    pname = node.ProcessName;
                 }
+                // 그룹 뷰 기반 (ProcessGroup)
+                else if (button?.Tag is ProcessGroup group)
+                {
+                    pid = group.ProcessId;
+                    pname = group.ProcessName;
+                }
+
+
+                // CollectionViewGroup 안전망 (XAML 그룹화된 경우)
+                else if (button?.DataContext is CollectionViewGroup cvg &&
+                int.TryParse(cvg.Name?.ToString(), out int pidFromGroup))
+                {
+                    pid = pidFromGroup;
+                    pname = cvg.Name?.ToString();
+                }
+
+
+                if (pid == null)
+                {
+                    AddLogMessage("선택된 프로세스 그룹을 찾을 수 없습니다.");
+                    MessageBox.Show("선택된 프로세스 그룹을 찾을 수 없습니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+
+                await TerminateProcessByPidAsync(pid.Value, pname);
             }
             catch (Exception ex)
             {
                 AddLogMessage($"그룹 프로세스 종료 오류: {ex.Message}");
                 MessageBox.Show($"프로세스 종료 중 오류가 발생했습니다: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private async Task TerminateProcessByPidAsync(int pid, string? name)
+        {
+            var result = MessageBox.Show(
+            $"프로세스 '{name}' (PID: {pid})을(를) 강제 종료하시겠습니까?\n\n⚠️ 주의: 데이터 손실이 발생할 수 있습니다.",
+            "프로세스 종료 확인",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning);
+
+
+            if (result != MessageBoxResult.Yes) return;
+
+
+            try
+            {
+                AddLogMessage($"프로세스 종료 시작: {name} (PID: {pid})");
+
+
+                bool success = await Task.Run(() => _connectionManager.TerminateProcessFamily(pid));
+
+
+                if (success)
+                {
+                    AddLogMessage("프로세스 종료가 완료되었습니다.");
+                    //MessageBox.Show("프로세스 종료가 완료되었습니다.", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    ShowTrayNotification($"프로세스 종료 완료: {name} (PID: {pid})");
+
+                    var data = await _processNetworkMapper.GetProcessNetworkDataAsync();
+                    await UpdateProcessNetworkDataAsync(data);
+                }
+                else
+                {
+                    AddLogMessage("프로세스 종료에 실패했습니다. 관리자 권한이 필요할 수 있습니다.");
+                    MessageBox.Show("프로세스 종료에 실패했습니다. 관리자 권한이 필요할 수 있습니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"프로세스 종료 실패: {ex.Message}");
+                MessageBox.Show($"프로세스 종료에 실패했습니다: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
