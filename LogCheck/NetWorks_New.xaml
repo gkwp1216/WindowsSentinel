@@ -19,6 +19,8 @@
         <!-- 컨버터들 -->
         <converters:WhitelistStatusToColorConverter x:Key="WhitelistStatusToColorConverter"/>
         <converters:SecurityRiskLevelToColorConverter x:Key="SecurityRiskLevelToColorConverter"/>
+        <converters:RiskLevelToColorConverter x:Key="RiskLevelToColorConverter"/>
+        <converters:RiskLevelToBackgroundConverter x:Key="RiskLevelToBackgroundConverter"/>
         <converters:WhitelistStatusToIconConverter x:Key="WhitelistStatusToIconConverter"/>
         <converters:ProtocolCountConverter x:Key="ProtocolCountConverter"/>
         <converters:SafeGroupItemConverter x:Key="SafeGroupItemConverter"/>
@@ -725,32 +727,97 @@
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
 
-                                    <DataGridTemplateColumn Header="위험도" Width="70">
+                                    <DataGridTemplateColumn Header="위험도" Width="80">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Border CornerRadius="4" Padding="8,4" VerticalAlignment="Center">
-                                                    <Border.Style>
-                                                        <Style TargetType="Border">
-                                                            <Setter Property="Background" Value="Gray"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding RiskLevel}" Value="Low">
-                                                                    <Setter Property="Background" Value="#4CAF50"/>
-                                                                    <!-- 초록 -->
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding RiskLevel}" Value="Medium">
-                                                                    <Setter Property="Background" Value="#F39C12"/>
-                                                                    <!-- 주황 -->
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding RiskLevel}" Value="High">
-                                                                    <Setter Property="Background" Value="#E74C3C"/>
-                                                                    <!-- 빨강 -->
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Border.Style>
+                                                <Border CornerRadius="6" Padding="10,5" VerticalAlignment="Center" 
+                                                        Background="{Binding RiskLevel, Converter={StaticResource RiskLevelToColorConverter}}">
+                                                    <!-- 위험도 아이콘과 텍스트 -->
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                        <!-- 위험도 아이콘 -->
+                                                        <TextBlock FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Margin="0,0,4,0">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="Text" Value="&#xE774;"/> <!-- 기본 아이콘 -->
+                                                                    <Setter Property="Foreground" Value="White"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding RiskLevel}" Value="Low">
+                                                                            <Setter Property="Text" Value="&#xE73E;"/> <!-- 체크 아이콘 -->
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding RiskLevel}" Value="Medium">
+                                                                            <Setter Property="Text" Value="&#xE7BA;"/> <!-- 경고 아이콘 -->
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding RiskLevel}" Value="High">
+                                                                            <Setter Property="Text" Value="&#xE783;"/> <!-- 위험 아이콘 -->
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding RiskLevel}" Value="Critical">
+                                                                            <Setter Property="Text" Value="&#xE7C7;"/> <!-- 중요 아이콘 -->
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding RiskLevel}" Value="System">
+                                                                            <Setter Property="Text" Value="&#xE7EF;"/> <!-- 시스템 아이콘 -->
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                        
+                                                        <!-- 위험도 텍스트 -->
+                                                        <TextBlock Foreground="White" FontWeight="SemiBold" FontSize="11" VerticalAlignment="Center">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding RiskLevel}" Value="Low">
+                                                                            <Setter Property="Text" Value="낮음"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding RiskLevel}" Value="Medium">
+                                                                            <Setter Property="Text" Value="보통"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding RiskLevel}" Value="High">
+                                                                            <Setter Property="Text" Value="높음"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding RiskLevel}" Value="Critical">
+                                                                            <Setter Property="Text" Value="위험"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding RiskLevel}" Value="System">
+                                                                            <Setter Property="Text" Value="시스템"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                    </StackPanel>
 
-                                                    <TextBlock Text="{Binding RiskLevel}" Foreground="White" FontWeight="SemiBold"
-                                                           HorizontalAlignment="Center" FontSize="11"/>
+                                                    <!-- 툴팁 -->
+                                                    <Border.ToolTip>
+                                                        <ToolTip>
+                                                            <StackPanel>
+                                                                <TextBlock Text="{Binding RiskDescription}" FontWeight="Bold"/>
+                                                                <TextBlock>
+                                                                    <TextBlock.Style>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding RiskLevel}" Value="Low">
+                                                                                    <Setter Property="Text" Value="안전한 수준의 네트워크 활동"/>
+                                                                                </DataTrigger>
+                                                                                <DataTrigger Binding="{Binding RiskLevel}" Value="Medium">
+                                                                                    <Setter Property="Text" Value="주의가 필요한 네트워크 활동"/>
+                                                                                </DataTrigger>
+                                                                                <DataTrigger Binding="{Binding RiskLevel}" Value="High">
+                                                                                    <Setter Property="Text" Value="위험한 네트워크 활동 - 모니터링 필요"/>
+                                                                                </DataTrigger>
+                                                                                <DataTrigger Binding="{Binding RiskLevel}" Value="Critical">
+                                                                                    <Setter Property="Text" Value="매우 위험한 활동 - 즉시 조치 필요"/>
+                                                                                </DataTrigger>
+                                                                                <DataTrigger Binding="{Binding RiskLevel}" Value="System">
+                                                                                    <Setter Property="Text" Value="시스템 프로세스 - 정상 활동"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBlock.Style>
+                                                                </TextBlock>
+                                                            </StackPanel>
+                                                        </ToolTip>
+                                                    </Border.ToolTip>
                                                 </Border>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>

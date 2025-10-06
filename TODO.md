@@ -387,6 +387,43 @@ private void UpdateChart(List<ProcessNetworkInfo> data)
 - AnalyzeTrafficPattern(): 트래픽 패턴 분석 (🔴🟠🟡🟢🔵)
 ```
 
+# ✅ 위험도 색상 자동화 완료 (2025.10.06)
+
+**🎨 위험도별 색상 자동화 시스템 완성:**
+
+- SecurityRiskLevel (5단계) → 자동 색상 매핑 시스템
+- 테마별 최적화 색상 (Dark/Light 테마 지원)
+- DataGrid 위험도 열 완전 자동화 (아이콘+색상+툴팁)
+- 실시간 색상 업데이트 (MVVM 바인딩 기반)
+
+**구현된 핵심 컴포넌트:**
+
+```csharp
+// RiskLevelToColorConverter - 테마 리소스 연동
+SecurityRiskLevel.Low → #4CAF50 (초록) / DarkTheme: #66BB6A
+SecurityRiskLevel.Medium → #FF9800 (주황) / DarkTheme: #FFA726
+SecurityRiskLevel.High → #F44336 (빨강) / DarkTheme: #EF5350
+SecurityRiskLevel.Critical → #9C27B0 (보라) / DarkTheme: #AB47BC
+SecurityRiskLevel.System → #607D8B (회색파랑) / DarkTheme: #78909C
+
+// DataGrid 위험도 열 개선사항
+- 위험도별 전용 아이콘 (체크/경고/위험/중요/시스템)
+- 한글 텍스트 표시 (낮음/보통/높음/위험/시스템)
+- 상세 툴팁 (위험도 설명 + 조치 가이드)
+- 자동 색상 변경 (배경색 컨버터 기반)
+```
+
+**테마 시스템 통합:**
+
+```xml
+<!-- DarkTheme.xaml & LightTheme.xaml -->
+<SolidColorBrush x:Key="RiskLowColor" Color="#66BB6A"/>
+<SolidColorBrush x:Key="RiskMediumColor" Color="#FFA726"/>
+<SolidColorBrush x:Key="RiskHighColor" Color="#EF5350"/>
+<SolidColorBrush x:Key="RiskCriticalColor" Color="#AB47BC"/>
+<SolidColorBrush x:Key="RiskSystemColor" Color="#78909C"/>
+```
+
 # MessageBox를 Toast/Snackbar로 교체
 
 BlockConnection_Click, TerminateProcess_Click 수정

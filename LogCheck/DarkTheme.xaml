@@ -18,6 +18,20 @@
     <SolidColorBrush x:Key="CheckedColor" Color="White"/>
     <SolidColorBrush x:Key="HelpMarkColor" Color="#4CAF50"/>
 
+    <!-- 위험도별 색상 (다크 테마 최적화) -->
+    <SolidColorBrush x:Key="RiskLowColor" Color="#66BB6A"/>        <!-- 밝은 초록 -->
+    <SolidColorBrush x:Key="RiskMediumColor" Color="#FFA726"/>     <!-- 밝은 주황 -->
+    <SolidColorBrush x:Key="RiskHighColor" Color="#EF5350"/>       <!-- 밝은 빨강 -->
+    <SolidColorBrush x:Key="RiskCriticalColor" Color="#AB47BC"/>   <!-- 밝은 보라 -->
+    <SolidColorBrush x:Key="RiskSystemColor" Color="#78909C"/>     <!-- 밝은 회색파랑 -->
+
+    <!-- 위험도별 배경색 (반투명) -->
+    <SolidColorBrush x:Key="RiskLowBackgroundColor" Color="#3366BB6A"/>        <!-- 30% 투명 초록 -->
+    <SolidColorBrush x:Key="RiskMediumBackgroundColor" Color="#33FFA726"/>     <!-- 30% 투명 주황 -->
+    <SolidColorBrush x:Key="RiskHighBackgroundColor" Color="#33EF5350"/>       <!-- 30% 투명 빨강 -->
+    <SolidColorBrush x:Key="RiskCriticalBackgroundColor" Color="#33AB47BC"/>   <!-- 30% 투명 보라 -->
+    <SolidColorBrush x:Key="RiskSystemBackgroundColor" Color="#3378909C"/>     <!-- 30% 투명 회색파랑 -->
+
     <!-- 메인 버튼 스타일 -->
     <Style x:Key="MainButtonStyle" TargetType="Button">
         <Setter Property="OverridesDefaultStyle" Value="True"/>

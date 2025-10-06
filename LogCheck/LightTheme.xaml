@@ -21,6 +21,20 @@
     <SolidColorBrush x:Key="HelpMarkColor" Color="Black"/>
     <SolidColorBrush x:Key="StartMonitoringButtonNormalBackground" Color="#BFE3B5"/>
     <SolidColorBrush x:Key="RefreshButtonNormalBackground" Color="#E8D06F"/>
+
+    <!-- 위험도별 색상 (라이트 테마 최적화) -->
+    <SolidColorBrush x:Key="RiskLowColor" Color="#4CAF50"/>        <!-- 진한 초록 -->
+    <SolidColorBrush x:Key="RiskMediumColor" Color="#FF9800"/>     <!-- 진한 주황 -->
+    <SolidColorBrush x:Key="RiskHighColor" Color="#F44336"/>       <!-- 진한 빨강 -->
+    <SolidColorBrush x:Key="RiskCriticalColor" Color="#9C27B0"/>   <!-- 진한 보라 -->
+    <SolidColorBrush x:Key="RiskSystemColor" Color="#607D8B"/>     <!-- 진한 회색파랑 -->
+
+    <!-- 위험도별 배경색 (반투명) -->
+    <SolidColorBrush x:Key="RiskLowBackgroundColor" Color="#334CAF50"/>        <!-- 20% 투명 초록 -->
+    <SolidColorBrush x:Key="RiskMediumBackgroundColor" Color="#33FF9800"/>     <!-- 20% 투명 주황 -->
+    <SolidColorBrush x:Key="RiskHighBackgroundColor" Color="#33F44336"/>       <!-- 20% 투명 빨강 -->
+    <SolidColorBrush x:Key="RiskCriticalBackgroundColor" Color="#339C27B0"/>   <!-- 20% 투명 보라 -->
+    <SolidColorBrush x:Key="RiskSystemBackgroundColor" Color="#33607D8B"/>     <!-- 20% 투명 회색파랑 -->
     <ImageBrush x:Key="TextureBackground" 
                 ImageSource="/IconTexture/texture10.png"
                 Stretch="UniformToFill"

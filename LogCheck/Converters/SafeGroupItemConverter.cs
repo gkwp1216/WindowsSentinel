@@ -1,6 +1,6 @@
-using LogCheck.Models;
 using System.Globalization;
 using System.Windows.Data;
+using LogCheck.Models;
 
 namespace LogCheck.Converters
 {
@@ -10,7 +10,7 @@ namespace LogCheck.Converters
     public class SafeGroupItemConverter : IValueConverter
     {
         private static readonly WhitelistStatusToColorConverter _whitelistColorConverter = new();
-        private static readonly SecurityRiskLevelToColorConverter _riskColorConverter = new();
+        private static readonly RiskLevelToColorConverter _riskColorConverter = new();
         private static readonly WhitelistStatusToIconConverter _whitelistIconConverter = new();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
