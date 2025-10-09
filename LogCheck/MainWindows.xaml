@@ -120,6 +120,7 @@
                 HorizontalAlignment="Left"
                 Panel.ZIndex="1060"
                 MouseEnter="SidebarTrigger_MouseEnter"
+                MouseLeave="SidebarTrigger_MouseLeave"
                 Cursor="Hand"
                 ToolTip="사이드바 열기">
             <Border.Style>
@@ -158,6 +159,7 @@
                 HorizontalAlignment="Left"
                 Panel.ZIndex="1050"
                 Opacity="1.0"
+                MouseEnter="Sidebar_MouseEnter"
                 MouseLeave="Sidebar_MouseLeave">
             <Border.RenderTransform>
                 <TranslateTransform x:Name="SidebarTransform" X="-250"/>

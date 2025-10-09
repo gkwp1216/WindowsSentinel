@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,12 +22,15 @@ using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace LogCheck
 {
+    [SupportedOSPlatform("windows")]
     public partial class AutoBlock : Page, INotifyPropertyChanged
     {
         #region Properties and Fields
 
-        private readonly AutoBlockService autoBlockService;
-        private readonly AutoBlockStatisticsService statisticsService;
+        private readonly AutoBlockService? autoBlockService;
+        private readonly AutoBlockStatisticsService? statisticsService;
+        private readonly PersistentFirewallManager? firewallManager;
+        private readonly ToastNotificationService? toastService;
         private ObservableCollection<IBlockedConnection> blockedConnections = new();
         private ICollectionView? filteredView;
         private string currentFilter = "All";
@@ -59,23 +63,50 @@ namespace LogCheck
 
         public AutoBlock()
         {
-            InitializeComponent();
-            DataContext = this;
+            try
+            {
+                InitializeComponent();
+                DataContext = this;
 
-            // 서비스 초기화
-            autoBlockService = new AutoBlockService();
-            statisticsService = new AutoBlockStatisticsService("Data Source=autoblock.db");
+                // 서비스 초기화
+                autoBlockService = new AutoBlockService();
+                statisticsService = new AutoBlockStatisticsService("Data Source=autoblock.db");
+                firewallManager = new PersistentFirewallManager();
 
-            // BlockedConnections는 이미 초기화됨
+                // Toast 서비스 초기화 (Windows 플랫폼에서만)
+                try
+                {
+                    toastService = ToastNotificationService.Instance;
+                }
+                catch
+                {
+                    toastService = null; // Windows가 아닌 환경에서는 null
+                }
 
-            // 필터링을 위한 CollectionView 설정
-            filteredView = CollectionViewSource.GetDefaultView(BlockedConnections);
-            filteredView.Filter = FilterConnections;
+                // BlockedConnections는 이미 초기화됨
 
-            BlockedConnectionsDataGrid.ItemsSource = filteredView;
+                // 필터링을 위한 CollectionView 설정
+                filteredView = CollectionViewSource.GetDefaultView(BlockedConnections);
+                filteredView.Filter = FilterConnections;
 
-            // 기본 필터 설정
-            SetActiveFilter(AllFilterButton);
+                BlockedConnectionsDataGrid.ItemsSource = filteredView;
+
+                // 기본 필터 설정
+                SetActiveFilter(AllFilterButton);
+            }
+            catch (Exception ex)
+            {
+                // 오류 발생 시 디버그 정보 출력 및 기본 처리
+                System.Diagnostics.Debug.WriteLine($"AutoBlock 초기화 오류: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"스택 트레이스: {ex.StackTrace}");
+
+                // 사용자에게 오류 알림
+                System.Windows.MessageBox.Show($"자동 차단 시스템 로딩 중 오류가 발생했습니다:\n\n{ex.Message}",
+                    "초기화 오류", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+
+                InitializeComponent(); // 최소한 UI만 초기화
+                DataContext = this;
+            }
         }
 
         #endregion
@@ -227,11 +258,37 @@ namespace LogCheck
                 BlockedConnectionsDataGrid.Visibility = Visibility.Collapsed;
                 EmptyPanel.Visibility = Visibility.Collapsed;
 
+                // 서비스가 초기화되지 않은 경우 처리
+                if (autoBlockService == null || statisticsService == null)
+                {
+                    toastService?.ShowErrorAsync("오류", "자동 차단 서비스가 초기화되지 않았습니다.");
+                    return;
+                }
+
+                // 데이터베이스 초기화 먼저 수행
+                try
+                {
+                    await statisticsService.InitializeDatabaseAsync();
+                }
+                catch (Exception dbEx)
+                {
+                    System.Diagnostics.Debug.WriteLine($"데이터베이스 초기화 오류: {dbEx.Message}");
+                }
+
                 // 임시 차단 연결 로드
                 var temporaryConnections = await autoBlockService.GetBlockedConnectionsAsync();
 
                 // 영구 차단 연결 로드
-                var permanentConnections = await statisticsService.GetPermanentlyBlockedConnectionsAsync();
+                List<PermanentBlockedConnection> permanentConnections = new();
+                try
+                {
+                    permanentConnections = await statisticsService.GetPermanentlyBlockedConnectionsAsync();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"영구 차단 연결 로드 오류: {ex.Message}");
+                    // 영구 차단 연결 로드에 실패해도 임시 차단은 표시
+                }
 
                 // 통합 목록 생성
                 var allConnections = new List<IBlockedConnection>();
@@ -274,30 +331,26 @@ namespace LogCheck
         {
             try
             {
-                await Task.Delay(100); // 임시 구현
+                // 방화벽 규칙 상태 실시간 확인
+                await UpdateFirewallRuleStatusAsync();
+
+                // 영구/임시 차단 분리 통계 가져오기
+                var separatedStats = await statisticsService.GetSeparatedBlockStatisticsAsync();
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    // 전체 차단 수
-                    var totalBlocks = BlockedConnections.Count;
-                    var temporaryCount = BlockedConnections.Count(c => !c.IsPermanentlyBlocked);
-                    var permanentCount = BlockedConnections.Count(c => c.IsPermanentlyBlocked);
+                    // 전체 차단 수 (실제 통계 기반)
+                    TotalBlocksText.Text = separatedStats.TotalBlocked.ToString();
+                    TotalBlocksSubText.Text = $"임시 {separatedStats.TemporaryBlocked} | 영구 {separatedStats.PermanentBlocked}";
 
-                    TotalBlocksText.Text = totalBlocks.ToString();
-                    TotalBlocksSubText.Text = $"임시 {temporaryCount} | 영구 {permanentCount}";
+                    // 24시간 차단 (실제 통계 기반)
+                    Last24HBlocksText.Text = separatedStats.TotalBlocked.ToString();
 
-                    // 24시간 차단
-                    var last24Hours = BlockedConnections.Count(c =>
-                        c.BlockedAt >= DateTime.Now.AddDays(-1));
-                    Last24HBlocksText.Text = last24Hours.ToString();
+                    // 성공률 계산 (실제 통계 기반)
+                    SuccessRateText.Text = $"{separatedStats.BlockSuccessRate:F1}%";
+                    SuccessRateSubText.Text = $"성공 {separatedStats.TotalBlocked - separatedStats.RecentBlocked} / 실패 {separatedStats.RecentBlocked}";
 
-                    // 차단 성공률
-                    var successfulBlocks = BlockedConnections.Count(c => c.FirewallRuleExists);
-                    var successRate = totalBlocks > 0 ? (double)successfulBlocks / totalBlocks * 100 : 0;
-                    SuccessRateText.Text = $"{successRate:F1}%";
-                    SuccessRateSubText.Text = $"성공 {successfulBlocks} / 실패 {totalBlocks - successfulBlocks}";
-
-                    // 방화벽 규칙 수
+                    // 활성 방화벽 규칙 수
                     var firewallRuleCount = BlockedConnections.Count(c => c.FirewallRuleExists);
                     FirewallRulesText.Text = firewallRuleCount.ToString();
                 });
@@ -305,6 +358,52 @@ namespace LogCheck
             catch (Exception ex)
             {
                 Debug.WriteLine($"통계 갱신 오류: {ex.Message}");
+            }
+        }
+
+        private async Task UpdateFirewallRuleStatusAsync()
+        {
+            try
+            {
+                // 방화벽 매니저가 초기화되지 않은 경우 처리
+                if (firewallManager == null)
+                {
+                    return;
+                }
+
+                // LogCheck 관련 방화벽 규칙 목록 가져오기
+                var firewallRules = await firewallManager.GetLogCheckRulesAsync();
+                var activeRuleNames = firewallRules.Select(r => r.Name).ToHashSet();
+
+                // 각 연결의 방화벽 규칙 존재 여부 확인
+                await Task.Run(() =>
+                {
+                    foreach (var connection in BlockedConnections.ToList())
+                    {
+                        if (connection.IsPermanentlyBlocked)
+                        {
+                            var ruleName = $"LogCheck_Block_{connection.ProcessName}_{connection.RemoteAddress}";
+
+                            // BlockedConnectionWrapper를 통해 내부 객체에 접근하여 상태 업데이트
+                            if (connection is BlockedConnectionWrapper wrapper)
+                            {
+                                wrapper.UpdateFirewallRuleStatus(activeRuleNames.Contains(ruleName));
+                            }
+                        }
+                        else
+                        {
+                            // 임시 차단의 경우, AutoBlockService에서 관리하므로 별도 처리
+                            if (connection is BlockedConnectionWrapper wrapper)
+                            {
+                                wrapper.UpdateFirewallRuleStatus(true); // 임시로 true 설정
+                            }
+                        }
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"방화벽 규칙 상태 업데이트 오류: {ex.Message}");
             }
         }
 
@@ -347,70 +446,158 @@ namespace LogCheck
 
         private async Task UnblockConnectionsAsync(IEnumerable<IBlockedConnection> connections)
         {
+            int successCount = 0;
+            int failCount = 0;
+
             try
             {
                 foreach (var connection in connections)
                 {
+                    bool success = false;
+
                     if (connection.IsPermanentlyBlocked)
                     {
-                        // 영구 차단 해제 (임시 구현)
-                        await Task.Delay(100);
+                        // 영구 차단 해제 - 방화벽 규칙 제거
+                        try
+                        {
+                            var ruleName = $"LogCheck_Block_{connection.ProcessName}_{connection.RemoteAddress}";
+                            success = await firewallManager.RemoveBlockRuleAsync(ruleName);
+
+                            if (success)
+                            {
+                                // 데이터베이스에서도 영구 차단 기록 제거 (선택사항)
+                                // await statisticsService.RemovePermanentBlockAsync(connection);
+                                toastService?.ShowSuccessAsync("영구 차단 해제", $"{connection.ProcessName} → {connection.RemoteAddress}");
+                            }
+                            else
+                            {
+                                toastService?.ShowWarningAsync("방화벽 규칙 제거 실패", connection.ProcessName);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            toastService?.ShowErrorAsync("영구 차단 해제 실패", ex.Message);
+                            success = false;
+                        }
                     }
                     else
                     {
                         // 임시 차단 해제
-                        await autoBlockService.UnblockConnectionAsync(connection.RemoteAddress);
+                        try
+                        {
+                            success = await autoBlockService.UnblockConnectionAsync(connection.RemoteAddress);
+                            if (success)
+                            {
+                                toastService?.ShowSuccessAsync("임시 차단 해제", connection.RemoteAddress);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            toastService?.ShowErrorAsync("임시 차단 해제 실패", ex.Message);
+                            success = false;
+                        }
                     }
 
-                    // UI에서 제거
-                    Application.Current.Dispatcher.Invoke(() =>
+                    if (success)
                     {
-                        BlockedConnections.Remove(connection);
-                    });
+                        successCount++;
+                        // UI에서 제거
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            BlockedConnections.Remove(connection);
+                        });
+                    }
+                    else
+                    {
+                        failCount++;
+                    }
                 }
 
                 await RefreshStatisticsAsync();
-                MessageBox.Show($"{connections.Count()}개의 연결 차단을 해제했습니다.", "완료", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // 결과 요약 Toast 알림
+                if (successCount > 0 && failCount == 0)
+                {
+                    toastService?.ShowSuccessAsync("차단 해제 완료", $"✅ {successCount}개 연결 해제됨");
+                }
+                else if (successCount > 0 && failCount > 0)
+                {
+                    toastService?.ShowWarningAsync("부분 성공", $"⚠️ {successCount}개 성공, {failCount}개 실패");
+                }
+                else
+                {
+                    toastService?.ShowErrorAsync("차단 해제 실패", $"❌ 모든 해제 실패 ({failCount}개)");
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"차단 해제 중 오류가 발생했습니다: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                toastService?.ShowErrorAsync("차단 해제 오류", ex.Message);
             }
         }
 
         private async Task AddToWhitelistAsync(IEnumerable<IBlockedConnection> connections)
         {
+            int successCount = 0;
+            int failCount = 0;
+
             try
             {
                 foreach (var connection in connections)
                 {
-                    // 화이트리스트에 추가
-                    await autoBlockService.AddAddressToWhitelistAsync(connection.RemoteAddress, $"사용자 추가 - {DateTime.Now:yyyy-MM-dd HH:mm}");
+                    try
+                    {
+                        // 화이트리스트에 추가
+                        await autoBlockService.AddAddressToWhitelistAsync(connection.RemoteAddress, $"사용자 추가 - {DateTime.Now:yyyy-MM-dd HH:mm}");
 
-                    // 차단도 함께 해제
-                    if (connection.IsPermanentlyBlocked)
-                    {
-                        // 영구 차단 해제 (임시 구현)
-                        await Task.Delay(100);
-                    }
-                    else
-                    {
-                        await autoBlockService.UnblockConnectionAsync(connection.RemoteAddress);
-                    }
+                        // 차단도 함께 해제
+                        if (connection.IsPermanentlyBlocked)
+                        {
+                            // 영구 차단 해제 - 방화벽 규칙 제거
+                            var ruleName = $"LogCheck_Block_{connection.ProcessName}_{connection.RemoteAddress}";
+                            await firewallManager.RemoveBlockRuleAsync(ruleName);
+                        }
+                        else
+                        {
+                            // 임시 차단 해제
+                            await autoBlockService.UnblockConnectionAsync(connection.RemoteAddress);
+                        }
 
-                    // UI에서 제거
-                    Application.Current.Dispatcher.Invoke(() =>
+                        successCount++;
+
+                        toastService?.ShowSuccessAsync("화이트리스트 추가", $"{connection.RemoteAddress} 추가 및 차단 해제");
+
+                        // UI에서 제거
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            BlockedConnections.Remove(connection);
+                        });
+                    }
+                    catch (Exception ex)
                     {
-                        BlockedConnections.Remove(connection);
-                    });
+                        failCount++;
+                        toastService?.ShowErrorAsync("화이트리스트 추가 실패", $"{connection.RemoteAddress}: {ex.Message}");
+                    }
                 }
 
                 await RefreshStatisticsAsync();
-                MessageBox.Show($"{connections.Count()}개의 연결을 화이트리스트에 추가하고 차단을 해제했습니다.", "완료", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // 결과 요약 Toast 알림
+                if (successCount > 0 && failCount == 0)
+                {
+                    toastService?.ShowSuccessAsync("화이트리스트 추가 완료", $"✅ {successCount}개 주소가 화이트리스트에 추가되었습니다");
+                }
+                else if (successCount > 0 && failCount > 0)
+                {
+                    toastService?.ShowWarningAsync("부분적 성공", $"⚠️ {successCount}개 성공, {failCount}개 실패");
+                }
+                else
+                {
+                    toastService?.ShowErrorAsync("화이트리스트 추가 실패", $"❌ 모든 추가 실패 ({failCount}개)");
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"화이트리스트 추가 중 오류가 발생했습니다: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                toastService?.ShowErrorAsync("화이트리스트 추가 오류", ex.Message);
             }
         }
 
@@ -575,9 +762,24 @@ namespace LogCheck
             wrappedConnection is AutoBlockedConnection ab ? ab.BlockedAt :
             wrappedConnection is PermanentBlockedConnection pb ? pb.LastBlockedAt : DateTime.MinValue;
 
+        private bool? _firewallRuleExistsOverride;
+
         public bool FirewallRuleExists =>
-            wrappedConnection is AutoBlockedConnection ab ? ab.FirewallRuleExists :
-            wrappedConnection is PermanentBlockedConnection pb ? pb.FirewallRuleExists : false;
+            _firewallRuleExistsOverride ??
+            (wrappedConnection is AutoBlockedConnection ab ? ab.FirewallRuleExists :
+            wrappedConnection is PermanentBlockedConnection pb ? pb.FirewallRuleExists : false);
+
+        /// <summary>
+        /// 방화벽 규칙 존재 상태를 업데이트합니다
+        /// </summary>
+        public void UpdateFirewallRuleStatus(bool exists)
+        {
+            if (_firewallRuleExistsOverride != exists)
+            {
+                _firewallRuleExistsOverride = exists;
+                OnPropertyChanged(nameof(FirewallRuleExists));
+            }
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

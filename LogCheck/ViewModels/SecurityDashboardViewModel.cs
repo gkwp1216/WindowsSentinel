@@ -29,6 +29,9 @@ namespace LogCheck.ViewModels
         private readonly SecurityEventLogger _eventLogger;
         private ChartPeriod _currentChartPeriod = ChartPeriod.Hourly;
 
+        // DDoS 방어 시스템 (싱글톤 방식으로 접근)
+        private static IntegratedDDoSDefenseSystem? _globalDDoSSystem = null;
+
         #region 보안 지표 속성들
 
         private ThreatLevel _currentThreatLevel = ThreatLevel.Low;
@@ -264,7 +267,7 @@ namespace LogCheck.ViewModels
             ToggleDDoSDefenseCommand = new RelayCommand(async () => await ExecuteToggleDDoSDefense());
             SecurityScanCommand = new RelayCommand(async () => await ExecuteSecurityScan());
             SystemRecoveryCommand = new RelayCommand(async () => await ExecuteSystemRecovery());
-            
+
             _statisticsService = new AutoBlockStatisticsService("Data Source=blocked_connections.db");
             _networkMapper = new ProcessNetworkMapper();
             _toastService = ToastNotificationService.Instance;
@@ -359,25 +362,81 @@ namespace LogCheck.ViewModels
 
         private Task UpdateDDoSDefenseStatus()
         {
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 try
                 {
-                    // DDoS 방어 시스템 상태 확인
-                    DDoSDefenseActive = true; // 기본적으로 활성화
-
-                    // 실제 DDoS 공격 차단 수 업데이트 (시뮬레이션)
-                    var random = new Random();
-                    if (random.NextDouble() < 0.1) // 10% 확률로 새로운 공격 차단
+                    // 전역 DDoS 시스템이 있는지 확인 (NetWorks_New에서 생성된 것)
+                    if (_globalDDoSSystem != null)
                     {
-                        DDoSAttacksBlocked += random.Next(1, 3);
+                        var ddosStats = _globalDDoSSystem.GetStatistics();
+
+                        // 실제 메트릭으로 업데이트
+                        DDoSDefenseActive = true; // DDoS 시스템이 활성화되어 있음
+                        DDoSAttacksBlocked = ddosStats.AttacksBlocked;
+
+                        // 현재 위험도 계산
+                        if (ddosStats.TotalAttacksDetected > 0)
+                        {
+                            var recentAttacks = ddosStats.TotalAttacksDetected - ddosStats.AttacksBlocked;
+                            if (recentAttacks > 5)
+                            {
+                                CurrentThreatLevel = ThreatLevel.Critical;
+                                ActiveThreats = recentAttacks;
+                            }
+                            else if (recentAttacks > 2)
+                            {
+                                CurrentThreatLevel = ThreatLevel.High;
+                                ActiveThreats = recentAttacks;
+                            }
+                            else if (recentAttacks > 0)
+                            {
+                                CurrentThreatLevel = ThreatLevel.Medium;
+                                ActiveThreats = recentAttacks;
+                            }
+                            else
+                            {
+                                CurrentThreatLevel = ThreatLevel.Low;
+                                ActiveThreats = 0;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // DDoS 시스템이 없으면 기본값 사용
+                        DDoSDefenseActive = false;
+                        DDoSAttacksBlocked = 0;
+                        CurrentThreatLevel = ThreatLevel.Low;
+                        ActiveThreats = 0;
+                    }
+
+                    // 네트워크 트래픽 실제 데이터 연동
+                    try
+                    {
+                        var networkData = await _networkMapper.GetProcessNetworkDataAsync();
+                        var currentTraffic = networkData.Sum(x => x.DataTransferred) / (1024.0 * 1024.0); // MB
+                        NetworkTrafficMBps = Math.Round(currentTraffic / 60.0, 1); // 분당 → 초당
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"네트워크 트래픽 업데이트 오류: {ex.Message}");
                     }
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine($"DDoS 상태 업데이트 오류: {ex.Message}");
+                    // 연동 실패 시 기본값 사용
+                    DDoSDefenseActive = false;
                 }
             });
+        }
+
+        /// <summary>
+        /// 전역 DDoS 시스템 설정 (NetWorks_New에서 호출)
+        /// </summary>
+        public static void SetGlobalDDoSSystem(IntegratedDDoSDefenseSystem ddosSystem)
+        {
+            _globalDDoSSystem = ddosSystem;
         }
 
         private Task UpdateRateLimitingStatus()

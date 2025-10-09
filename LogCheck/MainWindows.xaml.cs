@@ -27,6 +27,7 @@ namespace LogCheck
         // 사이드바 토글 상태
         private bool isSidebarVisible = false;
         private bool isSidebarPinnedOpen = false; // 수동으로 열린 상태 추적
+        private DispatcherTimer? sidebarHideTimer; // 자동 숨김 타이머
 
         [SupportedOSPlatform("windows")]
         public MainWindows()
@@ -35,6 +36,7 @@ namespace LogCheck
             InitializeGuide();
             InitializeSecurityStatus();
             InitializeToastNotifications();
+            InitializeSidebarTimer();
             this.SizeChanged += OnWindowSizeChanged;
         }
 
@@ -717,11 +719,41 @@ namespace LogCheck
             ToggleSidebar();
         }
 
+        // 사이드바 타이머 초기화
+        [SupportedOSPlatform("windows")]
+        private void InitializeSidebarTimer()
+        {
+            sidebarHideTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(500) // 500ms 지연 후 숨김
+            };
+            sidebarHideTimer.Tick += (s, e) =>
+            {
+                sidebarHideTimer.Stop();
+                if (!isSidebarPinnedOpen && !IsMouseOverSidebar())
+                {
+                    HideSidebar();
+                }
+            };
+        }
+
+        // 사이드바 영역에 마우스가 있는지 확인
+        [SupportedOSPlatform("windows")]
+        private bool IsMouseOverSidebar()
+        {
+            var mousePosition = System.Windows.Input.Mouse.GetPosition(this);
+            var sidebarBounds = new Rect(0, 0, 250, ActualHeight);
+            var triggerBounds = new Rect(0, 0, 15, ActualHeight);
+
+            return sidebarBounds.Contains(mousePosition) || triggerBounds.Contains(mousePosition);
+        }
+
         // 사이드바 닫기 버튼 클릭 시 고정 모드 해제하고 숨기기
         [SupportedOSPlatform("windows")]
         private void SidebarClose_Click(object sender, RoutedEventArgs e)
         {
             isSidebarPinnedOpen = false;
+            sidebarHideTimer?.Stop();
             HideSidebar();
         }
 
@@ -729,23 +761,43 @@ namespace LogCheck
         [SupportedOSPlatform("windows")]
         private void SidebarTrigger_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
+            sidebarHideTimer?.Stop(); // 숨김 타이머 중지
             ShowSidebar();
         }
 
-        // 사이드바에서 마우스가 나갔을 때
+        // 트리거 영역에서 마우스가 나갔을 때
+        [SupportedOSPlatform("windows")]
+        private void SidebarTrigger_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            // 마우스가 사이드바로 이동했는지 확인 후 숨김 타이머 시작
+            if (!isSidebarPinnedOpen && !IsMouseOverSidebar())
+            {
+                sidebarHideTimer?.Start();
+            }
+        }
+
+        // 사이드바에 마우스가 들어왔을 때 (숨김 타이머 중지)
+        [SupportedOSPlatform("windows")]
+        private void Sidebar_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            sidebarHideTimer?.Stop(); // 숨김 타이머 중지
+        }
+
+        // 사이드바에서 마우스가 나갔을 때 (지연된 숨김 시작)
         [SupportedOSPlatform("windows")]
         private void Sidebar_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            // 수동으로 고정된 상태가 아닐 때만 숨기기
+            // 수동으로 고정된 상태가 아닐 때만 지연 후 숨기기
             if (!isSidebarPinnedOpen)
             {
-                HideSidebar();
+                sidebarHideTimer?.Start();
             }
         }
 
         [SupportedOSPlatform("windows")]
         private void ShowSidebar()
         {
+            sidebarHideTimer?.Stop(); // 숨김 타이머 중지
             if (!isSidebarVisible)
             {
                 var showStoryboard = (System.Windows.Media.Animation.Storyboard)FindResource("ShowSidebar");
@@ -768,6 +820,8 @@ namespace LogCheck
         [SupportedOSPlatform("windows")]
         private void ToggleSidebar()
         {
+            sidebarHideTimer?.Stop(); // 타이머 중지
+
             if (isSidebarVisible)
             {
                 // 사이드바 숨기기 (수동 토글로 고정 해제)

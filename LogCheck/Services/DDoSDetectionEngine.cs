@@ -19,6 +19,7 @@ namespace LogCheck.Services
         private readonly ConcurrentDictionary<string, TrafficAnalyzer> _trafficAnalyzers;
         private readonly ConcurrentDictionary<string, SynFloodTracker> _synFloodTrackers;
         private readonly object _lockObject = new object();
+        private readonly ToastNotificationService _toastService;
 
         // 임계값 설정
         private readonly DDoSThresholds _thresholds;
@@ -39,6 +40,16 @@ namespace LogCheck.Services
             _connectionTrackers = new ConcurrentDictionary<string, ConnectionTracker>();
             _trafficAnalyzers = new ConcurrentDictionary<string, TrafficAnalyzer>();
             _synFloodTrackers = new ConcurrentDictionary<string, SynFloodTracker>();
+
+            // Windows 플랫폼에서만 Toast 서비스 초기화
+            if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+            {
+                _toastService = ToastNotificationService.Instance;
+            }
+            else
+            {
+                _toastService = null!; // 다른 플랫폼에서는 null로 설정
+            }
 
             // 기본 임계값 설정
             _thresholds = new DDoSThresholds
@@ -194,7 +205,7 @@ namespace LogCheck.Services
                     // 임계값 초과 시 SYN Flood로 판단
                     if (synCount > _thresholds.SynFloodThreshold)
                     {
-                        alerts.Add(new DDoSAlert
+                        var alert = new DDoSAlert
                         {
                             AttackType = DDoSAttackType.SynFlood,
                             SourceIP = ipAddress,
@@ -203,7 +214,15 @@ namespace LogCheck.Services
                             DetectedAt = now,
                             ConnectionCount = synCount,
                             RecommendedAction = "즉시 IP 차단 및 SYN 쿠키 활성화"
-                        });
+                        };
+
+                        alerts.Add(alert);
+
+                        // Toast 알림 표시
+                        await ShowDDoSAlertAsync(alert);
+
+                        // 이벤트 발생
+                        DDoSDetected?.Invoke(this, alert);
                     }
                 }
             }
@@ -239,7 +258,7 @@ namespace LogCheck.Services
 
                     if (udpCount > _thresholds.UdpFloodThreshold)
                     {
-                        alerts.Add(new DDoSAlert
+                        var alert = new DDoSAlert
                         {
                             AttackType = DDoSAttackType.UdpFlood,
                             SourceIP = ipAddress,
@@ -248,7 +267,15 @@ namespace LogCheck.Services
                             DetectedAt = now,
                             ConnectionCount = udpCount,
                             RecommendedAction = "UDP 트래픽 필터링 및 IP 차단"
-                        });
+                        };
+
+                        alerts.Add(alert);
+
+                        // Toast 알림 표시
+                        await ShowDDoSAlertAsync(alert);
+
+                        // 이벤트 발생
+                        DDoSDetected?.Invoke(this, alert);
                     }
                 }
             }
@@ -283,7 +310,7 @@ namespace LogCheck.Services
 
                     if (connectionCount > _thresholds.MaxConnectionsPerSecond)
                     {
-                        alerts.Add(new DDoSAlert
+                        var alert = new DDoSAlert
                         {
                             AttackType = DDoSAttackType.ConnectionFlood,
                             SourceIP = ipAddress,
@@ -292,7 +319,15 @@ namespace LogCheck.Services
                             DetectedAt = now,
                             ConnectionCount = connectionCount,
                             RecommendedAction = "연결 수 제한 및 IP 차단"
-                        });
+                        };
+
+                        alerts.Add(alert);
+
+                        // Toast 알림 표시
+                        await ShowDDoSAlertAsync(alert);
+
+                        // 이벤트 발생
+                        DDoSDetected?.Invoke(this, alert);
                     }
                 }
             }
@@ -331,7 +366,7 @@ namespace LogCheck.Services
                     // 동일 IP에서 다수의 슬로우 연결
                     if (slowConnectionCount > 10)
                     {
-                        alerts.Add(new DDoSAlert
+                        var alert = new DDoSAlert
                         {
                             AttackType = DDoSAttackType.SlowLoris,
                             SourceIP = ipAddress,
@@ -340,7 +375,15 @@ namespace LogCheck.Services
                             DetectedAt = now,
                             ConnectionCount = slowConnectionCount,
                             RecommendedAction = "연결 타임아웃 단축 및 IP 모니터링"
-                        });
+                        };
+
+                        alerts.Add(alert);
+
+                        // Toast 알림 표시
+                        await ShowDDoSAlertAsync(alert);
+
+                        // 이벤트 발생
+                        DDoSDetected?.Invoke(this, alert);
                     }
                 }
             }
@@ -378,7 +421,7 @@ namespace LogCheck.Services
                 {
                     if (item.TotalBytes > _thresholds.MaxBytesPerSecond)
                     {
-                        alerts.Add(new DDoSAlert
+                        var alert = new DDoSAlert
                         {
                             AttackType = DDoSAttackType.BandwidthFlood,
                             SourceIP = item.IP,
@@ -389,7 +432,15 @@ namespace LogCheck.Services
                             DataTransferred = item.TotalBytes,
                             ConnectionCount = item.ConnectionCount,
                             RecommendedAction = "대역폭 제한 및 IP 차단"
-                        });
+                        };
+
+                        alerts.Add(alert);
+
+                        // Toast 알림 표시
+                        await ShowDDoSAlertAsync(alert);
+
+                        // 이벤트 발생
+                        DDoSDetected?.Invoke(this, alert);
                     }
                 }
             }
@@ -426,7 +477,7 @@ namespace LogCheck.Services
 
                     if (httpRequestCount > _thresholds.HttpFloodThreshold)
                     {
-                        alerts.Add(new DDoSAlert
+                        var alert = new DDoSAlert
                         {
                             AttackType = DDoSAttackType.HttpFlood,
                             SourceIP = ipAddress,
@@ -435,7 +486,15 @@ namespace LogCheck.Services
                             DetectedAt = now,
                             ConnectionCount = httpRequestCount,
                             RecommendedAction = "HTTP 요청 제한 및 IP 차단"
-                        });
+                        };
+
+                        alerts.Add(alert);
+
+                        // Toast 알림 표시
+                        await ShowDDoSAlertAsync(alert);
+
+                        // 이벤트 발생
+                        DDoSDetected?.Invoke(this, alert);
                     }
                 }
             }
@@ -473,6 +532,64 @@ namespace LogCheck.Services
         private void OnErrorOccurred(string message)
         {
             ErrorOccurred?.Invoke(this, message);
+        }
+
+        /// <summary>
+        /// DDoS 탐지 시 Toast 알림 표시
+        /// </summary>
+        private async Task ShowDDoSAlertAsync(DDoSAlert alert)
+        {
+            if (_toastService == null) return;
+
+            try
+            {
+                var title = GetAlertTitle(alert.AttackType, alert.Severity);
+                var message = $"{alert.SourceIP}\n{alert.Description}\n권장조치: {alert.RecommendedAction}";
+
+                // Windows 플랫폼에서만 Toast 알림 표시
+                if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+                {
+                    // 심각도에 따른 알림 표시
+                    switch (alert.Severity)
+                    {
+                        case DDoSSeverity.Critical:
+                            await _toastService.ShowSecurityAsync($"🚨 긴급 - {title}", message);
+                            break;
+                        case DDoSSeverity.High:
+                            await _toastService.ShowErrorAsync($"⚠️ 위험 - {title}", message);
+                            break;
+                        case DDoSSeverity.Medium:
+                            await _toastService.ShowWarningAsync($"⚠️ 경고 - {title}", message);
+                            break;
+                        case DDoSSeverity.Low:
+                            await _toastService.ShowInfoAsync($"ℹ️ 정보 - {title}", message);
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                OnErrorOccurred($"DDoS 알림 표시 중 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 공격 유형과 심각도에 따른 알림 제목 생성
+        /// </summary>
+        private static string GetAlertTitle(DDoSAttackType attackType, DDoSSeverity severity)
+        {
+            var attackName = attackType switch
+            {
+                DDoSAttackType.SynFlood => "SYN Flood 공격",
+                DDoSAttackType.UdpFlood => "UDP Flood 공격",
+                DDoSAttackType.ConnectionFlood => "연결 폭주 공격",
+                DDoSAttackType.SlowLoris => "Slowloris 공격",
+                DDoSAttackType.BandwidthFlood => "대역폭 공격",
+                DDoSAttackType.HttpFlood => "HTTP Flood 공격",
+                _ => "DDoS 공격"
+            };
+
+            return $"{attackName} 탐지";
         }
 
         #endregion

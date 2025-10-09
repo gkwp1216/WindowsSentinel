@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using LogCheck.Models;
@@ -24,18 +25,38 @@ namespace LogCheck.Services
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
 
-            // 일별 차단 통계 테이블
+            // 기본 차단 연결 테이블
+            var createBlockedConnectionsTable = @"
+                CREATE TABLE IF NOT EXISTS BlockedConnections (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    ProcessName TEXT NOT NULL,
+                    ProcessPath TEXT,
+                    ProcessId INTEGER NOT NULL,
+                    RemoteAddress TEXT NOT NULL,
+                    RemotePort INTEGER NOT NULL,
+                    LocalPort INTEGER,
+                    Protocol TEXT,
+                    BlockLevel INTEGER NOT NULL,
+                    Reason TEXT NOT NULL,
+                    ConfidenceScore REAL DEFAULT 0.0,
+                    TriggeredRules TEXT,
+                    BlockedAt DATETIME NOT NULL,
+                    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+                );";
+
+            // 일별 통계 테이블
             var createDailyStatsTable = @"
                 CREATE TABLE IF NOT EXISTS AutoBlockDailyStats (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    Date TEXT NOT NULL UNIQUE,
+                    Date DATE NOT NULL UNIQUE,
                     TotalBlocked INTEGER DEFAULT 0,
                     Level1Blocked INTEGER DEFAULT 0,
                     Level2Blocked INTEGER DEFAULT 0,
                     Level3Blocked INTEGER DEFAULT 0,
                     UniqueProcesses INTEGER DEFAULT 0,
                     UniqueIPs INTEGER DEFAULT 0,
-                    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+                    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
                 );";
 
             // 프로세스별 차단 통계 테이블
@@ -55,24 +76,26 @@ namespace LogCheck.Services
             var createIPStatsTable = @"
                 CREATE TABLE IF NOT EXISTS IPBlockStats (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    IPAddress TEXT NOT NULL UNIQUE,
+                    IPAddress TEXT NOT NULL,
                     TotalBlocked INTEGER DEFAULT 0,
                     LastBlockedAt DATETIME,
                     FirstBlockedAt DATETIME,
-                    Country TEXT,
-                    ThreatLevel TEXT,
                     CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                     UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
                 );";
 
-            using var cmd1 = new SqliteCommand(createDailyStatsTable, connection);
-            await cmd1.ExecuteNonQueryAsync();
+            // 테이블들 생성
+            await using var cmd = new SqliteCommand(createBlockedConnectionsTable, connection);
+            await cmd.ExecuteNonQueryAsync();
 
-            using var cmd2 = new SqliteCommand(createProcessStatsTable, connection);
-            await cmd2.ExecuteNonQueryAsync();
+            cmd.CommandText = createDailyStatsTable;
+            await cmd.ExecuteNonQueryAsync();
 
-            using var cmd3 = new SqliteCommand(createIPStatsTable, connection);
-            await cmd3.ExecuteNonQueryAsync();
+            cmd.CommandText = createProcessStatsTable;
+            await cmd.ExecuteNonQueryAsync();
+
+            cmd.CommandText = createIPStatsTable;
+            await cmd.ExecuteNonQueryAsync();
         }
 
         /// <summary>
@@ -82,117 +105,238 @@ namespace LogCheck.Services
         {
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
-            using var transaction = connection.BeginTransaction();
 
+            using var transaction = await connection.BeginTransactionAsync();
             try
             {
-                // 1. 일별 통계 업데이트
+                // 차단 연결 기록
+                var insertSql = @"
+                    INSERT INTO BlockedConnections (
+                        ProcessName, ProcessPath, ProcessId, RemoteAddress, RemotePort, 
+                        LocalPort, Protocol, BlockLevel, Reason, ConfidenceScore, 
+                        TriggeredRules, BlockedAt
+                    ) VALUES (
+                        @ProcessName, @ProcessPath, @ProcessId, @RemoteAddress, @RemotePort,
+                        @LocalPort, @Protocol, @BlockLevel, @Reason, @ConfidenceScore,
+                        @TriggeredRules, @BlockedAt
+                    )";
+
+                using var insertCmd = new SqliteCommand(insertSql, connection, transaction);
+                insertCmd.Parameters.AddWithValue("@ProcessName", blockedConnection.ProcessName);
+                insertCmd.Parameters.AddWithValue("@ProcessPath", blockedConnection.ProcessPath ?? "");
+                insertCmd.Parameters.AddWithValue("@ProcessId", blockedConnection.ProcessId);
+                insertCmd.Parameters.AddWithValue("@RemoteAddress", blockedConnection.RemoteAddress);
+                insertCmd.Parameters.AddWithValue("@RemotePort", blockedConnection.RemotePort);
+                insertCmd.Parameters.AddWithValue("@LocalPort", blockedConnection.LocalPort);
+                insertCmd.Parameters.AddWithValue("@Protocol", blockedConnection.Protocol);
+                insertCmd.Parameters.AddWithValue("@BlockLevel", (int)blockedConnection.BlockLevel);
+                insertCmd.Parameters.AddWithValue("@Reason", blockedConnection.Reason);
+                insertCmd.Parameters.AddWithValue("@ConfidenceScore", blockedConnection.ConfidenceScore);
+                insertCmd.Parameters.AddWithValue("@TriggeredRules", blockedConnection.TriggeredRules ?? "");
+                insertCmd.Parameters.AddWithValue("@BlockedAt", blockedConnection.BlockedAt.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                await insertCmd.ExecuteNonQueryAsync();
+
+                // 통계 업데이트
                 await UpdateDailyStatsAsync(connection, blockedConnection, transaction);
-
-                // 2. 프로세스별 통계 업데이트
                 await UpdateProcessStatsAsync(connection, blockedConnection, transaction);
-
-                // 3. IP별 통계 업데이트
                 await UpdateIPStatsAsync(connection, blockedConnection, transaction);
 
                 await transaction.CommitAsync();
             }
-            catch
+            catch (Exception ex)
             {
                 await transaction.RollbackAsync();
+                System.Diagnostics.Debug.WriteLine($"차단 이벤트 기록 오류: {ex.Message}");
                 throw;
             }
         }
 
-        private async Task UpdateDailyStatsAsync(SqliteConnection conn, AutoBlockedConnection blocked, SqliteTransaction tx)
+        /// <summary>
+        /// 차단된 연결 목록을 가져옵니다.
+        /// </summary>
+        public async Task<List<AutoBlockedConnection>> GetBlockedConnectionsAsync()
         {
-            var today = DateTime.Now.Date.ToString("yyyy-MM-dd");
+            var connections = new List<AutoBlockedConnection>();
+
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
 
             var sql = @"
-                INSERT OR IGNORE INTO AutoBlockDailyStats (Date, TotalBlocked, Level1Blocked, Level2Blocked, Level3Blocked)
-                VALUES (@Date, 0, 0, 0, 0);
-                
-                UPDATE AutoBlockDailyStats SET
-                    TotalBlocked = TotalBlocked + 1,
-                    Level1Blocked = Level1Blocked + @Level1,
-                    Level2Blocked = Level2Blocked + @Level2,
-                    Level3Blocked = Level3Blocked + @Level3
-                WHERE Date = @Date;";
+                SELECT Id, ProcessName, ProcessPath, ProcessId, RemoteAddress, RemotePort, 
+                       Protocol, BlockedAt, BlockLevel, Reason, ConfidenceScore, TriggeredRules
+                FROM BlockedConnections 
+                ORDER BY BlockedAt DESC";
 
-            var level1 = blocked.BlockLevel == BlockLevel.Immediate ? 1 : 0;
-            var level2 = blocked.BlockLevel == BlockLevel.Warning ? 1 : 0;
-            var level3 = blocked.BlockLevel == BlockLevel.Monitor ? 1 : 0;
+            using var cmd = new SqliteCommand(sql, connection);
+            using var reader = await cmd.ExecuteReaderAsync();
 
-            using var cmd = new SqliteCommand(sql, conn, tx);
-            cmd.Parameters.AddWithValue("@Date", today);
-            cmd.Parameters.AddWithValue("@Level1", level1);
-            cmd.Parameters.AddWithValue("@Level2", level2);
-            cmd.Parameters.AddWithValue("@Level3", level3);
-            await cmd.ExecuteNonQueryAsync();
+            while (await reader.ReadAsync())
+            {
+                connections.Add(new AutoBlockedConnection
+                {
+                    Id = reader.GetInt32(0),
+                    ProcessName = reader.GetString(1),
+                    ProcessPath = reader.IsDBNull(2) ? "" : reader.GetString(2),
+                    ProcessId = reader.GetInt32(3),
+                    RemoteAddress = reader.GetString(4),
+                    RemotePort = reader.GetInt32(5),
+                    Protocol = reader.IsDBNull(6) ? "TCP" : reader.GetString(6),
+                    BlockedAt = DateTime.Parse(reader.GetString(7)),
+                    BlockLevel = (BlockLevel)reader.GetInt32(8),
+                    Reason = reader.GetString(9),
+                    ConfidenceScore = reader.IsDBNull(10) ? 0.0 : reader.GetDouble(10),
+                    TriggeredRules = reader.IsDBNull(11) ? "" : reader.GetString(11),
+                    IsBlocked = true
+                });
+            }
 
-            // 고유 프로세스 및 IP 카운트 업데이트
-            await UpdateUniqueCountsAsync(conn, today, tx);
+            return connections;
         }
 
-        private async Task UpdateProcessStatsAsync(SqliteConnection conn, AutoBlockedConnection blocked, SqliteTransaction tx)
+        /// <summary>
+        /// 영구 차단된 연결 목록을 가져옵니다 (방화벽 규칙과 연결된)
+        /// </summary>
+        public async Task<List<PermanentBlockedConnection>> GetPermanentlyBlockedConnectionsAsync()
         {
+            var connections = new List<PermanentBlockedConnection>();
+
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+
             var sql = @"
-                INSERT OR IGNORE INTO ProcessBlockStats (ProcessName, ProcessPath, TotalBlocked, FirstBlockedAt, LastBlockedAt, UpdatedAt)
-                VALUES (@ProcessName, @ProcessPath, 0, @Now, @Now, @Now);
-                
-                UPDATE ProcessBlockStats SET
-                    TotalBlocked = TotalBlocked + 1,
-                    LastBlockedAt = @Now,
-                    UpdatedAt = @Now
-                WHERE ProcessName = @ProcessName;";
+                SELECT DISTINCT 
+                    bc.ProcessName, 
+                    bc.ProcessPath, 
+                    bc.RemoteAddress, 
+                    bc.RemotePort, 
+                    bc.Protocol,
+                    bc.BlockLevel,
+                    bc.Reason,
+                    bc.BlockedAt,
+                    COUNT(*) as BlockCount,
+                    MAX(bc.BlockedAt) as LastBlockedAt
+                FROM BlockedConnections bc 
+                WHERE bc.BlockedAt > datetime('now', '-30 days')
+                GROUP BY bc.ProcessName, bc.ProcessPath, bc.RemoteAddress, bc.RemotePort, bc.Protocol
+                ORDER BY LastBlockedAt DESC";
 
-            using var cmd = new SqliteCommand(sql, conn, tx);
-            cmd.Parameters.AddWithValue("@ProcessName", blocked.ProcessName ?? "Unknown");
-            cmd.Parameters.AddWithValue("@ProcessPath", blocked.ProcessPath ?? "");
-            cmd.Parameters.AddWithValue("@Now", DateTime.Now);
-            await cmd.ExecuteNonQueryAsync();
+            using var cmd = new SqliteCommand(sql, connection);
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                var blockedConnection = new PermanentBlockedConnection
+                {
+                    ProcessName = reader.GetString(0),
+                    ProcessPath = reader.IsDBNull(1) ? "" : reader.GetString(1),
+                    RemoteAddress = reader.GetString(2),
+                    RemotePort = reader.GetInt32(3),
+                    Protocol = reader.IsDBNull(4) ? "TCP" : reader.GetString(4),
+                    BlockLevel = reader.GetInt32(5),
+                    Reason = reader.GetString(6),
+                    FirstBlockedAt = DateTime.Parse(reader.GetString(7)),
+                    LastBlockedAt = DateTime.Parse(reader.GetString(9)),
+                    BlockCount = reader.GetInt32(8),
+                    IsPermanentlyBlocked = true, // 데이터베이스에서 가져온 것은 영구 차단으로 간주
+                    FirewallRuleExists = false // 이후 PersistentFirewallManager로 확인
+                };
+
+                connections.Add(blockedConnection);
+            }
+
+            return connections;
         }
 
-        private async Task UpdateIPStatsAsync(SqliteConnection conn, AutoBlockedConnection blocked, SqliteTransaction tx)
+        /// <summary>
+        /// 영구 차단 연결의 방화벽 규칙 존재 여부 업데이트
+        /// </summary>
+        [SupportedOSPlatform("windows")]
+        public async Task<List<PermanentBlockedConnection>> UpdateFirewallRuleStatusAsync(
+            List<PermanentBlockedConnection> connections)
         {
-            var sql = @"
-                INSERT OR IGNORE INTO IPBlockStats (IPAddress, TotalBlocked, FirstBlockedAt, LastBlockedAt, ThreatLevel, UpdatedAt)
-                VALUES (@IPAddress, 0, @Now, @Now, @ThreatLevel, @Now);
-                
-                UPDATE IPBlockStats SET
-                    TotalBlocked = TotalBlocked + 1,
-                    LastBlockedAt = @Now,
-                    ThreatLevel = @ThreatLevel,
-                    UpdatedAt = @Now
-                WHERE IPAddress = @IPAddress;";
+            try
+            {
+                var persistentFirewallManager = new PersistentFirewallManager();
+                await persistentFirewallManager.InitializeAsync();
 
-            using var cmd = new SqliteCommand(sql, conn, tx);
-            cmd.Parameters.AddWithValue("@IPAddress", blocked.RemoteAddress ?? "Unknown");
-            cmd.Parameters.AddWithValue("@ThreatLevel", blocked.BlockLevel.ToString());
-            cmd.Parameters.AddWithValue("@Now", DateTime.Now);
-            await cmd.ExecuteNonQueryAsync();
+                var firewallRules = await persistentFirewallManager.GetLogCheckRulesAsync();
+
+                foreach (var connection in connections)
+                {
+                    // 방화벽 규칙 존재 여부 확인
+                    connection.FirewallRuleExists = firewallRules.Any(rule =>
+                        rule.ApplicationName.Contains(connection.ProcessName, StringComparison.OrdinalIgnoreCase) ||
+                        rule.RemoteAddresses.Contains(connection.RemoteAddress));
+                }
+
+                return connections;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"방화벽 규칙 상태 업데이트 오류: {ex.Message}");
+                return connections;
+            }
         }
 
-        private async Task UpdateUniqueCountsAsync(SqliteConnection conn, string date, SqliteTransaction tx)
+        /// <summary>
+        /// 영구 및 임시 차단 분리 통계 가져오기
+        /// </summary>
+        public async Task<SeparatedBlockStatistics> GetSeparatedBlockStatisticsAsync()
         {
-            // AutoBlockHistory 테이블에서 고유 프로세스 및 IP 카운트 계산
-            var updateUniqueCountsSql = @"
-                UPDATE AutoBlockDailyStats SET
-                    UniqueProcesses = (
-                        SELECT COUNT(DISTINCT ProcessName) 
-                        FROM AutoBlockHistory 
-                        WHERE date(BlockedAt) = @Date
-                    ),
-                    UniqueIPs = (
-                        SELECT COUNT(DISTINCT RemoteAddress) 
-                        FROM AutoBlockHistory 
-                        WHERE date(BlockedAt) = @Date
-                    )
-                WHERE Date = @Date;";
+            var statistics = new SeparatedBlockStatistics();
 
-            using var cmd = new SqliteCommand(updateUniqueCountsSql, conn, tx);
-            cmd.Parameters.AddWithValue("@Date", date);
-            await cmd.ExecuteNonQueryAsync();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+
+            try
+            {
+                // 전체 차단 통계
+                var totalSql = @"
+                    SELECT COUNT(*) FROM BlockedConnections 
+                    WHERE BlockedAt >= datetime('now', '-24 hours')";
+                using var totalCmd = new SqliteCommand(totalSql, connection);
+                statistics.TotalBlocked = Convert.ToInt32(await totalCmd.ExecuteScalarAsync());
+
+                // 임시 차단 통계 (최근 차단되었지만 영구 차단 목록에 없는 것들)
+                var tempSql = @"
+                    SELECT COUNT(*) FROM BlockedConnections bc
+                    WHERE bc.BlockedAt >= datetime('now', '-24 hours')
+                    AND NOT EXISTS (
+                        SELECT 1 FROM BlockedConnections bc2 
+                        WHERE bc2.ProcessName = bc.ProcessName 
+                        AND bc2.RemoteAddress = bc.RemoteAddress
+                        AND bc2.BlockedAt < datetime('now', '-7 days')
+                    )";
+                using var tempCmd = new SqliteCommand(tempSql, connection);
+                statistics.TemporaryBlocked = Convert.ToInt32(await tempCmd.ExecuteScalarAsync());
+
+                // 영구 차단 통계 (7일 이상 지속적으로 차단된 연결들)
+                var permSql = @"
+                    SELECT COUNT(DISTINCT ProcessName, RemoteAddress) 
+                    FROM BlockedConnections 
+                    WHERE BlockedAt < datetime('now', '-7 days')";
+                using var permCmd = new SqliteCommand(permSql, connection);
+                statistics.PermanentBlocked = Convert.ToInt32(await permCmd.ExecuteScalarAsync());
+
+                // 최근 1시간 차단
+                var recentSql = @"
+                    SELECT COUNT(*) FROM BlockedConnections 
+                    WHERE BlockedAt >= datetime('now', '-1 hour')";
+                using var recentCmd = new SqliteCommand(recentSql, connection);
+                statistics.RecentBlocked = Convert.ToInt32(await recentCmd.ExecuteScalarAsync());
+
+                // 성공률 계산
+                statistics.BlockSuccessRate = statistics.TotalBlocked > 0 ?
+                    Math.Round((double)(statistics.TotalBlocked - statistics.RecentBlocked) / statistics.TotalBlocked * 100, 1) : 100.0;
+
+                return statistics;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"분리 통계 조회 오류: {ex.Message}");
+                return statistics;
+            }
         }
 
         /// <summary>
@@ -276,67 +420,19 @@ namespace LogCheck.Services
         }
 
         /// <summary>
-        /// 차단된 연결 목록을 가져옵니다.
-        /// </summary>
-        public async Task<List<AutoBlockedConnection>> GetBlockedConnectionsAsync()
-        {
-            var connections = new List<AutoBlockedConnection>();
-
-            using var connection = new SqliteConnection(_connectionString);
-            await connection.OpenAsync();
-
-            var sql = @"
-                SELECT Id, ProcessName, ProcessPath, ProcessId, RemoteAddress, RemotePort, 
-                       Protocol, BlockedAt, BlockLevel, Reason, ConfidenceScore, TriggeredRules
-                FROM BlockedConnections 
-                ORDER BY BlockedAt DESC";
-
-            using var cmd = new SqliteCommand(sql, connection);
-            using var reader = await cmd.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
-            {
-                connections.Add(new AutoBlockedConnection
-                {
-                    Id = reader.GetInt32(0),
-                    ProcessName = reader.GetString(1),
-                    ProcessPath = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
-                    ProcessId = reader.GetInt32(3),
-                    RemoteAddress = reader.GetString(4),
-                    RemotePort = reader.GetInt32(5),
-                    Protocol = reader.GetString(6),
-                    BlockedAt = DateTime.Parse(reader.GetString(7)),
-                    BlockLevel = (BlockLevel)reader.GetInt32(8),
-                    Reason = reader.GetString(9),
-                    ConfidenceScore = reader.GetDouble(10),
-                    TriggeredRules = reader.IsDBNull(11) ? string.Empty : reader.GetString(11)
-                });
-            }
-
-            return connections;
-        }
-
-        /// <summary>
         /// 차단된 연결을 삭제합니다.
         /// </summary>
         public async Task<bool> RemoveBlockedConnectionAsync(int connectionId)
         {
-            try
-            {
-                using var connection = new SqliteConnection(_connectionString);
-                await connection.OpenAsync();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
 
-                var sql = "DELETE FROM BlockedConnections WHERE Id = @Id";
-                using var cmd = new SqliteCommand(sql, connection);
-                cmd.Parameters.AddWithValue("@Id", connectionId);
+            var sql = "DELETE FROM BlockedConnections WHERE Id = @Id";
+            using var cmd = new SqliteCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@Id", connectionId);
 
-                var rowsAffected = await cmd.ExecuteNonQueryAsync();
-                return rowsAffected > 0;
-            }
-            catch
-            {
-                return false;
-            }
+            var rowsAffected = await cmd.ExecuteNonQueryAsync();
+            return rowsAffected > 0;
         }
 
         /// <summary>
@@ -381,122 +477,136 @@ namespace LogCheck.Services
             using var createCmd = new SqliteCommand(createTableSql, dbConnection);
             await createCmd.ExecuteNonQueryAsync();
 
-            // 연결 정보 추가
+            // 데이터 삽입
             var insertSql = @"
-                INSERT INTO BlockedConnections 
-                (ProcessName, ProcessPath, ProcessId, RemoteAddress, RemotePort, Protocol, 
-                 BlockedAt, BlockLevel, Reason, ConfidenceScore, TriggeredRules)
-                VALUES 
-                (@ProcessName, @ProcessPath, @ProcessId, @RemoteAddress, @RemotePort, @Protocol,
-                 @BlockedAt, @BlockLevel, @Reason, @ConfidenceScore, @TriggeredRules)";
+                INSERT INTO BlockedConnections (
+                    ProcessName, ProcessPath, ProcessId, RemoteAddress, RemotePort, 
+                    Protocol, BlockedAt, BlockLevel, Reason, ConfidenceScore, TriggeredRules
+                ) VALUES (
+                    @ProcessName, @ProcessPath, @ProcessId, @RemoteAddress, @RemotePort,
+                    @Protocol, @BlockedAt, @BlockLevel, @Reason, @ConfidenceScore, @TriggeredRules
+                )";
 
-            using var cmd = new SqliteCommand(insertSql, dbConnection);
-            cmd.Parameters.AddWithValue("@ProcessName", connection.ProcessName);
-            cmd.Parameters.AddWithValue("@ProcessPath", connection.ProcessPath ?? string.Empty);
-            cmd.Parameters.AddWithValue("@ProcessId", connection.ProcessId);
-            cmd.Parameters.AddWithValue("@RemoteAddress", connection.RemoteAddress);
-            cmd.Parameters.AddWithValue("@RemotePort", connection.RemotePort);
-            cmd.Parameters.AddWithValue("@Protocol", connection.Protocol);
-            cmd.Parameters.AddWithValue("@BlockedAt", connection.BlockedAt.ToString("yyyy-MM-dd HH:mm:ss"));
-            cmd.Parameters.AddWithValue("@BlockLevel", connection.BlockLevel);
-            cmd.Parameters.AddWithValue("@Reason", connection.Reason);
-            cmd.Parameters.AddWithValue("@ConfidenceScore", connection.ConfidenceScore);
-            cmd.Parameters.AddWithValue("@TriggeredRules", connection.TriggeredRules ?? string.Empty);
+            using var insertCmd = new SqliteCommand(insertSql, dbConnection);
+            insertCmd.Parameters.AddWithValue("@ProcessName", connection.ProcessName);
+            insertCmd.Parameters.AddWithValue("@ProcessPath", connection.ProcessPath ?? "");
+            insertCmd.Parameters.AddWithValue("@ProcessId", connection.ProcessId);
+            insertCmd.Parameters.AddWithValue("@RemoteAddress", connection.RemoteAddress);
+            insertCmd.Parameters.AddWithValue("@RemotePort", connection.RemotePort);
+            insertCmd.Parameters.AddWithValue("@Protocol", connection.Protocol);
+            insertCmd.Parameters.AddWithValue("@BlockedAt", connection.BlockedAt.ToString("yyyy-MM-dd HH:mm:ss"));
+            insertCmd.Parameters.AddWithValue("@BlockLevel", (int)connection.BlockLevel);
+            insertCmd.Parameters.AddWithValue("@Reason", connection.Reason);
+            insertCmd.Parameters.AddWithValue("@ConfidenceScore", connection.ConfidenceScore);
+            insertCmd.Parameters.AddWithValue("@TriggeredRules", connection.TriggeredRules ?? "");
 
+            await insertCmd.ExecuteNonQueryAsync();
+        }
+
+        #region Private Helper Methods
+
+        private async Task UpdateDailyStatsAsync(SqliteConnection conn, AutoBlockedConnection blocked, SqliteTransaction tx)
+        {
+            var date = blocked.BlockedAt.Date.ToString("yyyy-MM-dd");
+            var upsertSql = @"
+                INSERT INTO AutoBlockDailyStats (Date, TotalBlocked, Level1Blocked, Level2Blocked, Level3Blocked, UniqueProcesses, UniqueIPs)
+                VALUES (@Date, 1, 
+                    CASE WHEN @BlockLevel = 1 THEN 1 ELSE 0 END,
+                    CASE WHEN @BlockLevel = 2 THEN 1 ELSE 0 END,
+                    CASE WHEN @BlockLevel = 3 THEN 1 ELSE 0 END, 1, 1)
+                ON CONFLICT(Date) DO UPDATE SET
+                    TotalBlocked = TotalBlocked + 1,
+                    Level1Blocked = Level1Blocked + CASE WHEN @BlockLevel = 1 THEN 1 ELSE 0 END,
+                    Level2Blocked = Level2Blocked + CASE WHEN @BlockLevel = 2 THEN 1 ELSE 0 END,
+                    Level3Blocked = Level3Blocked + CASE WHEN @BlockLevel = 3 THEN 1 ELSE 0 END,
+                    UpdatedAt = CURRENT_TIMESTAMP";
+
+            using var cmd = new SqliteCommand(upsertSql, conn, tx);
+            cmd.Parameters.AddWithValue("@Date", date);
+            cmd.Parameters.AddWithValue("@BlockLevel", (int)blocked.BlockLevel);
+            await cmd.ExecuteNonQueryAsync();
+
+            await UpdateUniqueCountsAsync(conn, date, tx);
+        }
+
+        private async Task UpdateProcessStatsAsync(SqliteConnection conn, AutoBlockedConnection blocked, SqliteTransaction tx)
+        {
+            var upsertSql = @"
+                INSERT INTO ProcessBlockStats (ProcessName, ProcessPath, TotalBlocked, FirstBlockedAt, LastBlockedAt)
+                VALUES (@ProcessName, @ProcessPath, 1, @BlockedAt, @BlockedAt)
+                ON CONFLICT(ProcessName) DO UPDATE SET
+                    TotalBlocked = TotalBlocked + 1,
+                    LastBlockedAt = @BlockedAt,
+                    UpdatedAt = CURRENT_TIMESTAMP";
+
+            using var cmd = new SqliteCommand(upsertSql, conn, tx);
+            cmd.Parameters.AddWithValue("@ProcessName", blocked.ProcessName);
+            cmd.Parameters.AddWithValue("@ProcessPath", blocked.ProcessPath ?? "");
+            cmd.Parameters.AddWithValue("@BlockedAt", blocked.BlockedAt.ToString("yyyy-MM-dd HH:mm:ss"));
             await cmd.ExecuteNonQueryAsync();
         }
 
-        /// <summary>
-        /// 영구 차단된 연결 목록을 가져옵니다 (방화벽 규칙과 연결된)
-        /// </summary>
-        public async Task<List<PermanentBlockedConnection>> GetPermanentlyBlockedConnectionsAsync()
+        private async Task UpdateIPStatsAsync(SqliteConnection conn, AutoBlockedConnection blocked, SqliteTransaction tx)
         {
-            var connections = new List<PermanentBlockedConnection>();
+            var upsertSql = @"
+                INSERT INTO IPBlockStats (IPAddress, TotalBlocked, FirstBlockedAt, LastBlockedAt)
+                VALUES (@IPAddress, 1, @BlockedAt, @BlockedAt)
+                ON CONFLICT(IPAddress) DO UPDATE SET
+                    TotalBlocked = TotalBlocked + 1,
+                    LastBlockedAt = @BlockedAt,
+                    UpdatedAt = CURRENT_TIMESTAMP";
 
-            using var connection = new SqliteConnection(_connectionString);
-            await connection.OpenAsync();
-
-            var sql = @"
-                SELECT DISTINCT 
-                    bc.ProcessName, 
-                    bc.ProcessPath, 
-                    bc.RemoteAddress, 
-                    bc.RemotePort, 
-                    bc.Protocol,
-                    bc.BlockLevel,
-                    bc.Reason,
-                    bc.BlockedAt,
-                    COUNT(*) as BlockCount,
-                    MAX(bc.BlockedAt) as LastBlockedAt
-                FROM BlockedConnections bc 
-                WHERE bc.BlockedAt > datetime('now', '-30 days')
-                GROUP BY bc.ProcessName, bc.ProcessPath, bc.RemoteAddress, bc.RemotePort, bc.Protocol
-                ORDER BY LastBlockedAt DESC";
-
-            using var cmd = new SqliteCommand(sql, connection);
-            using var reader = await cmd.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
-            {
-                var blockedConnection = new PermanentBlockedConnection
-                {
-                    ProcessName = reader.GetString(0),
-                    ProcessPath = reader.IsDBNull(1) ? "" : reader.GetString(1),
-                    RemoteAddress = reader.GetString(2),
-                    RemotePort = reader.GetInt32(3),
-                    Protocol = reader.IsDBNull(4) ? "TCP" : reader.GetString(4),
-                    BlockLevel = reader.GetInt32(5),
-                    Reason = reader.GetString(6),
-                    FirstBlockedAt = DateTime.Parse(reader.GetString(7)),
-                    LastBlockedAt = DateTime.Parse(reader.GetString(9)),
-                    BlockCount = reader.GetInt32(8),
-                    IsPermanentlyBlocked = true, // 데이터베이스에서 가져온 것은 영구 차단으로 간주
-                    FirewallRuleExists = false // 이후 PersistentFirewallManager로 확인
-                };
-
-                connections.Add(blockedConnection);
-            }
-
-            return connections;
+            using var cmd = new SqliteCommand(upsertSql, conn, tx);
+            cmd.Parameters.AddWithValue("@IPAddress", blocked.RemoteAddress);
+            cmd.Parameters.AddWithValue("@BlockedAt", blocked.BlockedAt.ToString("yyyy-MM-dd HH:mm:ss"));
+            await cmd.ExecuteNonQueryAsync();
         }
 
-        /// <summary>
-        /// 영구 차단 연결의 방화벽 규칙 존재 여부 업데이트
-        /// </summary>
-        [SupportedOSPlatform("windows")]
-        public async Task<List<PermanentBlockedConnection>> UpdateFirewallRuleStatusAsync(
-            List<PermanentBlockedConnection> connections)
+        private async Task UpdateUniqueCountsAsync(SqliteConnection conn, string date, SqliteTransaction tx)
         {
-            try
-            {
-                var firewallManager = new PersistentFirewallManager();
-                await firewallManager.InitializeAsync();
+            // 해당 날짜의 고유 프로세스 수 업데이트
+            var updateProcessCountSql = @"
+                UPDATE AutoBlockDailyStats 
+                SET UniqueProcesses = (
+                    SELECT COUNT(DISTINCT ProcessName) 
+                    FROM BlockedConnections 
+                    WHERE DATE(BlockedAt) = @Date
+                )
+                WHERE Date = @Date";
 
-                foreach (var connection in connections)
-                {
-                    // 프로세스 경로 기반 규칙 확인
-                    if (!string.IsNullOrEmpty(connection.ProcessPath))
-                    {
-                        var processRuleExists = await firewallManager.RuleExistsAsync(
-                            $"LogCheck_Block_{connection.ProcessName}");
-                        connection.FirewallRuleExists = processRuleExists;
-                    }
-                    // IP 기반 규칙 확인
-                    else if (!string.IsNullOrEmpty(connection.RemoteAddress))
-                    {
-                        var ipRuleExists = await firewallManager.RuleExistsAsync(
-                            $"LogCheck_Block_IP_{connection.RemoteAddress}");
-                        connection.FirewallRuleExists = ipRuleExists;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Failed to update firewall rule status: {ex.Message}");
-            }
+            using var processCmd = new SqliteCommand(updateProcessCountSql, conn, tx);
+            processCmd.Parameters.AddWithValue("@Date", date);
+            await processCmd.ExecuteNonQueryAsync();
 
-            return connections;
+            // 해당 날짜의 고유 IP 수 업데이트
+            var updateIPCountSql = @"
+                UPDATE AutoBlockDailyStats 
+                SET UniqueIPs = (
+                    SELECT COUNT(DISTINCT RemoteAddress) 
+                    FROM BlockedConnections 
+                    WHERE DATE(BlockedAt) = @Date
+                )
+                WHERE Date = @Date";
+
+            using var ipCmd = new SqliteCommand(updateIPCountSql, conn, tx);
+            ipCmd.Parameters.AddWithValue("@Date", date);
+            await ipCmd.ExecuteNonQueryAsync();
         }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// 영구/임시 차단 분리 통계 모델
+    /// </summary>
+    public class SeparatedBlockStatistics
+    {
+        public int TotalBlocked { get; set; }
+        public int TemporaryBlocked { get; set; }
+        public int PermanentBlocked { get; set; }
+        public int RecentBlocked { get; set; }
+        public double BlockSuccessRate { get; set; }
+        public DateTime LastUpdated { get; set; } = DateTime.Now;
     }
 
     public class AutoBlockStatistics
