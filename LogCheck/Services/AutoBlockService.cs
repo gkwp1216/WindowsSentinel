@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.Versioning;
 using System.Security.Principal;
 using LogCheck.Models;
 using Microsoft.Data.Sqlite;
@@ -602,6 +603,7 @@ namespace LogCheck.Services
         /// <summary>
         /// 방화벽 규칙 추가
         /// </summary>
+        [SupportedOSPlatform("windows")]
         private async Task AddFirewallRuleAsync(ProcessNetworkInfo processInfo)
         {
             try
@@ -685,6 +687,7 @@ namespace LogCheck.Services
         /// <summary>
         /// 관리자 권한 확인
         /// </summary>
+        [SupportedOSPlatform("windows")]
         private bool IsRunningAsAdmin()
         {
             try

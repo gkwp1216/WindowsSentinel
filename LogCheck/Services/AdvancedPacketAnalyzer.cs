@@ -55,34 +55,34 @@ namespace LogCheck.Services
         /// <summary>
         /// 고급 패킷 분석 실행 (SharpPcap 패킷 데이터용)
         /// </summary>
-        public async Task<List<AdvancedDDoSAlert>> AnalyzePacketBatchAsync(List<PacketDto> packets)
+        public List<AdvancedDDoSAlert> AnalyzePacketBatch(List<PacketDto> packets)
         {
             var alerts = new List<AdvancedDDoSAlert>();
 
             try
             {
                 // 1. TCP 플래그 상세 분석
-                var tcpFlagAlerts = await AnalyzeTcpFlagsAsync(packets);
+                var tcpFlagAlerts = AnalyzeTcpFlags(packets);
                 alerts.AddRange(tcpFlagAlerts);
 
                 // 2. 패킷 크기 분포 분석
-                var sizeDistributionAlerts = await AnalyzePacketSizeDistributionAsync(packets);
+                var sizeDistributionAlerts = AnalyzePacketSizeDistribution(packets);
                 alerts.AddRange(sizeDistributionAlerts);
 
                 // 3. 요청-응답 비율 분석
-                var requestResponseAlerts = await AnalyzeRequestResponseRatioAsync(packets);
+                var requestResponseAlerts = AnalyzeRequestResponseRatio(packets);
                 alerts.AddRange(requestResponseAlerts);
 
                 // 4. 프로토콜별 특화 탐지
-                var protocolSpecificAlerts = await AnalyzeProtocolSpecificPatternsAsync(packets);
+                var protocolSpecificAlerts = AnalyzeProtocolSpecificPatterns(packets);
                 alerts.AddRange(protocolSpecificAlerts);
 
                 // 5. DDoS 시그니처 매칭
-                var signatureAlerts = await MatchDDoSSignaturesAsync(packets);
+                var signatureAlerts = MatchDDoSSignatures(packets);
                 alerts.AddRange(signatureAlerts);
 
                 // 6. 패킷 타이밍 분석
-                var timingAlerts = await AnalyzePacketTimingAsync(packets);
+                var timingAlerts = AnalyzePacketTiming(packets);
                 alerts.AddRange(timingAlerts);
 
                 return alerts;
@@ -97,7 +97,7 @@ namespace LogCheck.Services
         /// <summary>
         /// 실시간 패킷 분석 (단일 패킷)
         /// </summary>
-        public async Task<List<PacketAnomalyAlert>> AnalyzeSinglePacketAsync(PacketDto packet)
+        public Task<List<PacketAnomalyAlert>> AnalyzeSinglePacketAsync(PacketDto packet)
         {
             var alerts = new List<PacketAnomalyAlert>();
 
@@ -110,22 +110,22 @@ namespace LogCheck.Services
                 tracker.AddPacket(packet);
 
                 // 실시간 이상 탐지
-                var anomalies = await DetectPacketAnomaliesAsync(tracker, packet);
+                var anomalies = DetectPacketAnomaliesAsync(tracker, packet).Result;
                 alerts.AddRange(anomalies);
 
-                return alerts;
+                return Task.FromResult(alerts);
             }
             catch (Exception ex)
             {
                 OnErrorOccurred($"실시간 패킷 분석 중 오류: {ex.Message}");
-                return alerts;
+                return Task.FromResult(alerts);
             }
         }
 
         /// <summary>
         /// 패킷 분석 통계 조회
         /// </summary>
-        public async Task<PacketAnalysisStatistics> GetAnalysisStatisticsAsync()
+        public Task<PacketAnalysisStatistics> GetAnalysisStatisticsAsync()
         {
             try
             {
@@ -153,12 +153,12 @@ namespace LogCheck.Services
                 // 패킷 크기 분포 통계
                 stats.PacketSizeDistribution = _sizeAnalyzer.GetDistributionStatistics();
 
-                return stats;
+                return Task.FromResult(stats);
             }
             catch (Exception ex)
             {
                 OnErrorOccurred($"패킷 분석 통계 조회 중 오류: {ex.Message}");
-                return new PacketAnalysisStatistics { GeneratedAt = DateTime.Now };
+                return Task.FromResult(new PacketAnalysisStatistics { GeneratedAt = DateTime.Now });
             }
         }
 
@@ -169,7 +169,7 @@ namespace LogCheck.Services
         /// <summary>
         /// TCP 플래그 상세 분석
         /// </summary>
-        private async Task<List<AdvancedDDoSAlert>> AnalyzeTcpFlagsAsync(List<PacketDto> packets)
+        private List<AdvancedDDoSAlert> AnalyzeTcpFlags(List<PacketDto> packets)
         {
             var alerts = new List<AdvancedDDoSAlert>();
 
@@ -218,7 +218,7 @@ namespace LogCheck.Services
         /// <summary>
         /// 패킷 크기 분포 분석
         /// </summary>
-        private async Task<List<AdvancedDDoSAlert>> AnalyzePacketSizeDistributionAsync(List<PacketDto> packets)
+        private List<AdvancedDDoSAlert> AnalyzePacketSizeDistribution(List<PacketDto> packets)
         {
             var alerts = new List<AdvancedDDoSAlert>();
 
@@ -264,7 +264,7 @@ namespace LogCheck.Services
         /// <summary>
         /// 요청-응답 비율 분석
         /// </summary>
-        private async Task<List<AdvancedDDoSAlert>> AnalyzeRequestResponseRatioAsync(List<PacketDto> packets)
+        private List<AdvancedDDoSAlert> AnalyzeRequestResponseRatio(List<PacketDto> packets)
         {
             var alerts = new List<AdvancedDDoSAlert>();
 
@@ -318,22 +318,22 @@ namespace LogCheck.Services
         /// <summary>
         /// 프로토콜별 특화 탐지 로직
         /// </summary>
-        private async Task<List<AdvancedDDoSAlert>> AnalyzeProtocolSpecificPatternsAsync(List<PacketDto> packets)
+        private List<AdvancedDDoSAlert> AnalyzeProtocolSpecificPatterns(List<PacketDto> packets)
         {
             var alerts = new List<AdvancedDDoSAlert>();
 
             try
             {
                 // TCP 특화 분석
-                var tcpAlerts = await AnalyzeTcpSpecificPatternsAsync(packets.Where(p => p.Protocol == ProtocolKind.TCP).ToList());
+                var tcpAlerts = AnalyzeTcpSpecificPatternsAsync(packets.Where(p => p.Protocol == ProtocolKind.TCP).ToList()).Result;
                 alerts.AddRange(tcpAlerts);
 
                 // UDP 특화 분석
-                var udpAlerts = await AnalyzeUdpSpecificPatternsAsync(packets.Where(p => p.Protocol == ProtocolKind.UDP).ToList());
+                var udpAlerts = AnalyzeUdpSpecificPatternsAsync(packets.Where(p => p.Protocol == ProtocolKind.UDP).ToList()).Result;
                 alerts.AddRange(udpAlerts);
 
                 // ICMP 특화 분석
-                var icmpAlerts = await AnalyzeIcmpSpecificPatternsAsync(packets.Where(p => p.Protocol == ProtocolKind.ICMP).ToList());
+                var icmpAlerts = AnalyzeIcmpSpecificPatternsAsync(packets.Where(p => p.Protocol == ProtocolKind.ICMP).ToList()).Result;
                 alerts.AddRange(icmpAlerts);
 
             }
@@ -348,7 +348,7 @@ namespace LogCheck.Services
         /// <summary>
         /// DDoS 시그니처 매칭
         /// </summary>
-        private async Task<List<AdvancedDDoSAlert>> MatchDDoSSignaturesAsync(List<PacketDto> packets)
+        private List<AdvancedDDoSAlert> MatchDDoSSignatures(List<PacketDto> packets)
         {
             var alerts = new List<AdvancedDDoSAlert>();
 
@@ -388,7 +388,7 @@ namespace LogCheck.Services
         /// <summary>
         /// 패킷 타이밍 분석
         /// </summary>
-        private async Task<List<AdvancedDDoSAlert>> AnalyzePacketTimingAsync(List<PacketDto> packets)
+        private List<AdvancedDDoSAlert> AnalyzePacketTiming(List<PacketDto> packets)
         {
             var alerts = new List<AdvancedDDoSAlert>();
 
@@ -450,7 +450,7 @@ namespace LogCheck.Services
         /// <summary>
         /// TCP 특화 패턴 분석
         /// </summary>
-        private async Task<List<AdvancedDDoSAlert>> AnalyzeTcpSpecificPatternsAsync(List<PacketDto> tcpPackets)
+        private Task<List<AdvancedDDoSAlert>> AnalyzeTcpSpecificPatternsAsync(List<PacketDto> tcpPackets)
         {
             var alerts = new List<AdvancedDDoSAlert>();
 
@@ -490,13 +490,13 @@ namespace LogCheck.Services
                 }
             }
 
-            return alerts;
+            return Task.FromResult(alerts);
         }
 
         /// <summary>
         /// UDP 특화 패턴 분석
         /// </summary>
-        private async Task<List<AdvancedDDoSAlert>> AnalyzeUdpSpecificPatternsAsync(List<PacketDto> udpPackets)
+        private Task<List<AdvancedDDoSAlert>> AnalyzeUdpSpecificPatternsAsync(List<PacketDto> udpPackets)
         {
             var alerts = new List<AdvancedDDoSAlert>();
 
@@ -526,13 +526,13 @@ namespace LogCheck.Services
                 }
             }
 
-            return alerts;
+            return Task.FromResult(alerts);
         }
 
         /// <summary>
         /// ICMP 특화 패턴 분석
         /// </summary>
-        private async Task<List<AdvancedDDoSAlert>> AnalyzeIcmpSpecificPatternsAsync(List<PacketDto> icmpPackets)
+        private Task<List<AdvancedDDoSAlert>> AnalyzeIcmpSpecificPatternsAsync(List<PacketDto> icmpPackets)
         {
             var alerts = new List<AdvancedDDoSAlert>();
 
@@ -569,13 +569,13 @@ namespace LogCheck.Services
                 });
             }
 
-            return alerts;
+            return Task.FromResult(alerts);
         }
 
         /// <summary>
         /// 실시간 패킷 이상 탐지
         /// </summary>
-        private async Task<List<PacketAnomalyAlert>> DetectPacketAnomaliesAsync(PacketFlowTracker tracker, PacketDto packet)
+        private Task<List<PacketAnomalyAlert>> DetectPacketAnomaliesAsync(PacketFlowTracker tracker, PacketDto packet)
         {
             var alerts = new List<PacketAnomalyAlert>();
 
@@ -625,7 +625,7 @@ namespace LogCheck.Services
                 OnErrorOccurred($"실시간 패킷 이상 탐지 중 오류: {ex.Message}");
             }
 
-            return alerts;
+            return Task.FromResult(alerts);
         }
 
         /// <summary>

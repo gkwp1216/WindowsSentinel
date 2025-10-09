@@ -130,7 +130,7 @@ namespace LogCheck.Services
                 var basicDetectionResults = ConvertAlertsToResults(basicAlerts);
 
                 // 2. 고급 패킷 분석 수행
-                var advancedAlerts = await _packetAnalyzer.AnalyzePacketBatchAsync(packets);
+                var advancedAlerts = _packetAnalyzer.AnalyzePacketBatch(packets);
                 var packetAnalysisResults = ConvertAdvancedAlertsToPacketResult(advancedAlerts);
 
                 // 3. 시그니처 기반 매칭

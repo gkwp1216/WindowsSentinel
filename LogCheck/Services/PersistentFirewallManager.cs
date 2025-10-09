@@ -258,7 +258,11 @@ namespace LogCheck.Services
                     throw new COMException("방화벽 규칙 COM 객체를 찾을 수 없습니다.");
                 }
 
-                dynamic rule = Activator.CreateInstance(ruleType);
+                dynamic? rule = Activator.CreateInstance(ruleType);
+                if (rule == null)
+                {
+                    throw new COMException("방화벽 규칙 인스턴스를 생성할 수 없습니다.");
+                }
 
                 rule.Name = ruleName;
                 rule.Description = $"LogCheck에 의해 생성된 프로세스 차단 규칙: {applicationPath}";
@@ -289,7 +293,11 @@ namespace LogCheck.Services
                     throw new COMException("방화벽 규칙 COM 객체를 찾을 수 없습니다.");
                 }
 
-                dynamic rule = Activator.CreateInstance(ruleType);
+                dynamic? rule = Activator.CreateInstance(ruleType);
+                if (rule == null)
+                {
+                    throw new COMException("방화벽 규칙 인스턴스를 생성할 수 없습니다.");
+                }
 
                 rule.Name = ruleName;
                 rule.Description = string.IsNullOrEmpty(description)
@@ -322,7 +330,11 @@ namespace LogCheck.Services
                     throw new COMException("방화벽 규칙 COM 객체를 찾을 수 없습니다.");
                 }
 
-                dynamic rule = Activator.CreateInstance(ruleType);
+                dynamic? rule = Activator.CreateInstance(ruleType);
+                if (rule == null)
+                {
+                    throw new COMException("방화벽 규칙 인스턴스를 생성할 수 없습니다.");
+                }
 
                 string protocolName = protocol == NET_FW_IP_PROTOCOL_TCP ? "TCP" : "UDP";
 

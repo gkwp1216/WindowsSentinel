@@ -122,7 +122,7 @@ namespace LogCheck.Services
         /// <summary>
         /// 패킷 레벨 분석 (SharpPcap 데이터용)
         /// </summary>
-        public async Task<List<DDoSAlert>> AnalyzePacketsAsync(List<PacketDto> packets)
+        public Task<List<DDoSAlert>> AnalyzePacketsAsync(List<PacketDto> packets)
         {
             var alerts = new List<DDoSAlert>();
 
@@ -167,12 +167,12 @@ namespace LogCheck.Services
 
                 alerts.AddRange(udpFloodsByIP);
 
-                return alerts;
+                return Task.FromResult(alerts);
             }
             catch (Exception ex)
             {
                 OnErrorOccurred($"패킷 레벨 DDoS 탐지 중 오류: {ex.Message}");
-                return alerts;
+                return Task.FromResult(alerts);
             }
         }
 
