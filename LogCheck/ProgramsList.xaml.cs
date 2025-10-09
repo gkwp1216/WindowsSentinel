@@ -6,8 +6,6 @@
  * 4. 성능 최적화 - HashSet을 이용한 중복 프로그램 검사 방지
  */
 
-using LogCheck.Services; // MalwareBazaarClient
-using Microsoft.Win32;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
@@ -25,6 +23,8 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using LogCheck.Services; // MalwareBazaarClient
+using Microsoft.Win32;
 using WpfApplication = System.Windows.Application;
 using WpfCursors = System.Windows.Input.Cursors;
 // Windows Forms와의 충돌을 방지하기 위한 alias 설정
@@ -54,7 +54,7 @@ namespace LogCheck
         // 보안 프로그램(Defender/Firewall/BitLocker) 최신 동작 날짜
         public static SecurityDate[] SD = new SecurityDate[3];
 
-        private ToggleButton _selectedButton;
+
         private int dotCount = 0;
         private const int maxDots = 3;
         private string baseText = "검사 중";
@@ -78,8 +78,6 @@ namespace LogCheck
                 LogHelper.LogInfo("InstalledPrograms 초기화 시작");
 
                 InitializeComponent();
-
-                SideProgramsListButton.IsChecked = true;
 
                 LogHelper.LogInfo("InitializeComponent 완료");
 
@@ -757,46 +755,6 @@ namespace LogCheck
                 Mouse.OverrideCursor = null;
                 HideLoadingOverlay();
             }
-        }
-
-        [SupportedOSPlatform("windows")]
-        private void SidebarButton_Click(object sender, RoutedEventArgs e)
-        {
-            var clicked = sender as ToggleButton;
-            if (clicked == null) return;
-
-            // 이전 선택 해제
-            if (_selectedButton != null && _selectedButton != clicked)
-                _selectedButton.IsChecked = false;
-
-            // 선택 상태 유지
-            clicked.IsChecked = true;
-            _selectedButton = clicked;
-
-            switch (clicked.CommandParameter?.ToString())
-            {
-                case "Vaccine":
-                    NavigateToPage(new Vaccine());
-                    break;
-                case "NetWorks_New":
-                    NavigateToPage(new NetWorks_New());
-                    break;
-                case "ProgramsList":
-                    NavigateToPage(new ProgramsList());
-                    break;
-                case "Recoverys":
-                    NavigateToPage(new Recoverys());
-                    break;
-                case "Logs":
-                    NavigateToPage(new Logs());
-                    break;
-            }
-        }
-
-        private void NavigateToPage(Page page)
-        {
-            var mainWindow = Window.GetWindow(this) as MainWindows;
-            mainWindow?.NavigateToPage(page);
         }
         private int SecurityCheck(DateTime time)
         {

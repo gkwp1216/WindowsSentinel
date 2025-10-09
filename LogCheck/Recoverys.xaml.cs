@@ -14,7 +14,6 @@ namespace LogCheck
 {
     public partial class Recoverys : System.Windows.Controls.Page
     {
-        private ToggleButton _selectedButton;
         private readonly ObservableCollection<RecoverySecurityStatusItem> securityStatusItems = new();
         private readonly System.Windows.Threading.DispatcherTimer loadingTextTimer = new();
         private int dotCount = 0;
@@ -46,8 +45,6 @@ namespace LogCheck
         public Recoverys()
         {
             InitializeComponent();
-
-            SideRecoveryButton.IsChecked = true;
 
             // 관리자 권한 확인
             if (!IsRunningAsAdmin())
@@ -1150,42 +1147,7 @@ namespace LogCheck
             }
         }
 
-        #region Sidebar Navigation
 
-
-        [SupportedOSPlatform("windows")]
-        private void SidebarButton_Click(object sender, RoutedEventArgs e)
-        {
-            var clicked = sender as ToggleButton;
-            if (clicked == null) return;
-
-            // 이전 선택 해제
-            if (_selectedButton != null && _selectedButton != clicked)
-                _selectedButton.IsChecked = false;
-
-            // 선택 상태 유지
-            clicked.IsChecked = true;
-            _selectedButton = clicked;
-
-            switch (clicked.CommandParameter?.ToString())
-            {
-                case "Vaccine":
-                    NavigateToPage(new Vaccine());
-                    break;
-                case "NetWorks_New":
-                    NavigateToPage(new NetWorks_New());
-                    break;
-                case "ProgramsList":
-                    NavigateToPage(new ProgramsList());
-                    break;
-                case "Recoverys":
-                    NavigateToPage(new Recoverys());
-                    break;
-                case "Logs":
-                    NavigateToPage(new Logs());
-                    break;
-            }
-        }
 
         [SupportedOSPlatform("windows")]
         private void NavigateToPage(Page page)
@@ -1193,7 +1155,6 @@ namespace LogCheck
             var mainWindow = Window.GetWindow(this) as MainWindows;
             mainWindow?.NavigateToPage(page);
         }
-        #endregion
 
         // 메시지 타입 열거형
         private enum MessageType

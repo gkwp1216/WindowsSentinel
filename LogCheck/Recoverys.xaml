@@ -9,66 +9,8 @@
       d:DesignHeight="800" d:DesignWidth="1200"
       Title="Recoverys" Background="Transparent">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <!-- 사이드바 -->
-        <Border Grid.Column="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="20,0,10,20" BorderBrush="#C2C2C2" BorderThickness="1">
-            <StackPanel x:Name="SidebarPanel" Margin="10">
-                <!-- 악성 프로그램 탐지 -->
-                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
-                              CommandParameter="Vaccine"
-                              Tag="&#xE721;"
-                              Content="악성 프로그램 탐지"
-                              Cursor="Hand"
-                              Click="SidebarButton_Click"
-                              IsThreeState="False"
-                              ClickMode="Release"/>
-                <!-- 네트워크 모니터링 -->
-                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
-                              CommandParameter="NetWorks_New"
-                              Tag="&#xE704;"
-                              Content="네트워크 모니터링"
-                              Cursor="Hand"
-                              Click="SidebarButton_Click"
-                              IsThreeState="False"
-                              ClickMode="Release"/>
-                <!-- 설치된 프로그램 목록 -->
-                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
-                              CommandParameter="ProgramsList"
-                              Tag="&#xE71D;"
-                              Content="설치된 프로그램"
-                              Cursor="Hand"
-                              Click="SidebarButton_Click"
-                              IsThreeState="False"
-                              ClickMode="Release"/>
-                <!-- 보안 프로그램 복구 -->
-                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
-                              x:Name="SideRecoveryButton"
-                              CommandParameter="Recoverys"
-                              Tag="&#xE946;"
-                              Content="보안 프로그램 복구"
-                              Cursor="Hand"
-                              Click="SidebarButton_Click"
-                              IsThreeState="False"
-                              ClickMode="Release"/>
-                <!-- 보안 로그 -->
-                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
-                              CommandParameter="Logs"
-                              Tag="&#xE72E;"
-                              Content="보안 로그"
-                              Cursor="Hand"
-                              Click="SidebarButton_Click"
-                              IsThreeState="False"
-                              ClickMode="Release"/>
-            </StackPanel>
-        </Border>
-
-        <!-- Main Content Area with Scroll -->
-        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="0">
+    <!-- Main Content Area with Scroll -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="20">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -273,15 +215,13 @@
                         </ScrollViewer>
                     </StackPanel>
                 </Border>
+            <!-- 로딩 오버레이 -->
+            <Grid x:Name="LoadingOverlay" Grid.ColumnSpan="2" Background="#99000000" Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock x:Name="LoadingText" Text="처리 중..." FontSize="24" FontWeight="Bold" Foreground="White"/>
+                    <!-- 여기에 로딩 애니메이션 추가 가능 -->
+                </StackPanel>
             </Grid>
-        </ScrollViewer>
-
-        <!-- 로딩 오버레이 -->
-        <Grid x:Name="LoadingOverlay" Grid.ColumnSpan="2" Background="#99000000" Visibility="Collapsed">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock x:Name="LoadingText" Text="처리 중..." FontSize="24" FontWeight="Bold" Foreground="White"/>
-                <!-- 여기에 로딩 애니메이션 추가 가능 -->
-            </StackPanel>
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </Page> 

@@ -103,66 +103,8 @@
         </Style>
     </Page.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <!-- 사이드바 -->
-        <Border Grid.Column="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Margin="20,0,10,20" BorderBrush="#C2C2C2" BorderThickness="1">
-            <StackPanel x:Name="SidebarPanel" Margin="10">
-                <!-- 악성 프로그램 탐지 -->
-                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
-                      CommandParameter="Vaccine"
-                      Tag="&#xE721;"
-                      Content="악성 프로그램 탐지"
-                      Cursor="Hand"
-                      Click="SidebarButton_Click"
-                      IsThreeState="False"
-                      ClickMode="Release"/>
-                <!-- 네트워크 모니터링 -->
-                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
-                      x:Name="SideNetWorksNewButton"
-                      CommandParameter="NetWorks_New"
-                      Tag="&#xE704;"
-                      Content="네트워크 모니터링"
-                      Cursor="Hand"
-                      Click="SidebarButton_Click"
-                      IsThreeState="False"
-                      ClickMode="Release"/>
-                <!-- 설치된 프로그램 목록 -->
-                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
-                      CommandParameter="ProgramsList"
-                      Tag="&#xE71D;"
-                      Content="설치된 프로그램"
-                      Cursor="Hand"
-                      Click="SidebarButton_Click"
-                      IsThreeState="False"
-                      ClickMode="Release"/>
-                <!-- 보안 프로그램 복구 -->
-                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
-                      CommandParameter="Recoverys"
-                      Tag="&#xE946;"
-                      Content="보안 프로그램 복구"
-                      Cursor="Hand"
-                      Click="SidebarButton_Click"
-                      IsThreeState="False"
-                      ClickMode="Release"/>
-                <!-- 보안 로그 -->
-                <ToggleButton Style="{DynamicResource SidebarButtonStyle}"
-                      CommandParameter="Logs"
-                      Tag="&#xE72E;"
-                      Content="보안 로그"
-                      Cursor="Hand"
-                      Click="SidebarButton_Click"
-                      IsThreeState="False"
-                      ClickMode="Release"/>
-            </StackPanel>
-        </Border>
-
-        <!-- 프로세스 및 네트워크 연결 테이블 -->
-        <Grid Grid.Column="1" Margin="0">
+    <!-- 프로세스 및 네트워크 연결 테이블 -->
+    <Grid Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -2103,8 +2045,6 @@
                     </TabItem>
                 </TabControl>
             </Border>
-        </Grid>
-
         <!-- 로딩 오버레이 -->
         <Grid x:Name="LoadingOverlay" 
               Grid.Row="0" Grid.RowSpan="3" 
@@ -2117,13 +2057,33 @@
                            FontSize="18" 
                            HorizontalAlignment="Center"
                            Margin="0,0,0,20"/>
-                <ItemsControl x:Name="SpinnerItems" 
-                              Width="50" Height="50">
+                <ItemsControl>
+                    <ItemsControl.Template>
+                        <ControlTemplate>
+                            <Border>
+                                <Grid>
+                                    <ItemsPresenter />
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Ellipse Width="8" Height="8" Fill="White" Opacity="1"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Canvas/>
+                            <StackPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
+                    <ItemsControl.Items>
+                        <Ellipse Width="8" Height="8" Fill="White" Margin="2"/>
+                        <Ellipse Width="8" Height="8" Fill="White" Margin="2"/>
+                        <Ellipse Width="8" Height="8" Fill="White" Margin="2"/>
+                        <Ellipse Width="8" Height="8" Fill="White" Margin="2"/>
+                        <Ellipse Width="8" Height="8" Fill="White" Margin="2"/>
+                    </ItemsControl.Items>
                     <ItemsControl.RenderTransform>
                         <StaticResource ResourceKey="SpinnerRotate"/>
                     </ItemsControl.RenderTransform>

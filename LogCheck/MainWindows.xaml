@@ -94,6 +94,17 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!-- 사이드바 마우스 호버 트리거 영역 -->
+        <Border x:Name="SidebarTrigger" 
+                Grid.RowSpan="3" 
+                Width="15"
+                Background="Transparent" 
+                HorizontalAlignment="Left"
+                Panel.ZIndex="1060"
+                MouseEnter="SidebarTrigger_MouseEnter"
+                Cursor="Hand"
+                ToolTip="사이드바 열기"/>
+
         <!-- 토글형 사이드바 -->
         <Border x:Name="Sidebar" 
                 Grid.RowSpan="3" 
@@ -102,15 +113,61 @@
                 BorderBrush="#E0E0E0" 
                 BorderThickness="0,0,1,0"
                 HorizontalAlignment="Left"
-                Panel.ZIndex="1050">
+                Panel.ZIndex="1050"
+                Opacity="1.0"
+                MouseLeave="Sidebar_MouseLeave">
             <Border.RenderTransform>
                 <TranslateTransform x:Name="SidebarTransform" X="-250"/>
             </Border.RenderTransform>
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="5" Opacity="0.3"/>
+            </Border.Effect>
             
             <ScrollViewer VerticalScrollBarVisibility="Auto" 
                           HorizontalScrollBarVisibility="Disabled">
-                <StackPanel Margin="0,20,0,20">
-                    <!-- 로고 영역 -->
+                <StackPanel Margin="0,10,0,20">
+                    <!-- 상단 헤더 영역 (로고 + 닫기 버튼) -->
+                    <Grid Margin="10,10,10,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- 로고 -->
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Left">
+                            <TextBlock Text="🛡️" 
+                                       FontSize="24" 
+                                       HorizontalAlignment="Left" 
+                                       Margin="0,0,0,5"/>
+                            <TextBlock Text="WindowsSentinel" 
+                                       FontSize="14" 
+                                       FontWeight="Bold" 
+                                       Foreground="{DynamicResource ForegroundColor}" 
+                                       HorizontalAlignment="Left"/>
+                        </StackPanel>
+                        
+                        <!-- 닫기 버튼 -->
+                        <Button Grid.Column="1" 
+                                x:Name="SidebarCloseButton"
+                                Click="SidebarClose_Click"
+                                Style="{DynamicResource NavIconButtonStyle}"
+                                Width="32" Height="32"
+                                ToolTip="사이드바 닫기"
+                                Cursor="Hand">
+                            <TextBlock Text="&#xE711;" 
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="14" 
+                                       Foreground="{DynamicResource ForegroundColor}"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Button>
+                    </Grid>
+                    
+                    <!-- 구분선 -->
+                    <Border Height="1" 
+                            Background="{DynamicResource BorderBrush}" 
+                            Margin="15,0,15,20" 
+                            Opacity="0.3"/>
                     <StackPanel Margin="0,0,0,30" HorizontalAlignment="Center">
                         <TextBlock Text="🛡️" 
                                    FontSize="32" 

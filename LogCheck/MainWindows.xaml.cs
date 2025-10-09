@@ -26,6 +26,7 @@ namespace LogCheck
 
         // 사이드바 토글 상태
         private bool isSidebarVisible = false;
+        private bool isSidebarPinnedOpen = false; // 수동으로 열린 상태 추적
 
         [SupportedOSPlatform("windows")]
         public MainWindows()
@@ -716,22 +717,68 @@ namespace LogCheck
             ToggleSidebar();
         }
 
+        // 사이드바 닫기 버튼 클릭 시 고정 모드 해제하고 숨기기
+        [SupportedOSPlatform("windows")]
+        private void SidebarClose_Click(object sender, RoutedEventArgs e)
+        {
+            isSidebarPinnedOpen = false;
+            HideSidebar();
+        }
+
+        // 마우스 호버 트리거 영역에 마우스가 들어왔을 때
+        [SupportedOSPlatform("windows")]
+        private void SidebarTrigger_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            ShowSidebar();
+        }
+
+        // 사이드바에서 마우스가 나갔을 때
+        [SupportedOSPlatform("windows")]
+        private void Sidebar_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            // 수동으로 고정된 상태가 아닐 때만 숨기기
+            if (!isSidebarPinnedOpen)
+            {
+                HideSidebar();
+            }
+        }
+
+        [SupportedOSPlatform("windows")]
+        private void ShowSidebar()
+        {
+            if (!isSidebarVisible)
+            {
+                var showStoryboard = (System.Windows.Media.Animation.Storyboard)FindResource("ShowSidebar");
+                showStoryboard.Begin();
+                isSidebarVisible = true;
+            }
+        }
+
+        [SupportedOSPlatform("windows")]
+        private void HideSidebar()
+        {
+            if (isSidebarVisible)
+            {
+                var hideStoryboard = (System.Windows.Media.Animation.Storyboard)FindResource("HideSidebar");
+                hideStoryboard.Begin();
+                isSidebarVisible = false;
+            }
+        }
+
         [SupportedOSPlatform("windows")]
         private void ToggleSidebar()
         {
             if (isSidebarVisible)
             {
-                // 사이드바 숨기기
-                var hideStoryboard = (System.Windows.Media.Animation.Storyboard)FindResource("HideSidebar");
-                hideStoryboard.Begin();
-                isSidebarVisible = false;
+                // 사이드바 숨기기 (수동 토글로 고정 해제)
+                isSidebarPinnedOpen = false;
+                HideSidebar();
             }
             else
             {
-                // 사이드바 보이기
-                var showStoryboard = (System.Windows.Media.Animation.Storyboard)FindResource("ShowSidebar");
-                showStoryboard.Begin();
-                isSidebarVisible = true;
+                // 사이드바 보이기 (수동 토글로 고정)
+                isSidebarPinnedOpen = true;
+                ShowSidebar();
             }
         }
 
