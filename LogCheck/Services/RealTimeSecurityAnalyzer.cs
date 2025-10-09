@@ -139,7 +139,7 @@ namespace LogCheck.Services
         /// <summary>
         /// 단일 연결 분석
         /// </summary>
-        private async Task<SecurityAlert?> AnalyzeSingleConnectionAsync(ProcessNetworkInfo connection)
+        private Task<SecurityAlert?> AnalyzeSingleConnectionAsync(ProcessNetworkInfo connection)
         {
             try
             {
@@ -189,15 +189,15 @@ namespace LogCheck.Services
                         IsResolved = false
                     };
 
-                    return alert;
+                    return Task.FromResult<SecurityAlert?>(alert);
                 }
 
-                return null;
+                return Task.FromResult<SecurityAlert?>(null);
             }
             catch (Exception ex)
             {
                 OnErrorOccurred($"단일 연결 분석 중 오류: {ex.Message}");
-                return null;
+                return Task.FromResult<SecurityAlert?>(null);
             }
         }
 
@@ -388,7 +388,7 @@ namespace LogCheck.Services
         /// <summary>
         /// 위협 패턴 분석
         /// </summary>
-        private async Task<List<SecurityAlert>> AnalyzeThreatPatternsAsync(List<ProcessNetworkInfo> connections)
+        private Task<List<SecurityAlert>> AnalyzeThreatPatternsAsync(List<ProcessNetworkInfo> connections)
         {
             var alerts = new List<SecurityAlert>();
 
@@ -415,7 +415,7 @@ namespace LogCheck.Services
                 OnErrorOccurred($"위협 패턴 분석 중 오류: {ex.Message}");
             }
 
-            return alerts;
+            return Task.FromResult(alerts);
         }
 
         /// <summary>

@@ -137,7 +137,7 @@ namespace LogCheck.Services
                 var signatureResults = await AnalyzeWithSignatures(packets);
 
                 // 4. 결과 통합 및 상관 관계 분석
-                results = await CorrelateAndMergeResults(
+                results = CorrelateAndMergeResults(
                     basicDetectionResults,
                     packetAnalysisResults,
                     signatureResults
@@ -250,7 +250,7 @@ namespace LogCheck.Services
         /// <summary>
         /// 결과 상관 관계 분석 및 통합
         /// </summary>
-        private async Task<List<DDoSDetectionResult>> CorrelateAndMergeResults(
+        private List<DDoSDetectionResult> CorrelateAndMergeResults(
             List<DDoSDetectionResult> basicResults,
             PacketAnalysisResult packetAnalysis,
             List<DDoSDetectionResult> signatureResults)

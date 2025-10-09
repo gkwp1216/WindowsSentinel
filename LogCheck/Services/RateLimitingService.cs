@@ -125,7 +125,7 @@ namespace LogCheck.Services
         /// <summary>
         /// 특정 IP에 대한 Rate Limit 설정
         /// </summary>
-        public async Task SetCustomIPRateLimitAsync(string ipAddress, IPRateLimitSettings settings)
+        public Task SetCustomIPRateLimitAsync(string ipAddress, IPRateLimitSettings settings)
         {
             try
             {
@@ -136,12 +136,13 @@ namespace LogCheck.Services
             {
                 OnErrorOccurred($"IP Rate Limit 설정 중 오류: {ex.Message}");
             }
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// 현재 Rate Limit 통계 조회
         /// </summary>
-        public async Task<RateLimitStatistics> GetStatisticsAsync()
+        public Task<RateLimitStatistics> GetStatisticsAsync()
         {
             try
             {
@@ -164,19 +165,19 @@ namespace LogCheck.Services
                     LastActivity = limiter.LastActivity
                 }).ToList();
 
-                return stats;
+                return Task.FromResult(stats);
             }
             catch (Exception ex)
             {
                 OnErrorOccurred($"Rate Limit 통계 조회 중 오류: {ex.Message}");
-                return new RateLimitStatistics { GeneratedAt = DateTime.Now };
+                return Task.FromResult(new RateLimitStatistics { GeneratedAt = DateTime.Now });
             }
         }
 
         /// <summary>
         /// 특정 IP의 Rate Limit 해제
         /// </summary>
-        public async Task UnblockIPAsync(string ipAddress)
+        public Task UnblockIPAsync(string ipAddress)
         {
             try
             {
@@ -189,6 +190,7 @@ namespace LogCheck.Services
             {
                 OnErrorOccurred($"IP 차단 해제 중 오류: {ex.Message}");
             }
+            return Task.CompletedTask;
         }
 
         #endregion
@@ -389,21 +391,21 @@ namespace LogCheck.Services
             LastActivity = DateTime.Now;
         }
 
-        public async Task<RateLimitResult> CheckLimitAsync(ProcessNetworkInfo connection)
+        public Task<RateLimitResult> CheckLimitAsync(ProcessNetworkInfo connection)
         {
             LastActivity = DateTime.Now;
 
             // 현재 차단된 상태인지 확인
             if (IsBlocked)
             {
-                return new RateLimitResult
+                return Task.FromResult(new RateLimitResult
                 {
                     IsAllowed = false,
                     ViolationType = RateLimitViolationType.IPBlocked,
                     ConnectionInfo = connection,
                     CheckedAt = DateTime.Now,
                     Details = $"IP {IPAddress}가 차단됨 (해제까지 {(_settings.BlockDuration - (DateTime.Now - _blockStartTime)).TotalMinutes:F1}분)"
-                };
+                });
             }
 
             var now = DateTime.Now;
@@ -420,14 +422,14 @@ namespace LogCheck.Services
             if (connectionsLastSecond > _settings.MaxConnectionsPerSecond)
             {
                 Block();
-                return new RateLimitResult
+                return Task.FromResult(new RateLimitResult
                 {
                     IsAllowed = false,
                     ViolationType = RateLimitViolationType.ConnectionRate,
                     ConnectionInfo = connection,
                     CheckedAt = now,
                     Details = $"IP {IPAddress}: 초당 연결 수 초과 ({connectionsLastSecond}/{_settings.MaxConnectionsPerSecond})"
-                };
+                });
             }
 
             // 분당 연결 수 확인
@@ -435,14 +437,14 @@ namespace LogCheck.Services
             if (connectionsLastMinute > _settings.MaxConnectionsPerMinute)
             {
                 Block();
-                return new RateLimitResult
+                return Task.FromResult(new RateLimitResult
                 {
                     IsAllowed = false,
                     ViolationType = RateLimitViolationType.ConnectionRate,
                     ConnectionInfo = connection,
                     CheckedAt = now,
                     Details = $"IP {IPAddress}: 분당 연결 수 초과 ({connectionsLastMinute}/{_settings.MaxConnectionsPerMinute})"
-                };
+                });
             }
 
             // 초당 데이터 전송량 확인
@@ -453,24 +455,24 @@ namespace LogCheck.Services
             if (bytesLastSecond > _settings.MaxBytesPerSecond)
             {
                 Block();
-                return new RateLimitResult
+                return Task.FromResult(new RateLimitResult
                 {
                     IsAllowed = false,
                     ViolationType = RateLimitViolationType.BandwidthLimit,
                     ConnectionInfo = connection,
                     CheckedAt = now,
                     Details = $"IP {IPAddress}: 초당 대역폭 초과 ({bytesLastSecond / 1024 / 1024:F1}MB/{_settings.MaxBytesPerSecond / 1024 / 1024}MB)"
-                };
+                });
             }
 
-            return new RateLimitResult
+            return Task.FromResult(new RateLimitResult
             {
                 IsAllowed = true,
                 ViolationType = RateLimitViolationType.None,
                 ConnectionInfo = connection,
                 CheckedAt = now,
                 Details = "정상"
-            };
+            });
         }
 
         public void UpdateSettings(IPRateLimitSettings settings)
@@ -549,7 +551,7 @@ namespace LogCheck.Services
             LastActivity = DateTime.Now;
         }
 
-        public async Task<RateLimitResult> CheckLimitAsync(ProcessNetworkInfo connection)
+        public Task<RateLimitResult> CheckLimitAsync(ProcessNetworkInfo connection)
         {
             LastActivity = DateTime.Now;
             var now = DateTime.Now;
@@ -560,24 +562,24 @@ namespace LogCheck.Services
             var connectionsLastSecond = _connections.Count(t => (now - t).TotalSeconds <= 1);
             if (connectionsLastSecond > _settings.MaxConnectionsPerSecond)
             {
-                return new RateLimitResult
+                return Task.FromResult(new RateLimitResult
                 {
                     IsAllowed = false,
                     ViolationType = RateLimitViolationType.PortOverload,
                     ConnectionInfo = connection,
                     CheckedAt = now,
                     Details = $"포트 {Port}: 초당 연결 수 초과 ({connectionsLastSecond}/{_settings.MaxConnectionsPerSecond})"
-                };
+                });
             }
 
-            return new RateLimitResult
+            return Task.FromResult(new RateLimitResult
             {
                 IsAllowed = true,
                 ViolationType = RateLimitViolationType.None,
                 ConnectionInfo = connection,
                 CheckedAt = now,
                 Details = "정상"
-            };
+            });
         }
 
         private void CleanupOldRecords(DateTime now)
@@ -613,7 +615,7 @@ namespace LogCheck.Services
             LastActivity = DateTime.Now;
         }
 
-        public async Task<RateLimitResult> CheckLimitAsync(ProcessNetworkInfo connection)
+        public Task<RateLimitResult> CheckLimitAsync(ProcessNetworkInfo connection)
         {
             LastActivity = DateTime.Now;
             var now = DateTime.Now;
@@ -624,24 +626,24 @@ namespace LogCheck.Services
             var connectionsLastSecond = _connections.Count(t => (now - t).TotalSeconds <= 1);
             if (connectionsLastSecond > _settings.MaxConnectionsPerSecond)
             {
-                return new RateLimitResult
+                return Task.FromResult(new RateLimitResult
                 {
                     IsAllowed = false,
                     ViolationType = RateLimitViolationType.ProcessOverload,
                     ConnectionInfo = connection,
                     CheckedAt = now,
                     Details = $"프로세스 {ProcessId}: 초당 연결 수 초과 ({connectionsLastSecond}/{_settings.MaxConnectionsPerSecond})"
-                };
+                });
             }
 
-            return new RateLimitResult
+            return Task.FromResult(new RateLimitResult
             {
                 IsAllowed = true,
                 ViolationType = RateLimitViolationType.None,
                 ConnectionInfo = connection,
                 CheckedAt = now,
                 Details = "정상"
-            };
+            });
         }
 
         private void CleanupOldRecords(DateTime now)

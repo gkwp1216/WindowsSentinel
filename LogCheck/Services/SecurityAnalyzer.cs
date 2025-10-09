@@ -141,7 +141,7 @@ namespace LogCheck.Services
         }
 
         // 트래픽 패턴 분석
-        private async Task<LogCheck.Models.SecurityAlert?> CheckTrafficPatternAsync(NetworkUsageRecord packet)
+        private Task<LogCheck.Models.SecurityAlert?> CheckTrafficPatternAsync(NetworkUsageRecord packet)
         {
             var key = $"{packet.SourceIP}_{packet.DestinationIP}";
 
@@ -169,7 +169,7 @@ namespace LogCheck.Services
 
                 if (activity.RiskScore > 7.0) // 위험도 7점 이상
                 {
-                    return new LogCheck.Models.SecurityAlert
+                    return Task.FromResult<LogCheck.Models.SecurityAlert?>(new LogCheck.Models.SecurityAlert
                     {
                         Timestamp = DateTime.Now,
                         AlertType = "비정상적인 트래픽 패턴",
@@ -180,11 +180,11 @@ namespace LogCheck.Services
                         Description = $"비정상적인 연결 패턴 감지: {activity.ConnectionCount}회 연결",
                         Details = $"위험도: {activity.RiskScore:F1}/10, 데이터량: {FormatBytes(activity.DataVolume)}",
                         Action = "Monitored"
-                    };
+                    });
                 }
             }
 
-            return null;
+            return Task.FromResult<LogCheck.Models.SecurityAlert?>(null);
         }
 
         // 대용량 데이터 전송 검사

@@ -525,7 +525,7 @@ namespace LogCheck
         /// <summary>
         /// 실시간 보안 모니터링 상태 업데이트
         /// </summary>
-        private async Task UpdateSecurityMonitoring()
+        private Task UpdateSecurityMonitoring()
         {
             try
             {
@@ -560,6 +560,7 @@ namespace LogCheck
             {
                 LogHelper.LogError($"보안 모니터링 상태 업데이트 중 오류: {ex.Message}");
             }
+            return Task.CompletedTask;
         }
 
         /// <summary>
