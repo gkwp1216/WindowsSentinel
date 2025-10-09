@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -236,6 +237,119 @@ namespace LogCheck.ViewModels
 
         #endregion
 
+        #region 고급 메트릭 속성들 (새로 추가)
+
+        // 보안 점수 시스템
+        private int _securityScore = 85;
+        public int SecurityScore
+        {
+            get => _securityScore;
+            set
+            {
+                _securityScore = Math.Max(0, Math.Min(100, value));
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SecurityScoreText));
+                OnPropertyChanged(nameof(SecurityScoreColor));
+                OnPropertyChanged(nameof(SecurityScoreStatus));
+            }
+        }
+
+        public string SecurityScoreText => $"보안 점수: {SecurityScore}/100";
+
+        public string SecurityScoreStatus => SecurityScore switch
+        {
+            >= 90 => "🟢 우수",
+            >= 75 => "🟡 양호",
+            >= 60 => "🟠 보통",
+            >= 40 => "🔴 주의",
+            _ => "🔴 위험"
+        };
+
+        public System.Windows.Media.Brush SecurityScoreColor => SecurityScore switch
+        {
+            >= 90 => (System.Windows.Media.Brush)System.Windows.Application.Current.Resources["RiskLowColor"],
+            >= 75 => System.Windows.Media.Brushes.LimeGreen,
+            >= 60 => (System.Windows.Media.Brush)System.Windows.Application.Current.Resources["RiskMediumColor"],
+            >= 40 => (System.Windows.Media.Brush)System.Windows.Application.Current.Resources["RiskHighColor"],
+            _ => (System.Windows.Media.Brush)System.Windows.Application.Current.Resources["RiskCriticalColor"]
+        };
+
+        // 공격 패턴 분석 차트
+        public ObservableCollection<ISeries> AttackPatternSeries { get; set; } = new();
+        public ObservableCollection<Axis> AttackPatternXAxes { get; set; } = new();
+        public ObservableCollection<Axis> AttackPatternYAxes { get; set; } = new();
+
+        // 지역별 위협 분포 (위협 지도 기반)
+        public ObservableCollection<GeographicThreatInfo> GeographicThreats { get; set; } = new();
+
+        private string _topThreatCountry = "알 수 없음";
+        public string TopThreatCountry
+        {
+            get => _topThreatCountry;
+            set
+            {
+                _topThreatCountry = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ThreatGeographyText));
+            }
+        }
+
+        public string ThreatGeographyText => $"주요 위협 지역: {TopThreatCountry}";
+
+        // 예측 분석 결과
+        private ThreatPredictionResult _threatPrediction = new ThreatPredictionResult();
+        public ThreatPredictionResult ThreatPrediction
+        {
+            get => _threatPrediction;
+            set
+            {
+                _threatPrediction = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _predictedRiskIncrease = 15.3;
+        public double PredictedRiskIncrease
+        {
+            get => _predictedRiskIncrease;
+            set
+            {
+                _predictedRiskIncrease = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(PredictionText));
+            }
+        }
+
+        public string PredictionText => $"예상 위험도 증가: +{PredictedRiskIncrease:F1}%";
+
+        // 실시간 공격 통계
+        private Dictionary<DDoSAttackType, int> _attackTypeStats = new();
+        public Dictionary<DDoSAttackType, int> AttackTypeStats
+        {
+            get => _attackTypeStats;
+            set
+            {
+                _attackTypeStats = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(MostCommonAttackType));
+                OnPropertyChanged(nameof(AttackDiversityText));
+            }
+        }
+
+        public string MostCommonAttackType
+        {
+            get
+            {
+                if (!AttackTypeStats.Any()) return "탐지된 공격 없음";
+                var mostCommon = AttackTypeStats.OrderByDescending(x => x.Value).First();
+                return $"주요 공격: {GetAttackTypeDisplayName(mostCommon.Key)} ({mostCommon.Value}회)";
+            }
+        }
+
+        public string AttackDiversityText => $"탐지된 공격 유형: {AttackTypeStats.Count}개";
+
+        #endregion
+
         #region 원클릭 보안 액션 속성들
 
         private string _actionStatusText = "";
@@ -285,6 +399,7 @@ namespace LogCheck.ViewModels
 
             InitializeChart();
             InitializeSampleData();
+            InitializeAdvancedMetrics(); // 고급 메트릭 초기화
             GenerateInitialSecurityEvents(); // 초기 보안 이벤트 생성
         }
 
@@ -314,6 +429,11 @@ namespace LogCheck.ViewModels
                     // 목록 데이터 업데이트
                     await UpdateTopBlockedIPsAsync();
                     await UpdateRecentSecurityEventsAsync();
+
+                    // 고급 메트릭 업데이트
+                    UpdateSecurityScore();
+                    UpdateGeographicThreats();
+                    UpdateThreatPrediction();
 
                     // 업데이트 시간 갱신
                     LastUpdateTime = DateTime.Now;
@@ -927,6 +1047,202 @@ namespace LogCheck.ViewModels
         }
 
         #endregion
+
+        // Helper Methods for Advanced Metrics
+        private string GetAttackTypeDisplayName(DDoSAttackType attackType)
+        {
+            return attackType switch
+            {
+                DDoSAttackType.VolumetricAttack => "대량 트래픽 공격",
+                DDoSAttackType.SynFlood => "SYN 플러드",
+                DDoSAttackType.HttpFlood => "HTTP 플러드",
+                DDoSAttackType.UdpFlood => "UDP 플러드",
+                DDoSAttackType.IcmpFlood => "ICMP 플러드",
+                DDoSAttackType.SlowLoris => "슬로우 로리스",
+                DDoSAttackType.UdpAmplification => "UDP 증폭 공격",
+                DDoSAttackType.BandwidthFlood => "대역폭 플러드",
+                DDoSAttackType.ConnectionFlood => "연결 플러드",
+                _ => attackType.ToString()
+            };
+        }
+
+        private void InitializeAdvancedMetrics()
+        {
+            // Security Score 초기화 (기본 점수)
+            SecurityScore = 85;
+
+            // Attack Pattern 차트 초기화
+            AttackPatternSeries = new ObservableCollection<ISeries>
+            {
+                new LineSeries<DateTimePoint>
+                {
+                    Values = new List<DateTimePoint>(),
+                    Name = "공격 시도",
+                    Fill = null,
+                    Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 2 }
+                },
+                new LineSeries<DateTimePoint>
+                {
+                    Values = new List<DateTimePoint>(),
+                    Name = "차단 성공",
+                    Fill = null,
+                    Stroke = new SolidColorPaint(SKColors.Green) { StrokeThickness = 2 }
+                }
+            };
+
+            // Geographic Threats 초기화
+            GeographicThreats = new ObservableCollection<GeographicThreatInfo>();
+
+            // Threat Prediction 초기화
+            ThreatPrediction = new ThreatPredictionResult
+            {
+                PredictedRiskLevel = "보통",
+                Confidence = 0.75,
+                Recommendation = "현재 보안 상태가 양호합니다. 정기적인 모니터링을 계속하세요."
+            };
+
+            // Attack Type Stats 초기화
+            AttackTypeStats = new Dictionary<DDoSAttackType, int>();
+            foreach (DDoSAttackType attackType in Enum.GetValues<DDoSAttackType>())
+            {
+                AttackTypeStats[attackType] = 0;
+            }
+        }
+
+        private void UpdateSecurityScore()
+        {
+            try
+            {
+                var factors = new SecurityScoreFactors();
+
+                // DDoS 방어 효율성 평가
+                if (_globalDDoSSystem != null)
+                {
+                    var stats = _globalDDoSSystem.GetStatistics();
+                    var totalBlocked = stats.AttacksBlocked;
+                    var totalAttempts = stats.TotalAttacksDetected;
+
+                    if (totalAttempts > 0)
+                    {
+                        factors.DefenseEfficiency = (double)totalBlocked / totalAttempts;
+                    }
+                }
+
+                // 네트워크 활동 평가 (기본값으로 설정)
+                factors.NetworkHealthScore = 0.85; // 기본 네트워크 상태 점수
+
+                // 최근 위협 활동 평가
+                var recentThreats = GeographicThreats?.Count(t => t.ThreatLevelText.Contains("높음")) ?? 0;
+                factors.ThreatActivityScore = Math.Max(0, 1.0 - (recentThreats * 0.05));
+
+                // 보안 점수 계산 (0-100)
+                var baseScore = 100;
+                var deduction = 0;
+
+                deduction += (int)((1 - factors.DefenseEfficiency) * 30);
+                deduction += (int)((1 - factors.NetworkHealthScore) * 25);
+                deduction += (int)((1 - factors.ThreatActivityScore) * 20);
+
+                SecurityScore = Math.Max(0, baseScore - deduction);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log($"보안 점수 업데이트 오류: {ex.Message}", MessageType.Error);
+                SecurityScore = 50; // 기본값
+            }
+        }
+
+        private void UpdateGeographicThreats()
+        {
+            try
+            {
+                // 샘플 지리적 위협 데이터 생성 (실제로는 실시간 데이터를 사용)
+                var threats = new List<GeographicThreatInfo>
+                {
+                    new GeographicThreatInfo
+                    {
+                        CountryName = "중국",
+                        CountryCode = "CN",
+                        ThreatCount = 450
+                    },
+                    new GeographicThreatInfo
+                    {
+                        CountryName = "러시아",
+                        CountryCode = "RU",
+                        ThreatCount = 320
+                    },
+                    new GeographicThreatInfo
+                    {
+                        CountryName = "미국",
+                        CountryCode = "US",
+                        ThreatCount = 180
+                    },
+                    new GeographicThreatInfo
+                    {
+                        CountryName = "독일",
+                        CountryCode = "DE",
+                        ThreatCount = 95
+                    }
+                };
+
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                {
+                    GeographicThreats.Clear();
+                    foreach (var threat in threats.OrderByDescending(t => t.ThreatCount))
+                    {
+                        GeographicThreats.Add(threat);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log($"지리적 위협 업데이트 오류: {ex.Message}", MessageType.Error);
+            }
+        }
+
+        private void UpdateThreatPrediction()
+        {
+            try
+            {
+                // 간단한 예측 알고리즘 (실제로는 더 복잡한 ML 모델 사용)
+                var recentAttacks = AttackTypeStats?.Values.Sum() ?? 0;
+                var securityScore = SecurityScore;
+
+                string riskLevel;
+                double confidence;
+                string recommendation;
+
+                if (securityScore >= 80 && recentAttacks < 100)
+                {
+                    riskLevel = "낮음";
+                    confidence = 0.85;
+                    recommendation = "현재 보안 상태가 우수합니다. 정기적인 모니터링을 유지하세요.";
+                }
+                else if (securityScore >= 60 && recentAttacks < 300)
+                {
+                    riskLevel = "보통";
+                    confidence = 0.75;
+                    recommendation = "보안 상태가 양호하나, 추가적인 모니터링이 권장됩니다.";
+                }
+                else
+                {
+                    riskLevel = "높음";
+                    confidence = 0.65;
+                    recommendation = "즉시 보안 조치를 강화하고 시스템을 점검하세요.";
+                }
+
+                ThreatPrediction = new ThreatPredictionResult
+                {
+                    PredictedRiskLevel = riskLevel,
+                    Confidence = confidence,
+                    Recommendation = recommendation
+                };
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log($"위협 예측 업데이트 오류: {ex.Message}", MessageType.Error);
+            }
+        }
 
         private void InitializeSampleData()
         {

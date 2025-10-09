@@ -19,6 +19,7 @@ namespace LogCheck.Services
         private readonly string _ruleNamePrefix;
         private dynamic? _firewallPolicy;
         private readonly EventLog _eventLog;
+        private readonly ToastNotificationService _toastService;
 
         // COM 상수들을 직접 정의
         private const int NET_FW_ACTION_BLOCK = 0;
@@ -32,6 +33,7 @@ namespace LogCheck.Services
         public PersistentFirewallManager(string ruleNamePrefix = "LogCheck_Block")
         {
             _ruleNamePrefix = ruleNamePrefix;
+            _toastService = ToastNotificationService.Instance;
 
             // Windows Event Log 초기화 (Windows Sentinel 소스)
             _eventLog = new EventLog();
@@ -111,11 +113,39 @@ namespace LogCheck.Services
                     LogFirewallAction("프로세스 차단 규칙 추가", ruleName, true, $"프로세스: {processPath}");
                     LogSecurityEvent("프로세스 자동 차단", $"Path: {processPath}, Name: {processName}", "네트워크 활동 차단", EventLogEntryType.Information);
 
+                    // Toast 알림 표시
+                    _ = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await _toastService.ShowSuccessAsync($"🛡️ 영구 차단 완료: {processName}",
+                                $"프로세스가 영구적으로 차단되었습니다.\n경로: {processPath}");
+                        }
+                        catch (Exception toastEx)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Toast 알림 표시 실패: {toastEx.Message}");
+                        }
+                    });
+
                     return true;
                 });
             }
             catch (Exception ex)
             {
+                // 실패 Toast 알림 표시
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _toastService.ShowErrorAsync($"❌ 차단 실패: {processName}",
+                            $"프로세스 차단 중 오류가 발생했습니다.\n오류: {ex.Message}");
+                    }
+                    catch (Exception toastEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Toast 알림 표시 실패: {toastEx.Message}");
+                    }
+                });
+
                 throw new InvalidOperationException($"프로세스 차단 규칙 생성 실패: {ex.Message}", ex);
             }
         }
@@ -146,11 +176,39 @@ namespace LogCheck.Services
                     LogFirewallAction("IP 차단 규칙 추가", ruleName, true, $"IP: {ipAddress}, 설명: {description}");
                     LogSecurityEvent("IP 주소 자동 차단", $"IP: {ipAddress}", "의심스러운 네트워크 활동", EventLogEntryType.Warning);
 
+                    // Toast 알림 표시
+                    _ = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await _toastService.ShowSuccessAsync($"🚫 IP 차단 완료: {ipAddress}",
+                                $"의심스러운 IP가 영구적으로 차단되었습니다.\n{(string.IsNullOrEmpty(description) ? "자동 탐지" : description)}");
+                        }
+                        catch (Exception toastEx)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Toast 알림 표시 실패: {toastEx.Message}");
+                        }
+                    });
+
                     return true;
                 });
             }
             catch (Exception ex)
             {
+                // 실패 Toast 알림 표시
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _toastService.ShowErrorAsync($"❌ IP 차단 실패: {ipAddress}",
+                            $"IP 차단 중 오류가 발생했습니다.\n오류: {ex.Message}");
+                    }
+                    catch (Exception toastEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Toast 알림 표시 실패: {toastEx.Message}");
+                    }
+                });
+
                 throw new InvalidOperationException($"IP 차단 규칙 생성 실패: {ex.Message}", ex);
             }
         }
@@ -334,17 +392,59 @@ namespace LogCheck.Services
                     try
                     {
                         _firewallPolicy.Rules.Remove(ruleName);
+
+                        // 성공 Toast 알림 표시
+                        _ = Task.Run(async () =>
+                        {
+                            try
+                            {
+                                await _toastService.ShowSuccessAsync($"🔓 차단 해제 완료",
+                                    $"방화벽 규칙이 제거되었습니다.\n규칙: {ruleName}");
+                            }
+                            catch (Exception toastEx)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"Toast 알림 표시 실패: {toastEx.Message}");
+                            }
+                        });
+
                         return true;
                     }
                     catch (COMException)
                     {
                         // 규칙이 존재하지 않는 경우
+                        _ = Task.Run(async () =>
+                        {
+                            try
+                            {
+                                await _toastService.ShowWarningAsync($"⚠️ 규칙 없음",
+                                    $"제거할 방화벽 규칙을 찾을 수 없습니다.\n규칙: {ruleName}");
+                            }
+                            catch (Exception toastEx)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"Toast 알림 표시 실패: {toastEx.Message}");
+                            }
+                        });
+
                         return false;
                     }
                 });
             }
             catch (Exception ex)
             {
+                // 실패 Toast 알림 표시
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _toastService.ShowErrorAsync($"❌ 규칙 제거 실패",
+                            $"방화벽 규칙 제거 중 오류가 발생했습니다.\n오류: {ex.Message}");
+                    }
+                    catch (Exception toastEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Toast 알림 표시 실패: {toastEx.Message}");
+                    }
+                });
+
                 throw new InvalidOperationException($"방화벽 규칙 제거 실패: {ex.Message}", ex);
             }
         }

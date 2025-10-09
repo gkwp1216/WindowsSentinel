@@ -106,7 +106,7 @@ namespace LogCheck.Services
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
 
-            using var transaction = await connection.BeginTransactionAsync();
+            using var transaction = (SqliteTransaction)await connection.BeginTransactionAsync();
             try
             {
                 // 차단 연결 기록
