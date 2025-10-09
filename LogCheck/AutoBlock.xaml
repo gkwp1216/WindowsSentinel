@@ -102,6 +102,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="200"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -230,8 +231,108 @@
             </Border>
         </Grid>
 
+        <!-- 차단 유형별 통계 차트 -->
+        <Grid Grid.Row="2" Margin="20,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 차단 유형 파이 차트 -->
+            <Border Grid.Column="0" Style="{StaticResource StatusCardStyle}">
+                <StackPanel>
+                    <TextBlock Text="📊 차단 유형별 분포" 
+                              FontSize="16" 
+                              FontWeight="SemiBold"
+                              Foreground="{DynamicResource PrimaryTextBrush}"
+                              HorizontalAlignment="Center"
+                              Margin="0,0,0,16"/>
+                    <Grid Height="150">
+                        <!-- 파이 차트 위치 - LiveCharts가 아닌 간단한 시각화 -->
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- 임시 차단 비율 -->
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="⏰ 임시 차단" 
+                                      FontSize="14" 
+                                      FontWeight="SemiBold"
+                                      Foreground="{DynamicResource RiskMediumColor}"
+                                      HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="TemporaryPercentText" 
+                                      Text="0%" 
+                                      FontSize="24" 
+                                      FontWeight="Bold"
+                                      Foreground="{DynamicResource RiskMediumColor}"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,8"/>
+                            <TextBlock x:Name="TemporaryCountText" 
+                                      Text="0개" 
+                                      FontSize="12"
+                                      Foreground="{DynamicResource SecondaryTextBrush}"
+                                      HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        
+                        <!-- 영구 차단 비율 -->
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="🔒 영구 차단" 
+                                      FontSize="14" 
+                                      FontWeight="SemiBold"
+                                      Foreground="{DynamicResource RiskHighColor}"
+                                      HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="PermanentPercentText" 
+                                      Text="0%" 
+                                      FontSize="24" 
+                                      FontWeight="Bold"
+                                      Foreground="{DynamicResource RiskHighColor}"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,8"/>
+                            <TextBlock x:Name="PermanentCountText" 
+                                      Text="0개" 
+                                      FontSize="12"
+                                      Foreground="{DynamicResource SecondaryTextBrush}"
+                                      HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- 시간별 차단 추이 -->
+            <Border Grid.Column="1" Style="{StaticResource StatusCardStyle}">
+                <StackPanel>
+                    <TextBlock Text="📈 시간별 차단 추이" 
+                              FontSize="16" 
+                              FontWeight="SemiBold"
+                              Foreground="{DynamicResource PrimaryTextBrush}"
+                              HorizontalAlignment="Center"
+                              Margin="0,0,0,16"/>
+                    <Grid Height="150">
+                        <!-- 간단한 막대 그래프 시뮬레이션 -->
+                        <StackPanel Orientation="Horizontal" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center">
+                            <Rectangle x:Name="Hour1Bar" Width="8" Height="20" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
+                            <Rectangle x:Name="Hour2Bar" Width="8" Height="35" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
+                            <Rectangle x:Name="Hour3Bar" Width="8" Height="15" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
+                            <Rectangle x:Name="Hour4Bar" Width="8" Height="45" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
+                            <Rectangle x:Name="Hour5Bar" Width="8" Height="25" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
+                            <Rectangle x:Name="Hour6Bar" Width="8" Height="40" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
+                        </StackPanel>
+                        <TextBlock Text="최근 6시간" 
+                                  FontSize="12"
+                                  Foreground="{DynamicResource SecondaryTextBrush}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Bottom"
+                                  Margin="0,0,0,10"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
         <!-- 필터 및 액션 버튼 -->
-        <Grid Grid.Row="2" Margin="20,20,20,10">
+        <Grid Grid.Row="3" Margin="20,20,20,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -286,7 +387,7 @@
         </Grid>
 
         <!-- 차단 목록 DataGrid -->
-        <Border Grid.Row="3" 
+        <Border Grid.Row="4" 
                 Background="{DynamicResource CardBackgroundBrush}" 
                 BorderBrush="{DynamicResource BorderBrush}" 
                 BorderThickness="1" 

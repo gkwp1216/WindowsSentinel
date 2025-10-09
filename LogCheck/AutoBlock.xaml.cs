@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using LogCheck.Models;
 using LogCheck.Services;
 using Application = System.Windows.Application;
@@ -159,19 +160,33 @@ namespace LogCheck
 
             if (!selectedConnections.Any())
             {
-                MessageBox.Show("차단 해제할 연결을 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                toastService?.ShowWarningAsync("선택 필요", "차단 해제할 연결을 선택해주세요.");
                 return;
             }
 
+            // 영구/임시 차단 분류
+            var permanentCount = selectedConnections.Count(c => c.IsPermanentlyBlocked);
+            var temporaryCount = selectedConnections.Count - permanentCount;
+
+            var confirmMessage = permanentCount > 0 && temporaryCount > 0
+                ? $"선택된 {selectedConnections.Count}개 연결을 차단 해제하시겠습니까?\n(영구 차단: {permanentCount}개, 임시 차단: {temporaryCount}개)"
+                : permanentCount > 0
+                ? $"선택된 {permanentCount}개의 영구 차단 연결을 해제하시겠습니까?\n방화벽 규칙도 함께 제거됩니다."
+                : $"선택된 {temporaryCount}개의 임시 차단 연결을 해제하시겠습니까?";
+
             var result = MessageBox.Show(
-                $"선택된 {selectedConnections.Count}개의 연결을 차단 해제하시겠습니까?",
+                confirmMessage,
                 "차단 해제 확인",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
+                toastService?.ShowInfoAsync("차단 해제 시작", $"{selectedConnections.Count}개 연결 차단 해제 중...");
                 await UnblockConnectionsAsync(selectedConnections);
+
+                // 데이터 새로고침
+                await LoadDataAsync();
             }
         }
 
@@ -181,20 +196,24 @@ namespace LogCheck
 
             if (!selectedConnections.Any())
             {
-                MessageBox.Show("화이트리스트에 추가할 연결을 선택해주세요.", "알림", MessageBoxButton.OK, MessageBoxImage.Warning);
+                toastService?.ShowWarningAsync("선택 필요", "화이트리스트에 추가할 연결을 선택해주세요.");
                 return;
             }
 
             var result = MessageBox.Show(
                 $"선택된 {selectedConnections.Count}개의 연결을 화이트리스트에 추가하시겠습니까?\n" +
-                "화이트리스트에 추가된 연결은 앞으로 차단되지 않습니다.",
+                "화이트리스트에 추가된 연결은 앞으로 차단되지 않으며, 현재 차단도 해제됩니다.",
                 "화이트리스트 추가 확인",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
+                toastService?.ShowInfoAsync("화이트리스트 추가", $"{selectedConnections.Count}개 연결을 화이트리스트에 추가 중...");
                 await AddToWhitelistAsync(selectedConnections);
+
+                // 데이터 새로고침
+                await LoadDataAsync();
             }
         }
 
@@ -310,6 +329,9 @@ namespace LogCheck
                     {
                         BlockedConnections.Add(connection);
                     }
+
+                    // 차트 업데이트
+                    UpdateCharts();
                 });
 
                 await RefreshStatisticsAsync();
@@ -363,6 +385,99 @@ namespace LogCheck
             catch (Exception ex)
             {
                 Debug.WriteLine($"통계 갱신 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 차트 데이터를 업데이트합니다.
+        /// </summary>
+        private void UpdateCharts()
+        {
+            try
+            {
+                // 차단 유형별 분포 계산
+                var temporaryCount = BlockedConnections.Count(c => !c.IsPermanentlyBlocked);
+                var permanentCount = BlockedConnections.Count(c => c.IsPermanentlyBlocked);
+                var totalCount = temporaryCount + permanentCount;
+
+                // XAML에서 정의된 컨트롤들을 FindName으로 찾기
+                var temporaryPercentText = FindName("TemporaryPercentText") as TextBlock;
+                var temporaryCountText = FindName("TemporaryCountText") as TextBlock;
+                var permanentPercentText = FindName("PermanentPercentText") as TextBlock;
+                var permanentCountText = FindName("PermanentCountText") as TextBlock;
+
+                if (totalCount > 0)
+                {
+                    var temporaryPercent = (double)temporaryCount / totalCount * 100;
+                    var permanentPercent = (double)permanentCount / totalCount * 100;
+
+                    // 임시 차단 비율 업데이트
+                    if (temporaryPercentText != null) temporaryPercentText.Text = $"{temporaryPercent:F1}%";
+                    if (temporaryCountText != null) temporaryCountText.Text = $"{temporaryCount}개";
+
+                    // 영구 차단 비율 업데이트
+                    if (permanentPercentText != null) permanentPercentText.Text = $"{permanentPercent:F1}%";
+                    if (permanentCountText != null) permanentCountText.Text = $"{permanentCount}개";
+                }
+                else
+                {
+                    // 데이터가 없는 경우
+                    if (temporaryPercentText != null) temporaryPercentText.Text = "0%";
+                    if (temporaryCountText != null) temporaryCountText.Text = "0개";
+                    if (permanentPercentText != null) permanentPercentText.Text = "0%";
+                    if (permanentCountText != null) permanentCountText.Text = "0개";
+                }
+
+                // 시간별 차단 추이 업데이트 (최근 6시간)
+                UpdateHourlyChart();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"차트 업데이트 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 시간별 차단 추이 차트를 업데이트합니다.
+        /// </summary>
+        private void UpdateHourlyChart()
+        {
+            try
+            {
+                var now = DateTime.Now;
+                var hourlyData = new int[6];
+
+                // 최근 6시간 동안의 차단 수를 계산
+                for (int i = 0; i < 6; i++)
+                {
+                    var hourStart = now.AddHours(-(5 - i)).Date.AddHours(now.AddHours(-(5 - i)).Hour);
+                    var hourEnd = hourStart.AddHours(1);
+
+                    hourlyData[i] = BlockedConnections.Count(c =>
+                        c.BlockedAt >= hourStart && c.BlockedAt < hourEnd);
+                }
+
+                // 최대값을 기준으로 높이 정규화 (최대 50px)
+                var maxCount = hourlyData.Max();
+                if (maxCount == 0) maxCount = 1; // 0으로 나누기 방지
+
+                // 각 막대의 높이 업데이트 (FindName으로 안전하게 접근)
+                if (FindName("Hour1Bar") is System.Windows.Shapes.Rectangle hour1Bar)
+                    hour1Bar.Height = Math.Max(5.0, (double)hourlyData[0] / maxCount * 50.0);
+                if (FindName("Hour2Bar") is System.Windows.Shapes.Rectangle hour2Bar)
+                    hour2Bar.Height = Math.Max(5.0, (double)hourlyData[1] / maxCount * 50.0);
+                if (FindName("Hour3Bar") is System.Windows.Shapes.Rectangle hour3Bar)
+                    hour3Bar.Height = Math.Max(5.0, (double)hourlyData[2] / maxCount * 50.0);
+                if (FindName("Hour4Bar") is System.Windows.Shapes.Rectangle hour4Bar)
+                    hour4Bar.Height = Math.Max(5.0, (double)hourlyData[3] / maxCount * 50.0);
+                if (FindName("Hour5Bar") is System.Windows.Shapes.Rectangle hour5Bar)
+                    hour5Bar.Height = Math.Max(5.0, (double)hourlyData[4] / maxCount * 50.0);
+                if (FindName("Hour6Bar") is System.Windows.Shapes.Rectangle hour6Bar)
+                    hour6Bar.Height = Math.Max(5.0, (double)hourlyData[5] / maxCount * 50.0);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"시간별 차트 업데이트 오류: {ex.Message}");
             }
         }
 
