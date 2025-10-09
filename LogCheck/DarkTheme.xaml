@@ -17,6 +17,17 @@
     <SolidColorBrush x:Key="BorderBrushColor" Color="White"/>
     <SolidColorBrush x:Key="CheckedColor" Color="White"/>
     <SolidColorBrush x:Key="HelpMarkColor" Color="#4CAF50"/>
+    
+    <!-- 액센트 색상 -->
+    <SolidColorBrush x:Key="AccentBrush" Color="#0078D4"/>         <!-- Windows 액센트 블루 -->
+    
+    <!-- 보안 대시보드 리소스 -->
+    <SolidColorBrush x:Key="BackgroundBrush" Color="#1E1E1E"/>
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#2E2E2E"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="#444444"/>
+    <SolidColorBrush x:Key="PrimaryTextBrush" Color="#F5F5F5"/>
+    <SolidColorBrush x:Key="SecondaryTextBrush" Color="#B0B0B0"/>
+    <Color x:Key="ShadowColor">#000000</Color>
 
     <!-- 위험도별 색상 (다크 테마 최적화) -->
     <SolidColorBrush x:Key="RiskLowColor" Color="#66BB6A"/>        <!-- 밝은 초록 -->
@@ -222,6 +233,35 @@
                         <ContentPresenter VerticalAlignment="Center"
                                       RecognizesAccessKey="True"/>
                     </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- 액센트 버튼 스타일 -->
+    <Style x:Key="AccentButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="12,6"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="4"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#106EBE"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#005A9E"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

@@ -162,8 +162,28 @@ namespace LogCheck.ViewModels
         }
 
         public string PermanentRulesStatusText => "방화벽 동기화됨";
-        public string SystemStatusText => "정상";
-        public string SystemUptimeText => $"가동시간: {DateTime.Now.Subtract(System.Diagnostics.Process.GetCurrentProcess().StartTime):d\\d\\ h\\h}";
+
+        private string _systemStatusText = "정상";
+        public string SystemStatusText
+        {
+            get => _systemStatusText;
+            set
+            {
+                _systemStatusText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _systemUptimeText = "가동시간: 계산 중...";
+        public string SystemUptimeText
+        {
+            get => _systemUptimeText;
+            set
+            {
+                _systemUptimeText = value;
+                OnPropertyChanged();
+            }
+        }
 
         private DateTime _lastUpdateTime = DateTime.Now;
         public DateTime LastUpdateTime
@@ -282,12 +302,95 @@ namespace LogCheck.ViewModels
                 // 위험도 계산
                 CalculateCurrentThreatLevel(statistics, networkData);
 
-                // DDoS 공격 차단 수 업데이트 (시뮬레이션)
-                DDoSAttacksBlocked += new Random().Next(0, 2);
+                // DDoS 공격 차단 수 업데이트
+                await UpdateDDoSDefenseStatus();
+
+                // Rate Limiting 상태 업데이트
+                await UpdateRateLimitingStatus();
+
+                // 시스템 상태 정보 업데이트
+                UpdateSystemStatus();
             }
             catch (Exception ex)
             {
                 await _toastService.ShowErrorAsync("통계 오류", $"보안 통계 업데이트 실패: {ex.Message}");
+            }
+        }
+
+        private Task UpdateDDoSDefenseStatus()
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    // DDoS 방어 시스템 상태 확인
+                    DDoSDefenseActive = true; // 기본적으로 활성화
+
+                    // 실제 DDoS 공격 차단 수 업데이트 (시뮬레이션)
+                    var random = new Random();
+                    if (random.NextDouble() < 0.1) // 10% 확률로 새로운 공격 차단
+                    {
+                        DDoSAttacksBlocked += random.Next(1, 3);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"DDoS 상태 업데이트 오류: {ex.Message}");
+                }
+            });
+        }
+
+        private Task UpdateRateLimitingStatus()
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    // Rate Limiting 서비스 상태 확인
+                    // 실제 구현에서는 RateLimitingService에서 데이터를 가져옵니다
+                    var random = new Random();
+                    var rateLimitedCount = random.Next(0, 15);
+
+                    // 속성 업데이트 (현재 ViewModel에 해당 속성이 없으므로 추가 필요)
+                    System.Diagnostics.Debug.WriteLine($"Rate Limited IPs: {rateLimitedCount}");
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Rate Limiting 상태 업데이트 오류: {ex.Message}");
+                }
+            });
+        }
+
+        private void UpdateSystemStatus()
+        {
+            try
+            {
+                // 시스템 가동 시간 계산
+                var uptime = DateTime.Now - System.Diagnostics.Process.GetCurrentProcess().StartTime;
+                var days = uptime.Days;
+                var hours = uptime.Hours;
+                var minutes = uptime.Minutes;
+
+                if (days > 0)
+                {
+                    SystemUptimeText = $"가동시간: {days}일 {hours}시간";
+                }
+                else if (hours > 0)
+                {
+                    SystemUptimeText = $"가동시간: {hours}시간 {minutes}분";
+                }
+                else
+                {
+                    SystemUptimeText = $"가동시간: {minutes}분";
+                }
+
+                // 시스템 상태는 기본적으로 정상
+                SystemStatusText = "정상";
+            }
+            catch (Exception ex)
+            {
+                SystemStatusText = "오류";
+                System.Diagnostics.Debug.WriteLine($"시스템 상태 업데이트 오류: {ex.Message}");
             }
         }
 

@@ -63,11 +63,20 @@
             </Setter>
         </Style>
 
-        <!-- 사이드바 슬라이드 애니메이션 -->
+        <!-- 개선된 사이드바 슬라이드 애니메이션 -->
         <Storyboard x:Key="ShowSidebar">
+            <!-- 위치 애니메이션 -->
             <DoubleAnimation Storyboard.TargetName="SidebarTransform" 
                            Storyboard.TargetProperty="X" 
-                           From="-250" To="0" Duration="0:0:0.3">
+                           From="-250" To="0" Duration="0:0:0.4">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <!-- 투명도 애니메이션 -->
+            <DoubleAnimation Storyboard.TargetName="Sidebar" 
+                           Storyboard.TargetProperty="Opacity" 
+                           From="0.7" To="1.0" Duration="0:0:0.25">
                 <DoubleAnimation.EasingFunction>
                     <CubicEase EasingMode="EaseOut"/>
                 </DoubleAnimation.EasingFunction>
@@ -75,11 +84,20 @@
         </Storyboard>
         
         <Storyboard x:Key="HideSidebar">
+            <!-- 위치 애니메이션 -->
             <DoubleAnimation Storyboard.TargetName="SidebarTransform" 
                            Storyboard.TargetProperty="X" 
                            From="0" To="-250" Duration="0:0:0.3">
                 <DoubleAnimation.EasingFunction>
-                    <CubicEase EasingMode="EaseOut"/>
+                    <CubicEase EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <!-- 투명도 애니메이션 -->
+            <DoubleAnimation Storyboard.TargetName="Sidebar" 
+                           Storyboard.TargetProperty="Opacity" 
+                           From="1.0" To="0.7" Duration="0:0:0.2">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseIn"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
         </Storyboard>
@@ -103,7 +121,32 @@
                 Panel.ZIndex="1060"
                 MouseEnter="SidebarTrigger_MouseEnter"
                 Cursor="Hand"
-                ToolTip="사이드바 열기"/>
+                ToolTip="사이드바 열기">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetProperty="Background.Color"
+                                                       To="#1A0078D4" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetProperty="Background.Color"
+                                                       To="Transparent" Duration="0:0:0.3"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
 
         <!-- 토글형 사이드바 -->
         <Border x:Name="Sidebar" 
@@ -119,9 +162,24 @@
             <Border.RenderTransform>
                 <TranslateTransform x:Name="SidebarTransform" X="-250"/>
             </Border.RenderTransform>
-            <Border.Effect>
-                <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="5" Opacity="0.3"/>
-            </Border.Effect>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="5" Opacity="0.3"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="Black" BlurRadius="15" ShadowDepth="8" Opacity="0.5"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
             
             <ScrollViewer VerticalScrollBarVisibility="Auto" 
                           HorizontalScrollBarVisibility="Disabled">
@@ -186,12 +244,12 @@
                                 Click="SecurityDashboard_Click" 
                                 Cursor="Hand">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE8C7;" 
+                                <TextBlock Text="&#xE83D;" 
                                            FontFamily="Segoe MDL2 Assets" 
                                            FontSize="18" 
                                            Margin="0,0,15,0" 
                                            VerticalAlignment="Center"/>
-                                <TextBlock Text="악성 프로그램 탐지" 
+                                <TextBlock Text="보안 상태 대시보드" 
                                            FontSize="14" 
                                            VerticalAlignment="Center"/>
                             </StackPanel>
