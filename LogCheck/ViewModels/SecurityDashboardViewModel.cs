@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -18,6 +19,7 @@ using SkiaSharp;
 
 namespace LogCheck.ViewModels
 {
+    [SupportedOSPlatform("windows")]
     public class SecurityDashboardViewModel : INotifyPropertyChanged
     {
         private readonly DispatcherTimer _updateTimer;
@@ -257,6 +259,12 @@ namespace LogCheck.ViewModels
 
         public SecurityDashboardViewModel()
         {
+            // 커맨드를 직접 초기화 (컴파일러 경고 방지)
+            EmergencyBlockCommand = new RelayCommand(async () => await ExecuteEmergencyBlock());
+            ToggleDDoSDefenseCommand = new RelayCommand(async () => await ExecuteToggleDDoSDefense());
+            SecurityScanCommand = new RelayCommand(async () => await ExecuteSecurityScan());
+            SystemRecoveryCommand = new RelayCommand(async () => await ExecuteSystemRecovery());
+            
             _statisticsService = new AutoBlockStatisticsService("Data Source=blocked_connections.db");
             _networkMapper = new ProcessNetworkMapper();
             _toastService = ToastNotificationService.Instance;
@@ -275,7 +283,6 @@ namespace LogCheck.ViewModels
             InitializeChart();
             InitializeSampleData();
             GenerateInitialSecurityEvents(); // 초기 보안 이벤트 생성
-            InitializeCommands(); // 커맨드 초기화
         }
 
         public void StartRealTimeUpdates()
