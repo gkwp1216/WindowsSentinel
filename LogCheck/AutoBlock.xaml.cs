@@ -335,24 +335,29 @@ namespace LogCheck
                 await UpdateFirewallRuleStatusAsync();
 
                 // 영구/임시 차단 분리 통계 가져오기
-                var separatedStats = await statisticsService.GetSeparatedBlockStatisticsAsync();
+                var separatedStats = statisticsService != null
+                    ? await statisticsService.GetSeparatedBlockStatisticsAsync()
+                    : null;
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    // 전체 차단 수 (실제 통계 기반)
-                    TotalBlocksText.Text = separatedStats.TotalBlocked.ToString();
-                    TotalBlocksSubText.Text = $"임시 {separatedStats.TemporaryBlocked} | 영구 {separatedStats.PermanentBlocked}";
+                    if (separatedStats != null)
+                    {
+                        // 전체 차단 수 (실제 통계 기반)
+                        TotalBlocksText.Text = separatedStats.TotalBlocked.ToString();
+                        TotalBlocksSubText.Text = $"임시 {separatedStats.TemporaryBlocked} | 영구 {separatedStats.PermanentBlocked}";
 
-                    // 24시간 차단 (실제 통계 기반)
-                    Last24HBlocksText.Text = separatedStats.TotalBlocked.ToString();
+                        // 24시간 차단 (실제 통계 기반)
+                        Last24HBlocksText.Text = separatedStats.TotalBlocked.ToString();
 
-                    // 성공률 계산 (실제 통계 기반)
-                    SuccessRateText.Text = $"{separatedStats.BlockSuccessRate:F1}%";
-                    SuccessRateSubText.Text = $"성공 {separatedStats.TotalBlocked - separatedStats.RecentBlocked} / 실패 {separatedStats.RecentBlocked}";
+                        // 성공률 계산 (실제 통계 기반)
+                        SuccessRateText.Text = $"{separatedStats.BlockSuccessRate:F1}%";
+                        SuccessRateSubText.Text = $"성공 {separatedStats.TotalBlocked - separatedStats.RecentBlocked} / 실패 {separatedStats.RecentBlocked}";
 
-                    // 활성 방화벽 규칙 수
-                    var firewallRuleCount = BlockedConnections.Count(c => c.FirewallRuleExists);
-                    FirewallRulesText.Text = firewallRuleCount.ToString();
+                        // 활성 방화벽 규칙 수
+                        var firewallRuleCount = BlockedConnections.Count(c => c.FirewallRuleExists);
+                        FirewallRulesText.Text = firewallRuleCount.ToString();
+                    }
                 });
             }
             catch (Exception ex)
@@ -461,7 +466,7 @@ namespace LogCheck
                         try
                         {
                             var ruleName = $"LogCheck_Block_{connection.ProcessName}_{connection.RemoteAddress}";
-                            success = await firewallManager.RemoveBlockRuleAsync(ruleName);
+                            success = firewallManager != null && await firewallManager.RemoveBlockRuleAsync(ruleName);
 
                             if (success)
                             {
@@ -485,7 +490,7 @@ namespace LogCheck
                         // 임시 차단 해제
                         try
                         {
-                            success = await autoBlockService.UnblockConnectionAsync(connection.RemoteAddress);
+                            success = autoBlockService != null && await autoBlockService.UnblockConnectionAsync(connection.RemoteAddress);
                             if (success)
                             {
                                 toastService?.ShowSuccessAsync("임시 차단 해제", connection.RemoteAddress);
@@ -547,19 +552,22 @@ namespace LogCheck
                     try
                     {
                         // 화이트리스트에 추가
-                        await autoBlockService.AddAddressToWhitelistAsync(connection.RemoteAddress, $"사용자 추가 - {DateTime.Now:yyyy-MM-dd HH:mm}");
+                        if (autoBlockService != null)
+                            await autoBlockService.AddAddressToWhitelistAsync(connection.RemoteAddress, $"사용자 추가 - {DateTime.Now:yyyy-MM-dd HH:mm}");
 
                         // 차단도 함께 해제
                         if (connection.IsPermanentlyBlocked)
                         {
                             // 영구 차단 해제 - 방화벽 규칙 제거
                             var ruleName = $"LogCheck_Block_{connection.ProcessName}_{connection.RemoteAddress}";
-                            await firewallManager.RemoveBlockRuleAsync(ruleName);
+                            if (firewallManager != null)
+                                await firewallManager.RemoveBlockRuleAsync(ruleName);
                         }
                         else
                         {
                             // 임시 차단 해제
-                            await autoBlockService.UnblockConnectionAsync(connection.RemoteAddress);
+                            if (autoBlockService != null)
+                                await autoBlockService.UnblockConnectionAsync(connection.RemoteAddress);
                         }
 
                         successCount++;

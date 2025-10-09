@@ -98,7 +98,8 @@ namespace LogCheck
 
             Dispatcher.InvokeAsync(() =>
             {
-                PositionGuideBubble(currentTargetElement);
+                if (currentTargetElement != null)
+                    PositionGuideBubble(currentTargetElement);
             }, DispatcherPriority.Loaded);
         }
 
@@ -537,19 +538,22 @@ namespace LogCheck
                 });
 
                 // 보안 경고 통계
-                var securityStats = securityAnalyzer.GetSecurityStatistics();
+                var securityStats = securityAnalyzer?.GetSecurityStatistics();
                 Dispatcher.Invoke(() =>
                 {
-                    // 24시간 경고
-                    Alerts24HText.Text = $"{securityStats.AlertsLast24Hours}건";
-                    Alerts24HText.Foreground = new SolidColorBrush(
-                        securityStats.AlertsLast24Hours == 0 ? Colors.Green :
-                        securityStats.AlertsLast24Hours < 5 ? Colors.Orange : Colors.Red);
+                    if (securityStats != null)
+                    {
+                        // 24시간 경고
+                        Alerts24HText.Text = $"{securityStats.AlertsLast24Hours}건";
+                        Alerts24HText.Foreground = new SolidColorBrush(
+                            securityStats.AlertsLast24Hours == 0 ? Colors.Green :
+                            securityStats.AlertsLast24Hours < 5 ? Colors.Orange : Colors.Red);
 
-                    // 고위험 경고
-                    HighRiskAlertsText.Text = $"{securityStats.HighSeverityAlerts}건";
-                    HighRiskAlertsText.Foreground = new SolidColorBrush(
-                        securityStats.HighSeverityAlerts == 0 ? Colors.Green : Colors.Red);
+                        // 고위험 경고
+                        HighRiskAlertsText.Text = $"{securityStats.HighSeverityAlerts}건";
+                        HighRiskAlertsText.Foreground = new SolidColorBrush(
+                            securityStats.HighSeverityAlerts == 0 ? Colors.Green : Colors.Red);
+                    }
 
                     // 최근 검사 (임시로 현재 시간 기준으로 설정)
                     LastScanText.Text = "방금 전";
@@ -571,16 +575,16 @@ namespace LogCheck
             try
             {
                 // 의심스러운 네트워크 활동
-                var securityStats = securityAnalyzer.GetSecurityStatistics();
+                var securityStats = securityAnalyzer?.GetSecurityStatistics();
                 Dispatcher.Invoke(() =>
                 {
-                    bool hasSuspiciousActivity = securityStats.TotalAlerts > 0;
+                    bool hasSuspiciousActivity = securityStats?.TotalAlerts > 0;
                     SuspiciousNetworkText.Text = hasSuspiciousActivity ? "감지됨" : "정상";
                     SuspiciousNetworkText.Foreground = new SolidColorBrush(
                         hasSuspiciousActivity ? Colors.Orange : Colors.Green);
 
                     // 악성 IP 연결
-                    bool hasMaliciousIP = securityStats.HighSeverityAlerts > 0;
+                    bool hasMaliciousIP = securityStats?.HighSeverityAlerts > 0;
                     MaliciousIPText.Text = hasMaliciousIP ? "감지됨" : "없음";
                     MaliciousIPText.Foreground = new SolidColorBrush(
                         hasMaliciousIP ? Colors.Red : Colors.Green);

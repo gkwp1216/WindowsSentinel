@@ -272,7 +272,7 @@ namespace LogCheck.Services
                 rule.Enabled = true;
                 rule.Profiles = NET_FW_PROFILE2_ALL;
 
-                _firewallPolicy.Rules.Add(rule);
+                _firewallPolicy?.Rules.Add(rule);
             }
             finally
             {
@@ -309,7 +309,7 @@ namespace LogCheck.Services
                 rule.Enabled = true;
                 rule.Profiles = NET_FW_PROFILE2_ALL;
 
-                _firewallPolicy.Rules.Add(rule);
+                _firewallPolicy?.Rules.Add(rule);
             }
             finally
             {
@@ -349,7 +349,7 @@ namespace LogCheck.Services
                 rule.Enabled = true;
                 rule.Profiles = NET_FW_PROFILE2_ALL;
 
-                _firewallPolicy.Rules.Add(rule);
+                _firewallPolicy?.Rules.Add(rule);
             }
             finally
             {

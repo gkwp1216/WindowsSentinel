@@ -80,7 +80,7 @@ namespace LogCheck
             };
         }
 
-        private void LoadingTextTimer_Tick(object sender, EventArgs e)
+        private void LoadingTextTimer_Tick(object? sender, EventArgs e)
         {
             dotCount = (dotCount + 1) % (maxDots + 1);
             string dots = new string('.', dotCount);
@@ -494,7 +494,7 @@ namespace LogCheck
 
         // Windows Defender 복구
         [SupportedOSPlatform("windows")]
-        private async Task RecoverDefender(IProgress<RecoveryProgress> progress = null)
+        private async Task RecoverDefender(IProgress<RecoveryProgress>? progress = null)
         {
             try
             {
@@ -586,7 +586,7 @@ namespace LogCheck
         }
 
         // Windows Firewall 복구
-        private async Task RecoverFirewall(IProgress<RecoveryProgress> progress = null)
+        private async Task RecoverFirewall(IProgress<RecoveryProgress>? progress = null)
         {
             try
             {
@@ -676,7 +676,7 @@ namespace LogCheck
         }
 
         // Windows Security Center 복구
-        private async Task RecoverSecurityCenter(IProgress<RecoveryProgress> progress = null)
+        private async Task RecoverSecurityCenter(IProgress<RecoveryProgress>? progress = null)
         {
             try
             {
@@ -768,7 +768,7 @@ namespace LogCheck
         }
 
         // BitLocker 복구
-        private async Task RecoverBitLocker(IProgress<RecoveryProgress> progress = null)
+        private async Task RecoverBitLocker(IProgress<RecoveryProgress>? progress = null)
         {
             try
             {

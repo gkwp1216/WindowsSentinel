@@ -7,14 +7,14 @@ namespace LogCheck.Converters
 {
     public class FilePathToIconConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value is string filePath && !string.IsNullOrEmpty(filePath) && File.Exists(filePath))
             {
                 try
                 {
                     // 파일 경로에서 아이콘을 추출
-                    using (Icon icon = Icon.ExtractAssociatedIcon(filePath))
+                    using (Icon? icon = Icon.ExtractAssociatedIcon(filePath))
                     {
                         if (icon != null)
                         {

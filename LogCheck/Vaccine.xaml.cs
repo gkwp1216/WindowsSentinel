@@ -168,12 +168,12 @@ namespace LogCheck
 
             foreach (string regPath in registryPaths)
             {
-                using RegistryKey key = Registry.LocalMachine.OpenSubKey(regPath);
+                using RegistryKey? key = Registry.LocalMachine.OpenSubKey(regPath);
                 if (key == null) continue;
 
                 foreach (string subkeyName in key.GetSubKeyNames())
                 {
-                    using RegistryKey subkey = key.OpenSubKey(subkeyName);
+                    using RegistryKey? subkey = key.OpenSubKey(subkeyName);
                     if (subkey == null) continue;
 
                     string? displayName = subkey.GetValue("DisplayName")?.ToString();
