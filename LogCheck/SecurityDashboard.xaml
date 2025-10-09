@@ -61,6 +61,7 @@
                 <RowDefinition Height="Auto"/> <!-- 헤더 -->
                 <RowDefinition Height="Auto"/> <!-- 보안 상태 카드들 -->
                 <RowDefinition Height="Auto"/> <!-- 차트 영역 -->
+                <RowDefinition Height="Auto"/> <!-- 원클릭 보안 액션 -->
                 <RowDefinition Height="*"/>    <!-- 이벤트 및 IP 목록 -->
             </Grid.RowDefinitions>
 
@@ -303,8 +304,78 @@
                 </Border>
             </Grid>
 
-            <!-- 최근 보안 이벤트 -->
+            <!-- 원클릭 보안 액션 -->
             <Border Grid.Row="3" Style="{StaticResource SecurityCardStyle}">
+                <StackPanel>
+                    <TextBlock Text="⚡ 원클릭 보안 액션" 
+                             FontSize="16" 
+                             FontWeight="SemiBold"
+                             Foreground="{DynamicResource PrimaryTextBrush}"
+                             Margin="0,0,0,16"/>
+                    
+                    <UniformGrid Columns="4" HorizontalAlignment="Stretch">
+                        <!-- 긴급 차단 -->
+                        <Button x:Name="EmergencyBlockButton"
+                                Content="🛡️ 긴급 차단"
+                                Command="{Binding EmergencyBlockCommand}"
+                                Background="{DynamicResource RiskHighColor}"
+                                Foreground="White"
+                                FontWeight="SemiBold"
+                                FontSize="12"
+                                Margin="4"
+                                Padding="16,12"
+                                BorderThickness="0"/>
+                        
+                        <!-- DDoS 방어 모드 -->
+                        <Button x:Name="DDoSDefenseButton"
+                                Content="🔒 DDoS 방어"
+                                Command="{Binding ToggleDDoSDefenseCommand}"
+                                Background="{DynamicResource RiskMediumColor}"
+                                Foreground="White"
+                                FontWeight="SemiBold"
+                                FontSize="12"
+                                Margin="4"
+                                Padding="16,12"
+                                BorderThickness="0"/>
+                        
+                        <!-- 보안 점검 -->
+                        <Button x:Name="SecurityScanButton"
+                                Content="🔍 보안 점검"
+                                Command="{Binding SecurityScanCommand}"
+                                Background="{DynamicResource AccentBrush}"
+                                Foreground="White"
+                                FontWeight="SemiBold"
+                                FontSize="12"
+                                Margin="4"
+                                Padding="16,12"
+                                BorderThickness="0"/>
+                        
+                        <!-- 시스템 복구 -->
+                        <Button x:Name="SystemRecoveryButton"
+                                Content="🔧 시스템 복구"
+                                Command="{Binding SystemRecoveryCommand}"
+                                Background="{DynamicResource RiskLowColor}"
+                                Foreground="White"
+                                FontWeight="SemiBold"
+                                FontSize="12"
+                                Margin="4"
+                                Padding="16,12"
+                                BorderThickness="0"/>
+                    </UniformGrid>
+                    
+                    <!-- 액션 상태 표시 -->
+                    <TextBlock x:Name="ActionStatusText"
+                             Text="{Binding ActionStatusText}"
+                             FontSize="11"
+                             Foreground="{DynamicResource SecondaryTextBrush}"
+                             TextAlignment="Center"
+                             Margin="0,12,0,0"
+                             Visibility="{Binding ActionStatusVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 최근 보안 이벤트 -->
+            <Border Grid.Row="4" Style="{StaticResource SecurityCardStyle}">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
                         <TextBlock Text="📋 최근 보안 이벤트" 
