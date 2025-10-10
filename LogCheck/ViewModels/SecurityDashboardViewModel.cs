@@ -25,6 +25,7 @@ namespace LogCheck.ViewModels
         private readonly AutoBlockStatisticsService _statisticsService;
         private readonly RealTimeSecurityAnalyzer? _securityAnalyzer;
         private readonly ToastNotificationService _toastService;
+        private readonly IntegratedDDoSDefenseSystem? _ddosDefenseSystem;
 
         // 위험도 및 상태
 
@@ -161,9 +162,9 @@ namespace LogCheck.ViewModels
         public ObservableCollection<BlockedIPInfo> TopBlockedIPs { get; }
 
         // 차트 데이터 (LiveCharts)
-        public ObservableCollection<ISeries> ThreatTrendSeries { get; set; }
-        public Axis[] ThreatTrendXAxes { get; set; }
-        public Axis[] ThreatTrendYAxes { get; set; }
+        public ObservableCollection<ISeries> ThreatTrendSeries { get; set; } = new();
+        public Axis[] ThreatTrendXAxes { get; set; } = Array.Empty<Axis>();
+        public Axis[] ThreatTrendYAxes { get; set; } = Array.Empty<Axis>();
 
         // 명령들
         public ICommand EmergencyBlockCommand { get; }
@@ -201,8 +202,18 @@ namespace LogCheck.ViewModels
             _statisticsService = new AutoBlockStatisticsService("Data Source=autoblock.db");
             _toastService = ToastNotificationService.Instance;
 
-            // 컬렉션 초기화
+            // DDoS 방어 시스템 초기화 (싱글톤 패턴으로 가져오거나 의존성 주입)
+            try
+            {
+                // 기존 시스템에서 사용 중인 DDoS 시스템 인스턴스 찾기
+                _ddosDefenseSystem = App.Current?.Resources["IntegratedDDoSDefenseSystem"] as IntegratedDDoSDefenseSystem;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"DDoS 시스템 연결 실패: {ex.Message}");
+            }
 
+            // 컬렉션 초기화
             RecentSecurityEvents = new ObservableCollection<SecurityEventInfo>();
             TopBlockedIPs = new ObservableCollection<BlockedIPInfo>();
             SecurityHistory = new ObservableCollection<SecuritySnapshot>();
@@ -276,10 +287,32 @@ namespace LogCheck.ViewModels
         {
             try
             {
-                // 통계 업데이트 - 임시로 샘플 데이터 사용
-                ActiveThreats = Random.Shared.Next(0, 5);
-                BlockedConnections24h = Random.Shared.Next(10, 100);
-                NetworkTrafficMB = Random.Shared.NextDouble() * 10;
+                // 실제 DDoS 방어 시스템에서 통계 데이터 가져오기
+                if (_ddosDefenseSystem != null)
+                {
+                    var ddosStats = _ddosDefenseSystem.GetStatistics();
+
+                    // 실제 보안 데이터로 업데이트
+                    ActiveThreats = ddosStats.TotalAttacksDetected;
+                    BlockedConnections24h = ddosStats.AttacksBlocked;
+                    NetworkTrafficMB = ddosStats.TotalTrafficBlocked; // MB 단위
+                    DDoSDefenseActive = ddosStats.TotalAttacksDetected > 0;
+
+                    // 위험도 계산 (공격 심각도 기반)
+                    CurrentThreatLevel = CalculateThreatLevel(ddosStats);
+
+                    // 차단된 IP 목록 업데이트
+                    UpdateBlockedIPsList(ddosStats);
+                }
+                else
+                {
+                    // DDoS 시스템을 사용할 수 없는 경우 기본값
+                    ActiveThreats = 0;
+                    BlockedConnections24h = 0;
+                    NetworkTrafficMB = 0.0;
+                    DDoSDefenseActive = false;
+                    CurrentThreatLevel = ThreatLevel.Safe;
+                }
 
                 // 시스템 가동시간 업데이트
                 var uptime = DateTime.Now - System.Diagnostics.Process.GetCurrentProcess().StartTime;
@@ -499,6 +532,58 @@ namespace LogCheck.ViewModels
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// DDoS 통계를 기반으로 위험도 계산
+        /// </summary>
+        private ThreatLevel CalculateThreatLevel(DDoSDetectionStats ddosStats)
+        {
+            if (ddosStats.TotalAttacksDetected == 0)
+                return ThreatLevel.Safe;
+
+            // 심각도 기반 위험도 계산
+            var criticalAttacks = ddosStats.AttacksBySeverity.GetValueOrDefault(DDoSSeverity.Critical, 0);
+            var highAttacks = ddosStats.AttacksBySeverity.GetValueOrDefault(DDoSSeverity.High, 0);
+            var mediumAttacks = ddosStats.AttacksBySeverity.GetValueOrDefault(DDoSSeverity.Medium, 0);
+
+            if (criticalAttacks > 0)
+                return ThreatLevel.Critical;
+            else if (highAttacks > 0)
+                return ThreatLevel.High;
+            else if (mediumAttacks > 0)
+                return ThreatLevel.Medium;
+            else if (ddosStats.TotalAttacksDetected > 0)
+                return ThreatLevel.Low;
+
+            return ThreatLevel.Safe;
+        }
+
+        /// <summary>
+        /// 차단된 IP 목록 업데이트
+        /// </summary>
+        private void UpdateBlockedIPsList(DDoSDetectionStats ddosStats)
+        {
+            System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+            {
+                TopBlockedIPs.Clear();
+
+                // 상위 차단된 IP들을 추가 (최대 10개)
+                var topIPs = ddosStats.TopAttackerIPs
+                    .OrderByDescending(kvp => kvp.Value)
+                    .Take(10);
+
+                foreach (var ipInfo in topIPs)
+                {
+                    TopBlockedIPs.Add(new BlockedIPInfo
+                    {
+                        IPAddress = ipInfo.Key,
+                        BlockCount = ipInfo.Value,
+                        LastBlocked = DateTime.Now,
+                        Location = "Unknown" // 기본값으로 설정
+                    });
+                }
+            });
         }
 
         public void Dispose()

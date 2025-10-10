@@ -612,12 +612,12 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>                <!-- 악성 프로그램 탐지 버튼 -->
-                <Button x:Name="SecurityDashboardButton"
+                <Button x:Name="MalwareDetectionButton"
                     Grid.Row="0" Grid.Column="0" 
                     Margin="0,0,10,10"
                     Style="{DynamicResource MainButtonStyle}" 
                     Cursor="Hand"
-                    Click="SecurityDashboard_Click">
+                    Click="Vaccine_Click">
                     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
                         <TextBlock Text="&#xE8C7;" 
                                Style="{StaticResource MaterialIconStyle}"/>
@@ -662,17 +662,17 @@
                     </StackPanel>
                 </Button>
 
-                <!-- 시스템 복구 버튼 (2x2) -->
-                <Button x:Name="RecoveryButton"
+                <!-- 보안 대시보드 버튼 (2x2) -->
+                <Button x:Name="SecurityDashboardButton"
                     Grid.Row="1" Grid.Column="1" 
                     Margin="10,10,0,0"
                     Style="{DynamicResource MainButtonStyle}" 
                     Cursor="Hand"
-                    Click="Recoverys_Click">
+                    Click="SecurityDashboard_Click">
                     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
-                        <TextBlock Text="&#xE777;" 
+                        <TextBlock Text="&#xE8C7;" 
                                Style="{StaticResource MaterialIconStyle}"/>
-                        <TextBlock Text="시스템 복구" 
+                        <TextBlock Text="보안 대시보드" 
                                TextAlignment="Center"
                                FontSize="25" 
                                FontWeight="SemiBold"/>
