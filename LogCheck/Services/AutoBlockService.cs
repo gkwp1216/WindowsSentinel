@@ -10,6 +10,7 @@ namespace LogCheck.Services
     /// 자동 차단 서비스 구현 클래스
     /// IAutoBlockService 인터페이스의 구현체로 실제 차단 로직을 담당
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public class AutoBlockService : IAutoBlockService
     {
         #region 필드 및 상수

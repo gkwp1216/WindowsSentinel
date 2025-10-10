@@ -11,6 +11,8 @@ namespace LogCheck.Services
         private string? _bpf;
         private string? _nicId;
         private bool _disposing;
+        private long _packetsReceived;
+        private DateTime _lastMetricsTime = DateTime.Now;
 
         public bool IsRunning { get; private set; }
 
@@ -174,10 +176,33 @@ namespace LogCheck.Services
                 };
 
                 OnPacket?.Invoke(this, dto);
+
+                // 메트릭 업데이트
+                Interlocked.Increment(ref _packetsReceived);
+                CheckAndSendMetrics();
             }
             catch (Exception ex)
             {
                 OnError?.Invoke(this, ex);
+            }
+        }
+
+        private void CheckAndSendMetrics()
+        {
+            var now = DateTime.Now;
+            if ((now - _lastMetricsTime).TotalSeconds >= 5) // 5초마다 메트릭 전송
+            {
+                var packetsReceived = Interlocked.Read(ref _packetsReceived);
+                var throughput = packetsReceived / Math.Max(1, (now - _lastMetricsTime).TotalSeconds);
+
+                var metrics = new CaptureMetrics(
+                    Dropped: 0, // 드롭된 패킷 수 (현재 추적하지 않음)
+                    QueueLength: 0, // 큐 길이 (현재 추적하지 않음)
+                    ThroughputPps: throughput
+                );
+
+                OnMetrics?.Invoke(this, metrics);
+                _lastMetricsTime = now;
             }
         }
 

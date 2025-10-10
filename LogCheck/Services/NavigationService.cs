@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Versioning;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using LogCheck.Models;
@@ -37,6 +38,7 @@ namespace LogCheck.Services
     /// 사이드바 네비게이션 서비스
     /// 공통 사이드바 네비게이션 로직 통합
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public class SidebarNavigationService : INavigationService
     {
         private readonly INavigationService _parentNavigationService;
@@ -169,6 +171,7 @@ namespace LogCheck.Services
     /// <summary>
     /// 메인 네비게이션 서비스 (MainWindows용)
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public class MainNavigationService : INavigationService
     {
         private readonly Frame _mainFrame;

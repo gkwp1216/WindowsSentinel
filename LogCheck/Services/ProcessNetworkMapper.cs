@@ -1,14 +1,16 @@
-using LogCheck.Models;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Management;
+using System.Runtime.Versioning;
 using System.Text.RegularExpressions;
+using LogCheck.Models;
 
 namespace LogCheck.Services
 {
     /// <summary>
     /// 프로세스와 네트워크 연결을 실시간으로 매핑하는 서비스
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public class ProcessNetworkMapper
     {
         private readonly ConcurrentDictionary<int, ProcessInfo> _processCache;

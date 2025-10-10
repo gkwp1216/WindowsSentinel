@@ -1,10 +1,12 @@
 ﻿using System.IO;
+using System.Runtime.Versioning;
 using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
 namespace LogCheck.Converters
 {
+    [SupportedOSPlatform("windows6.1")]
     public class FilePathToIconConverter : IValueConverter
     {
         public object? Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

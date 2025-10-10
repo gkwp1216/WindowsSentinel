@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using LiveChartsCore;
@@ -15,6 +16,7 @@ namespace LogCheck.ViewModels
     /// 네트워크 모니터링 페이지용 ViewModel
     /// BasePageViewModel을 상속받아 공통 기능 활용
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public class NetworkMonitoringViewModel : NetworkPageViewModel
     {
         // 컬렉션들

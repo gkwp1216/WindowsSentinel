@@ -12,6 +12,7 @@ using Microsoft.Win32;
 
 namespace LogCheck
 {
+    [SupportedOSPlatform("windows")]
     public partial class Vaccine : Page
     {
         private ObservableCollection<ProgramScanResult> _results = new();

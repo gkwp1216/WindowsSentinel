@@ -1,3 +1,4 @@
+using System.Runtime.Versioning;
 using LogCheck.Models;
 
 namespace LogCheck.Services
@@ -6,6 +7,7 @@ namespace LogCheck.Services
     /// 앱 전체에서 공유되는 모니터링 허브. 캡처와 프로세스 매핑을 함께 시작/중지한다.
     /// 싱글톤 패턴으로 간단히 제공한다.
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public sealed class MonitoringHub
     {
         private static readonly Lazy<MonitoringHub> _instance = new(() => new MonitoringHub());

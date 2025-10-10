@@ -23,7 +23,6 @@ namespace LogCheck.ViewModels
     {
         private readonly System.Timers.Timer _updateTimer;
         private readonly AutoBlockStatisticsService _statisticsService;
-        private readonly RealTimeSecurityAnalyzer? _securityAnalyzer;
         private readonly ToastNotificationService _toastService;
         private readonly IntegratedDDoSDefenseSystem? _ddosDefenseSystem;
 

@@ -12,6 +12,7 @@ using System.Windows.Threading;
 
 namespace LogCheck
 {
+    [SupportedOSPlatform("windows")]
     public partial class Recoverys : System.Windows.Controls.Page
     {
         private readonly ObservableCollection<RecoverySecurityStatusItem> securityStatusItems = new();

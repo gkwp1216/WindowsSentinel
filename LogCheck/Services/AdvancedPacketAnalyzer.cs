@@ -27,8 +27,6 @@ namespace LogCheck.Services
 
         #region Events
 
-        public event EventHandler<AdvancedDDoSAlert>? AdvancedThreatDetected;
-        public event EventHandler<PacketAnomalyAlert>? PacketAnomalyDetected;
         public event EventHandler<string>? ErrorOccurred;
 
         #endregion
