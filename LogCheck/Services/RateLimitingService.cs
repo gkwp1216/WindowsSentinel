@@ -679,9 +679,9 @@ namespace LogCheck.Services
     /// </summary>
     public class IPRateLimitSettings
     {
-        public int MaxConnectionsPerSecond { get; set; } = 10;
-        public int MaxConnectionsPerMinute { get; set; } = 100;
-        public long MaxBytesPerSecond { get; set; } = 5 * 1024 * 1024; // 5MB/s
+        public int MaxConnectionsPerSecond { get; set; } = 50; // 10 → 50 (5배 상향)
+        public int MaxConnectionsPerMinute { get; set; } = 500; // 100 → 500 (5배 상향)
+        public long MaxBytesPerSecond { get; set; } = 50 * 1024 * 1024; // 5MB → 50MB/s (IP별 대역폭 제한 상향)
         public TimeSpan BlockDuration { get; set; } = TimeSpan.FromMinutes(5);
     }
 
@@ -690,7 +690,7 @@ namespace LogCheck.Services
     /// </summary>
     public class PortRateLimitSettings
     {
-        public int MaxConnectionsPerSecond { get; set; } = 100;
+        public int MaxConnectionsPerSecond { get; set; } = 500; // 100 → 500 (5배 상향)
     }
 
     /// <summary>
@@ -698,7 +698,7 @@ namespace LogCheck.Services
     /// </summary>
     public class ProcessRateLimitSettings
     {
-        public int MaxConnectionsPerSecond { get; set; } = 50;
+        public int MaxConnectionsPerSecond { get; set; } = 250; // 50 → 250 (5배 상향)
     }
 
     #endregion

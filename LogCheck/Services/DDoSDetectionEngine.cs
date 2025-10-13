@@ -54,14 +54,14 @@ namespace LogCheck.Services
             // 기본 임계값 설정
             _thresholds = new DDoSThresholds
             {
-                MaxConnectionsPerSecond = 50,
-                MaxConnectionsPerMinute = 300,
-                MaxConcurrentConnections = 1000,
-                MaxBytesPerSecond = 10 * 1024 * 1024, // 10MB/s
-                SynFloodThreshold = 100, // 1초 내 100개 SYN 패킷
-                UdpFloodThreshold = 200, // 1초 내 200개 UDP 패킷
-                SlowLorisTimeout = 10, // 10초 이상 미완성 연결
-                HttpFloodThreshold = 100 // 1초 내 100개 HTTP 요청
+                MaxConnectionsPerSecond = 250, // 50 → 250 (5배 상향)
+                MaxConnectionsPerMinute = 1500, // 300 → 1500 (5배 상향)
+                MaxConcurrentConnections = 5000, // 1000 → 5000 (5배 상향)
+                MaxBytesPerSecond = 150 * 1024 * 1024, // 10MB → 150MB/s (1.2Gbps) 현실적 임계값
+                SynFloodThreshold = 500, // 100 → 500 (5배 상향) 1초 내 500개 SYN 패킷
+                UdpFloodThreshold = 1000, // 200 → 1000 (5배 상향) 1초 내 1000개 UDP 패킷
+                SlowLorisTimeout = 50, // 10 → 50 (5배 상향) 50초 이상 미완성 연결
+                HttpFloodThreshold = 500 // 100 → 500 (5배 상향) 1초 내 500개 HTTP 요청
             };
         }
 
@@ -602,14 +602,14 @@ namespace LogCheck.Services
     /// </summary>
     public class DDoSThresholds
     {
-        public int MaxConnectionsPerSecond { get; set; } = 50;
-        public int MaxConnectionsPerMinute { get; set; } = 300;
-        public int MaxConcurrentConnections { get; set; } = 1000;
-        public long MaxBytesPerSecond { get; set; } = 10 * 1024 * 1024;
-        public int SynFloodThreshold { get; set; } = 100;
-        public int UdpFloodThreshold { get; set; } = 200;
-        public int SlowLorisTimeout { get; set; } = 10;
-        public int HttpFloodThreshold { get; set; } = 100;
+        public int MaxConnectionsPerSecond { get; set; } = 250; // 50 → 250 (5배 상향)
+        public int MaxConnectionsPerMinute { get; set; } = 1500; // 300 → 1500 (5배 상향)
+        public int MaxConcurrentConnections { get; set; } = 5000; // 1000 → 5000 (5배 상향)
+        public long MaxBytesPerSecond { get; set; } = 150 * 1024 * 1024; // 10MB → 150MB/s (1.2Gbps)
+        public int SynFloodThreshold { get; set; } = 500; // 100 → 500 (5배 상향)
+        public int UdpFloodThreshold { get; set; } = 1000; // 200 → 1000 (5배 상향)
+        public int SlowLorisTimeout { get; set; } = 50; // 10 → 50 (5배 상향)
+        public int HttpFloodThreshold { get; set; } = 500; // 100 → 500 (5배 상향)
     }
 
     /// <summary>

@@ -715,13 +715,13 @@ namespace LogCheck.Services
         public int MinPacketsForRatioAnalysis { get; set; } = 20;
         public double MinTimingVariance { get; set; } = 5.0; // ms
         public double MaxSuspiciousInterval { get; set; } = 100.0; // ms
-        public int TcpRstFloodThreshold { get; set; } = 50;
-        public int TcpAckFloodThreshold { get; set; } = 100;
-        public int UdpAmplificationRequestMaxSize { get; set; } = 100; // bytes
+        public int TcpRstFloodThreshold { get; set; } = 250; // 50 → 250 (5배 상향)
+        public int TcpAckFloodThreshold { get; set; } = 500; // 100 → 500 (5배 상향)
+        public int UdpAmplificationRequestMaxSize { get; set; } = 500; // 100 → 500 (5배 상향) bytes
         public double UdpAmplificationRatioThreshold { get; set; } = 10.0;
-        public int IcmpFloodThreshold { get; set; } = 30;
-        public int PingOfDeathSizeThreshold { get; set; } = 65507; // bytes
-        public int MaxPacketsPerSecondPerFlow { get; set; } = 1000;
+        public int IcmpFloodThreshold { get; set; } = 150; // 30 → 150 (5배 상향)
+        public int PingOfDeathSizeThreshold { get; set; } = 65507; // bytes (크기 제한이므로 유지)
+        public int MaxPacketsPerSecondPerFlow { get; set; } = 5000; // 1000 → 5000 (5배 상향)
         public int MaxSinglePacketSize { get; set; } = 1500; // bytes
         public double MaxFragmentationRatio { get; set; } = 0.3; // 30%
     }

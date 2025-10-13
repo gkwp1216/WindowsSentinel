@@ -1,5 +1,5 @@
-using LogCheck.Models;
 using System.Collections.Concurrent;
+using LogCheck.Models;
 
 namespace LogCheck.Services
 {
@@ -15,7 +15,7 @@ namespace LogCheck.Services
         private readonly System.Threading.Timer _cleanupTimer;
         private readonly System.Threading.Timer _autoBlockTimer;
         private bool _isAutoBlockingEnabled = false;
-        private int _autoBlockThreshold = 50; // 위협 점수 임계값
+        private int _autoBlockThreshold = 250; // 50 → 250 (5배 상향) 위협 점수 임계값
         private readonly object _lockObject = new object();
 
         public event EventHandler<BlockedIPAddress>? IPBlocked;
