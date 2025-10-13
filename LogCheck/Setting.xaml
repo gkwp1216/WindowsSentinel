@@ -11,7 +11,7 @@
       Background="Transparent">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Margin="20">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -26,7 +26,7 @@
                         Padding="20"
                         BorderBrush="#C2C2C2"
                         BorderThickness="1"
-                        Margin="0,0,0,20">
+                        Margin="20,0,20,20">
                     <StackPanel>
                         <TextBlock Text="화면 모드"
                                    FontSize="20"
@@ -63,7 +63,7 @@
                         Padding="20"
                         BorderBrush="#C2C2C2"
                         BorderThickness="1"
-                        Margin="0,0,0,20">
+                        Margin="20,0,20,20">
                     <StackPanel>
                         <TextBlock Text="모니터링 설정"
                                    FontSize="20"

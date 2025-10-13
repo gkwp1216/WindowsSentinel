@@ -10,85 +10,85 @@
       Title="Logs" Background="Transparent">
 
     <!-- Main Content Area -->
-    <Grid Margin="20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- 체크박스 + 버튼 섹션 -->
+        <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20" Margin="20,0,20,20" BorderBrush="#C2C2C2" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <!-- 체크박스 + 버튼 섹션 -->
-            <Border Grid.Row="0" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20" Margin="10,0,20,20" BorderBrush="#C2C2C2" BorderThickness="1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <CheckBox x:Name="chkExternalLog" Content="외부 접속 내역" 
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <CheckBox x:Name="chkExternalLog" Content="외부 접속 내역" 
                                   FontSize="20" FontWeight="SemiBold"
                                   Foreground="{DynamicResource ForegroundColor}"
                                   Checked="CheckBox_Checked" Margin="0,0,10,0">
-                            <CheckBox.Template>
-                                <ControlTemplate TargetType="CheckBox">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Border Width="15" Height="15"
+                        <CheckBox.Template>
+                            <ControlTemplate TargetType="CheckBox">
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="15" Height="15"
                                                 BorderBrush="{DynamicResource BorderBrushColor}" 
                                                 BorderThickness="1"
                                                 Margin="0,0,8,0"
                                                 Background="Transparent"
                                                 IsHitTestVisible="True"
                                                 Focusable="False">
-                                            <Path x:Name="CheckMark"
+                                        <Path x:Name="CheckMark"
                                                   Data="M 0 0 L 6 6 L 12 -6"
                                                   Stroke="{DynamicResource CheckedColor}" StrokeThickness="3"
                                                   Stretch="Uniform"
                                                   Visibility="Collapsed"/>
-                                        </Border>
-                                        <ContentPresenter VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsChecked" Value="True">
-                                            <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </CheckBox.Template>
-                        </CheckBox>
-                        <CheckBox x:Name="chkEventLog" Content="이벤트 내역" IsChecked="True"
+                                    </Border>
+                                    <ContentPresenter VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </CheckBox.Template>
+                    </CheckBox>
+                    <CheckBox x:Name="chkEventLog" Content="이벤트 내역" IsChecked="True"
                                   FontSize="20" FontWeight="SemiBold" 
                                   Foreground="{DynamicResource ForegroundColor}"
                                   Checked="CheckBox_Checked">
-                            <CheckBox.Template>
-                                <ControlTemplate TargetType="CheckBox">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Border Width="15" Height="15"
+                        <CheckBox.Template>
+                            <ControlTemplate TargetType="CheckBox">
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="15" Height="15"
                                                 BorderBrush="{DynamicResource BorderBrushColor}" 
                                                 BorderThickness="1"
                                                 Margin="0,0,8,0"
                                                 Background="Transparent"
                                                 IsHitTestVisible="True"
                                                 Focusable="False">
-                                            <Path x:Name="CheckMark"
+                                        <Path x:Name="CheckMark"
                                                   Data="M 0 0 L 6 6 L 12 -6"
                                                   Stroke="{DynamicResource CheckedColor}" StrokeThickness="3"
                                                   Stretch="Uniform"
                                                   Visibility="Collapsed"/>
-                                        </Border>
-                                        <ContentPresenter VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsChecked" Value="True">
-                                            <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </CheckBox.Template>
-                        </CheckBox>
+                                    </Border>
+                                    <ContentPresenter VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </CheckBox.Template>
+                    </CheckBox>
 
-                        <!-- 도움말 아이콘 -->
-                        <Border Width="25" Height="25" 
+                    <!-- 도움말 아이콘 -->
+                    <Border Width="25" Height="25" 
                                 Background="Transparent"
                                 Cursor="Hand"
                                 Margin="10,0,0,0"
@@ -96,35 +96,35 @@
                                 ToolTipService.HorizontalOffset="500"
                                 ToolTipService.VerticalOffset="25"
                                 ToolTipService.ShowDuration="6000">
-                            <materialDesign:PackIcon Kind="HelpCircleOutline"
+                        <materialDesign:PackIcon Kind="HelpCircleOutline"
                                                      Width="25" Height="25"
                                                      Foreground="{DynamicResource HelpMarkColor}"
                                                      HorizontalAlignment="Center"
                                                      VerticalAlignment="Center" />
-                            <Border.ToolTip>
-                                <ToolTip Content="외부 접속 내역과 로그 이벤트 발생 내역을 확인하고 관리할 수 있습니다."/>
-                            </Border.ToolTip>
-                        </Border>
-                    </StackPanel>
+                        <Border.ToolTip>
+                            <ToolTip Content="외부 접속 내역과 로그 이벤트 발생 내역을 확인하고 관리할 수 있습니다."/>
+                        </Border.ToolTip>
+                    </Border>
+                </StackPanel>
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button x:Name="btnShowChangeLogs" Content="내역 확인"
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="btnShowChangeLogs" Content="내역 확인"
                                 Style="{DynamicResource RefreshButtonStyle}"
                                 BorderThickness="0" 
                                 Width="200" Height="30" 
                                 Click="BtnShowChangeLogs_Click">
-                            
-                        </Button>
 
-                    </StackPanel>
-                </Grid>
-            </Border>
+                    </Button>
 
-            <!-- 로그 출력 섹션 -->
-            <Border Grid.Row="2" x:Name="logsSection" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20"
-                    Margin="10,0,20,20" BorderBrush="#C2C2C2" BorderThickness="1" Visibility="Visible">
-                <StackPanel>
-                    <DataGrid x:Name="logsDataGrid" Height="550" AutoGenerateColumns="False" IsReadOnly="True"
+                </StackPanel>
+            </Grid>
+        </Border>
+        
+        <!-- 로그 출력 섹션 -->
+        <Border Grid.Row="2" x:Name="logsSection" Background="{DynamicResource ButtonBackgroundColor}" CornerRadius="12" Padding="20"
+                    Margin="20,0,20,20" BorderBrush="#C2C2C2" BorderThickness="1" Visibility="Visible">
+            <StackPanel>
+                <DataGrid x:Name="logsDataGrid" Height="550" AutoGenerateColumns="False" IsReadOnly="True"
                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                               Background="{DynamicResource DataGridBackgroundColor}"
                               Foreground="{DynamicResource DataGridForegroundColor}"  
@@ -132,66 +132,66 @@
                               RowBackground="{DynamicResource DataGridRowBackgroundColor}" 
                               AlternatingRowBackground="{DynamicResource DataGridAlternatingRowBackgroundColor}" 
                               RowHeight="40" HeadersVisibility="Column" CanUserResizeRows="False">
-                        <DataGrid.ColumnHeaderStyle>
-                            <Style TargetType="DataGridColumnHeader">
-                                <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-                                <Setter Property="FontWeight" Value="Bold"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                <Setter Property="Padding" Value="10,10"/>
-                                <Setter Property="BorderThickness" Value="0"/>
-                                <Setter Property="Cursor" Value="Hand"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#FF969393"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.ColumnHeaderStyle>
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="이벤트 번호" Binding="{Binding EventId}" Width="100">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="TextAlignment" Value="Center"/>
-                                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                                        <Setter Property="VerticalAlignment" Value="Center"/>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="{DynamicResource BackgroundColor}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="10,10"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FF969393"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="이벤트 번호" Binding="{Binding EventId}" Width="100">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
 
-                            <DataGridTextColumn Header="날짜" Binding="{Binding Date, StringFormat=yyyy-MM-dd HH:mm:ss}" Width="180">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="TextAlignment" Value="Center"/>
-                                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                                        <Setter Property="VerticalAlignment" Value="Center"/>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
+                        <DataGridTextColumn Header="날짜" Binding="{Binding Date, StringFormat=yyyy-MM-dd HH:mm:ss}" Width="180">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
 
-                            <DataGridTextColumn Header="프로그램명" Binding="{Binding ProgramName}" Width="200">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="TextAlignment" Value="Center"/>
-                                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                                        <Setter Property="VerticalAlignment" Value="Center"/>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
+                        <DataGridTextColumn Header="프로그램명" Binding="{Binding ProgramName}" Width="200">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
 
-                            <DataGridTextColumn Header="사유" Binding="{Binding Reason}" Width="*">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="TextAlignment" Value="Center"/>
-                                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                                        <Setter Property="VerticalAlignment" Value="Center"/>
-                                        <Setter Property="TextWrapping" Value="Wrap"/>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
-            </Border>
+                        <DataGridTextColumn Header="사유" Binding="{Binding Reason}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>

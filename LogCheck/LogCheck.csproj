@@ -28,6 +28,7 @@
     <None Remove="IconTexture\texture8.png" />
     <None Remove="IconTexture\texture9.png" />
     <None Remove="IconTexture\WindowsSentinel.ico" />
+    <None Remove="IconTexture\WindowsSentinel.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -89,6 +90,7 @@
     <Resource Include="IconTexture\WindowsSentinel.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="IconTexture\WindowsSentinel.png" />
   </ItemGroup>
 
 </Project>

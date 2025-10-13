@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:LogCheck"
         mc:Ignorable="d"
         Icon="/IconTexture/WindowsSentinel.ico"
-        Title="MainWindows" 
+        Title="Windows Sentinel" 
         Height="800" Width="1200"
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
@@ -23,6 +24,13 @@
             <Setter Property="Margin" Value="0,0,0,20"/>
         </Style>
 
+        <SolidColorBrush x:Key="SidebarBackgroundColor" Color="#F0F4F7"/>
+        <SolidColorBrush x:Key="SidebarForegroundColor" Color="#2C3E50"/>
+        <SolidColorBrush x:Key="SidebarHoverColor" Color="#E5EAF0"/>
+        <SolidColorBrush x:Key="SidebarBorderColor" Color="#D8DCE3"/>
+
+        <SolidColorBrush x:Key="SidebarAccentColor" Color="#3498DB"/>
+
         <!-- 네비게이션 아이콘 스타일 -->
         <Style x:Key="NavIconStyle" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
@@ -34,33 +42,34 @@
         <!-- 사이드바 버튼 스타일 -->
         <Style x:Key="SidebarButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="15,12"/>
-            <Setter Property="Margin" Value="0,2"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="Height" Value="50"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="20,0,0,0"/>
+            <Setter Property="Margin" Value="0,2"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="8" 
-                                Padding="{TemplateBinding Padding}">
+                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            VerticalAlignment="Center"/>
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#E3F2FD"/>
+                                <Setter Property="Background" Value="{DynamicResource SidebarHoverColor}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#BBDEFB"/>
+                                <Setter Property="Background" Value="{DynamicResource SidebarAccentColor}"/>
+                                <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Setter Property="Foreground" Value="{DynamicResource SidebarForegroundColor}"/>
         </Style>
 
         <!-- 개선된 사이드바 슬라이드 애니메이션 -->
@@ -153,8 +162,8 @@
         <Border x:Name="Sidebar" 
                 Grid.RowSpan="3" 
                 Width="250"
-                Background="{DynamicResource BackgroundColor}" 
-                BorderBrush="#E0E0E0" 
+                Background="{DynamicResource SidebarBackgroundColor}"  
+                BorderBrush="{DynamicResource SidebarBorderColor}"
                 BorderThickness="0,0,1,0"
                 HorizontalAlignment="Left"
                 Panel.ZIndex="1050"
@@ -164,176 +173,164 @@
             <Border.RenderTransform>
                 <TranslateTransform x:Name="SidebarTransform" X="-250"/>
             </Border.RenderTransform>
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="Effect">
-                        <Setter.Value>
-                            <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="5" Opacity="0.3"/>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowEffect Color="Black" BlurRadius="15" ShadowDepth="8" Opacity="0.5"/>
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-            
-            <ScrollViewer VerticalScrollBarVisibility="Auto" 
-                          HorizontalScrollBarVisibility="Disabled">
-                <StackPanel Margin="0,10,0,20">
-                    <!-- 상단 헤더 영역 (로고 + 닫기 버튼) -->
-                    <Grid Margin="10,10,10,20">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <!-- 로고 -->
-                        <StackPanel Grid.Column="0" HorizontalAlignment="Left">
-                            <TextBlock Text="🛡️" 
-                                       FontSize="24" 
-                                       HorizontalAlignment="Left" 
-                                       Margin="0,0,0,5"/>
-                            <TextBlock Text="WindowsSentinel" 
-                                       FontSize="14" 
-                                       FontWeight="Bold" 
-                                       Foreground="{DynamicResource ForegroundColor}" 
-                                       HorizontalAlignment="Left"/>
-                        </StackPanel>
-                        
-                        <!-- 닫기 버튼 -->
-                        <Button Grid.Column="1" 
-                                x:Name="SidebarCloseButton"
-                                Click="SidebarClose_Click"
-                                Style="{DynamicResource NavIconButtonStyle}"
-                                Width="32" Height="32"
-                                ToolTip="사이드바 닫기"
-                                Cursor="Hand">
-                            <TextBlock Text="&#xE711;" 
-                                       FontFamily="Segoe MDL2 Assets" 
-                                       FontSize="14" 
-                                       Foreground="{DynamicResource ForegroundColor}"
-                                       HorizontalAlignment="Center" 
-                                       VerticalAlignment="Center"/>
-                        </Button>
-                    </Grid>
-                    
-                    <!-- 구분선 -->
-                    <Border Height="1" 
-                            Background="{DynamicResource BorderBrush}" 
-                            Margin="15,0,15,20" 
-                            Opacity="0.3"/>
-                    <StackPanel Margin="0,0,0,30" HorizontalAlignment="Center">
-                        <TextBlock Text="🛡️" 
-                                   FontSize="32" 
-                                   HorizontalAlignment="Center" 
-                                   Margin="0,0,0,10"/>
-                        <TextBlock Text="WindowsSentinel" 
-                                   FontSize="16" 
-                                   FontWeight="Bold" 
-                                   Foreground="{DynamicResource ForegroundColor}" 
-                                   HorizontalAlignment="Center"/>
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="8" ShadowDepth="4" Opacity="0.2"/>
+            </Border.Effect>
+
+            <StackPanel Margin="0,15,0,20">
+                <!-- 상단 헤더 영역 (로고 + 닫기 버튼) -->
+                <Grid Margin="15,10,10,25">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 로고 -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Text="MENU"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SidebarForegroundColor}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,0,0"/>
                     </StackPanel>
 
-                    <!-- 내비게이션 메뉴 -->
-                    <StackPanel>
-                        <Button Style="{StaticResource SidebarButtonStyle}" 
+                    <!-- 닫기 버튼 -->
+                    <Button Grid.Column="1"
+                            x:Name="SidebarCloseButton"
+                            Click="SidebarClose_Click"
+                            Style="{DynamicResource NavIconButtonStyle}" 
+                            Width="32" Height="32"
+                            ToolTip="사이드바 닫기"
+                            Cursor="Hand"
+                            Background="Transparent"
+                            BorderBrush="Transparent">
+
+                        <materialDesign:PackIcon Kind="ArrowLeft" 
+                                         Width="20" Height="20" 
+                                         Foreground="{DynamicResource SidebarForegroundColor}"
+                                         HorizontalAlignment="Center" 
+                                         VerticalAlignment="Center"/>
+                    </Button>
+                </Grid>
+
+                <!-- 구분선 -->
+                <Border Height="1"
+                        Background="{DynamicResource SidebarBorderColor}"
+                        Margin="15,0,15,30"
+                        Opacity="0.5"/>
+                
+                <StackPanel Margin="0,0,0,30" HorizontalAlignment="Center">
+                    <Image Source="/IconTexture/WindowsSentinel.png" 
+                           Width="50" Height="50" 
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,10"/>
+                    <TextBlock Text="WindowsSentinel"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource SidebarForegroundColor}"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- 내비게이션 메뉴 -->
+                <StackPanel HorizontalAlignment="Stretch" Margin="0">
+                    <Button Style="{StaticResource SidebarButtonStyle}" 
                                 Click="SecurityDashboard_Click" 
                                 Cursor="Hand">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE83D;" 
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE83D;" 
                                            FontFamily="Segoe MDL2 Assets" 
                                            FontSize="18" 
                                            Margin="0,0,15,0" 
                                            VerticalAlignment="Center"/>
-                                <TextBlock Text="보안 상태 대시보드" 
-                                           FontSize="14" 
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
+                            <TextBlock Text="보안 상태 대시보드" 
+                                       FontSize="14" 
+                                       Foreground="{DynamicResource SidebarForegroundColor}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
 
-                        <Button Style="{StaticResource SidebarButtonStyle}" 
+                    <Button Style="{StaticResource SidebarButtonStyle}" 
                                 Click="NetWorksNew_Click" 
                                 Cursor="Hand">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE704;" 
-                                           FontFamily="Segoe MDL2 Assets" 
-                                           FontSize="18" 
-                                           Margin="0,0,15,0" 
-                                           VerticalAlignment="Center"/>
-                                <TextBlock Text="네트워크 보안" 
-                                           FontSize="14" 
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE704;" 
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="18" 
+                                       Margin="0,0,15,0" 
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="네트워크 보안" 
+                                       FontSize="14" 
+                                       Foreground="{DynamicResource SidebarForegroundColor}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
 
-                        <Button Style="{StaticResource SidebarButtonStyle}" 
+                    <Button Style="{StaticResource SidebarButtonStyle}" 
                                 Click="AutoBlock_Click" 
                                 Cursor="Hand">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE72E;" 
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE72E;" 
                                            FontFamily="Segoe MDL2 Assets" 
                                            FontSize="18" 
                                            Margin="0,0,15,0" 
                                            VerticalAlignment="Center"/>
-                                <TextBlock Text="자동 차단 시스템" 
+                            <TextBlock Text="자동 차단 시스템" 
                                            FontSize="14" 
+                                       Foreground="{DynamicResource SidebarForegroundColor}"
                                            VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
+                        </StackPanel>
+                    </Button>
 
-                        <Button Style="{StaticResource SidebarButtonStyle}" 
+                    <Button Style="{StaticResource SidebarButtonStyle}" 
                                 Click="Recoverys_Click" 
                                 Cursor="Hand">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE777;" 
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE777;" 
                                            FontFamily="Segoe MDL2 Assets" 
                                            FontSize="18" 
                                            Margin="0,0,15,0" 
                                            VerticalAlignment="Center"/>
-                                <TextBlock Text="시스템 복구" 
+                            <TextBlock Text="시스템 복구" 
                                            FontSize="14" 
+                                       Foreground="{DynamicResource SidebarForegroundColor}"
                                            VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
+                        </StackPanel>
+                    </Button>
 
-                        <Button Style="{StaticResource SidebarButtonStyle}" 
+                    <Button Style="{StaticResource SidebarButtonStyle}" 
                                 Click="ProgramList_Click" 
                                 Cursor="Hand">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE8B7;" 
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE8B7;" 
                                            FontFamily="Segoe MDL2 Assets" 
                                            FontSize="18" 
                                            Margin="0,0,15,0" 
                                            VerticalAlignment="Center"/>
-                                <TextBlock Text="설치된 프로그램" 
+                            <TextBlock Text="설치된 프로그램" 
                                            FontSize="14" 
+                                       Foreground="{DynamicResource SidebarForegroundColor}"
                                            VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
+                        </StackPanel>
+                    </Button>
 
-                        <Button Style="{StaticResource SidebarButtonStyle}" 
+                    <Button Style="{StaticResource SidebarButtonStyle}" 
                                 Click="BtnLog_Click" 
                                 Cursor="Hand">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE7C3;" 
-                                           FontFamily="Segoe MDL2 Assets" 
-                                           FontSize="18" 
-                                           Margin="0,0,15,0" 
-                                           VerticalAlignment="Center"/>
-                                <TextBlock Text="보안 로그" 
-                                           FontSize="14" 
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE7C3;" 
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="18" 
+                                       Margin="0,0,15,0" 
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="보안 로그" 
+                                       FontSize="14" 
+                                       Foreground="{DynamicResource SidebarForegroundColor}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
-            </ScrollViewer>
+            </StackPanel>
         </Border>
 
         <!-- Toast Notification Container (최상위 레이어) -->
