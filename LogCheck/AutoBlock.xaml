@@ -6,7 +6,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="1200"
       Title="자동 차단 시스템"
-      Background="{DynamicResource BackgroundBrush}"
+      Background="Transparent"
       Loaded="OnLoaded" 
       Unloaded="OnUnloaded">
 
@@ -99,411 +99,415 @@
     </Page.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="200"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <Border Margin="20,0,20,20" Background="{DynamicResource BackgroundColor}" CornerRadius="12" Padding="10">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
 
-        <!-- 제목 및 새로고침 -->
-        <Grid Grid.Row="0" Margin="20,20,20,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            
-            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="🛡️" FontSize="28" Margin="0,0,10,0"/>
-                <TextBlock Text="자동 차단 시스템" 
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="200"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="300"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- 제목 및 새로고침 -->
+                    <Grid Grid.Row="0" Margin="20,20,20,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="🛡️" FontSize="28" Margin="0,0,10,0"/>
+                            <TextBlock Text="자동 차단 시스템" 
                           FontSize="24" 
                           FontWeight="Bold" 
                           Foreground="{DynamicResource TextBrush}"
                           VerticalAlignment="Center"/>
-            </StackPanel>
+                        </StackPanel>
 
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Button x:Name="RefreshButton" 
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button x:Name="RefreshButton" 
                         Content="🔄 새로고침" 
                         Style="{StaticResource ActionButtonStyle}"
                         Click="RefreshButton_Click"/>
-                <Button x:Name="SettingsButton" 
+                            <Button x:Name="SettingsButton" 
                         Content="⚙️ 설정" 
                         Style="{StaticResource ActionButtonStyle}"
                         Click="SettingsButton_Click"/>
-            </StackPanel>
-        </Grid>
+                        </StackPanel>
+                    </Grid>
 
-        <!-- 통계 카드 -->
-        <Grid Grid.Row="1" Margin="20,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+                    <!-- 통계 카드 -->
+                    <Grid Grid.Row="1" Margin="20,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-            <!-- 전체 차단 수 -->
-            <Border Grid.Column="0" Style="{StaticResource StatusCardStyle}">
-                <StackPanel>
-                    <TextBlock Text="전체 차단" 
+                        <!-- 전체 차단 수 -->
+                        <Border Grid.Column="0" Style="{StaticResource StatusCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="전체 차단" 
                               FontSize="14" 
                               Foreground="{DynamicResource SecondaryTextBrush}" 
                               HorizontalAlignment="Center"/>
-                    <TextBlock x:Name="TotalBlocksText" 
+                                <TextBlock x:Name="TotalBlocksText" 
                               Text="0" 
                               FontSize="32" 
                               FontWeight="Bold" 
                               Foreground="{DynamicResource AccentBrush}" 
                               HorizontalAlignment="Center" 
                               Margin="0,4,0,0"/>
-                    <TextBlock x:Name="TotalBlocksSubText" 
+                                <TextBlock x:Name="TotalBlocksSubText" 
                               Text="임시 0 | 영구 0" 
                               FontSize="11" 
                               Foreground="{DynamicResource SecondaryTextBrush}" 
                               HorizontalAlignment="Center"/>
-                </StackPanel>
-            </Border>
+                            </StackPanel>
+                        </Border>
 
-            <!-- 24시간 차단 -->
-            <Border Grid.Column="1" Style="{StaticResource StatusCardStyle}">
-                <StackPanel>
-                    <TextBlock Text="24시간 차단" 
+                        <!-- 24시간 차단 -->
+                        <Border Grid.Column="1" Style="{StaticResource StatusCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="24시간 차단" 
                               FontSize="14" 
                               Foreground="{DynamicResource SecondaryTextBrush}" 
                               HorizontalAlignment="Center"/>
-                    <TextBlock x:Name="Last24HBlocksText" 
+                                <TextBlock x:Name="Last24HBlocksText" 
                               Text="0" 
                               FontSize="32" 
                               FontWeight="Bold" 
                               Foreground="{DynamicResource RiskMediumColor}" 
                               HorizontalAlignment="Center" 
                               Margin="0,4,0,0"/>
-                    <TextBlock Text="건" 
+                                <TextBlock Text="건" 
                               FontSize="11" 
                               Foreground="{DynamicResource SecondaryTextBrush}" 
                               HorizontalAlignment="Center"/>
-                </StackPanel>
-            </Border>
+                            </StackPanel>
+                        </Border>
 
-            <!-- 차단 성공률 -->
-            <Border Grid.Column="2" Style="{StaticResource StatusCardStyle}">
-                <StackPanel>
-                    <TextBlock Text="차단 성공률" 
+                        <!-- 차단 성공률 -->
+                        <Border Grid.Column="2" Style="{StaticResource StatusCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="차단 성공률" 
                               FontSize="14" 
                               Foreground="{DynamicResource SecondaryTextBrush}" 
                               HorizontalAlignment="Center"/>
-                    <TextBlock x:Name="SuccessRateText" 
+                                <TextBlock x:Name="SuccessRateText" 
                               Text="0%" 
                               FontSize="32" 
                               FontWeight="Bold" 
                               Foreground="{DynamicResource RiskLowColor}" 
                               HorizontalAlignment="Center" 
                               Margin="0,4,0,0"/>
-                    <TextBlock x:Name="SuccessRateSubText" 
+                                <TextBlock x:Name="SuccessRateSubText" 
                               Text="성공 0 / 실패 0" 
                               FontSize="11" 
                               Foreground="{DynamicResource SecondaryTextBrush}" 
                               HorizontalAlignment="Center"/>
-                </StackPanel>
-            </Border>
+                            </StackPanel>
+                        </Border>
 
-            <!-- 활성 방화벽 규칙 -->
-            <Border Grid.Column="3" Style="{StaticResource StatusCardStyle}">
-                <StackPanel>
-                    <TextBlock Text="방화벽 규칙" 
+                        <!-- 활성 방화벽 규칙 -->
+                        <Border Grid.Column="3" Style="{StaticResource StatusCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="방화벽 규칙" 
                               FontSize="14" 
                               Foreground="{DynamicResource SecondaryTextBrush}" 
                               HorizontalAlignment="Center"/>
-                    <TextBlock x:Name="FirewallRulesText" 
+                                <TextBlock x:Name="FirewallRulesText" 
                               Text="0" 
                               FontSize="32" 
                               FontWeight="Bold" 
                               Foreground="{DynamicResource RiskSystemColor}" 
                               HorizontalAlignment="Center" 
                               Margin="0,4,0,0"/>
-                    <TextBlock Text="개 활성" 
+                                <TextBlock Text="개 활성" 
                               FontSize="11" 
                               Foreground="{DynamicResource SecondaryTextBrush}" 
                               HorizontalAlignment="Center"/>
-                </StackPanel>
-            </Border>
-        </Grid>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
 
-        <!-- 차단 유형별 통계 차트 -->
-        <Grid Grid.Row="2" Margin="20,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- 차단 유형 파이 차트 -->
-            <Border Grid.Column="0" Style="{StaticResource StatusCardStyle}">
-                <StackPanel>
-                    <TextBlock Text="📊 차단 유형별 분포" 
-                              FontSize="16" 
-                              FontWeight="SemiBold"
-                              Foreground="{DynamicResource PrimaryTextBrush}"
-                              HorizontalAlignment="Center"
-                              Margin="0,0,0,16"/>
-                    <Grid Height="150">
-                        <!-- 파이 차트 위치 - LiveCharts가 아닌 간단한 시각화 -->
+                    <!-- 차단 유형별 통계 차트 -->
+                    <Grid Grid.Row="2" Margin="20,10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        
-                        <!-- 임시 차단 비율 -->
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="⏰ 임시 차단" 
-                                      FontSize="14" 
-                                      FontWeight="SemiBold"
-                                      Foreground="{DynamicResource RiskMediumColor}"
-                                      HorizontalAlignment="Center"/>
-                            <TextBlock x:Name="TemporaryPercentText" 
-                                      Text="0%" 
-                                      FontSize="24" 
-                                      FontWeight="Bold"
-                                      Foreground="{DynamicResource RiskMediumColor}"
-                                      HorizontalAlignment="Center"
-                                      Margin="0,8"/>
-                            <TextBlock x:Name="TemporaryCountText" 
-                                      Text="0개" 
-                                      FontSize="12"
-                                      Foreground="{DynamicResource SecondaryTextBrush}"
-                                      HorizontalAlignment="Center"/>
-                        </StackPanel>
-                        
-                        <!-- 영구 차단 비율 -->
-                        <StackPanel Grid.Column="1">
-                            <TextBlock Text="🔒 영구 차단" 
-                                      FontSize="14" 
-                                      FontWeight="SemiBold"
-                                      Foreground="{DynamicResource RiskHighColor}"
-                                      HorizontalAlignment="Center"/>
-                            <TextBlock x:Name="PermanentPercentText" 
-                                      Text="0%" 
-                                      FontSize="24" 
-                                      FontWeight="Bold"
-                                      Foreground="{DynamicResource RiskHighColor}"
-                                      HorizontalAlignment="Center"
-                                      Margin="0,8"/>
-                            <TextBlock x:Name="PermanentCountText" 
-                                      Text="0개" 
-                                      FontSize="12"
-                                      Foreground="{DynamicResource SecondaryTextBrush}"
-                                      HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Grid>
-                </StackPanel>
-            </Border>
 
-            <!-- 시간별 차단 추이 -->
-            <Border Grid.Column="1" Style="{StaticResource StatusCardStyle}">
-                <StackPanel>
-                    <TextBlock Text="📈 시간별 차단 추이" 
+                        <!-- 차단 유형 파이 차트 -->
+                        <Border Grid.Column="0" Style="{StaticResource StatusCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="📊 차단 유형별 분포" 
                               FontSize="16" 
                               FontWeight="SemiBold"
                               Foreground="{DynamicResource PrimaryTextBrush}"
                               HorizontalAlignment="Center"
                               Margin="0,0,0,16"/>
-                    <Grid Height="150">
-                        <!-- 간단한 막대 그래프 시뮬레이션 -->
-                        <StackPanel Orientation="Horizontal" 
+                                <Grid Height="150">
+                                    <!-- 파이 차트 위치 - LiveCharts가 아닌 간단한 시각화 -->
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- 임시 차단 비율 -->
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="⏰ 임시 차단" 
+                                      FontSize="14" 
+                                      FontWeight="SemiBold"
+                                      Foreground="{DynamicResource RiskMediumColor}"
+                                      HorizontalAlignment="Center"/>
+                                        <TextBlock x:Name="TemporaryPercentText" 
+                                      Text="0%" 
+                                      FontSize="24" 
+                                      FontWeight="Bold"
+                                      Foreground="{DynamicResource RiskMediumColor}"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,8"/>
+                                        <TextBlock x:Name="TemporaryCountText" 
+                                      Text="0개" 
+                                      FontSize="12"
+                                      Foreground="{DynamicResource SecondaryTextBrush}"
+                                      HorizontalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <!-- 영구 차단 비율 -->
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="🔒 영구 차단" 
+                                      FontSize="14" 
+                                      FontWeight="SemiBold"
+                                      Foreground="{DynamicResource RiskHighColor}"
+                                      HorizontalAlignment="Center"/>
+                                        <TextBlock x:Name="PermanentPercentText" 
+                                      Text="0%" 
+                                      FontSize="24" 
+                                      FontWeight="Bold"
+                                      Foreground="{DynamicResource RiskHighColor}"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,8"/>
+                                        <TextBlock x:Name="PermanentCountText" 
+                                      Text="0개" 
+                                      FontSize="12"
+                                      Foreground="{DynamicResource SecondaryTextBrush}"
+                                      HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- 시간별 차단 추이 -->
+                        <Border Grid.Column="1" Style="{StaticResource StatusCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="📈 시간별 차단 추이" 
+                              FontSize="16" 
+                              FontWeight="SemiBold"
+                              Foreground="{DynamicResource PrimaryTextBrush}"
+                              HorizontalAlignment="Center"
+                              Margin="0,0,0,16"/>
+                                <Grid Height="150">
+                                    <!-- 간단한 막대 그래프 시뮬레이션 -->
+                                    <StackPanel Orientation="Horizontal" 
                                    HorizontalAlignment="Center" 
                                    VerticalAlignment="Center">
-                            <Rectangle x:Name="Hour1Bar" Width="8" Height="20" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
-                            <Rectangle x:Name="Hour2Bar" Width="8" Height="35" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
-                            <Rectangle x:Name="Hour3Bar" Width="8" Height="15" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
-                            <Rectangle x:Name="Hour4Bar" Width="8" Height="45" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
-                            <Rectangle x:Name="Hour5Bar" Width="8" Height="25" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
-                            <Rectangle x:Name="Hour6Bar" Width="8" Height="40" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
-                        </StackPanel>
-                        <TextBlock Text="최근 6시간" 
+                                        <Rectangle x:Name="Hour1Bar" Width="8" Height="20" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
+                                        <Rectangle x:Name="Hour2Bar" Width="8" Height="35" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
+                                        <Rectangle x:Name="Hour3Bar" Width="8" Height="15" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
+                                        <Rectangle x:Name="Hour4Bar" Width="8" Height="45" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
+                                        <Rectangle x:Name="Hour5Bar" Width="8" Height="25" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
+                                        <Rectangle x:Name="Hour6Bar" Width="8" Height="40" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
+                                    </StackPanel>
+                                    <TextBlock Text="최근 6시간" 
                                   FontSize="12"
                                   Foreground="{DynamicResource SecondaryTextBrush}"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Bottom"
                                   Margin="0,0,0,10"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
                     </Grid>
-                </StackPanel>
-            </Border>
-        </Grid>
 
-        <!-- 필터 및 액션 버튼 -->
-        <Grid Grid.Row="3" Margin="20,20,20,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+                    <!-- 필터 및 액션 버튼 -->
+                    <Grid Grid.Row="3" Margin="20,20,20,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-            <!-- 필터 버튼들 -->
-            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="필터:" 
+                        <!-- 필터 버튼들 -->
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="필터:" 
                           FontSize="14" 
                           VerticalAlignment="Center" 
                           Margin="0,0,10,0"
                           Foreground="{DynamicResource TextBrush}"/>
-                <Button x:Name="AllFilterButton" 
+                            <Button x:Name="AllFilterButton" 
                         Content="전체" 
                         Style="{StaticResource FilterButtonStyle}"
                         Tag="All"
                         Click="FilterButton_Click"/>
-                <Button x:Name="TemporaryFilterButton" 
+                            <Button x:Name="TemporaryFilterButton" 
                         Content="임시 차단" 
                         Style="{StaticResource FilterButtonStyle}"
                         Tag="Temporary"
                         Click="FilterButton_Click"/>
-                <Button x:Name="PermanentFilterButton" 
+                            <Button x:Name="PermanentFilterButton" 
                         Content="영구 차단" 
                         Style="{StaticResource FilterButtonStyle}"
                         Tag="Permanent"
                         Click="FilterButton_Click"/>
-                <Button x:Name="FailedFilterButton" 
+                            <Button x:Name="FailedFilterButton" 
                         Content="차단 실패" 
                         Style="{StaticResource FilterButtonStyle}"
                         Tag="Failed"
                         Click="FilterButton_Click"/>
-            </StackPanel>
+                        </StackPanel>
 
-            <!-- 액션 버튼들 -->
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Button x:Name="UnblockSelectedButton" 
+                        <!-- 액션 버튼들 -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button x:Name="UnblockSelectedButton" 
                         Content="선택 차단 해제" 
                         Style="{StaticResource ActionButtonStyle}"
                         Click="UnblockSelected_Click"
                         IsEnabled="False"/>
-                <Button x:Name="AddToWhitelistButton" 
+                            <Button x:Name="AddToWhitelistButton" 
                         Content="화이트리스트 추가" 
                         Style="{StaticResource ActionButtonStyle}"
                         Click="AddToWhitelist_Click"
                         IsEnabled="False"/>
-                <Button x:Name="ExportListButton" 
+                            <Button x:Name="ExportListButton" 
                         Content="목록 내보내기" 
                         Style="{StaticResource ActionButtonStyle}"
                         Click="ExportList_Click"/>
-            </StackPanel>
-        </Grid>
+                        </StackPanel>
+                    </Grid>
 
-        <!-- 차단 목록 DataGrid -->
-        <Border Grid.Row="4" 
-                Background="{DynamicResource CardBackgroundBrush}" 
-                BorderBrush="{DynamicResource BorderBrush}" 
-                BorderThickness="1" 
-                CornerRadius="8" 
-                Margin="20,0,20,20">
-            <Grid>
-                <DataGrid x:Name="BlockedConnectionsDataGrid"
-                          AutoGenerateColumns="False"
-                          IsReadOnly="False"
-                          CanUserAddRows="False"
-                          CanUserDeleteRows="False"
-                          SelectionMode="Extended"
-                          GridLinesVisibility="Horizontal"
-                          HeadersVisibility="Column"
-                          AlternatingRowBackground="{DynamicResource AlternateRowBrush}"
-                          Background="Transparent"
-                          BorderThickness="0"
-                          SelectionChanged="BlockedConnectionsDataGrid_SelectionChanged">
-                    
-                    <DataGrid.Columns>
-                        <!-- 선택 체크박스 -->
-                        <DataGridCheckBoxColumn Header="선택" 
+                    <!-- 차단 목록 DataGrid -->
+                    <Border Grid.Row="4" 
+                            Background="{DynamicResource CardBackgroundBrush}" 
+                            BorderBrush="{DynamicResource BorderBrush}" 
+                            BorderThickness="1" 
+                            CornerRadius="8" 
+                            Margin="20,0,20,20">
+                        <Grid>
+                            <DataGrid x:Name="BlockedConnectionsDataGrid"
+                                      AutoGenerateColumns="False"
+                                      IsReadOnly="False"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False"
+                                      SelectionMode="Extended"
+                                      GridLinesVisibility="Horizontal"
+                                      HeadersVisibility="Column"
+                                      AlternatingRowBackground="{DynamicResource AlternateRowBrush}"
+                                      Background="Transparent"
+                                      BorderThickness="0"
+                                      SelectionChanged="BlockedConnectionsDataGrid_SelectionChanged">
+
+                                <DataGrid.Columns>
+                                    <!-- 선택 체크박스 -->
+                                    <DataGridCheckBoxColumn Header="선택" 
                                                 Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" 
                                                 Width="50"/>
-                        
-                        <!-- 차단 유형 -->
-                        <DataGridTemplateColumn Header="유형" Width="80">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock x:Name="TypeIcon" FontFamily="Segoe MDL2 Assets" FontSize="16" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                                        <TextBlock x:Name="TypeText" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding IsPermanentlyBlocked}" Value="True">
-                                            <Setter TargetName="TypeIcon" Property="Text" Value="🔒"/>
-                                            <Setter TargetName="TypeIcon" Property="Foreground" Value="{DynamicResource RiskHighColor}"/>
-                                            <Setter TargetName="TypeText" Property="Text" Value="영구"/>
-                                            <Setter TargetName="TypeText" Property="Foreground" Value="{DynamicResource RiskHighColor}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsPermanentlyBlocked}" Value="False">
-                                            <Setter TargetName="TypeIcon" Property="Text" Value="⏰"/>
-                                            <Setter TargetName="TypeIcon" Property="Foreground" Value="{DynamicResource RiskMediumColor}"/>
-                                            <Setter TargetName="TypeText" Property="Text" Value="임시"/>
-                                            <Setter TargetName="TypeText" Property="Foreground" Value="{DynamicResource RiskMediumColor}"/>
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
 
-                        <!-- 프로세스명 -->
-                        <DataGridTextColumn Header="프로세스" 
+                                    <!-- 차단 유형 -->
+                                    <DataGridTemplateColumn Header="유형" Width="80">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock x:Name="TypeIcon" FontFamily="Segoe MDL2 Assets" FontSize="16" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                                    <TextBlock x:Name="TypeText" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                                <DataTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding IsPermanentlyBlocked}" Value="True">
+                                                        <Setter TargetName="TypeIcon" Property="Text" Value="🔒"/>
+                                                        <Setter TargetName="TypeIcon" Property="Foreground" Value="{DynamicResource RiskHighColor}"/>
+                                                        <Setter TargetName="TypeText" Property="Text" Value="영구"/>
+                                                        <Setter TargetName="TypeText" Property="Foreground" Value="{DynamicResource RiskHighColor}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsPermanentlyBlocked}" Value="False">
+                                                        <Setter TargetName="TypeIcon" Property="Text" Value="⏰"/>
+                                                        <Setter TargetName="TypeIcon" Property="Foreground" Value="{DynamicResource RiskMediumColor}"/>
+                                                        <Setter TargetName="TypeText" Property="Text" Value="임시"/>
+                                                        <Setter TargetName="TypeText" Property="Foreground" Value="{DynamicResource RiskMediumColor}"/>
+                                                    </DataTrigger>
+                                                </DataTemplate.Triggers>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    <!-- 프로세스명 -->
+                                    <DataGridTextColumn Header="프로세스" 
                                             Binding="{Binding ProcessName}" 
                                             Width="150"/>
 
-                        <!-- 원격 주소 -->
-                        <DataGridTextColumn Header="원격 주소" 
+                                    <!-- 원격 주소 -->
+                                    <DataGridTextColumn Header="원격 주소" 
                                             Binding="{Binding RemoteAddress}" 
                                             Width="120"/>
 
-                        <!-- 원격 포트 -->
-                        <DataGridTextColumn Header="포트" 
+                                    <!-- 원격 포트 -->
+                                    <DataGridTextColumn Header="포트" 
                                             Binding="{Binding RemotePort}" 
                                             Width="60"/>
 
-                        <!-- 프로토콜 -->
-                        <DataGridTextColumn Header="프로토콜" 
+                                    <!-- 프로토콜 -->
+                                    <DataGridTextColumn Header="프로토콜" 
                                             Binding="{Binding Protocol}" 
                                             Width="70"/>
 
-                        <!-- 차단 사유 -->
-                        <DataGridTextColumn Header="차단 사유" 
+                                    <!-- 차단 사유 -->
+                                    <DataGridTextColumn Header="차단 사유" 
                                             Binding="{Binding Reason}" 
                                             Width="200"/>
 
-                        <!-- 차단 시간 -->
-                        <DataGridTemplateColumn Header="차단 시간" Width="140">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding BlockedAt, StringFormat='yyyy-MM-dd HH:mm'}" 
+                                    <!-- 차단 시간 -->
+                                    <DataGridTemplateColumn Header="차단 시간" Width="140">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding BlockedAt, StringFormat='yyyy-MM-dd HH:mm'}" 
                                                FontSize="11"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                        <!-- 방화벽 상태 -->
-                        <DataGridTemplateColumn Header="방화벽" Width="80">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock x:Name="FirewallIcon" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                                        <TextBlock x:Name="FirewallText" FontSize="11" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                    <DataTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding FirewallRuleExists}" Value="True">
-                                            <Setter TargetName="FirewallIcon" Property="Text" Value="✅"/>
-                                            <Setter TargetName="FirewallText" Property="Text" Value="활성"/>
-                                            <Setter TargetName="FirewallText" Property="Foreground" Value="{DynamicResource RiskLowColor}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding FirewallRuleExists}" Value="False">
-                                            <Setter TargetName="FirewallIcon" Property="Text" Value="❌"/>
-                                            <Setter TargetName="FirewallText" Property="Text" Value="없음"/>
-                                            <Setter TargetName="FirewallText" Property="Foreground" Value="{DynamicResource RiskHighColor}"/>
-                                        </DataTrigger>
-                                    </DataTemplate.Triggers>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                                    <!-- 방화벽 상태 -->
+                                    <DataGridTemplateColumn Header="방화벽" Width="80">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock x:Name="FirewallIcon" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                                    <TextBlock x:Name="FirewallText" FontSize="11" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                                <DataTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding FirewallRuleExists}" Value="True">
+                                                        <Setter TargetName="FirewallIcon" Property="Text" Value="✅"/>
+                                                        <Setter TargetName="FirewallText" Property="Text" Value="활성"/>
+                                                        <Setter TargetName="FirewallText" Property="Foreground" Value="{DynamicResource RiskLowColor}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding FirewallRuleExists}" Value="False">
+                                                        <Setter TargetName="FirewallIcon" Property="Text" Value="❌"/>
+                                                        <Setter TargetName="FirewallText" Property="Text" Value="없음"/>
+                                                        <Setter TargetName="FirewallText" Property="Foreground" Value="{DynamicResource RiskHighColor}"/>
+                                                    </DataTrigger>
+                                                </DataTemplate.Triggers>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                        <!-- 액션 -->
-                        <DataGridTemplateColumn Header="액션" Width="120">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Content="해제" 
+                                    <!-- 액션 -->
+                                    <DataGridTemplateColumn Header="액션" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button Content="해제" 
                                                 FontSize="10" 
                                                 Padding="8,2" 
                                                 Margin="0,0,4,0"
@@ -513,7 +517,7 @@
                                                 Cursor="Hand"
                                                 Click="UnblockSingle_Click"
                                                 Tag="{Binding}"/>
-                                        <Button Content="상세" 
+                                                    <Button Content="상세" 
                                                 FontSize="10" 
                                                 Padding="8,2"
                                                 Background="{DynamicResource AccentBrush}" 
@@ -522,45 +526,46 @@
                                                 Cursor="Hand"
                                                 Click="ViewDetails_Click"
                                                 Tag="{Binding}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
 
-                <!-- 로딩 표시 -->
-                <Grid x:Name="LoadingPanel" 
-                      Background="{DynamicResource CardBackgroundBrush}" 
-                      Visibility="Collapsed">
-                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Text="🔄" FontSize="32" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                        <TextBlock Text="차단 목록을 불러오는 중..." 
+                            <!-- 로딩 표시 -->
+                            <Grid x:Name="LoadingPanel" Background="{DynamicResource CardBackgroundBrush}" Visibility="Collapsed">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="🔄" FontSize="32" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                    <TextBlock Text="차단 목록을 불러오는 중..." 
                                    FontSize="16" 
                                    Foreground="{DynamicResource TextBrush}" 
                                    HorizontalAlignment="Center"/>
-                    </StackPanel>
-                </Grid>
+                                </StackPanel>
+                            </Grid>
 
-                <!-- 빈 목록 표시 -->
-                <Grid x:Name="EmptyPanel" 
+                            <!-- 빈 목록 표시 -->
+                            <Grid x:Name="EmptyPanel" 
                       Background="{DynamicResource CardBackgroundBrush}" 
                       Visibility="Collapsed">
-                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Text="🛡️" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,20" Opacity="0.5"/>
-                        <TextBlock Text="차단된 연결이 없습니다" 
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="🛡️" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,20" Opacity="0.5"/>
+                                    <TextBlock Text="차단된 연결이 없습니다" 
                                    FontSize="18" 
                                    FontWeight="SemiBold" 
                                    Foreground="{DynamicResource SecondaryTextBrush}" 
                                    HorizontalAlignment="Center" 
                                    Margin="0,0,0,10"/>
-                        <TextBlock Text="자동 차단 시스템이 위협을 감지하면 여기에 표시됩니다" 
+                                    <TextBlock Text="자동 차단 시스템이 위협을 감지하면 여기에 표시됩니다" 
                                    FontSize="14" 
                                    Foreground="{DynamicResource SecondaryTextBrush}" 
                                    HorizontalAlignment="Center"/>
-                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Border>
                 </Grid>
-            </Grid>
+            </ScrollViewer>
         </Border>
     </Grid>
 </Page>
