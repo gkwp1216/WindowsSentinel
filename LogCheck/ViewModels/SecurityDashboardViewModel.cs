@@ -320,9 +320,8 @@ namespace LogCheck.ViewModels
                 // 업데이트 시간 표시
                 LastUpdateText = DateTime.Now.ToString("HH:mm:ss");
 
-                // 샘플 보안 이벤트 추가 (실제로는 보안 시스템에서 가져와야 함)
-
-                AddSampleSecurityEvent();
+                // 🔥 DISABLED: 테스트용 샘플 이벤트 생성 비활성화 (발표용)
+                // AddSampleSecurityEvent(); // 실제 보안 이벤트만 표시
 
                 // 보안 스냅샷 저장 (5분마다)
 

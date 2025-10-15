@@ -143,6 +143,23 @@ namespace LogCheck.Services
         {
             try
             {
+                // 🔥 DEBUG: 연결 정보 로깅
+                System.Diagnostics.Debug.WriteLine($"[SecurityAnalyzer] Analyzing - Process: {connection.ProcessName}, Path: {connection.ProcessPath}, IP: {connection.RemoteAddress}");
+
+                // 🔥 NEW: 사설 IP 체크 - VPN 및 내부 네트워크 제외
+                if (IsPrivateIP(connection.RemoteAddress))
+                {
+                    System.Diagnostics.Debug.WriteLine($"[SecurityAnalyzer] FILTERED OUT - Private IP: {connection.RemoteAddress}");
+                    return Task.FromResult<SecurityAlert?>(null); // 사설 IP는 분석하지 않음
+                }
+
+                // 🔥 NEW: 시스템 프로세스 체크 - 정상 시스템 프로세스 제외
+                if (IsSystemProcess(connection.ProcessPath ?? connection.ProcessName ?? ""))
+                {
+                    System.Diagnostics.Debug.WriteLine($"[SecurityAnalyzer] FILTERED OUT - System Process: {connection.ProcessName} ({connection.ProcessPath})");
+                    return Task.FromResult<SecurityAlert?>(null); // 시스템 프로세스는 분석하지 않음
+                }
+
                 var riskFactors = new List<string>();
                 var riskScore = 0;
 
@@ -727,6 +744,90 @@ namespace LogCheck.Services
         private void OnErrorOccurred(string message)
         {
             ErrorOccurred?.Invoke(this, message);
+        }
+
+        /// <summary>
+        /// 사설 IP 주소인지 확인 (RFC 1918)
+        /// </summary>
+        private bool IsPrivateIP(string ipAddress)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(ipAddress))
+                    return false;
+
+                if (!IPAddress.TryParse(ipAddress, out IPAddress? ip))
+                    return false;
+
+                byte[] bytes = ip.GetAddressBytes();
+
+                // IPv4 체크
+                if (bytes.Length == 4)
+                {
+                    // 10.0.0.0/8 (10.0.0.0 ~ 10.255.255.255)
+                    if (bytes[0] == 10)
+                        return true;
+
+                    // 172.16.0.0/12 (172.16.0.0 ~ 172.31.255.255)
+                    if (bytes[0] == 172 && bytes[1] >= 16 && bytes[1] <= 31)
+                        return true;
+
+                    // 192.168.0.0/16 (192.168.0.0 ~ 192.168.255.255)
+                    if (bytes[0] == 192 && bytes[1] == 168)
+                        return true;
+
+                    // 127.0.0.0/8 (Loopback)
+                    if (bytes[0] == 127)
+                        return true;
+
+                    // 169.254.0.0/16 (Link-local)
+                    if (bytes[0] == 169 && bytes[1] == 254)
+                        return true;
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 시스템 프로세스인지 확인
+        /// </summary>
+        private bool IsSystemProcess(string processPathOrName)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(processPathOrName))
+                    return false;
+
+                var lowerPath = processPathOrName.ToLowerInvariant();
+
+                // Windows 시스템 디렉토리
+                if (lowerPath.Contains(@"c:\windows\system32\") ||
+                    lowerPath.Contains(@"c:\windows\syswow64\") ||
+                    lowerPath.Contains(@"c:\program files\windows defender\") ||
+                    lowerPath.Contains(@"c:\windows\microsoft.net\"))
+                {
+                    return true;
+                }
+
+                // 일반적인 시스템/정상 프로세스들
+                var systemProcesses = new[]
+                {
+                    "notepad.exe", "calc.exe", "mspaint.exe", "winword.exe", "excel.exe",
+                    "chrome.exe", "firefox.exe", "msedge.exe", "explorer.exe",
+                    "svchost.exe", "services.exe", "lsass.exe", "csrss.exe"
+                };
+
+                return systemProcesses.Any(sysProc => lowerPath.Contains(sysProc));
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Net;
 using System.Runtime.Versioning;
 using System.Security.Principal;
 using LogCheck.Models;
@@ -189,6 +190,20 @@ namespace LogCheck.Services
         {
             if (processInfo?.ProcessPath == null && processInfo?.ProcessName == null)
                 return false;
+
+            // 🔥 NEW: 사설 IP 체크 - VPN 및 내부 네트워크 보호
+            if (IsPrivateIP(processInfo.RemoteAddress))
+            {
+                System.Diagnostics.Debug.WriteLine($"차단 제외: {processInfo.RemoteAddress} (사설 IP)");
+                return true; // 사설 IP는 항상 화이트리스트
+            }
+
+            // 🔥 NEW: 시스템 프로세스 체크 - 정상 시스템 프로세스 보호
+            if (IsSystemProcess(processInfo.ProcessPath ?? processInfo.ProcessName ?? ""))
+            {
+                System.Diagnostics.Debug.WriteLine($"차단 제외: {processInfo.ProcessName} (시스템 프로세스)");
+                return true; // 시스템 프로세스는 항상 화이트리스트
+            }
 
             // System Idle Process 특별 처리
             if (IsLegitimateSystemIdleProcess(processInfo))
@@ -829,6 +844,74 @@ namespace LogCheck.Services
         /// 모니터링 필요 시 발생하는 이벤트
         /// </summary>
         public event Action<ProcessNetworkInfo>? OnMonitoringRequired;
+
+        #endregion
+
+        #region 사설 IP 및 시스템 프로세스 체크 (긴급 수정)
+
+        /// <summary>
+        /// 사설 IP인지 확인 (VPN 및 내부 네트워크 오탐 방지)
+        /// </summary>
+        private bool IsPrivateIP(string ipAddress)
+        {
+            if (string.IsNullOrWhiteSpace(ipAddress))
+                return false;
+
+            try
+            {
+                if (!IPAddress.TryParse(ipAddress, out IPAddress? ip) || ip == null)
+                    return false;
+
+                var bytes = ip.GetAddressBytes();
+
+                // 사설 IP 대역 체크 (RFC 1918)
+                return (bytes[0] == 10) ||                                          // 10.0.0.0/8
+                       (bytes[0] == 172 && bytes[1] >= 16 && bytes[1] <= 31) ||     // 172.16.0.0/12
+                       (bytes[0] == 192 && bytes[1] == 168) ||                      // 192.168.0.0/16
+                       (bytes[0] == 127) ||                                         // 127.0.0.0/8 (로컬호스트)
+                       (bytes[0] == 169 && bytes[1] == 254);                        // 169.254.0.0/16 (링크로컬)
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 시스템 프로세스인지 확인 (정상 시스템 프로세스 오탐 방지)
+        /// </summary>
+        private bool IsSystemProcess(string processPath)
+        {
+            if (string.IsNullOrWhiteSpace(processPath))
+                return false;
+
+            var processName = System.IO.Path.GetFileName(processPath).ToLower();
+            var fullPath = processPath.ToLower();
+
+            // 시스템 프로세스 화이트리스트
+            var systemProcesses = new[]
+            {
+                "notepad.exe", "mspaint.exe", "calc.exe", "calculator.exe",
+                "explorer.exe", "taskmgr.exe", "regedit.exe",
+
+                "cmd.exe", "powershell.exe", "winlogon.exe",
+                "csrss.exe", "lsass.exe", "services.exe", "svchost.exe",
+                "dwm.exe", "wininit.exe", "smss.exe", "spoolsv.exe"
+            };
+
+            // 프로세스 이름으로 체크
+            if (systemProcesses.Contains(processName))
+                return true;
+
+            // Windows 시스템 폴더 체크
+            if (fullPath.StartsWith(@"c:\windows\") ||
+
+                fullPath.StartsWith(@"c:\windows\system32\") ||
+                fullPath.StartsWith(@"c:\windows\syswow64\"))
+                return true;
+
+            return false;
+        }
 
         #endregion
     }

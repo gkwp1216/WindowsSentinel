@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using LogCheck.Models;
 
@@ -86,28 +87,41 @@ namespace LogCheck.Services
 
             try
             {
+                // 🔥 NEW: 사설 IP와 시스템 프로세스 필터링
+                var filteredConnections = connections
+                    .Where(conn => !IsPrivateIP(conn.RemoteAddress))
+                    .Where(conn => !IsSystemProcess(conn.ProcessPath ?? conn.ProcessName ?? ""))
+                    .ToList();
+
+                System.Diagnostics.Debug.WriteLine($"[DDoSEngine] Original connections: {connections.Count}, Filtered: {filteredConnections.Count}");
+
+                // 필터링된 연결이 없으면 빈 결과 반환
+                if (!filteredConnections.Any())
+                {
+                    return alerts;
+                }
                 // 1. SYN Flood 탐지
-                var synFloodAlerts = await DetectSynFloodAsync(connections);
+                var synFloodAlerts = await DetectSynFloodAsync(filteredConnections);
                 alerts.AddRange(synFloodAlerts);
 
                 // 2. UDP Flood 탐지
-                var udpFloodAlerts = await DetectUdpFloodAsync(connections);
+                var udpFloodAlerts = await DetectUdpFloodAsync(filteredConnections);
                 alerts.AddRange(udpFloodAlerts);
 
                 // 3. 연결 기반 DDoS 탐지
-                var connectionFloodAlerts = await DetectConnectionFloodAsync(connections);
+                var connectionFloodAlerts = await DetectConnectionFloodAsync(filteredConnections);
                 alerts.AddRange(connectionFloodAlerts);
 
                 // 4. 슬로로리스 공격 탐지
-                var slowLorisAlerts = await DetectSlowLorisAsync(connections);
+                var slowLorisAlerts = await DetectSlowLorisAsync(filteredConnections);
                 alerts.AddRange(slowLorisAlerts);
 
                 // 5. 대역폭 기반 DDoS 탐지
-                var bandwidthFloodAlerts = await DetectBandwidthFloodAsync(connections);
+                var bandwidthFloodAlerts = await DetectBandwidthFloodAsync(filteredConnections);
                 alerts.AddRange(bandwidthFloodAlerts);
 
                 // 6. HTTP Flood 탐지 (포트 80, 443 대상)
-                var httpFloodAlerts = await DetectHttpFloodAsync(connections);
+                var httpFloodAlerts = await DetectHttpFloodAsync(filteredConnections);
                 alerts.AddRange(httpFloodAlerts);
 
                 return alerts;
@@ -590,6 +604,90 @@ namespace LogCheck.Services
             };
 
             return $"{attackName} 탐지";
+        }
+
+        /// <summary>
+        /// 사설 IP 주소인지 확인 (RFC 1918)
+        /// </summary>
+        private bool IsPrivateIP(string ipAddress)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(ipAddress))
+                    return false;
+
+                if (!IPAddress.TryParse(ipAddress, out IPAddress? ip))
+                    return false;
+
+                byte[] bytes = ip.GetAddressBytes();
+
+                // IPv4 체크
+                if (bytes.Length == 4)
+                {
+                    // 10.0.0.0/8 (10.0.0.0 ~ 10.255.255.255)
+                    if (bytes[0] == 10)
+                        return true;
+
+                    // 172.16.0.0/12 (172.16.0.0 ~ 172.31.255.255)
+                    if (bytes[0] == 172 && bytes[1] >= 16 && bytes[1] <= 31)
+                        return true;
+
+                    // 192.168.0.0/16 (192.168.0.0 ~ 192.168.255.255)
+                    if (bytes[0] == 192 && bytes[1] == 168)
+                        return true;
+
+                    // 127.0.0.0/8 (Loopback)
+                    if (bytes[0] == 127)
+                        return true;
+
+                    // 169.254.0.0/16 (Link-local)
+                    if (bytes[0] == 169 && bytes[1] == 254)
+                        return true;
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 시스템 프로세스인지 확인
+        /// </summary>
+        private bool IsSystemProcess(string processPathOrName)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(processPathOrName))
+                    return false;
+
+                var lowerPath = processPathOrName.ToLowerInvariant();
+
+                // Windows 시스템 디렉토리
+                if (lowerPath.Contains(@"c:\windows\system32\") ||
+                    lowerPath.Contains(@"c:\windows\syswow64\") ||
+                    lowerPath.Contains(@"c:\program files\windows defender\") ||
+                    lowerPath.Contains(@"c:\windows\microsoft.net\"))
+                {
+                    return true;
+                }
+
+                // 일반적인 시스템/정상 프로세스들
+                var systemProcesses = new[]
+                {
+                    "notepad.exe", "calc.exe", "mspaint.exe", "winword.exe", "excel.exe",
+                    "chrome.exe", "firefox.exe", "msedge.exe", "explorer.exe",
+                    "svchost.exe", "services.exe", "lsass.exe", "csrss.exe"
+                };
+
+                return systemProcesses.Any(sysProc => lowerPath.Contains(sysProc));
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         #endregion
