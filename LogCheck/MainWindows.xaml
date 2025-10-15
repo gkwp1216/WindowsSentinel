@@ -112,6 +112,63 @@
         </Storyboard>
 
         <DropShadowEffect x:Key="ShadowEffect" BlurRadius="10" Color="Black" ShadowDepth="4" Opacity="0.3" />
+        
+        <!-- 📖 책갈피 전용 애니메이션 스토리보드 -->
+        <Storyboard x:Key="BookmarkPullAnimation">
+            <!-- 책갈피가 살짝 당겨지면서 확대되는 효과 -->
+            <DoubleAnimation Storyboard.TargetName="BookmarkTransform"
+                           Storyboard.TargetProperty="X"
+                           To="12" Duration="0:0:0.4">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase EasingMode="EaseOut" Oscillations="1" Springiness="8"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            
+            <!-- 책갈피 크기 약간 확대 -->
+            <DoubleAnimation Storyboard.TargetName="BookmarkScale"
+                           Storyboard.TargetProperty="ScaleX"
+                           To="1.1" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            
+            <DoubleAnimation Storyboard.TargetName="BookmarkScale"
+                           Storyboard.TargetProperty="ScaleY"
+                           To="1.1" Duration="0:0:0.3">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        
+        <Storyboard x:Key="BookmarkReleaseAnimation">
+            <!-- 책갈피가 원래 위치로 돌아가면서 살짝 진동하는 효과 -->
+            <DoubleAnimation Storyboard.TargetName="BookmarkTransform"
+                           Storyboard.TargetProperty="X"
+                           To="0" Duration="0:0:0.6">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase EasingMode="EaseOut" Oscillations="2" Springiness="6"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            
+            <!-- 책갈피 크기 원래대로 -->
+            <DoubleAnimation Storyboard.TargetName="BookmarkScale"
+                           Storyboard.TargetProperty="ScaleX"
+                           To="1.0" Duration="0:0:0.4">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase EasingMode="EaseOut" Oscillations="1"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            
+            <DoubleAnimation Storyboard.TargetName="BookmarkScale"
+                           Storyboard.TargetProperty="ScaleY"
+                           To="1.0" Duration="0:0:0.4">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase EasingMode="EaseOut" Oscillations="1"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
     </Window.Resources>
 
     <Grid x:Name="mainGrid">
@@ -121,42 +178,48 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- 사이드바 마우스 호버 트리거 영역 -->
-        <Border x:Name="SidebarTrigger" 
-                Grid.RowSpan="3" 
-                Width="15"
-                Background="Transparent" 
+        <!-- 사이드바 존재 힌트 (항상 보이는 책갈피) -->
+        <Border x:Name="SidebarHint"
+                Grid.RowSpan="3"
+                Width="6"
+                Height="40"
+                Background="{DynamicResource SidebarAccentColor}"
                 HorizontalAlignment="Left"
-                Panel.ZIndex="1060"
-                MouseEnter="SidebarTrigger_MouseEnter"
-                MouseLeave="SidebarTrigger_MouseLeave"
-                Cursor="Hand"
-                ToolTip="사이드바 열기">
+                VerticalAlignment="Center"
+                CornerRadius="0,3,3,0"
+                Panel.ZIndex="1070"
+                Opacity="0.6"
+                Margin="0,0,0,0">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="4" ShadowDepth="1" Opacity="0.3"/>
+            </Border.Effect>
+            
+            <!-- 호버 시 밝아지는 애니메이션 -->
             <Border.Style>
                 <Style TargetType="Border">
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="Background.Color"
-                                                       To="#1A0078D4" Duration="0:0:0.2"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetProperty="Background.Color"
-                                                       To="Transparent" Duration="0:0:0.3"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.ExitActions>
+                            <Setter Property="Opacity" Value="1.0"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
             </Border.Style>
         </Border>
+
+        <!-- 사이드바 호버 트리거 (확대된 영역) -->
+        <Canvas x:Name="SidebarTriggerCanvas" 
+                Grid.RowSpan="3"
+                Width="50"
+                Height="200"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Panel.ZIndex="1060"
+                Background="Transparent"
+                MouseEnter="SidebarTrigger_MouseEnter"
+                MouseLeave="SidebarTrigger_MouseLeave"
+                Cursor="Hand"
+                ToolTip="사이드바 열기 (왼쪽으로 마우스 이동)">
+        </Canvas>
 
         <!-- 토글형 사이드바 -->
         <Border x:Name="Sidebar" 
@@ -176,8 +239,17 @@
             <Border.Effect>
                 <DropShadowEffect Color="Black" BlurRadius="8" ShadowDepth="4" Opacity="0.2"/>
             </Border.Effect>
-
-            <StackPanel Margin="0,15,0,20">
+            
+            <!-- 사이드바 내용을 담는 Grid -->
+            <Grid>
+                <!-- 📚 책갈피 탭 장식 (사이드바 왼쪽 가장자리) -->
+                <Canvas HorizontalAlignment="Left" VerticalAlignment="Center" Width="20" Height="80" Margin="-8,0,0,0">
+                    
+                </Canvas>
+                    
+                
+                <!-- 사이드바 메인 컨텐츠 -->
+                <StackPanel Margin="0,15,0,20">
                 <!-- 상단 헤더 영역 (로고 + 닫기 버튼) -->
                 <Grid Margin="15,10,10,25">
                     <Grid.ColumnDefinitions>
@@ -331,6 +403,7 @@
                     </Button>
                 </StackPanel>
             </StackPanel>
+            </Grid>
         </Border>
 
         <!-- Toast Notification Container (최상위 레이어) -->

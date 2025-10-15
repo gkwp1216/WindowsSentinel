@@ -3644,6 +3644,11 @@ namespace LogCheck
                             var adminStatusText = FindName("AdminStatusText") as TextBlock;
                             if (adminStatusText != null)
                                 adminStatusText.Text = "권한 부족";
+
+                            // 방화벽 상태를 권한 부족으로 업데이트
+                            var firewallStatusText = FindName("FirewallStatusText") as TextBlock;
+                            if (firewallStatusText != null)
+                                firewallStatusText.Text = "방화벽 상태: 권한 부족";
                         });
                         return;
                     }
@@ -3668,6 +3673,11 @@ namespace LogCheck
                     if (adminStatusText != null)
                         adminStatusText.Text = "정상";
 
+                    // 방화벽 상태 업데이트
+                    var firewallStatusText = FindName("FirewallStatusText") as TextBlock;
+                    if (firewallStatusText != null)
+                        firewallStatusText.Text = "방화벽 상태: 활성";
+
                     var noRulesPanel = FindName("NoRulesPanel") as Border;
                     if (noRulesPanel != null)
                         noRulesPanel.Visibility = _firewallRules.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -3687,6 +3697,11 @@ namespace LogCheck
                     var firewallRuleCountText = FindName("FirewallRuleCountText") as TextBlock;
                     if (firewallRuleCountText != null)
                         firewallRuleCountText.Text = "0개";
+
+                    // 방화벽 상태를 오류로 업데이트
+                    var firewallStatusText = FindName("FirewallStatusText") as TextBlock;
+                    if (firewallStatusText != null)
+                        firewallStatusText.Text = "방화벽 상태: 오류";
                 });
             }
         }
@@ -3833,7 +3848,7 @@ namespace LogCheck
             }
         }
 
-        private void AddFirewallRule_Click(object sender, RoutedEventArgs e)
+        private async void AddFirewallRule_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -3845,44 +3860,74 @@ namespace LogCheck
 
                 if (string.IsNullOrWhiteSpace(ruleNameTextBox?.Text) || string.IsNullOrWhiteSpace(ipTextBox?.Text))
                 {
-                    MessageBox.Show("규칙 이름과 대상 IP는 필수입니다.", "입력 오류", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    await ToastNotificationService.Instance.ShowErrorAsync("입력 오류", "규칙 이름과 대상 IP는 필수입니다.");
                     return;
                 }
 
                 var protocolValue = ((ComboBoxItem?)protocolComboBox?.SelectedItem)?.Content?.ToString() ?? "TCP";
-                var actionValue = ((ComboBoxItem?)actionComboBox?.SelectedItem)?.Content?.ToString() ?? "Block";
+                var actionValue = ((ComboBoxItem?)actionComboBox?.SelectedItem)?.Content?.ToString() ?? "차단 (Block)";
 
-                var newRule = new FirewallRuleInfo
+                // PersistentFirewallManager 초기화 확인
+                if (_persistentFirewallManager == null)
                 {
-                    Name = ruleNameTextBox.Text,
-                    RemoteAddresses = ipTextBox.Text,
-                    RemotePorts = portTextBox?.Text ?? "",
-                    Protocol = protocolValue == "TCP" ? 6 : (protocolValue == "UDP" ? 17 : 6),
-                    Direction = 2, // Outbound
-                    Enabled = true,
-                    CreatedDate = DateTime.Now,
-                    Description = $"사용자 정의 규칙 - {DateTime.Now:yyyy-MM-dd}"
-                };
+                    _persistentFirewallManager = new PersistentFirewallManager("LogCheck_CustomRule");
+                    var initResult = await _persistentFirewallManager.InitializeAsync();
+                    if (!initResult)
+                    {
+                        await ToastNotificationService.Instance.ShowErrorAsync("권한 오류", "방화벽 규칙을 추가하려면 관리자 권한이 필요합니다.");
+                        return;
+                    }
+                }
 
-                _firewallRules.Add(newRule);
-                AddLogMessage($"✅ 방화벽 규칙 '{newRule.Name}' 추가됨");
+                // 실제 Windows 방화벽 규칙 생성
+                var ruleName = $"LogCheck_Custom_{ruleNameTextBox.Text}";
+                var success = false;
 
-                // 입력 필드 초기화
-                if (ruleNameTextBox != null) ruleNameTextBox.Text = "";
-                if (ipTextBox != null) ipTextBox.Text = "";
-                if (portTextBox != null) portTextBox.Text = "";
-                if (protocolComboBox != null) protocolComboBox.SelectedIndex = 0;
-                if (actionComboBox != null) actionComboBox.SelectedIndex = 0;
+                if (!string.IsNullOrWhiteSpace(portTextBox?.Text) && int.TryParse(portTextBox.Text, out int port))
+                {
+                    // 포트 기반 규칙
+                    int protocol = protocolValue == "TCP" ? 6 : (protocolValue == "UDP" ? 17 : 6);
+                    success = await _persistentFirewallManager.AddPermanentPortBlockRuleAsync(
+                        port, protocol, $"사용자 정의 포트 차단 - {ruleNameTextBox.Text}");
+                }
+                else
+                {
+                    // IP 기반 규칙
+                    success = await _persistentFirewallManager.AddPermanentIPBlockRuleAsync(
+                        ipTextBox.Text, $"사용자 정의 IP 차단 - {ruleNameTextBox.Text}");
+                }
 
-                UpdateFirewallStatusAsync();
+                if (success)
+                {
+                    await ToastNotificationService.Instance.ShowSuccessAsync("🛡️ 방화벽 규칙 추가",
+                        $"'{ruleNameTextBox.Text}' 규칙이 Windows 방화벽에 추가되었습니다.");
+                    AddLogMessage($"✅ 방화벽 규칙 '{ruleNameTextBox.Text}' 실제 방화벽에 추가됨");
+
+                    // 입력 필드 초기화
+                    if (ruleNameTextBox != null) ruleNameTextBox.Text = "";
+                    if (ipTextBox != null) ipTextBox.Text = "";
+                    if (portTextBox != null) portTextBox.Text = "";
+                    if (protocolComboBox != null) protocolComboBox.SelectedIndex = 0;
+                    if (actionComboBox != null) actionComboBox.SelectedIndex = 0;
+
+                    // 규칙 목록 새로고침
+                    await LoadFirewallRulesAsync();
+                }
+                else
+                {
+                    await ToastNotificationService.Instance.ShowErrorAsync("규칙 추가 실패",
+                        "방화벽 규칙 추가에 실패했습니다. 관리자 권한을 확인하세요.");
+                    AddLogMessage($"❌ 방화벽 규칙 '{ruleNameTextBox.Text}' 추가 실패");
+                }
             }
             catch (Exception ex)
             {
+                await ToastNotificationService.Instance.ShowErrorAsync("오류 발생", $"방화벽 규칙 추가 중 오류가 발생했습니다: {ex.Message}");
                 AddLogMessage($"❌ 방화벽 규칙 추가 오류: {ex.Message}");
             }
         }
 
-        private void EnableSelectedRules_Click(object sender, RoutedEventArgs e)
+        private async void EnableSelectedRules_Click(object sender, RoutedEventArgs e)
         {
             var dataGrid = FindName("FirewallRulesDataGrid") as DataGrid;
             if (dataGrid?.SelectedItems?.Count > 0)
@@ -3894,17 +3939,27 @@ namespace LogCheck
                     {
                         rule.Enabled = true;
                     }
+
+                    await ToastNotificationService.Instance.ShowSuccessAsync("🛡️ 규칙 활성화",
+                        $"{selectedItems.Count}개 방화벽 규칙이 활성화되었습니다.");
                     AddLogMessage($"✅ {selectedItems.Count}개 규칙이 활성화됨");
                     UpdateFirewallStatusAsync();
                 }
                 catch (Exception ex)
                 {
+                    await ToastNotificationService.Instance.ShowErrorAsync("활성화 오류",
+                        $"방화벽 규칙 활성화 중 오류가 발생했습니다: {ex.Message}");
                     AddLogMessage($"❌ 규칙 활성화 오류: {ex.Message}");
                 }
             }
+            else
+            {
+                await ToastNotificationService.Instance.ShowWarningAsync("선택 필요",
+                    "활성화할 방화벽 규칙을 선택해주세요.");
+            }
         }
 
-        private void DisableSelectedRules_Click(object sender, RoutedEventArgs e)
+        private async void DisableSelectedRules_Click(object sender, RoutedEventArgs e)
         {
             var dataGrid = FindName("FirewallRulesDataGrid") as DataGrid;
             if (dataGrid?.SelectedItems?.Count > 0)
@@ -3916,38 +3971,81 @@ namespace LogCheck
                     {
                         rule.Enabled = false;
                     }
+
+                    await ToastNotificationService.Instance.ShowWarningAsync("⚠️ 규칙 비활성화",
+                        $"{selectedItems.Count}개 방화벽 규칙이 비활성화되었습니다.");
                     AddLogMessage($"⚠️ {selectedItems.Count}개 규칙이 비활성화됨");
                     UpdateFirewallStatusAsync();
                 }
                 catch (Exception ex)
                 {
+                    await ToastNotificationService.Instance.ShowErrorAsync("비활성화 오류",
+                        $"방화벽 규칙 비활성화 중 오류가 발생했습니다: {ex.Message}");
                     AddLogMessage($"❌ 규칙 비활성화 오류: {ex.Message}");
                 }
             }
+            else
+            {
+                await ToastNotificationService.Instance.ShowWarningAsync("선택 필요",
+                    "비활성화할 방화벽 규칙을 선택해주세요.");
+            }
         }
 
-        private void DeleteSelectedRules_Click(object sender, RoutedEventArgs e)
+        private async void DeleteSelectedRules_Click(object sender, RoutedEventArgs e)
         {
             var dataGrid = FindName("FirewallRulesDataGrid") as DataGrid;
             if (dataGrid?.SelectedItems?.Count > 0)
             {
-                var result = MessageBox.Show("선택된 방화벽 규칙을 삭제하시겠습니까?", "규칙 삭제",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var selectedItems = dataGrid.SelectedItems.Cast<FirewallRuleInfo>().ToList();
+                var result = MessageBox.Show($"선택된 {selectedItems.Count}개의 방화벽 규칙을 Windows 방화벽에서 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.",
+                    "규칙 삭제", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                 if (result == MessageBoxResult.Yes)
                 {
                     try
                     {
-                        var selectedItems = dataGrid.SelectedItems.Cast<FirewallRuleInfo>().ToList();
+                        if (_persistentFirewallManager == null)
+                        {
+                            await ToastNotificationService.Instance.ShowErrorAsync("오류", "방화벽 관리자가 초기화되지 않았습니다.");
+                            return;
+                        }
+
+                        int successCount = 0;
+                        int failCount = 0;
+
                         foreach (var rule in selectedItems)
                         {
-                            _firewallRules.Remove(rule);
+                            var success = await _persistentFirewallManager.RemoveBlockRuleAsync(rule.Name);
+                            if (success)
+                            {
+                                successCount++;
+                                AddLogMessage($"🗑️ 방화벽 규칙 '{rule.Name}' 삭제됨");
+                            }
+                            else
+                            {
+                                failCount++;
+                                AddLogMessage($"❌ 방화벽 규칙 '{rule.Name}' 삭제 실패");
+                            }
                         }
-                        AddLogMessage($"🗑️ {selectedItems.Count}개 규칙이 삭제됨");
-                        UpdateFirewallStatusAsync();
+
+                        if (successCount > 0)
+                        {
+                            await ToastNotificationService.Instance.ShowSuccessAsync("🗑️ 규칙 삭제 완료",
+                                $"{successCount}개 규칙이 Windows 방화벽에서 삭제되었습니다.");
+                        }
+
+                        if (failCount > 0)
+                        {
+                            await ToastNotificationService.Instance.ShowWarningAsync("부분 실패",
+                                $"{failCount}개 규칙 삭제에 실패했습니다.");
+                        }
+
+                        // 규칙 목록 새로고침
+                        await LoadFirewallRulesAsync();
                     }
                     catch (Exception ex)
                     {
+                        await ToastNotificationService.Instance.ShowErrorAsync("삭제 오류", $"방화벽 규칙 삭제 중 오류가 발생했습니다: {ex.Message}");
                         AddLogMessage($"❌ 규칙 삭제 오류: {ex.Message}");
                     }
                 }
@@ -4292,12 +4390,15 @@ namespace LogCheck
 
         #endregion
 
-        private void UpdateFirewallStatusAsync()
+        private async void UpdateFirewallStatusAsync()
         {
             try
             {
                 var activeRules = _firewallRules.Count(r => r.Enabled);
                 var customRules = _firewallRules.Count;
+
+                // 실제 Windows 방화벽 상태 확인
+                var firewallStatus = await CheckWindowsFirewallStatusAsync();
 
                 SafeInvokeUI(() =>
                 {
@@ -4305,16 +4406,138 @@ namespace LogCheck
                     var customRulesText = FindName("CustomRulesCountText") as TextBlock;
                     var lastUpdateText = FindName("LastUpdateTimeText") as TextBlock;
                     var firewallRuleCountText = FindName("FirewallRuleCountText") as TextBlock;
+                    var firewallStatusText = FindName("FirewallStatusText") as TextBlock;
 
                     if (activeRulesText != null) activeRulesText.Text = $"활성 규칙: {activeRules}";
                     if (customRulesText != null) customRulesText.Text = $"사용자 규칙: {customRules}";
                     if (lastUpdateText != null) lastUpdateText.Text = $"마지막 업데이트: {DateTime.Now:HH:mm:ss}";
                     if (firewallRuleCountText != null) firewallRuleCountText.Text = $"관리 규칙: {customRules}개";
+                    if (firewallStatusText != null) firewallStatusText.Text = $"방화벽 상태: {firewallStatus}";
                 });
             }
             catch (Exception ex)
             {
                 AddLogMessage($"❌ 방화벽 상태 업데이트 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Windows 방화벽 실제 상태 확인
+        /// </summary>
+        private async Task<string> CheckWindowsFirewallStatusAsync()
+        {
+            try
+            {
+                return await Task.Run(() =>
+                {
+                    try
+                    {
+                        // COM Interop을 사용하여 Windows 방화벽 상태 확인
+                        Type? firewallMgrType = Type.GetTypeFromProgID("HNetCfg.FwMgr");
+                        if (firewallMgrType == null)
+                            return "확인 불가";
+
+                        dynamic? firewallMgr = Activator.CreateInstance(firewallMgrType);
+                        if (firewallMgr == null)
+                            return "확인 불가";
+
+                        dynamic? localPolicy = firewallMgr.LocalPolicy;
+                        if (localPolicy == null)
+                            return "확인 불가";
+
+                        dynamic? currentProfile = localPolicy.CurrentProfile;
+                        if (currentProfile == null)
+                            return "확인 불가";
+
+                        bool firewallEnabled = currentProfile.FirewallEnabled;
+
+                        // 상태 및 로그 탭의 프로필별 상태도 업데이트
+                        SafeInvokeUI(() =>
+                        {
+                            UpdateFirewallProfileStatus();
+                        });
+
+                        return firewallEnabled ? "활성" : "비활성";
+                    }
+                    catch
+                    {
+                        // 권한 부족이나 기타 오류 시 netsh 명령어로 대체 확인
+                        try
+                        {
+                            var process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                            {
+                                FileName = "netsh",
+                                Arguments = "advfirewall show currentprofile state",
+                                UseShellExecute = false,
+                                RedirectStandardOutput = true,
+                                CreateNoWindow = true
+                            });
+
+                            if (process != null)
+                            {
+                                string output = process.StandardOutput.ReadToEnd();
+                                process.WaitForExit();
+
+                                if (output.Contains("ON") || output.Contains("활성"))
+                                    return "활성";
+                                else if (output.Contains("OFF") || output.Contains("비활성"))
+                                    return "비활성";
+                            }
+                        }
+                        catch
+                        {
+                            // 모든 방법이 실패한 경우
+                        }
+
+                        return "확인 불가";
+                    }
+                });
+            }
+            catch
+            {
+                return "오류";
+            }
+        }
+
+        /// <summary>
+        /// 방화벽 프로필별 상태 업데이트
+        /// </summary>
+        private void UpdateFirewallProfileStatus()
+        {
+            try
+            {
+                var process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "netsh",
+                    Arguments = "advfirewall show allprofiles state",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                });
+
+                if (process != null)
+                {
+                    string output = process.StandardOutput.ReadToEnd();
+                    process.WaitForExit();
+
+                    // 프로필별 상태 파싱
+                    bool domainEnabled = output.Contains("Domain Profile") && output.Substring(output.IndexOf("Domain Profile")).Contains("ON");
+                    bool privateEnabled = output.Contains("Private Profile") && output.Substring(output.IndexOf("Private Profile")).Contains("ON");
+                    bool publicEnabled = output.Contains("Public Profile") && output.Substring(output.IndexOf("Public Profile")).Contains("ON");
+
+                    // UI 업데이트
+                    var domainStatusText = FindName("FirewallDomainStatusText") as TextBlock;
+                    var privateStatusText = FindName("FirewallPrivateStatusText") as TextBlock;
+                    var publicStatusText = FindName("FirewallPublicStatusText") as TextBlock;
+
+                    if (domainStatusText != null) domainStatusText.Text = $"도메인: {(domainEnabled ? "활성" : "비활성")}";
+                    if (privateStatusText != null) privateStatusText.Text = $"개인: {(privateEnabled ? "활성" : "비활성")}";
+                    if (publicStatusText != null) publicStatusText.Text = $"공용: {(publicEnabled ? "활성" : "비활성")}";
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"❌ 방화벽 프로필 상태 확인 오류: {ex.Message}");
             }
         }
 

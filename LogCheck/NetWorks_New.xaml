@@ -1407,18 +1407,28 @@
                                                 Background="#4CAF50"
                                                 Foreground="White"
                                                 Click="EnableSelectedRules_Click"
-                                                Margin="0,0,10,0"/>
+                                                Margin="0,0,10,0"
+                                                ToolTip="선택된 방화벽 규칙을 활성화합니다"/>
                                     <Button Content="선택된 규칙 비활성화"
                                                 Style="{DynamicResource MaterialDesignRaisedButton}"
                                                 Background="#FF9800"
                                                 Foreground="White"
                                                 Click="DisableSelectedRules_Click"
-                                                Margin="0,0,10,0"/>
+                                                Margin="0,0,10,0"
+                                                ToolTip="선택된 방화벽 규칙을 비활성화합니다"/>
                                     <Button Content="선택된 규칙 삭제"
                                                 Style="{DynamicResource MaterialDesignRaisedButton}"
                                                 Background="#F44336"
                                                 Foreground="White"
-                                                Click="DeleteSelectedRules_Click"/>
+                                                Click="DeleteSelectedRules_Click"
+                                                Margin="0,0,10,0"
+                                                ToolTip="선택된 방화벽 규칙을 Windows 방화벽에서 삭제합니다"/>
+                                    <Button Content="모든 LogCheck 규칙 삭제"
+                                                Style="{DynamicResource MaterialDesignRaisedButton}"
+                                                Background="#9C27B0"
+                                                Foreground="White"
+                                                Click="RemoveAllFirewallRules_Click"
+                                                ToolTip="LogCheck에서 생성한 모든 방화벽 규칙을 Windows 방화벽에서 삭제합니다"/>
                                 </StackPanel>
                             </Grid>
                         </TabItem>
