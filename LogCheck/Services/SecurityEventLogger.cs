@@ -2,6 +2,8 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LogCheck.ViewModels;
 
@@ -25,6 +27,13 @@ namespace LogCheck.Services
         /// </summary>
         public void LogEvent(string eventType, string description, SecurityEventRiskLevel riskLevel, string source = "시스템")
         {
+            // 🔥 NEW: 최종 방어선 - 로깅 시점에서 필터링
+            if (ShouldFilterEvent(source, description, eventType))
+            {
+                System.Diagnostics.Debug.WriteLine($"[SecurityEventLogger] Filtered: {eventType} - {source} - {description}");
+                return; // 로깅하지 않음
+            }
+
             var eventInfo = new SecurityEventInfo
             {
                 Timestamp = DateTime.Now,
@@ -53,6 +62,13 @@ namespace LogCheck.Services
         /// </summary>
         public void LogDDoSEvent(string attackType, string sourceIP, int attackIntensity)
         {
+            // 🔥 NEW: DDoS 이벤트도 사설 IP 필터링 적용
+            if (IsValidIPAddress(sourceIP) && IsPrivateIP(sourceIP))
+            {
+                System.Diagnostics.Debug.WriteLine($"[DDoSEventFilter] Private IP DDoS event filtered: {sourceIP}");
+                return;
+            }
+
             var riskLevel = attackIntensity switch
             {
                 >= 8 => SecurityEventRiskLevel.Critical,
@@ -69,6 +85,19 @@ namespace LogCheck.Services
         /// </summary>
         public void LogBlockEvent(string processName, string remoteIP, string reason)
         {
+            // 🔥 NEW: 차단 이벤트도 사설 IP와 시스템 프로세스 필터링 적용
+            if (IsValidIPAddress(remoteIP) && IsPrivateIP(remoteIP))
+            {
+                System.Diagnostics.Debug.WriteLine($"[BlockEventFilter] Private IP block event filtered: {remoteIP}");
+                return;
+            }
+
+            if (IsSystemProcess(processName))
+            {
+                System.Diagnostics.Debug.WriteLine($"[BlockEventFilter] System process block event filtered: {processName}");
+                return;
+            }
+
             LogEvent("차단", $"{processName} → {remoteIP} 연결 차단: {reason}", SecurityEventRiskLevel.Medium, processName);
         }
 
@@ -93,6 +122,13 @@ namespace LogCheck.Services
         /// </summary>
         public void LogFirewallEvent(string action, string target, string ruleDescription)
         {
+            // 🔥 NEW: 방화벽 이벤트도 사설 IP 필터링 적용
+            if (IsValidIPAddress(target) && IsPrivateIP(target))
+            {
+                System.Diagnostics.Debug.WriteLine($"[FirewallEventFilter] Private IP firewall event filtered: {target}");
+                return;
+            }
+
             var riskLevel = action.Contains("차단") ? SecurityEventRiskLevel.Medium : SecurityEventRiskLevel.Info;
             LogEvent("방화벽", $"{action}: {target} - {ruleDescription}", riskLevel, "Windows Defender");
         }
@@ -199,6 +235,192 @@ namespace LogCheck.Services
             catch
             {
                 return System.Windows.Media.Brushes.Gray;
+            }
+        }
+
+        /// <summary>
+        /// 이벤트 필터링 여부 판단
+        /// </summary>
+        private bool ShouldFilterEvent(string source, string description, string eventType)
+        {
+            try
+            {
+                // 1. IP 주소 소스 필터링
+                if (IsValidIPAddress(source) && IsPrivateIP(source))
+                {
+                    System.Diagnostics.Debug.WriteLine($"[EventFilter] Private IP source detected: {source}");
+                    return true;
+                }
+
+                // 2. 프로세스 이름 소스 필터링  
+                if (source.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) && IsSystemProcess(source))
+                {
+                    System.Diagnostics.Debug.WriteLine($"[EventFilter] System process detected: {source}");
+                    return true;
+                }
+
+                // 3. 설명 내용에서 사설 IP 탐지
+                if (ContainsPrivateIP(description))
+                {
+                    System.Diagnostics.Debug.WriteLine($"[EventFilter] Private IP in description: {description}");
+                    return true;
+                }
+
+                // 4. 설명 내용에서 시스템 프로세스 탐지
+                if (ContainsSystemProcess(description))
+                {
+                    System.Diagnostics.Debug.WriteLine($"[EventFilter] System process in description: {description}");
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[EventFilter] Error in filtering: {ex.Message}");
+                return false; // 에러 시 로깅 허용 (안전한 기본값)
+            }
+        }
+
+        /// <summary>
+        /// 유효한 IP 주소인지 확인
+        /// </summary>
+        private bool IsValidIPAddress(string input)
+        {
+            return IPAddress.TryParse(input, out _);
+        }
+
+        /// <summary>
+        /// 사설 IP 주소인지 확인 (RFC 1918)
+        /// </summary>
+        private bool IsPrivateIP(string ipAddress)
+        {
+            try
+            {
+                if (!IPAddress.TryParse(ipAddress, out IPAddress? ip))
+                    return false;
+
+                byte[] bytes = ip.GetAddressBytes();
+
+                // IPv4 체크
+                if (bytes.Length == 4)
+                {
+                    // 10.0.0.0/8 (10.0.0.0 ~ 10.255.255.255)
+                    if (bytes[0] == 10)
+                        return true;
+
+                    // 172.16.0.0/12 (172.16.0.0 ~ 172.31.255.255)
+                    if (bytes[0] == 172 && bytes[1] >= 16 && bytes[1] <= 31)
+                        return true;
+
+                    // 192.168.0.0/16 (192.168.0.0 ~ 192.168.255.255)
+                    if (bytes[0] == 192 && bytes[1] == 168)
+                        return true;
+
+                    // 127.0.0.0/8 (Loopback)
+                    if (bytes[0] == 127)
+                        return true;
+
+                    // 169.254.0.0/16 (Link-local)
+                    if (bytes[0] == 169 && bytes[1] == 254)
+                        return true;
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 시스템 프로세스인지 확인
+        /// </summary>
+        private bool IsSystemProcess(string processName)
+        {
+            try
+            {
+                var lowerName = processName.ToLowerInvariant();
+
+                // Windows 시스템 디렉토리 체크
+                if (lowerName.Contains(@"c:\windows\system32\") ||
+                    lowerName.Contains(@"c:\windows\syswow64\") ||
+                    lowerName.Contains(@"c:\program files\windows defender\") ||
+                    lowerName.Contains(@"c:\windows\microsoft.net\"))
+                {
+                    return true;
+                }
+
+                // 일반적인 시스템/정상 프로세스들
+                var systemProcesses = new[]
+                {
+                    "notepad.exe", "calc.exe", "mspaint.exe", "winword.exe", "excel.exe",
+                    "chrome.exe", "firefox.exe", "msedge.exe", "explorer.exe",
+                    "svchost.exe", "services.exe", "lsass.exe", "csrss.exe"
+                };
+
+                var processFileName = System.IO.Path.GetFileName(lowerName);
+                return systemProcesses.Any(sysProc => processFileName.Contains(sysProc));
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 설명 텍스트에 사설 IP가 포함되어 있는지 확인
+        /// </summary>
+        private bool ContainsPrivateIP(string description)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(description))
+                    return false;
+
+                // 정규식으로 설명 텍스트에서 IP 주소 추출
+                var ipRegex = new Regex(@"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b");
+                var matches = ipRegex.Matches(description);
+
+                foreach (Match match in matches)
+                {
+                    if (IsPrivateIP(match.Value))
+                        return true;
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 설명 텍스트에 시스템 프로세스가 포함되어 있는지 확인
+        /// </summary>
+        private bool ContainsSystemProcess(string description)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(description))
+                    return false;
+
+                var lowerDescription = description.ToLowerInvariant();
+
+                // 시스템 프로세스 이름들 체크
+                var systemProcesses = new[]
+                {
+                    "notepad.exe", "calc.exe", "mspaint.exe", "winword.exe", "excel.exe",
+                    "chrome.exe", "firefox.exe", "msedge.exe", "explorer.exe"
+                };
+
+                return systemProcesses.Any(proc => lowerDescription.Contains(proc));
+            }
+            catch
+            {
+                return false;
             }
         }
     }
