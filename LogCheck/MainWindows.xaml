@@ -336,7 +336,7 @@
         <!-- Toast Notification Container (최상위 레이어) -->
         <Grid x:Name="ToastNotificationContainer" 
               Grid.RowSpan="3" 
-              IsHitTestVisible="False" 
+              Background="Transparent"
               Panel.ZIndex="1100"
               HorizontalAlignment="Right"
               VerticalAlignment="Top"

@@ -92,6 +92,11 @@ namespace LogCheck.Controls
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            // 🔥 FIXED: 이벤트 전파 중단으로 의도치 않은 네비게이션 방지
+            e.Handled = true;
+            e.Source = sender;
+
+            System.Diagnostics.Debug.WriteLine("[Toast] Close button clicked - closing toast only");
             CloseToast();
         }
 
@@ -99,6 +104,14 @@ namespace LogCheck.Controls
         {
             _autoHideTimer?.Stop();
             _autoHideTimer = null;
+
+            // 🔥 SAFETY: Toast 닫기 시 디버그 로그 + 안전한 종료
+            System.Diagnostics.Debug.WriteLine("[Toast] Closing toast safely");
+
+            // UI 요소 비활성화로 추가 클릭 방지
+            this.IsEnabled = false;
+            this.Visibility = Visibility.Collapsed;
+
             ToastClosed?.Invoke(this, EventArgs.Empty);
         }
     }

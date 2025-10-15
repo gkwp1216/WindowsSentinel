@@ -10,7 +10,8 @@
             Padding="15,8"
             MinWidth="280"
             MaxWidth="350"
-            Margin="0,0,0,8">
+            Margin="0,0,0,8"
+            Panel.ZIndex="1000">
         
         <Border.Effect>
             <DropShadowEffect Color="Black" Direction="270" ShadowDepth="2" Opacity="0.25" BlurRadius="6"/>
@@ -52,8 +53,8 @@
                     x:Name="CloseButton"
                     Content="✕"
                     FontSize="12"
-                    Width="20"
-                    Height="20"
+                    Width="24"
+                    Height="24"
                     Background="Transparent"
                     BorderThickness="0"
                     Foreground="White"
@@ -61,7 +62,10 @@
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     Click="CloseButton_Click"
-                    ToolTip="닫기"/>
+                    ToolTip="Toast 알림 닫기"
+                    Focusable="False"
+                    IsTabStop="False"
+                    Panel.ZIndex="1001"/>
         </Grid>
     </Border>
 </UserControl>
