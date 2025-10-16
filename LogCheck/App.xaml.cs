@@ -17,17 +17,20 @@ namespace LogCheck
 
         public App()
         {
-            // 콘솔 윈도우 할당 (디버깅용)
-            if (System.Diagnostics.Debugger.IsAttached == false)
-            {
-                try
-                {
-                    AllocConsole();
-                    Console.WriteLine("LogCheck 애플리케이션 시작");
-                }
-                catch { /* 콘솔 할당 실패시 무시 */ }
-            }
-
+            /*
+             // 콘솔 윈도우 할당 (디버깅용)
+             if (System.Diagnostics.Debugger.IsAttached == false)
+             {
+                 try
+                 {
+                     AllocConsole();
+                     Console.WriteLine("LogCheck 애플리케이션 시작");
+                 }
+                 catch
+                 {
+                     //콘솔 할당 실패시 무시
+                 }
+             }*/
 
             InitializeComponent();
         }

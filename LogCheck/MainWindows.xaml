@@ -26,10 +26,9 @@
 
         <SolidColorBrush x:Key="SidebarBackgroundColor" Color="#F0F4F7"/>
         <SolidColorBrush x:Key="SidebarForegroundColor" Color="#2C3E50"/>
-        <SolidColorBrush x:Key="SidebarHoverColor" Color="#E5EAF0"/>
+        <SolidColorBrush x:Key="SidebarHoverColor" Color="LightGray"/>
         <SolidColorBrush x:Key="SidebarBorderColor" Color="#D8DCE3"/>
-
-        <SolidColorBrush x:Key="SidebarAccentColor" Color="#3498DB"/>
+        <SolidColorBrush x:Key="SidebarAccentColor" Color="DarkGray"/>
 
         <!-- 네비게이션 아이콘 스타일 -->
         <Style x:Key="NavIconStyle" TargetType="TextBlock">
@@ -112,63 +111,6 @@
         </Storyboard>
 
         <DropShadowEffect x:Key="ShadowEffect" BlurRadius="10" Color="Black" ShadowDepth="4" Opacity="0.3" />
-        
-        <!-- 📖 책갈피 전용 애니메이션 스토리보드 -->
-        <Storyboard x:Key="BookmarkPullAnimation">
-            <!-- 책갈피가 살짝 당겨지면서 확대되는 효과 -->
-            <DoubleAnimation Storyboard.TargetName="BookmarkTransform"
-                           Storyboard.TargetProperty="X"
-                           To="12" Duration="0:0:0.4">
-                <DoubleAnimation.EasingFunction>
-                    <ElasticEase EasingMode="EaseOut" Oscillations="1" Springiness="8"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            
-            <!-- 책갈피 크기 약간 확대 -->
-            <DoubleAnimation Storyboard.TargetName="BookmarkScale"
-                           Storyboard.TargetProperty="ScaleX"
-                           To="1.1" Duration="0:0:0.3">
-                <DoubleAnimation.EasingFunction>
-                    <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            
-            <DoubleAnimation Storyboard.TargetName="BookmarkScale"
-                           Storyboard.TargetProperty="ScaleY"
-                           To="1.1" Duration="0:0:0.3">
-                <DoubleAnimation.EasingFunction>
-                    <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-        </Storyboard>
-        
-        <Storyboard x:Key="BookmarkReleaseAnimation">
-            <!-- 책갈피가 원래 위치로 돌아가면서 살짝 진동하는 효과 -->
-            <DoubleAnimation Storyboard.TargetName="BookmarkTransform"
-                           Storyboard.TargetProperty="X"
-                           To="0" Duration="0:0:0.6">
-                <DoubleAnimation.EasingFunction>
-                    <ElasticEase EasingMode="EaseOut" Oscillations="2" Springiness="6"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            
-            <!-- 책갈피 크기 원래대로 -->
-            <DoubleAnimation Storyboard.TargetName="BookmarkScale"
-                           Storyboard.TargetProperty="ScaleX"
-                           To="1.0" Duration="0:0:0.4">
-                <DoubleAnimation.EasingFunction>
-                    <ElasticEase EasingMode="EaseOut" Oscillations="1"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            
-            <DoubleAnimation Storyboard.TargetName="BookmarkScale"
-                           Storyboard.TargetProperty="ScaleY"
-                           To="1.0" Duration="0:0:0.4">
-                <DoubleAnimation.EasingFunction>
-                    <ElasticEase EasingMode="EaseOut" Oscillations="1"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-        </Storyboard>
     </Window.Resources>
 
     <Grid x:Name="mainGrid">
@@ -178,48 +120,59 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- 사이드바 존재 힌트 (항상 보이는 책갈피) -->
-        <Border x:Name="SidebarHint"
-                Grid.RowSpan="3"
-                Width="6"
-                Height="40"
-                Background="{DynamicResource SidebarAccentColor}"
+        <!-- 사이드바 마우스 호버 트리거 영역 -->
+        <Border x:Name="SidebarTrigger" 
+                Grid.RowSpan="3" 
+                Width="15"
+                Background="Transparent" 
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                CornerRadius="0,3,3,0"
-                Panel.ZIndex="1070"
-                Opacity="0.6"
-                Margin="0,0,0,0">
-            <Border.Effect>
-                <DropShadowEffect Color="Black" BlurRadius="4" ShadowDepth="1" Opacity="0.3"/>
-            </Border.Effect>
-            
-            <!-- 호버 시 밝아지는 애니메이션 -->
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Opacity" Value="1.0"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-        </Border>
-
-        <!-- 사이드바 호버 트리거 (확대된 영역) -->
-        <Canvas x:Name="SidebarTriggerCanvas" 
-                Grid.RowSpan="3"
-                Width="50"
-                Height="200"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
                 Panel.ZIndex="1060"
-                Background="Transparent"
                 MouseEnter="SidebarTrigger_MouseEnter"
                 MouseLeave="SidebarTrigger_MouseLeave"
                 Cursor="Hand"
-                ToolTip="사이드바 열기 (왼쪽으로 마우스 이동)">
-        </Canvas>
+                ToolTip="사이드바 열기">
+
+            <Grid>
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="ChevronTransform" />
+                </Grid.RenderTransform>
+
+                <materialDesign:PackIcon Kind="ChevronDoubleRight" 
+                                             Width="25" Height="25" 
+                                             Foreground="Black"
+                                             HorizontalAlignment="Center" 
+                                             VerticalAlignment="Center" />
+            </Grid>
+
+            <Border.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="ChevronTransform"
+                                             Storyboard.TargetProperty="X" 
+                                             To="5" Duration="0:0:0.8"
+                                             AutoReverse="True" RepeatBehavior="Forever" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background.Color" 
+                                            To="#1A0078D4" Duration="0:0:0.2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background.Color" 
+                                            To="Transparent" Duration="0:0:0.3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Border.Triggers>
+        </Border>
 
         <!-- 토글형 사이드바 -->
         <Border x:Name="Sidebar" 
@@ -239,17 +192,8 @@
             <Border.Effect>
                 <DropShadowEffect Color="Black" BlurRadius="8" ShadowDepth="4" Opacity="0.2"/>
             </Border.Effect>
-            
-            <!-- 사이드바 내용을 담는 Grid -->
-            <Grid>
-                <!-- 📚 책갈피 탭 장식 (사이드바 왼쪽 가장자리) -->
-                <Canvas HorizontalAlignment="Left" VerticalAlignment="Center" Width="20" Height="80" Margin="-8,0,0,0">
-                    
-                </Canvas>
-                    
-                
-                <!-- 사이드바 메인 컨텐츠 -->
-                <StackPanel Margin="0,15,0,20">
+
+            <StackPanel Margin="0,15,0,20">
                 <!-- 상단 헤더 영역 (로고 + 닫기 버튼) -->
                 <Grid Margin="15,10,10,25">
                     <Grid.ColumnDefinitions>
@@ -306,15 +250,15 @@
 
                 <!-- 내비게이션 메뉴 -->
                 <StackPanel HorizontalAlignment="Stretch" Margin="0">
-                    <Button Style="{StaticResource SidebarButtonStyle}" 
-                                Click="SecurityDashboard_Click" 
-                                Cursor="Hand">
+                    <Button Style="{StaticResource SidebarButtonStyle}"
+                            Click="SecurityDashboard_Click"
+                            Cursor="Hand">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE83D;" 
-                                           FontFamily="Segoe MDL2 Assets" 
-                                           FontSize="18" 
-                                           Margin="0,0,15,0" 
-                                           VerticalAlignment="Center"/>
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="18" 
+                                       Margin="0,0,15,0" 
+                                       VerticalAlignment="Center"/>
                             <TextBlock Text="보안 상태 대시보드" 
                                        FontSize="14" 
                                        Foreground="{DynamicResource SidebarForegroundColor}"
@@ -323,8 +267,8 @@
                     </Button>
 
                     <Button Style="{StaticResource SidebarButtonStyle}" 
-                                Click="NetWorksNew_Click" 
-                                Cursor="Hand">
+                            Click="NetWorksNew_Click" 
+                            Cursor="Hand">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE704;" 
                                        FontFamily="Segoe MDL2 Assets" 
@@ -343,52 +287,52 @@
                                 Cursor="Hand">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE72E;" 
-                                           FontFamily="Segoe MDL2 Assets" 
-                                           FontSize="18" 
-                                           Margin="0,0,15,0" 
-                                           VerticalAlignment="Center"/>
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="18" 
+                                       Margin="0,0,15,0" 
+                                       VerticalAlignment="Center"/>
                             <TextBlock Text="자동 차단 시스템" 
-                                           FontSize="14" 
+                                       FontSize="14" 
                                        Foreground="{DynamicResource SidebarForegroundColor}"
-                                           VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 
                     <Button Style="{StaticResource SidebarButtonStyle}" 
-                                Click="Recoverys_Click" 
-                                Cursor="Hand">
+                            Click="Recoverys_Click" 
+                            Cursor="Hand">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE777;" 
-                                           FontFamily="Segoe MDL2 Assets" 
-                                           FontSize="18" 
-                                           Margin="0,0,15,0" 
-                                           VerticalAlignment="Center"/>
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="18" 
+                                       Margin="0,0,15,0" 
+                                       VerticalAlignment="Center"/>
                             <TextBlock Text="시스템 복구" 
-                                           FontSize="14" 
+                                       FontSize="14" 
                                        Foreground="{DynamicResource SidebarForegroundColor}"
-                                           VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 
                     <Button Style="{StaticResource SidebarButtonStyle}" 
-                                Click="ProgramList_Click" 
-                                Cursor="Hand">
+                            Click="ProgramList_Click" 
+                            Cursor="Hand">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE8B7;" 
-                                           FontFamily="Segoe MDL2 Assets" 
-                                           FontSize="18" 
-                                           Margin="0,0,15,0" 
-                                           VerticalAlignment="Center"/>
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="18" 
+                                       Margin="0,0,15,0" 
+                                       VerticalAlignment="Center"/>
                             <TextBlock Text="설치된 프로그램" 
-                                           FontSize="14" 
+                                       FontSize="14" 
                                        Foreground="{DynamicResource SidebarForegroundColor}"
-                                           VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
 
                     <Button Style="{StaticResource SidebarButtonStyle}" 
-                                Click="BtnLog_Click" 
-                                Cursor="Hand">
+                            Click="BtnLog_Click" 
+                            Cursor="Hand">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE7C3;" 
                                        FontFamily="Segoe MDL2 Assets" 
@@ -403,13 +347,12 @@
                     </Button>
                 </StackPanel>
             </StackPanel>
-            </Grid>
         </Border>
 
         <!-- Toast Notification Container (최상위 레이어) -->
         <Grid x:Name="ToastNotificationContainer" 
               Grid.RowSpan="3" 
-              Background="Transparent"
+              IsHitTestVisible="False" 
               Panel.ZIndex="1100"
               HorizontalAlignment="Right"
               VerticalAlignment="Top"

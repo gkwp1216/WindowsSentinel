@@ -1,8 +1,8 @@
-﻿using LogCheck.Properties;
-using SharpPcap;
-using System.Runtime.Versioning;
+﻿using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Controls;
+using LogCheck.Properties;
+using SharpPcap;
 using static LogCheck.App;
 
 namespace LogCheck
@@ -105,30 +105,56 @@ namespace LogCheck
             {
                 nicCombo.SelectionChanged -= NicComboBox_SelectionChanged;
                 nicCombo.Items.Clear();
-                foreach (var dev in CaptureDeviceList.Instance)
-                {
-                    var id = dev.Name;
-                    var friendly = GetFriendlyName(dev);
-                    nicCombo.Items.Add(new ComboBoxItem { Content = friendly, Tag = id });
-                }
 
-                // 선택 고정
-                var selectedId = Settings.Default.SelectedNicId;
-                if (!string.IsNullOrWhiteSpace(selectedId))
+                try
                 {
-                    foreach (ComboBoxItem item in nicCombo.Items)
+                    // ⚠️ [변경된 부분]
+                    // 일부 PC에서 Npcap/SharpPcap 환경 문제로 CaptureDeviceList.Instance 접근 시
+                    // AccessViolationException 또는 COM 예외로 앱이 강제 종료되는 경우가 있음.
+                    // 따라서 이 부분 전체를 try/catch로 감싸서 UI만 경고하고 프로그램은 계속 유지되도록 함.
+
+                    foreach (var dev in CaptureDeviceList.Instance)
                     {
-                        if (string.Equals(item.Tag as string, selectedId, StringComparison.OrdinalIgnoreCase))
+                        if (dev == null)
+                            continue; // null 방어
+
+                        string id = dev.Name ?? "(unknown)";
+                        string friendly = GetFriendlyName(dev);
+                        nicCombo.Items.Add(new ComboBoxItem { Content = friendly, Tag = id });
+                    }
+
+                    // 선택 고정
+                    var selectedId = Settings.Default.SelectedNicId;
+                    if (!string.IsNullOrWhiteSpace(selectedId))
+                    {
+                        foreach (ComboBoxItem item in nicCombo.Items)
                         {
-                            nicCombo.SelectedItem = item;
-                            break;
+                            if (string.Equals(item.Tag as string, selectedId, StringComparison.OrdinalIgnoreCase))
+                            {
+                                nicCombo.SelectedItem = item;
+                                break;
+                            }
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    // ⚠️ [추가된 부분]
+                    // 특정 PC 환경에서 Npcap이 없거나 드라이버 충돌 시 예외가 발생할 수 있음.
+                    // 이때 앱이 강제 종료되지 않도록 경고 메시지로 대체.
+                    System.Diagnostics.Debug.WriteLine($"NIC enumeration failed: {ex.Message}");
+                    System.Windows.MessageBox.Show(
+                        "네트워크 장치 목록을 불러오는 중 오류가 발생했습니다.\n" +
+                        "Npcap이 설치되어 있는지 확인하세요.\n\n" +
+                        $"오류: {ex.Message}",
+                        "장치 탐색 오류", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
 
+                // NIC 목록이 비어 있어도 이후 로직은 정상적으로 실행 가능하도록 유지
                 nicCombo.IsEnabled = Settings.Default.AutoSelectNic == false;
                 nicCombo.SelectionChanged += NicComboBox_SelectionChanged;
             }
+
 
             // BPF 텍스트 박스
             if (FindName("BpfTextBox") is System.Windows.Controls.TextBox bpfBox)

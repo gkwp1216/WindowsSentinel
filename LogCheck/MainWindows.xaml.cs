@@ -735,7 +735,7 @@ namespace LogCheck
             sidebarHideTimer.Tick += (s, e) =>
             {
                 sidebarHideTimer.Stop();
-                if (!isSidebarPinnedOpen && !IsMouseOverSidebar())
+                if (!isSidebarPinnedOpen)
                 {
                     HideSidebar();
                 }
@@ -744,14 +744,6 @@ namespace LogCheck
 
         // 사이드바 영역에 마우스가 있는지 확인
         [SupportedOSPlatform("windows")]
-        private bool IsMouseOverSidebar()
-        {
-            var mousePosition = System.Windows.Input.Mouse.GetPosition(this);
-            var sidebarBounds = new Rect(0, 0, 250, ActualHeight);
-            var triggerBounds = new Rect(0, 0, 15, ActualHeight);
-
-            return sidebarBounds.Contains(mousePosition) || triggerBounds.Contains(mousePosition);
-        }
 
         // 사이드바 닫기 버튼 클릭 시 고정 모드 해제하고 숨기기
         [SupportedOSPlatform("windows")]
@@ -775,7 +767,7 @@ namespace LogCheck
         private void SidebarTrigger_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             // 마우스가 사이드바로 이동했는지 확인 후 숨김 타이머 시작
-            if (!isSidebarPinnedOpen && !IsMouseOverSidebar())
+            if (!isSidebarPinnedOpen)
             {
                 sidebarHideTimer?.Start();
             }
@@ -808,6 +800,7 @@ namespace LogCheck
                 var showStoryboard = (System.Windows.Media.Animation.Storyboard)FindResource("ShowSidebar");
                 showStoryboard.Begin();
                 isSidebarVisible = true;
+                SidebarTrigger.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -819,6 +812,7 @@ namespace LogCheck
                 var hideStoryboard = (System.Windows.Media.Animation.Storyboard)FindResource("HideSidebar");
                 hideStoryboard.Begin();
                 isSidebarVisible = false;
+                SidebarTrigger.Visibility = Visibility.Visible;
             }
         }
 
