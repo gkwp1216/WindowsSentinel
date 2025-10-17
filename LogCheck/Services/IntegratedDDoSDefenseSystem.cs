@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 using LogCheck.Models;
@@ -11,12 +12,14 @@ namespace LogCheck.Services
     /// <summary>
     /// DDoS 감지 엔진과 고급 패킷 분석기를 통합한 통합 DDoS 방어 시스템
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public class IntegratedDDoSDefenseSystem
     {
         private readonly DDoSDetectionEngine _detectionEngine;
         private readonly AdvancedPacketAnalyzer _packetAnalyzer;
         private readonly RateLimitingService _rateLimiter;
         private readonly DDoSSignatureDatabase _signatureDatabase;
+        private readonly ToastNotificationService _toastService;
 
         private readonly ConcurrentQueue<PacketDto> _packetQueue;
         private readonly ConcurrentDictionary<string, DDoSDetectionResult> _activeAttacks;
@@ -47,6 +50,7 @@ namespace LogCheck.Services
             _packetAnalyzer = packetAnalyzer ?? throw new ArgumentNullException(nameof(packetAnalyzer));
             _rateLimiter = rateLimiter ?? throw new ArgumentNullException(nameof(rateLimiter));
             _signatureDatabase = signatureDatabase ?? throw new ArgumentNullException(nameof(signatureDatabase));
+            _toastService = ToastNotificationService.Instance;
 
             _packetQueue = new ConcurrentQueue<PacketDto>();
             _activeAttacks = new ConcurrentDictionary<string, DDoSDetectionResult>();
@@ -72,6 +76,14 @@ namespace LogCheck.Services
                     _analysisTimer.Change(TimeSpan.Zero, TimeSpan.FromSeconds(1));
                     _cleanupTimer.Change(TimeSpan.Zero, TimeSpan.FromSeconds(30));
                     LogHelper.Log($"통합 DDoS 방어 시스템 시작됨", MessageType.Information);
+
+                    // 🔥 Toast 알림: 시스템 시작
+                    _ = Task.Run(async () =>
+                    {
+                        await _toastService.ShowInfoAsync(
+                            "🛡️ DDoS 방어 시스템 시작",
+                            "실시간 공격 탐지 및 자동 방어 시스템이 활성화되었습니다.");
+                    });
                 }
             }
         }
@@ -89,6 +101,14 @@ namespace LogCheck.Services
                     _analysisTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     _cleanupTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     LogHelper.Log($"통합 DDoS 방어 시스템 중지됨", MessageType.Information);
+
+                    // 🔥 Toast 알림: 시스템 중지
+                    _ = Task.Run(async () =>
+                    {
+                        await _toastService.ShowWarningAsync(
+                            "⚠️ DDoS 방어 시스템 중지",
+                            "실시간 공격 탐지 시스템이 비활성화되었습니다.");
+                    });
                 }
             }
         }
@@ -354,6 +374,23 @@ namespace LogCheck.Services
                     var actionResult = await ExecuteSingleDefenseAction(action, detectionResult);
                     DefenseActionExecuted?.Invoke(this, actionResult);
 
+                    // 🔥 Toast 알림: 방어 조치 실행 결과
+                    _ = Task.Run(async () =>
+                    {
+                        if (actionResult.Success)
+                        {
+                            await _toastService.ShowSuccessAsync(
+                                "✅ 방어 조치 성공",
+                                $"{GetDefenseActionDisplayName(action)} 완료 - {detectionResult.SourceIP}");
+                        }
+                        else
+                        {
+                            await _toastService.ShowErrorAsync(
+                                "❌ 방어 조치 실패",
+                                $"{GetDefenseActionDisplayName(action)} 실패: {actionResult.ErrorMessage}");
+                        }
+                    });
+
                     if (actionResult.Success && IsBlockingAction(action))
                     {
                         Interlocked.Increment(ref _totalAttacksBlocked);
@@ -366,6 +403,15 @@ namespace LogCheck.Services
 
                 // 공격 감지 이벤트 발생
                 AttackDetected?.Invoke(this, detectionResult);
+
+                // 🔥 Toast 알림: 공격 탐지됨
+                _ = Task.Run(async () =>
+                {
+                    await _toastService.ShowSecurityAsync(
+                        "🛡️ DDoS 공격 탐지됨",
+                        $"{GetAttackTypeDisplayName(detectionResult.AttackType)} 공격이 {detectionResult.SourceIP}에서 감지되었습니다. " +
+                        $"공격 점수: {detectionResult.AttackScore:F1}");
+                });
 
                 // 통계 업데이트
                 _attackTypeStats.AddOrUpdate(detectionResult.AttackType, 1, (k, v) => v + 1);
@@ -650,6 +696,48 @@ namespace LogCheck.Services
             };
 
             return Math.Min(score, 100.0); // 최대 100점
+        }
+
+        /// <summary>
+        /// 공격 타입을 사용자 친화적인 이름으로 변환
+        /// </summary>
+        private static string GetAttackTypeDisplayName(DDoSAttackType attackType)
+        {
+            return attackType switch
+            {
+                DDoSAttackType.SynFlood => "SYN Flood",
+                DDoSAttackType.UdpFlood => "UDP Flood",
+                DDoSAttackType.HttpFlood => "HTTP Flood",
+                DDoSAttackType.SlowLoris => "Slowloris",
+                DDoSAttackType.IcmpFlood => "ICMP Flood",
+                DDoSAttackType.DnsAmplification => "DNS 증폭",
+                DDoSAttackType.BandwidthFlood => "대역폭 공격",
+                DDoSAttackType.ConnectionFlood => "연결 폭주",
+                DDoSAttackType.TcpRstFlood => "TCP RST Flood",
+                DDoSAttackType.TcpAckFlood => "TCP ACK Flood",
+                DDoSAttackType.VolumetricAttack => "볼류메트릭 공격",
+                DDoSAttackType.BotnetAttack => "봇넷 공격",
+                DDoSAttackType.PingOfDeath => "Ping of Death",
+                _ => "알 수 없는 공격"
+            };
+        }
+
+        /// <summary>
+        /// 방어 조치 타입을 사용자 친화적인 이름으로 변환
+        /// </summary>
+        private static string GetDefenseActionDisplayName(DefenseActionType actionType)
+        {
+            return actionType switch
+            {
+                DefenseActionType.IpBlock => "IP 차단",
+                DefenseActionType.RateLimit => "속도 제한",
+                DefenseActionType.ConnectionLimit => "연결 제한",
+                DefenseActionType.AdminAlert => "관리자 알림",
+                DefenseActionType.EnhancedMonitoring => "강화 모니터링",
+                DefenseActionType.AutoBlock => "자동 차단",
+                DefenseActionType.EmergencyBlock => "긴급 차단",
+                _ => "알 수 없는 조치"
+            };
         }
 
         public void Dispose()

@@ -34,10 +34,22 @@ namespace LogCheck.ViewModels
             get => _currentThreatLevel;
             set
             {
+                var previousLevel = _currentThreatLevel;
                 _currentThreatLevel = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ThreatLevelText));
                 OnPropertyChanged(nameof(ThreatLevelColor));
+
+                // 🔥 Toast 알림: 위험도 변경
+                if (previousLevel != value && value != ThreatLevel.Safe)
+                {
+                    _ = System.Threading.Tasks.Task.Run(async () =>
+                    {
+                        await _toastService.ShowSecurityAsync(
+                            "🚨 보안 위험도 변경",
+                            $"시스템 위험도가 {GetThreatLevelDisplayName(previousLevel)}에서 {GetThreatLevelDisplayName(value)}로 변경되었습니다.");
+                    });
+                }
             }
         }
 
@@ -48,8 +60,21 @@ namespace LogCheck.ViewModels
             get => _activeThreats;
             set
             {
+                var previousThreats = _activeThreats;
                 _activeThreats = value;
                 OnPropertyChanged();
+
+                // 🔥 Toast 알림: 새로운 위협 탐지
+                if (value > previousThreats && value > 0)
+                {
+                    var newThreats = value - previousThreats;
+                    _ = System.Threading.Tasks.Task.Run(async () =>
+                    {
+                        await _toastService.ShowWarningAsync(
+                            "⚠️ 새로운 위협 탐지",
+                            $"{newThreats}개의 새로운 보안 위협이 감지되었습니다. 총 활성 위협: {value}개");
+                    });
+                }
             }
         }
 
@@ -59,8 +84,21 @@ namespace LogCheck.ViewModels
             get => _blockedConnections24h;
             set
             {
+                var previousBlocked = _blockedConnections24h;
                 _blockedConnections24h = value;
                 OnPropertyChanged();
+
+                // 🔥 Toast 알림: 차단 작업 증가 (대량 차단 시에만)
+                if (value > previousBlocked && (value - previousBlocked) >= 10)
+                {
+                    var newBlocks = value - previousBlocked;
+                    _ = System.Threading.Tasks.Task.Run(async () =>
+                    {
+                        await _toastService.ShowSuccessAsync(
+                            "🛡️ 대량 위협 차단",
+                            $"{newBlocks}개의 악성 연결이 차단되었습니다. 24시간 내 총 차단: {value}개");
+                    });
+                }
             }
         }
 
@@ -582,6 +620,22 @@ namespace LogCheck.ViewModels
                     });
                 }
             });
+        }
+
+        /// <summary>
+        /// 위험도 레벨을 사용자 친화적인 이름으로 변환
+        /// </summary>
+        private static string GetThreatLevelDisplayName(ThreatLevel level)
+        {
+            return level switch
+            {
+                ThreatLevel.Safe => "안전",
+                ThreatLevel.Low => "낮음",
+                ThreatLevel.Medium => "보통",
+                ThreatLevel.High => "높음",
+                ThreatLevel.Critical => "심각",
+                _ => "알 수 없음"
+            };
         }
 
         public void Dispose()

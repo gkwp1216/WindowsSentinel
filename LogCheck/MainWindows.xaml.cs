@@ -676,6 +676,19 @@ namespace LogCheck
             if (result == MessageBoxResult.Yes)
             {
                 isExplicitClose = true;
+
+                // 🔥 Toast 알림: 시스템 종료
+                try
+                {
+                    var toastService = ToastNotificationService.Instance;
+                    await toastService.ShowInfoAsync(
+                        "👋 시스템 종료",
+                        "Windows Sentinel 보안 시스템이 안전하게 종료됩니다.");
+
+                    await Task.Delay(2000); // Toast 표시 시간 확보
+                }
+                catch { }
+
                 try
                 {
                     await LogCheck.Services.MonitoringHub.Instance.StopAsync();
@@ -687,6 +700,19 @@ namespace LogCheck
             else if (result == MessageBoxResult.No)
             {
                 Hide(); // 트레이로 이동
+
+                // 🔥 Toast 알림: 트레이로 최소화
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        var toastService = ToastNotificationService.Instance;
+                        await toastService.ShowInfoAsync(
+                            "📌 백그라운드 실행",
+                            "Windows Sentinel이 트레이에서 계속 실행됩니다.");
+                    }
+                    catch { }
+                });
             }
             // Cancel이면 아무것도 하지 않음
         }

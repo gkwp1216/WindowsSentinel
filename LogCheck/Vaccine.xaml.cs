@@ -20,11 +20,13 @@ namespace LogCheck
         private int dotCount = 0;
         private const int maxDots = 3;
         private string baseText = "검사 중";
+        private readonly Services.ToastNotificationService _toastService;
 
         public Vaccine()
         {
             InitializeComponent();
 
+            _toastService = Services.ToastNotificationService.Instance;
             resultDataGrid.ItemsSource = _results;
 
             // 로딩 애니메이션 초기화
@@ -93,6 +95,14 @@ namespace LogCheck
             ShowLoadingOverlay();
             fullScanButton.IsEnabled = false;
 
+            // 🔥 Toast 알림: 스캔 시작
+            _ = Task.Run(async () =>
+            {
+                await _toastService.ShowInfoAsync(
+                    "🔍 시스템 스캔 시작",
+                    "설치된 프로그램을 검사하고 있습니다...");
+            });
+
             try
             {
                 var list = await Task.Run(() => ScanInstalledPrograms());
@@ -102,14 +112,42 @@ namespace LogCheck
                     _results.Add(item);
                 }
 
-                if (!list.Any(r => r.Verdict == "Malicious"))
+                var maliciousCount = list.Count(r => r.Verdict == "Malicious");
+                var suspiciousCount = list.Count(r => r.Verdict == "Suspicious");
+                var cleanCount = list.Count(r => r.Verdict == "Clean");
+
+                // 🔥 Toast 알림: 스캔 완료 결과
+                _ = Task.Run(async () =>
                 {
-                    System.Windows.MessageBox.Show("악성 프로그램이 발견되지 않았습니다.", "결과", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
+                    if (maliciousCount > 0)
+                    {
+                        await _toastService.ShowWarningAsync(
+                            "⚠️ 악성 프로그램 탐지",
+                            $"악성: {maliciousCount}개, 의심: {suspiciousCount}개, 정상: {cleanCount}개");
+                    }
+                    else if (suspiciousCount > 0)
+                    {
+                        await _toastService.ShowWarningAsync(
+                            "🔍 의심스러운 프로그램 발견",
+                            $"의심: {suspiciousCount}개, 정상: {cleanCount}개");
+                    }
+                    else
+                    {
+                        await _toastService.ShowSuccessAsync(
+                            "✅ 시스템 깨끗함",
+                            $"총 {cleanCount}개 프로그램을 검사했으며 위협이 발견되지 않았습니다.");
+                    }
+                });
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show($"검사 중 오류 발생: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                // 🔥 Toast 알림: 스캔 오류
+                _ = Task.Run(async () =>
+                {
+                    await _toastService.ShowErrorAsync(
+                        "❌ 스캔 오류",
+                        $"시스템 검사 중 오류가 발생했습니다: {ex.Message}");
+                });
             }
             finally
             {
@@ -133,6 +171,14 @@ namespace LogCheck
 
             ShowLoadingOverlay();
 
+            // 🔥 Toast 알림: 파일 스캔 시작
+            _ = Task.Run(async () =>
+            {
+                await _toastService.ShowInfoAsync(
+                    "🔍 파일 스캔 시작",
+                    $"파일 '{Path.GetFileName(path)}'을 검사하고 있습니다...");
+            });
+
             try
             {
                 string sha256 = await Task.Run(() => ComputeSha256(path));
@@ -146,10 +192,39 @@ namespace LogCheck
                     InstallPath = path,
                     Verdict = verdict
                 });
+
+                // 🔥 Toast 알림: 파일 스캔 결과
+                _ = Task.Run(async () =>
+                {
+                    switch (verdict.ToLower())
+                    {
+                        case "malicious":
+                            await _toastService.ShowWarningAsync(
+                                "⚠️ 악성 파일 탐지",
+                                $"파일 '{Path.GetFileName(path)}'에서 악성 코드가 발견되었습니다!");
+                            break;
+                        case "suspicious":
+                            await _toastService.ShowWarningAsync(
+                                "🔍 의심스러운 파일",
+                                $"파일 '{Path.GetFileName(path)}'이 의심스러운 것으로 판단됩니다.");
+                            break;
+                        default:
+                            await _toastService.ShowSuccessAsync(
+                                "✅ 깨끗한 파일",
+                                $"파일 '{Path.GetFileName(path)}'은 안전한 것으로 확인되었습니다.");
+                            break;
+                    }
+                });
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show($"검사 중 오류 발생: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                // 🔥 Toast 알림: 파일 스캔 오류
+                _ = Task.Run(async () =>
+                {
+                    await _toastService.ShowErrorAsync(
+                        "❌ 파일 스캔 오류",
+                        $"파일 검사 중 오류가 발생했습니다: {ex.Message}");
+                });
             }
             finally
             {

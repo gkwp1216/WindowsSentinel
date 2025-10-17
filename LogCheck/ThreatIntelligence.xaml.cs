@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -7,6 +8,7 @@ using LogCheck.Services;
 
 namespace LogCheck
 {
+    [SupportedOSPlatform("windows")]
     public partial class ThreatIntelligence : Page, LogCheck.Models.INavigable
     {
         private readonly AbuseIPDBClient _abuseIPDBClient;
@@ -14,6 +16,7 @@ namespace LogCheck
         private readonly NetworkConnectionManager _connectionManager;
         private readonly ObservableCollection<BlockedIPAddress> _blockedIPs;
         private readonly LogMessageService _logService;
+        private readonly ToastNotificationService _toastService;
         private ThreatLookupResult? _currentThreatResult;
         private BlockedIPAddress? _selectedBlockedIP;
 
@@ -25,6 +28,7 @@ namespace LogCheck
             _abuseIPDBClient = new AbuseIPDBClient();
             _connectionManager = new NetworkConnectionManager();
             _ipBlocker = new RealTimeIPBlocker(_abuseIPDBClient, _connectionManager);
+            _toastService = ToastNotificationService.Instance;
 
             // 컬렉션 초기화
             _blockedIPs = new ObservableCollection<BlockedIPAddress>();
@@ -262,6 +266,23 @@ namespace LogCheck
 
                 AddLogMessage(message);
 
+                // 🔥 Toast 알림: IP 조회 결과
+                _ = Task.Run(async () =>
+                {
+                    if (threatResult.IsThreat)
+                    {
+                        await _toastService.ShowWarningAsync(
+                            "⚠️ 위험한 IP 탐지",
+                            $"IP {ipAddress}는 위험 점수 {threatResult.ThreatScore}점을 가진 악성 IP입니다.");
+                    }
+                    else
+                    {
+                        await _toastService.ShowSuccessAsync(
+                            "✅ 안전한 IP 확인",
+                            $"IP {ipAddress}는 위협이 감지되지 않은 안전한 IP입니다.");
+                    }
+                });
+
                 if (threatResult.IsBlocked)
                 {
                     AddLogMessage($"IP {ipAddress}가 자동으로 차단되었습니다.");
@@ -320,10 +341,26 @@ namespace LogCheck
                     AddLogMessage($"IP {ipAddress}가 성공적으로 차단되었습니다.");
                     LoadBlockedIPs();
                     UpdateStatistics();
+
+                    // 🔥 Toast 알림: 수동 IP 차단 성공
+                    _ = Task.Run(async () =>
+                    {
+                        await _toastService.ShowSuccessAsync(
+                            "🚫 IP 수동 차단 완료",
+                            $"IP {ipAddress}을 수동으로 차단했습니다.");
+                    });
                 }
                 else
                 {
                     AddLogMessage($"IP {ipAddress} 차단에 실패했습니다.");
+
+                    // 🔥 Toast 알림: IP 차단 실패
+                    _ = Task.Run(async () =>
+                    {
+                        await _toastService.ShowErrorAsync(
+                            "❌ IP 차단 실패",
+                            $"IP {ipAddress} 차단 작업이 실패했습니다.");
+                    });
                 }
             }
             catch (Exception ex)
@@ -493,6 +530,17 @@ namespace LogCheck
             SafeInvokeUI(() =>
             {
                 AddLogMessage($"새로운 위협 정보 수신: {threatData.IPAddress} (점수: {threatData.AbuseConfidenceScore})");
+
+                // 🔥 Toast 알림: 위협 정보 수신
+                _ = Task.Run(async () =>
+                {
+                    var threatLevel = threatData.AbuseConfidenceScore >= 75 ? "높음" :
+                                    threatData.AbuseConfidenceScore >= 50 ? "보통" : "낮음";
+
+                    await _toastService.ShowSecurityAsync(
+                        "🔍 위협 정보 수신",
+                        $"IP {threatData.IPAddress} 위험도: {threatLevel} ({threatData.AbuseConfidenceScore}점)");
+                });
             });
         }
 
@@ -503,6 +551,14 @@ namespace LogCheck
                 AddLogMessage($"IP {blockedIP.IPAddress}가 차단되었습니다: {blockedIP.Reason}");
                 LoadBlockedIPs();
                 UpdateStatistics();
+
+                // 🔥 Toast 알림: IP 차단 성공
+                _ = Task.Run(async () =>
+                {
+                    await _toastService.ShowSuccessAsync(
+                        "🚫 악성 IP 차단 완료",
+                        $"IP {blockedIP.IPAddress}이(가) 성공적으로 차단되었습니다.");
+                });
             });
         }
 
@@ -513,6 +569,14 @@ namespace LogCheck
                 AddLogMessage($"IP {ipAddress}의 차단이 해제되었습니다.");
                 LoadBlockedIPs();
                 UpdateStatistics();
+
+                // 🔥 Toast 알림: IP 차단 해제
+                _ = Task.Run(async () =>
+                {
+                    await _toastService.ShowInfoAsync(
+                        "✅ IP 차단 해제",
+                        $"IP {ipAddress}의 차단이 해제되었습니다.");
+                });
             });
         }
 
@@ -521,6 +585,14 @@ namespace LogCheck
             SafeInvokeUI(() =>
             {
                 AddLogMessage($"IP 차단 시스템 오류: {error}");
+
+                // 🔥 Toast 알림: IP 차단 시스템 오류
+                _ = Task.Run(async () =>
+                {
+                    await _toastService.ShowErrorAsync(
+                        "❌ IP 차단 시스템 오류",
+                        $"차단 시스템에서 오류가 발생했습니다: {error}");
+                });
             });
         }
 
@@ -529,6 +601,17 @@ namespace LogCheck
             SafeInvokeUI(() =>
             {
                 AddLogMessage($"새로운 위협 탐지: {threatResult.IPAddress} (점수: {threatResult.ThreatScore})");
+
+                // 🔥 Toast 알림: 위협 탐지
+                _ = Task.Run(async () =>
+                {
+                    var severity = threatResult.ThreatScore >= 75 ? "높은" :
+                                 threatResult.ThreatScore >= 50 ? "중간" : "낮은";
+
+                    await _toastService.ShowWarningAsync(
+                        "⚠️ 새로운 위협 탐지",
+                        $"IP {threatResult.IPAddress}에서 {severity} 위험도 위협이 탐지되었습니다. (점수: {threatResult.ThreatScore})");
+                });
             });
         }
 
