@@ -646,6 +646,34 @@ namespace LogCheck.Services
         }
 
         /// <summary>
+        /// 시간대별 위협 트렌드 데이터 반환 (24시간)
+        /// </summary>
+        public Dictionary<int, int> GetHourlyThreatTrend()
+        {
+            var hourlyStats = new Dictionary<int, int>();
+
+            // 24시간 초기화
+            for (int i = 0; i < 24; i++)
+            {
+                hourlyStats[i] = 0;
+            }
+
+            // 실제 공격 데이터에서 시간대별 통계 생성
+            var yesterday = DateTime.Now.AddDays(-1);
+            var recentAttacks = _activeAttacks.Values
+                .Where(attack => attack.DetectedAt >= yesterday)
+                .ToList();
+
+            foreach (var attack in recentAttacks)
+            {
+                var hour = attack.DetectedAt.Hour;
+                hourlyStats[hour]++;
+            }
+
+            return hourlyStats;
+        }
+
+        /// <summary>
         /// DDoSAlert 리스트를 DDoSDetectionResult 리스트로 변환
         /// </summary>
         private List<DDoSDetectionResult> ConvertAlertsToResults(List<DDoSAlert> alerts)
