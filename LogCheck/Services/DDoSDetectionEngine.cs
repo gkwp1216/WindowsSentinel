@@ -25,6 +25,9 @@ namespace LogCheck.Services
         // 임계값 설정
         private readonly DDoSThresholds _thresholds;
 
+        // 🔥 데모 모드: 사설 IP도 탐지 (발표/테스트용)
+        public static bool DemoMode { get; set; } = false;
+
         #endregion
 
         #region Events
@@ -87,9 +90,9 @@ namespace LogCheck.Services
 
             try
             {
-                // 🔥 NEW: 사설 IP와 시스템 프로세스 필터링
+                // 🔥 NEW: 사설 IP와 시스템 프로세스 필터링 (데모 모드에서는 사설 IP도 탐지)
                 var filteredConnections = connections
-                    .Where(conn => !IsPrivateIP(conn.RemoteAddress))
+                    .Where(conn => DemoMode || !IsPrivateIP(conn.RemoteAddress))
                     .Where(conn => !IsSystemProcess(conn.ProcessPath ?? conn.ProcessName ?? ""))
                     .ToList();
 

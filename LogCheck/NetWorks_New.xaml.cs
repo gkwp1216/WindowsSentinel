@@ -304,11 +304,6 @@ namespace LogCheck
             // 차단된 연결 목록 초기 로드
             Task.Run(async () => await LoadBlockedConnectionsAsync());
 
-            LogMessagesControl.ItemsSource = _logService.LogMessages;
-            NetworkActivityChart.Series = _chartSeries;
-            NetworkActivityChart.XAxes = _chartXAxes;
-            NetworkActivityChart.YAxes = _chartYAxes;
-
             // DataContext 설정 (바인딩을 위해)
             this.DataContext = this;
 
@@ -648,17 +643,6 @@ namespace LogCheck
             // 일반 탭 DataGrid 바인딩
             if (GeneralProcessDataGrid != null)
                 GeneralProcessDataGrid.ItemsSource = _generalProcessData;
-
-            // 나머지 UI 초기화
-            if (LogMessagesControl != null)
-                LogMessagesControl.ItemsSource = _logService.LogMessages;
-
-            if (NetworkActivityChart != null)
-            {
-                NetworkActivityChart.Series = _chartSeries;
-                NetworkActivityChart.XAxes = _chartXAxes;
-                NetworkActivityChart.YAxes = _chartYAxes;
-            }
 
             InitializeNetworkInterfaces();
             InitializeChart();
@@ -2614,86 +2598,6 @@ namespace LogCheck
         }
 
         #endregion
-
-        #region AutoBlock UI 이벤트 핸들러
-
-        /// <summary>
-        /// 화이트리스트 추가 버튼 클릭
-        /// </summary>
-        private async void AddToWhitelist_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                // 간단한 입력 다이얼로그 (실제 구현에서는 더 정교한 UI 사용)
-                var dialog = new Microsoft.Win32.OpenFileDialog
-                {
-                    Title = "화이트리스트에 추가할 프로그램 선택",
-                    Filter = "실행 파일 (*.exe)|*.exe|모든 파일 (*.*)|*.*"
-                };
-
-                if (dialog.ShowDialog() == true)
-                {
-                    var result = await _autoBlockService.AddToWhitelistAsync(dialog.FileName, "사용자 추가");
-                    if (result)
-                    {
-                        AddLogMessage($"화이트리스트에 추가됨: {System.IO.Path.GetFileName(dialog.FileName)}");
-                        await LoadAutoBlockDataAsync(); // 데이터 새로고침
-                    }
-                    else
-                    {
-                        AddLogMessage($"화이트리스트 추가 실패: {System.IO.Path.GetFileName(dialog.FileName)}");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                AddLogMessage($"화이트리스트 추가 오류: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// 화이트리스트에서 제거 버튼 클릭
-        /// </summary>
-        private async void RemoveFromWhitelist_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (WhitelistDataGrid.SelectedItem is AutoWhitelistEntry selectedEntry)
-                {
-                    var result = MessageBox.Show(
-                        $"'{selectedEntry.ProcessPath}'\n화이트리스트에서 제거하시겠습니까?",
-                        "화이트리스트 제거 확인",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question);
-
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        var success = await _autoBlockService.RemoveFromWhitelistAsync(selectedEntry.ProcessPath);
-                        if (success)
-                        {
-                            AddLogMessage($"화이트리스트에서 제거됨: {System.IO.Path.GetFileName(selectedEntry.ProcessPath)}");
-                            await LoadAutoBlockDataAsync(); // 데이터 새로고침
-                        }
-                        else
-                        {
-                            AddLogMessage($"화이트리스트 제거 실패: {System.IO.Path.GetFileName(selectedEntry.ProcessPath)}");
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("제거할 항목을 선택해주세요.", "선택 없음", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                AddLogMessage($"화이트리스트 제거 오류: {ex.Message}");
-            }
-        }
-
-        #endregion
-
-
 
         #region Blocked Connections Management
 

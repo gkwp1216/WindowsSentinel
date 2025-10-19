@@ -46,6 +46,16 @@ namespace LogCheck
                 cb.Unchecked += AutoStartCheckBox_Changed;
             }
 
+            // 데모 모드 체크박스 초기화
+            if (FindName("DemoModeCheckBox") is System.Windows.Controls.CheckBox demoCb)
+            {
+                demoCb.Checked -= DemoModeCheckBox_Changed;
+                demoCb.Unchecked -= DemoModeCheckBox_Changed;
+                demoCb.IsChecked = false; // 기본값: 비활성화 (프로덕션 모드)
+                demoCb.Checked += DemoModeCheckBox_Changed;
+                demoCb.Unchecked += DemoModeCheckBox_Changed;
+            }
+
             // NIC / BPF 초기화
             InitializeNicAndBpf();
         }
@@ -85,6 +95,36 @@ namespace LogCheck
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Settings save failed: {ex.Message}");
+            }
+        }
+
+        private void DemoModeCheckBox_Changed(object sender, RoutedEventArgs e)
+        {
+            var isChecked = (sender as System.Windows.Controls.CheckBox)?.IsChecked == true;
+
+            // DDoSDetectionEngine의 DemoMode 직접 설정 (Reflection 대신)
+            try
+            {
+                LogCheck.Services.DDoSDetectionEngine.DemoMode = isChecked;
+                System.Diagnostics.Debug.WriteLine($"[Setting] DemoMode set to: {isChecked}");
+
+                // 사용자에게 피드백
+                System.Windows.MessageBox.Show(
+                    isChecked
+                        ? "데모 모드가 활성화되었습니다.\n로컬호스트(127.0.0.1) 및 사설 IP 주소(RFC1918)에서의 공격도 탐지됩니다.\n\n⚠️ Attack_Simulator를 127.0.0.1로 설정하세요."
+                        : "데모 모드가 비활성화되었습니다.\n로컬호스트 및 사설 IP 주소(RFC1918)에서의 공격은 필터링됩니다.",
+                    "데모 모드",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[Setting] DemoMode setting failed: {ex.Message}");
+                System.Windows.MessageBox.Show(
+                    $"데모 모드 설정 중 오류가 발생했습니다.\n{ex.Message}",
+                    "설정 오류",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
         }
 

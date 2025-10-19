@@ -80,6 +80,16 @@
                                   Checked="AutoStartCheckBox_Changed"
                                   Unchecked="AutoStartCheckBox_Changed" />
 
+                        <!-- 데모 모드 -->
+                        <CheckBox x:Name="DemoModeCheckBox"
+                                  Content="데모 모드 (사설 IP 공격 탐지 활성화)"
+                                  FontSize="16"
+                                  Margin="0,0,0,10"
+                                  Foreground="{DynamicResource ForegroundColor}"
+                                  ToolTip="프레젠테이션 데모용: 사설 IP 주소(RFC1918)에서의 공격도 탐지합니다"
+                                  Checked="DemoModeCheckBox_Changed"
+                                  Unchecked="DemoModeCheckBox_Changed" />
+
                         <!-- NIC 선택 -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                             <CheckBox x:Name="AutoSelectNicCheckBox"
