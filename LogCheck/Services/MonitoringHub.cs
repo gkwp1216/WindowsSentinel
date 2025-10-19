@@ -31,7 +31,12 @@ namespace LogCheck.Services
             // Wire inner service events
             _captureService.OnError += (s, ex) => ErrorOccurred?.Invoke(this, ex);
             _captureService.OnMetrics += (s, m) => MetricsUpdated?.Invoke(this, m);
-            _captureService.OnPacket += (s, p) => PacketArrived?.Invoke(this, p);
+            _captureService.OnPacket += (s, p) =>
+            {
+                // 디버그: 패킷 이벤트 발생 확인
+                System.Diagnostics.Debug.WriteLine($"[MonitoringHub] 패킷 이벤트 발생: {p.SrcIp} → {p.DstIp}, 구독자 수: {PacketArrived?.GetInvocationList()?.Length ?? 0}");
+                PacketArrived?.Invoke(this, p);
+            };
         }
 
         public ICaptureService Capture => _captureService;

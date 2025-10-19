@@ -485,101 +485,11 @@ namespace LogCheck
                     if (permanentPercentText != null) permanentPercentText.Text = "0%";
                     if (permanentCountText != null) permanentCountText.Text = "0개";
                 }
-
-                // 시간별 차단 추이 업데이트 (최근 6시간)
-                UpdateHourlyChart();
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"차트 업데이트 오류: {ex.Message}");
                 toastService?.ShowErrorAsync("차트 업데이트 실패", ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// 시간별 차단 추이 차트를 업데이트합니다. (개선된 시각화 및 색상)
-        /// </summary>
-        private void UpdateHourlyChart()
-        {
-            try
-            {
-                var now = DateTime.Now;
-                var hourlyData = new int[6];
-                var hourLabels = new string[6];
-
-                // 최근 6시간 동안의 차단 수를 계산
-                for (int i = 0; i < 6; i++)
-                {
-                    var hourStart = now.AddHours(-(5 - i)).Date.AddHours(now.AddHours(-(5 - i)).Hour);
-                    var hourEnd = hourStart.AddHours(1);
-
-                    hourlyData[i] = BlockedConnections.Count(c =>
-                        c.BlockedAt >= hourStart && c.BlockedAt < hourEnd);
-
-                    // 시간 라벨 생성 (차트 툴팁용)
-                    hourLabels[i] = hourStart.ToString("HH:mm");
-                }
-
-                // 최대값을 기준으로 높이 정규화 (최대 60px로 확장)
-                var maxCount = hourlyData.Max();
-                if (maxCount == 0) maxCount = 1; // 0으로 나누기 방지
-
-                // 활동 수준에 따른 색상 결정
-                var accentBrush = FindResource("AccentBrush") as Brush ?? Brushes.Blue;
-                var riskMediumBrush = FindResource("RiskMediumColor") as Brush ?? Brushes.Orange;
-                var riskHighBrush = FindResource("RiskHighColor") as Brush ?? Brushes.Red;
-
-                // 각 막대의 높이 및 색상 업데이트
-                var bars = new[]
-                {
-                    FindName("Hour1Bar") as System.Windows.Shapes.Rectangle,
-                    FindName("Hour2Bar") as System.Windows.Shapes.Rectangle,
-                    FindName("Hour3Bar") as System.Windows.Shapes.Rectangle,
-                    FindName("Hour4Bar") as System.Windows.Shapes.Rectangle,
-                    FindName("Hour5Bar") as System.Windows.Shapes.Rectangle,
-                    FindName("Hour6Bar") as System.Windows.Shapes.Rectangle
-                };
-
-                for (int i = 0; i < bars.Length && i < hourlyData.Length; i++)
-                {
-                    var bar = bars[i];
-                    if (bar != null)
-                    {
-                        // 높이 설정 (최소 3px, 최대 60px)
-                        bar.Height = Math.Max(3.0, (double)hourlyData[i] / maxCount * 60.0);
-
-                        // 활동 수준에 따른 색상 설정
-                        if (hourlyData[i] == 0)
-                        {
-                            bar.Fill = Brushes.LightGray;
-                        }
-                        else if (hourlyData[i] > maxCount * 0.7) // 높은 활동
-                        {
-                            bar.Fill = riskHighBrush;
-                        }
-                        else if (hourlyData[i] > maxCount * 0.3) // 중간 활동
-                        {
-                            bar.Fill = riskMediumBrush;
-                        }
-                        else // 낮은 활동
-                        {
-                            bar.Fill = accentBrush;
-                        }
-
-                        // 툴팁 설정 (시간 및 차단 수 표시)
-                        bar.ToolTip = $"{hourLabels[i]}: {hourlyData[i]}개 차단";
-                    }
-                }
-
-                // 총 차단 수 및 평균 계산
-                var totalHourlyBlocks = hourlyData.Sum();
-                var averagePerHour = totalHourlyBlocks / 6.0;
-
-                Debug.WriteLine($"시간별 차트: 총 {totalHourlyBlocks}개, 평균 {averagePerHour:F1}개/시간, 최대 {maxCount}개");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"시간별 차트 업데이트 오류: {ex.Message}");
             }
         }
 

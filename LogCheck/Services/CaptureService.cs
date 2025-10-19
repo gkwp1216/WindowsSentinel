@@ -59,20 +59,25 @@ namespace LogCheck.Services
         private void RunLoop(CancellationToken token)
         {
             var backoffMs = 500; // exponential backoff base
+            System.Diagnostics.Debug.WriteLine("🔍 [CaptureService] RunLoop 시작");
+            
             while (!token.IsCancellationRequested && !_disposing)
             {
                 try
                 {
                     if (!TryOpenDevice())
                     {
+                        System.Diagnostics.Debug.WriteLine($"⚠️ [CaptureService] 디바이스 열기 실패 - {backoffMs}ms 후 재시도");
                         Thread.Sleep(Math.Min(backoffMs, 5000));
                         backoffMs = Math.Min(backoffMs * 2, 5000);
                         continue;
                     }
 
+                    System.Diagnostics.Debug.WriteLine($"✅ [CaptureService] 디바이스 열기 성공: {_device?.Name}");
                     backoffMs = 500; // reset backoff after success
                     _device!.OnPacketArrival += OnPacketArrival;
                     _device.StartCapture();
+                    System.Diagnostics.Debug.WriteLine("🎯 [CaptureService] 패킷 캡처 시작됨");
 
                     // Block until canceled
                     while (!token.IsCancellationRequested)
@@ -82,6 +87,7 @@ namespace LogCheck.Services
                 }
                 catch (Exception ex)
                 {
+                    System.Diagnostics.Debug.WriteLine($"❌ [CaptureService] 오류: {ex.Message}");
                     OnError?.Invoke(this, ex);
                     Thread.Sleep(Math.Min(backoffMs, 5000));
                     backoffMs = Math.Min(backoffMs * 2, 5000);
@@ -106,8 +112,13 @@ namespace LogCheck.Services
         private bool TryOpenDevice()
         {
             var devices = CaptureDeviceList.Instance;
+            System.Diagnostics.Debug.WriteLine($"🔍 [CaptureService] 사용 가능한 디바이스 수: {devices?.Count ?? 0}");
+            
             if (devices == null || devices.Count == 0)
+            {
+                System.Diagnostics.Debug.WriteLine("❌ [CaptureService] 네트워크 디바이스를 찾을 수 없습니다. Npcap이 설치되어 있는지 확인하세요.");
                 return false;
+            }
 
             _device = _nicId != null
                 ? devices.FirstOrDefault(d => d.Name?.Contains(_nicId, StringComparison.OrdinalIgnoreCase) == true)
@@ -135,6 +146,12 @@ namespace LogCheck.Services
             {
                 var raw = e.GetPacket();
                 if (raw == null) return;
+                
+                // 디버그: 패킷 캡처 확인 (처음 10개만)
+                if (_packetsReceived < 10)
+                {
+                    System.Diagnostics.Debug.WriteLine($"📥 [CaptureService] 패킷 캡처됨 #{_packetsReceived + 1}");
+                }
 
                 var packet = Packet.ParsePacket(raw.LinkLayerType, raw.Data);
                 var ip = packet.Extract<IPPacket>();

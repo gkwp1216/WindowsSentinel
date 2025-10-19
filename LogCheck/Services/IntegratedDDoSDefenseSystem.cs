@@ -33,7 +33,16 @@ namespace LogCheck.Services
         private long _totalPacketsProcessed = 0;
         private long _totalAttacksDetected = 0;
         private long _totalAttacksBlocked = 0;
+        private long _totalBytesProcessed = 0; // 처리된 총 바이트 수
+        private long _totalBytesBlocked = 0; // 차단된 총 바이트 수
         private readonly ConcurrentDictionary<DDoSAttackType, int> _attackTypeStats = new();
+
+        // 시간대별 위협 통계 (24시간 기록)
+        private readonly ConcurrentDictionary<int, int> _hourlyThreatCounts = new();
+
+        // 트래픽 속도 계산용 (최근 1초간 데이터)
+        private DateTime _lastTrafficCalculation = DateTime.Now;
+        private long _lastSecondBytes = 0;
 
         // 이벤트
         public event EventHandler<DDoSDetectionResult>? AttackDetected;
@@ -123,6 +132,11 @@ namespace LogCheck.Services
             _packetQueue.Enqueue(packet);
             Interlocked.Increment(ref _totalPacketsProcessed);
 
+            // 바이트 수 추적 (패킷 크기 기본값: 64바이트, 실제 크기가 있으면 사용)
+            var packetSize = packet.Length > 0 ? packet.Length : 64;
+            Interlocked.Add(ref _totalBytesProcessed, packetSize);
+            Interlocked.Add(ref _lastSecondBytes, packetSize);
+
             // 큐 크기 제한 (메모리 보호)
             if (_packetQueue.Count > 10000)
             {
@@ -169,7 +183,15 @@ namespace LogCheck.Services
                     await ExecuteDefenseActions(result);
                 }
 
-                Interlocked.Add(ref _totalAttacksDetected, results.Count(r => r.IsAttackDetected));
+                var attackCount = results.Count(r => r.IsAttackDetected);
+                Interlocked.Add(ref _totalAttacksDetected, attackCount);
+
+                // 시간대별 통계 업데이트
+                if (attackCount > 0)
+                {
+                    var currentHour = DateTime.Now.Hour;
+                    _hourlyThreatCounts.AddOrUpdate(currentHour, attackCount, (_, old) => old + attackCount);
+                }
             }
             catch (Exception ex)
             {
@@ -394,6 +416,10 @@ namespace LogCheck.Services
                     if (actionResult.Success && IsBlockingAction(action))
                     {
                         Interlocked.Increment(ref _totalAttacksBlocked);
+
+                        // 차단된 트래픽 바이트 추적 (패킷 수 * 평균 크기)
+                        var estimatedBytes = detectionResult.PacketCount * 512L; // 평균 패킷 크기 512바이트로 추정
+                        Interlocked.Add(ref _totalBytesBlocked, estimatedBytes);
                     }
                 }
 
@@ -629,6 +655,9 @@ namespace LogCheck.Services
         /// </summary>
         public DDoSDetectionStats GetStatistics()
         {
+            // 트래픽 속도 계산 (MB/s)
+            var currentTraffic = CalculateCurrentTrafficRate();
+
             return new DDoSDetectionStats
             {
                 TotalAttacksDetected = (int)_totalAttacksDetected,
@@ -641,36 +670,43 @@ namespace LogCheck.Services
                 TopAttackerIPs = _activeAttacks.Values
                     .GroupBy(a => a.SourceIP)
                     .ToDictionary(g => g.Key, g => g.Count()),
+                TotalTrafficBlocked = currentTraffic, // 현재 트래픽 속도 (MB/s)
                 LastUpdated = DateTime.Now
             };
         }
 
         /// <summary>
-        /// 시간대별 위협 트렌드 데이터 반환 (24시간)
+        /// 현재 트래픽 속도 계산 (MB/s)
         /// </summary>
-        public Dictionary<int, int> GetHourlyThreatTrend()
+        private double CalculateCurrentTrafficRate()
         {
-            var hourlyStats = new Dictionary<int, int>();
+            var now = DateTime.Now;
+            var elapsed = (now - _lastTrafficCalculation).TotalSeconds;
 
-            // 24시간 초기화
-            for (int i = 0; i < 24; i++)
+            if (elapsed >= 1.0) // 1초마다 계산
             {
-                hourlyStats[i] = 0;
+                var bytesPerSecond = _lastSecondBytes / elapsed;
+                var mbPerSecond = bytesPerSecond / (1024.0 * 1024.0);
+
+                System.Diagnostics.Debug.WriteLine(
+                    $"📡 트래픽: {_lastSecondBytes} bytes / {elapsed:F1}s = {mbPerSecond:F2} MB/s");
+
+                // 리셋
+                _lastTrafficCalculation = now;
+                Interlocked.Exchange(ref _lastSecondBytes, 0);
+
+                return Math.Round(mbPerSecond, 2);
             }
 
-            // 실제 공격 데이터에서 시간대별 통계 생성
-            var yesterday = DateTime.Now.AddDays(-1);
-            var recentAttacks = _activeAttacks.Values
-                .Where(attack => attack.DetectedAt >= yesterday)
-                .ToList();
-
-            foreach (var attack in recentAttacks)
+            // 1초 미만인 경우 현재 누적값 기반 추정
+            if (elapsed > 0)
             {
-                var hour = attack.DetectedAt.Hour;
-                hourlyStats[hour]++;
+                var bytesPerSecond = _lastSecondBytes / elapsed;
+                var mbPerSecond = bytesPerSecond / (1024.0 * 1024.0);
+                return Math.Round(mbPerSecond, 2);
             }
 
-            return hourlyStats;
+            return 0.0;
         }
 
         /// <summary>
@@ -766,6 +802,32 @@ namespace LogCheck.Services
                 DefenseActionType.EmergencyBlock => "긴급 차단",
                 _ => "알 수 없는 조치"
             };
+        }
+
+        /// <summary>
+        /// 시간대별(24시간) 위협 추세 데이터 가져오기
+        /// </summary>
+        /// <returns>시간대(0~23)를 키로, 위협 수를 값으로 하는 딕셔너리</returns>
+        public Dictionary<int, int> GetHourlyThreatTrend()
+        {
+            var result = new Dictionary<int, int>();
+
+            // 24시간 전체 초기화 (데이터 없는 시간대는 0)
+            for (int hour = 0; hour < 24; hour++)
+            {
+                result[hour] = _hourlyThreatCounts.TryGetValue(hour, out var count) ? count : 0;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 시간대별 통계 초기화 (자정에 호출)
+        /// </summary>
+        public void ResetHourlyStatistics()
+        {
+            _hourlyThreatCounts.Clear();
+            LogHelper.Log("시간대별 위협 통계가 초기화되었습니다.", MessageType.Information);
         }
 
         public void Dispose()

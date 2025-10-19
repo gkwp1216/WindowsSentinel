@@ -70,6 +70,9 @@ namespace LogCheck
         private readonly ObservableCollection<DDoSDetectionResult> _attackHistory;
         private readonly DispatcherTimer _ddosUpdateTimer;
 
+        // 정적 접근자 (다른 ViewModel에서 접근 가능)
+        public static IntegratedDDoSDefenseSystem? SharedDDoSDefenseSystem { get; private set; }
+
         // 영구 방화벽 차단 시스템
         private PersistentFirewallManager? _persistentFirewallManager;
         private readonly ObservableCollection<FirewallRuleInfo> _firewallRules;
@@ -222,10 +225,7 @@ namespace LogCheck
 
         // 모니터링 상태
         private bool _isMonitoring = false;
-
-        // 캡처 서비스 연동
-        private readonly ICaptureService _captureService;
-        private long _livePacketCount = 0; // 틱 간 누적 패킷 수
+        private int _timerTickCount = 0; // 타이머 틱 카운터 (프로세스 업데이트 주기 제어용)
 
 
         // 로그 파일 생성 비활성화
@@ -276,7 +276,6 @@ namespace LogCheck
             _processNetworkMapper = hub.ProcessMapper;
             _connectionManager = new NetworkConnectionManager();
             _securityAnalyzer = new RealTimeSecurityAnalyzer();
-            _captureService = hub.Capture;
 
             // AutoBlock 서비스 초기화
             var dbPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "autoblock.db");
@@ -317,10 +316,10 @@ namespace LogCheck
             // UI 초기화
             InitializeUI();
 
-            // 타이머 설정
+            // 타이머 설정 (1초 간격으로 변경하여 실시간 PPS 표시)
             _updateTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(5)
+                Interval = TimeSpan.FromSeconds(1)
             };
             _updateTimer.Tick += UpdateTimer_Tick;
 
@@ -404,6 +403,7 @@ namespace LogCheck
             hub.MonitoringStateChanged += OnHubMonitoringStateChanged;
             hub.MetricsUpdated += OnHubMetricsUpdated;
             hub.ErrorOccurred += OnHubErrorOccurred;
+            hub.PacketArrived += OnPacketArrived; // 🔥 DDoS 시스템에 패킷 전달
             _hubSubscribed = true;
         }
 
@@ -414,7 +414,34 @@ namespace LogCheck
             hub.MonitoringStateChanged -= OnHubMonitoringStateChanged;
             hub.MetricsUpdated -= OnHubMetricsUpdated;
             hub.ErrorOccurred -= OnHubErrorOccurred;
+            hub.PacketArrived -= OnPacketArrived; // 🔥 구독 해제
             _hubSubscribed = false;
+        }
+
+        /// <summary>
+        /// 패킷 도착 시 DDoS 방어 시스템에 전달
+        /// </summary>
+        private void OnPacketArrived(object? sender, PacketDto packet)
+        {
+            try
+            {
+                // 디버그: 패킷 수신 확인
+                System.Diagnostics.Debug.WriteLine($"📦 패킷 수신: {packet.SrcIp} → {packet.DstIp}, {packet.Length} bytes, {packet.Protocol}");
+
+                // DDoS 방어 시스템이 초기화되어 있으면 패킷 전달
+                if (_ddosDefenseSystem != null)
+                {
+                    _ddosDefenseSystem.AddPacket(packet);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("⚠️ DDoS 방어 시스템이 초기화되지 않음");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ 패킷 전달 오류: {ex.Message}");
+            }
         }
 
         private void OnHubMonitoringStateChanged(object? sender, bool running)
@@ -521,9 +548,8 @@ namespace LogCheck
             _securityAnalyzer.SecurityAlertGenerated += OnSecurityAlertGenerated;
             _securityAnalyzer.ErrorOccurred += OnErrorOccurred;
 
-            // 캡처 서비스 이벤트
-            _captureService.OnPacket += OnCapturePacket;
-            _captureService.OnError += (s, ex) => OnErrorOccurred(s, ex.Message);
+            // MonitoringHub 에러 이벤트만 구독
+            MonitoringHub.Instance.ErrorOccurred += (s, ex) => OnErrorOccurred(s, ex.Message);
         }
 
         /// <summary>
@@ -768,7 +794,7 @@ namespace LogCheck
                 string? nic = s.AutoSelectNic ? null : (string.IsNullOrWhiteSpace(s.SelectedNicId) ? null : s.SelectedNicId);
                 await MonitoringHub.Instance.StartAsync(bpf, nic);
                 _isMonitoring = true;
-                Interlocked.Exchange(ref _livePacketCount, 0);
+                _timerTickCount = 0; // 카운터 초기화
 
                 // UI 상태 업데이트
                 StartMonitoringButton.Visibility = Visibility.Collapsed;
@@ -1204,24 +1230,24 @@ namespace LogCheck
 
                 if (_isMonitoring)
                 {
-                    // 최근 틱 간 패킷 처리율 계산 및 상태 표시
-                    var taken = Interlocked.Exchange(ref _livePacketCount, 0);
-                    var secs = Math.Max(1, (int)_updateTimer.Interval.TotalSeconds);
-                    var pps = taken / secs;
-                    if (MonitoringStatusText != null) MonitoringStatusText.Text = $"모니터링 중 ({pps} pps)";
-
-                    // 주기적으로 데이터 업데이트
-                    System.Diagnostics.Debug.WriteLine("[NetWorks_New] 프로세스 데이터 가져오기 시작");
-                    var data = await _processNetworkMapper.GetProcessNetworkDataAsync();
-                    System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 프로세스 데이터 가져오기 완료: {data?.Count ?? 0}개");
-
-                    // AutoBlock 분석 수행
-                    if (_autoBlockService != null && data?.Any() == true)
+                    // 프로세스 데이터는 5초마다 업데이트 (성능 최적화)
+                    _timerTickCount++;
+                    if (_timerTickCount >= 5)
                     {
-                        await AnalyzeConnectionsWithAutoBlockAsync(data);
-                    }
+                        _timerTickCount = 0;
 
-                    await UpdateProcessNetworkDataAsync(data ?? new List<ProcessNetworkInfo>());
+                        System.Diagnostics.Debug.WriteLine("[NetWorks_New] 프로세스 데이터 가져오기 시작");
+                        var data = await _processNetworkMapper.GetProcessNetworkDataAsync();
+                        System.Diagnostics.Debug.WriteLine($"[NetWorks_New] 프로세스 데이터 가져오기 완료: {data?.Count ?? 0}개");
+
+                        // AutoBlock 분석 수행
+                        if (_autoBlockService != null && data?.Any() == true)
+                        {
+                            await AnalyzeConnectionsWithAutoBlockAsync(data);
+                        }
+
+                        await UpdateProcessNetworkDataAsync(data ?? new List<ProcessNetworkInfo>());
+                    }
                 }
 
                 // AutoBlock 통계 주기적 업데이트 (1분마다)
@@ -1239,13 +1265,6 @@ namespace LogCheck
 
         /// <summary>
         /// 캡처 서비스 패킷 수신 이벤트
-        /// </summary>
-        private void OnCapturePacket(object? sender, PacketDto dto)
-        {
-            // 배경 스레드에서 호출됨: 원자적 증가
-            Interlocked.Increment(ref _livePacketCount);
-        }
-
         /// <summary>
         /// 프로세스-네트워크 데이터 업데이트 (그룹화 포함)
         /// </summary>
@@ -3980,6 +3999,10 @@ namespace LogCheck
                         _rateLimitingService,
                         _signatureDatabase
                     );
+
+                    // 정적 접근자에 할당 (다른 ViewModel에서 접근 가능)
+                    SharedDDoSDefenseSystem = _ddosDefenseSystem;
+                    System.Diagnostics.Debug.WriteLine("✅ DDoS 방어 시스템 초기화 완료 및 공유");
 
                     // 이벤트 구독
                     _ddosDefenseSystem.AttackDetected += OnDDoSAttackDetected;

@@ -237,13 +237,8 @@
 
                     <!-- 차단 유형별 통계 차트 -->
                     <Grid Grid.Row="2" Margin="20,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
                         <!-- 차단 유형 파이 차트 -->
-                        <Border Grid.Column="0" Style="{StaticResource StatusCardStyle}">
+                        <Border Style="{StaticResource StatusCardStyle}">
                             <StackPanel>
                                 <TextBlock Text="📊 차단 유형별 분포" 
                               FontSize="16" 
@@ -299,37 +294,6 @@
                                       Foreground="{DynamicResource SecondaryTextBrush}"
                                       HorizontalAlignment="Center"/>
                                     </StackPanel>
-                                </Grid>
-                            </StackPanel>
-                        </Border>
-
-                        <!-- 시간별 차단 추이 -->
-                        <Border Grid.Column="1" Style="{StaticResource StatusCardStyle}">
-                            <StackPanel>
-                                <TextBlock Text="📈 시간별 차단 추이" 
-                              FontSize="16" 
-                              FontWeight="SemiBold"
-                              Foreground="{DynamicResource PrimaryTextBrush}"
-                              HorizontalAlignment="Center"
-                              Margin="0,0,0,16"/>
-                                <Grid Height="150">
-                                    <!-- 간단한 막대 그래프 시뮬레이션 -->
-                                    <StackPanel Orientation="Horizontal" 
-                                   HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center">
-                                        <Rectangle x:Name="Hour1Bar" Width="8" Height="20" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
-                                        <Rectangle x:Name="Hour2Bar" Width="8" Height="35" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
-                                        <Rectangle x:Name="Hour3Bar" Width="8" Height="15" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
-                                        <Rectangle x:Name="Hour4Bar" Width="8" Height="45" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
-                                        <Rectangle x:Name="Hour5Bar" Width="8" Height="25" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
-                                        <Rectangle x:Name="Hour6Bar" Width="8" Height="40" Fill="{DynamicResource AccentBrush}" Margin="2,0"/>
-                                    </StackPanel>
-                                    <TextBlock Text="최근 6시간" 
-                                  FontSize="12"
-                                  Foreground="{DynamicResource SecondaryTextBrush}"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Bottom"
-                                  Margin="0,0,0,10"/>
                                 </Grid>
                             </StackPanel>
                         </Border>

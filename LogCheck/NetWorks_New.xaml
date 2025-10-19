@@ -284,14 +284,15 @@
                                     CornerRadius="6" 
                                     Padding="8,4"
                                     Margin="10,0,0,0"
-                                    Opacity="0.9">
+                                    Opacity="0.9"
+                                    ToolTip="AutoBlock에 의해 자동으로 차단된 총 연결 수">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="ShieldCheck" 
                                                            VerticalAlignment="Center"
                                                            Foreground="White"
                                                            Width="14" Height="14"
                                                            Margin="0,0,4,0"/>
-                                <TextBlock Text="자동 차단" 
+                                <TextBlock Text="차단됨" 
                                                Foreground="White" 
                                                FontSize="12" 
                                                VerticalAlignment="Center"/>
@@ -304,21 +305,27 @@
                             </StackPanel>
                         </Border>
 
-                        <!-- AutoBlock 레벨별 통계 (툴팁) -->
+                        <!-- AutoBlock 레벨별 통계 -->
                         <Border Background="#4CAF50" 
                                     CornerRadius="6" 
                                     Padding="8,4"
                                     Margin="10,0,0,0"
                                     Opacity="0.9"
-                                    ToolTip="즉시 차단 / 경고 차단 / 모니터링">
+                                    ToolTip="차단 레벨별 통계 - 모니터링(Level 1) / 경고차단(Level 2) / 즉시차단(Level 3)">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Security" 
                                                            VerticalAlignment="Center"
                                                            Foreground="White"
                                                            Width="14" Height="14"
                                                            Margin="0,0,4,0"/>
+                                <TextBlock Text="레벨별" 
+                                               Foreground="White" 
+                                               FontSize="12" 
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,4,0"/>
                                 <TextBlock Foreground="White" 
                                                FontSize="12" 
+                                               FontWeight="SemiBold"
                                                VerticalAlignment="Center">
                                         <Run Text="{Binding Level1BlockCount}"/> / <Run Text="{Binding Level2BlockCount}"/> / <Run Text="{Binding Level3BlockCount}"/>
                                 </TextBlock>
