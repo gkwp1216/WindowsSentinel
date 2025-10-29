@@ -25,6 +25,25 @@ namespace LogCheck.Services
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
 
+            try
+            {
+                // Print resolved DB path for debugging
+                var dataSource = _connectionString;
+                try
+                {
+                    var key = "Data Source=";
+                    var idx = dataSource.IndexOf(key, StringComparison.OrdinalIgnoreCase);
+                    if (idx >= 0)
+                    {
+                        var path = dataSource.Substring(idx + key.Length).Trim();
+                        var full = System.IO.Path.GetFullPath(path);
+                        Console.WriteLine($"AutoBlockStatisticsService using DB file: {full}");
+                    }
+                }
+                catch { }
+            }
+            catch { }
+
             // 기본 차단 연결 테이블
             var createBlockedConnectionsTable = @"
                 CREATE TABLE IF NOT EXISTS BlockedConnections (
@@ -63,7 +82,7 @@ namespace LogCheck.Services
             var createProcessStatsTable = @"
                 CREATE TABLE IF NOT EXISTS ProcessBlockStats (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    ProcessName TEXT NOT NULL,
+                    ProcessName TEXT NOT NULL UNIQUE,
                     ProcessPath TEXT,
                     TotalBlocked INTEGER DEFAULT 0,
                     LastBlockedAt DATETIME,
@@ -76,7 +95,7 @@ namespace LogCheck.Services
             var createIPStatsTable = @"
                 CREATE TABLE IF NOT EXISTS IPBlockStats (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    IPAddress TEXT NOT NULL,
+                    IPAddress TEXT NOT NULL UNIQUE,
                     TotalBlocked INTEGER DEFAULT 0,
                     LastBlockedAt DATETIME,
                     FirstBlockedAt DATETIME,
@@ -137,16 +156,39 @@ namespace LogCheck.Services
 
                 await insertCmd.ExecuteNonQueryAsync();
 
+                try
+                {
+                    using var lastCmd = new SqliteCommand("SELECT last_insert_rowid();", connection, transaction);
+                    var id = await lastCmd.ExecuteScalarAsync();
+                    Console.WriteLine($"Inserted BlockedConnections row id: {id}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to read last_insert_rowid: {ex}");
+                }
+
                 // 통계 업데이트
                 await UpdateDailyStatsAsync(connection, blockedConnection, transaction);
                 await UpdateProcessStatsAsync(connection, blockedConnection, transaction);
                 await UpdateIPStatsAsync(connection, blockedConnection, transaction);
 
                 await transaction.CommitAsync();
+                Console.WriteLine($"AutoBlockStatisticsService: transaction committed for block event.");
+                try
+                {
+                    using var cntCmd = new SqliteCommand("SELECT COUNT(*) FROM BlockedConnections;", connection, transaction);
+                    var cnt = await cntCmd.ExecuteScalarAsync();
+                    Console.WriteLine($"AutoBlockStatisticsService: BlockedConnections count after commit (same conn): {cnt}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"AutoBlockStatisticsService: failed to read count after commit: {ex}");
+                }
             }
             catch (Exception ex)
             {
-                await transaction.RollbackAsync();
+                try { await transaction.RollbackAsync(); } catch { }
+                Console.WriteLine($"AutoBlockStatisticsService: exception during RecordBlockEventAsync: {ex}");
                 System.Diagnostics.Debug.WriteLine($"차단 이벤트 기록 오류: {ex.Message}");
                 throw;
             }
@@ -171,8 +213,10 @@ namespace LogCheck.Services
             using var cmd = new SqliteCommand(sql, connection);
             using var reader = await cmd.ExecuteReaderAsync();
 
+            int rows = 0;
             while (await reader.ReadAsync())
             {
+                rows++;
                 connections.Add(new AutoBlockedConnection
                 {
                     Id = reader.GetInt32(0),
@@ -190,6 +234,8 @@ namespace LogCheck.Services
                     IsBlocked = true
                 });
             }
+
+            Console.WriteLine($"AutoBlockStatisticsService: GetBlockedConnectionsAsync returned {rows} rows");
 
             return connections;
         }
@@ -313,7 +359,7 @@ namespace LogCheck.Services
 
                 // 영구 차단 통계 (7일 이상 지속적으로 차단된 연결들)
                 var permSql = @"
-                    SELECT COUNT(DISTINCT ProcessName, RemoteAddress) 
+                    SELECT COUNT(DISTINCT ProcessName || RemoteAddress) 
                     FROM BlockedConnections 
                     WHERE BlockedAt < datetime('now', '-7 days')";
                 using var permCmd = new SqliteCommand(permSql, connection);
@@ -449,6 +495,23 @@ namespace LogCheck.Services
         }
 
         /// <summary>
+        /// 영구 차단된 연결과 관련된 모든 기록을 삭제합니다.
+        /// </summary>
+        public async Task<bool> RemovePermanentBlockRecordsAsync(string processName, string remoteAddress)
+        {
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+
+            var sql = "DELETE FROM BlockedConnections WHERE ProcessName = @ProcessName AND RemoteAddress = @RemoteAddress";
+            using var cmd = new SqliteCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@ProcessName", processName);
+            cmd.Parameters.AddWithValue("@RemoteAddress", remoteAddress);
+
+            var rowsAffected = await cmd.ExecuteNonQueryAsync();
+            return rowsAffected > 0;
+        }
+
+        /// <summary>
         /// 차단된 연결을 추가합니다.
         /// </summary>
         public async Task AddBlockedConnectionAsync(AutoBlockedConnection connection)
@@ -531,35 +594,58 @@ namespace LogCheck.Services
 
         private async Task UpdateProcessStatsAsync(SqliteConnection conn, AutoBlockedConnection blocked, SqliteTransaction tx)
         {
-            var upsertSql = @"
-                INSERT INTO ProcessBlockStats (ProcessName, ProcessPath, TotalBlocked, FirstBlockedAt, LastBlockedAt)
-                VALUES (@ProcessName, @ProcessPath, 1, @BlockedAt, @BlockedAt)
-                ON CONFLICT(ProcessName) DO UPDATE SET
-                    TotalBlocked = TotalBlocked + 1,
+            // Try update first
+            var updateSql = @"
+                UPDATE ProcessBlockStats
+                SET TotalBlocked = TotalBlocked + 1,
                     LastBlockedAt = @BlockedAt,
-                    UpdatedAt = CURRENT_TIMESTAMP";
+                    UpdatedAt = CURRENT_TIMESTAMP
+                WHERE ProcessName = @ProcessName";
 
-            using var cmd = new SqliteCommand(upsertSql, conn, tx);
-            cmd.Parameters.AddWithValue("@ProcessName", blocked.ProcessName);
-            cmd.Parameters.AddWithValue("@ProcessPath", blocked.ProcessPath ?? "");
-            cmd.Parameters.AddWithValue("@BlockedAt", blocked.BlockedAt.ToString("yyyy-MM-dd HH:mm:ss"));
-            await cmd.ExecuteNonQueryAsync();
+            using var updateCmd = new SqliteCommand(updateSql, conn, tx);
+            updateCmd.Parameters.AddWithValue("@ProcessName", blocked.ProcessName);
+            updateCmd.Parameters.AddWithValue("@BlockedAt", blocked.BlockedAt.ToString("yyyy-MM-dd HH:mm:ss"));
+
+            var rows = await updateCmd.ExecuteNonQueryAsync();
+            if (rows == 0)
+            {
+                var insertSql = @"
+                    INSERT INTO ProcessBlockStats (ProcessName, ProcessPath, TotalBlocked, FirstBlockedAt, LastBlockedAt)
+                    VALUES (@ProcessName, @ProcessPath, 1, @BlockedAt, @BlockedAt);";
+
+                using var insertCmd = new SqliteCommand(insertSql, conn, tx);
+                insertCmd.Parameters.AddWithValue("@ProcessName", blocked.ProcessName);
+                insertCmd.Parameters.AddWithValue("@ProcessPath", blocked.ProcessPath ?? "");
+                insertCmd.Parameters.AddWithValue("@BlockedAt", blocked.BlockedAt.ToString("yyyy-MM-dd HH:mm:ss"));
+                await insertCmd.ExecuteNonQueryAsync();
+            }
         }
 
         private async Task UpdateIPStatsAsync(SqliteConnection conn, AutoBlockedConnection blocked, SqliteTransaction tx)
         {
-            var upsertSql = @"
-                INSERT INTO IPBlockStats (IPAddress, TotalBlocked, FirstBlockedAt, LastBlockedAt)
-                VALUES (@IPAddress, 1, @BlockedAt, @BlockedAt)
-                ON CONFLICT(IPAddress) DO UPDATE SET
-                    TotalBlocked = TotalBlocked + 1,
+            var updateSql = @"
+                UPDATE IPBlockStats
+                SET TotalBlocked = TotalBlocked + 1,
                     LastBlockedAt = @BlockedAt,
-                    UpdatedAt = CURRENT_TIMESTAMP";
+                    UpdatedAt = CURRENT_TIMESTAMP
+                WHERE IPAddress = @IPAddress";
 
-            using var cmd = new SqliteCommand(upsertSql, conn, tx);
-            cmd.Parameters.AddWithValue("@IPAddress", blocked.RemoteAddress);
-            cmd.Parameters.AddWithValue("@BlockedAt", blocked.BlockedAt.ToString("yyyy-MM-dd HH:mm:ss"));
-            await cmd.ExecuteNonQueryAsync();
+            using var updateCmd = new SqliteCommand(updateSql, conn, tx);
+            updateCmd.Parameters.AddWithValue("@IPAddress", blocked.RemoteAddress);
+            updateCmd.Parameters.AddWithValue("@BlockedAt", blocked.BlockedAt.ToString("yyyy-MM-dd HH:mm:ss"));
+
+            var rows = await updateCmd.ExecuteNonQueryAsync();
+            if (rows == 0)
+            {
+                var insertSql = @"
+                    INSERT INTO IPBlockStats (IPAddress, TotalBlocked, FirstBlockedAt, LastBlockedAt)
+                    VALUES (@IPAddress, 1, @BlockedAt, @BlockedAt);";
+
+                using var insertCmd = new SqliteCommand(insertSql, conn, tx);
+                insertCmd.Parameters.AddWithValue("@IPAddress", blocked.RemoteAddress);
+                insertCmd.Parameters.AddWithValue("@BlockedAt", blocked.BlockedAt.ToString("yyyy-MM-dd HH:mm:ss"));
+                await insertCmd.ExecuteNonQueryAsync();
+            }
         }
 
         private async Task UpdateUniqueCountsAsync(SqliteConnection conn, string date, SqliteTransaction tx)

@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using LogCheck.Models;
 using LogCheck.Services;
 // using System.Windows.Forms; // Tray handled by App
 
@@ -24,6 +25,13 @@ namespace LogCheck
         private DispatcherTimer? securityStatusTimer;
         private SecurityAnalyzer? securityAnalyzer;
 
+        // DDoS 방어 시스템 (애플리케이션 레벨에서 관리)
+        private IntegratedDDoSDefenseSystem? _ddosDefenseSystem;
+        private DDoSDetectionEngine? _ddosDetectionEngine;
+
+        // 공유 DDoS 시스템 접근자 (NetWorks_New 등에서 접근 가능)
+        public static IntegratedDDoSDefenseSystem? SharedDDoSDefenseSystem { get; private set; }
+
         // 사이드바 토글 상태
         private bool isSidebarVisible = false;
         private bool isSidebarPinnedOpen = false; // 수동으로 열린 상태 추적
@@ -37,7 +45,11 @@ namespace LogCheck
             InitializeSecurityStatus();
             InitializeToastNotifications();
             InitializeSidebarTimer();
+            InitializeDDoSDefenseSystem(); // DDoS 시스템 초기화 추가
             this.SizeChanged += OnWindowSizeChanged;
+
+            // 기본적으로 MainWindow의 메인 UI 표시 (NetWorks_New 페이지 자동 로드 제거)
+            // NavigateToPage(new NetWorks_New());
         }
 
         private void OnWindowSizeChanged(object sender, SizeChangedEventArgs e)
@@ -451,6 +463,118 @@ namespace LogCheck
         }
 
         /// <summary>
+        /// DDoS 방어 시스템 초기화 (애플리케이션 레벨)
+        /// </summary>
+        private void InitializeDDoSDefenseSystem()
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("🛡️ DDoS 방어 시스템 초기화 시작 (MainWindows)");
+
+                // DDoS 감지 엔진 초기화
+                _ddosDetectionEngine = new DDoSDetectionEngine();
+
+                // 필요한 서비스들 초기화
+                var packetAnalyzer = new AdvancedPacketAnalyzer();
+                var rateLimiter = new RateLimitingService();
+                var signatureDatabase = new DDoSSignatureDatabase();
+                var captureService = new CaptureService();
+
+                // DDoS 방어 시스템 초기화
+                _ddosDefenseSystem = new IntegratedDDoSDefenseSystem(
+                    _ddosDetectionEngine,
+                    packetAnalyzer,
+                    rateLimiter,
+                    signatureDatabase,
+                    captureService
+                );
+
+                // DDoS 이벤트 핸들러 등록
+                if (_ddosDetectionEngine != null)
+                {
+                    _ddosDetectionEngine.DDoSDetected += OnDDoSDetected;
+                }
+
+                // IntegratedDDoSDefenseSystem 이벤트 핸들러 등록
+                if (_ddosDefenseSystem != null)
+                {
+                    _ddosDefenseSystem.AttackDetected += OnDDoSAttackDetected;
+                }
+
+                // 시스템 시작
+                if (_ddosDefenseSystem != null)
+                {
+                    _ddosDefenseSystem.Start();
+                }
+                SharedDDoSDefenseSystem = _ddosDefenseSystem; // 공유 접근자 설정
+
+                System.Diagnostics.Debug.WriteLine("✅ DDoS 방어 시스템 초기화 완료 (MainWindows)");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ DDoS 방어 시스템 초기화 오류: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// DDoS 공격 감지 이벤트 핸들러
+        /// </summary>
+        private void OnDDoSDetected(object? sender, DDoSAlert e)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"🔥 DDoS 공격 감지 (MainWindows): {e.AttackType} - {e.Description}");
+
+                // SecurityDashboard에 이벤트 추가
+                Dispatcher.Invoke(() =>
+                {
+                    LogCheck.ViewModels.SecurityDashboardViewModel.Instance.AddDDoSEvent(
+                        new DDoSDetectionResult
+                        {
+                            IsAttackDetected = true,
+                            AttackType = e.AttackType,
+                            Severity = e.Severity,
+                            AttackDescription = e.Description,
+                            SourceIP = e.SourceIP,
+                            PacketCount = e.PacketCount,
+                            DetectedAt = e.DetectedAt,
+                            AdditionalData = new Dictionary<string, object>
+                            {
+                                ["ConnectionCount"] = e.ConnectionCount,
+                                ["DataTransferred"] = e.DataTransferred,
+                                ["RecommendedAction"] = e.RecommendedAction
+                            }
+                        });
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ DDoS 이벤트 처리 오류 (MainWindows): {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// DDoS 공격 감지 이벤트 핸들러 (IntegratedDDoSDefenseSystem)
+        /// </summary>
+        private void OnDDoSAttackDetected(object? sender, DDoSDetectionResult result)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"🔥 DDoS 공격 감지 (Integrated): {result.AttackType} - {result.SourceIP}");
+
+                // SecurityDashboard에 이벤트 추가
+                Dispatcher.Invoke(() =>
+                {
+                    LogCheck.ViewModels.SecurityDashboardViewModel.Instance.AddDDoSEvent(result);
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ DDoS 공격 이벤트 처리 오류 (Integrated): {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// 전체 보안 상태 업데이트
         /// </summary>
         [SupportedOSPlatform("windows")]
@@ -637,18 +761,18 @@ namespace LogCheck
                 // 버튼 비활성화 (중복 클릭 방지)
                 RefreshSecurityStatusButton.IsEnabled = false;
 
-                LogHelper.LogInfo("사용자가 보안 상태 새로 고침을 요청했습니다.");
+                LogHelper.LogInfo("사용자가 시스템 상태 새로 고침을 요청했습니다.");
 
                 // 보안 상태 업데이트
                 await UpdateSecurityStatus();
 
                 // 성공 메시지 표시 (선택적)
-                LogHelper.LogInfo("보안 상태가 성공적으로 업데이트되었습니다.");
+                LogHelper.LogInfo("시스템 상태가 성공적으로 업데이트되었습니다.");
             }
             catch (Exception ex)
             {
-                LogHelper.LogError($"보안 상태 새로 고침 중 오류: {ex.Message}");
-                System.Windows.MessageBox.Show("보안 상태를 업데이트하는 중 오류가 발생했습니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Warning);
+                LogHelper.LogError($"시스템 상태 새로 고침 중 오류: {ex.Message}");
+                System.Windows.MessageBox.Show("시스템 상태를 업데이트하는 중 오류가 발생했습니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             finally
             {
@@ -692,6 +816,30 @@ namespace LogCheck
                 try
                 {
                     await LogCheck.Services.MonitoringHub.Instance.StopAsync();
+                }
+                catch { }
+
+                // SecurityDashboardViewModel 리소스 정리
+                try
+                {
+                    LogCheck.ViewModels.SecurityDashboardViewModel.Instance.Dispose();
+                }
+                catch { }
+
+                // DDoS 방어 시스템 정리
+                try
+                {
+                    if (_ddosDefenseSystem != null)
+                    {
+                        _ddosDefenseSystem.AttackDetected -= OnDDoSAttackDetected;
+                        _ddosDefenseSystem.Stop();
+                        _ddosDefenseSystem = null;
+                    }
+                    if (_ddosDetectionEngine != null)
+                    {
+                        _ddosDetectionEngine.DDoSDetected -= OnDDoSDetected;
+                        _ddosDetectionEngine = null;
+                    }
                 }
                 catch { }
 
@@ -739,7 +887,7 @@ namespace LogCheck
                 Dispatcher.InvokeAsync(async () =>
                 {
                     await Task.Delay(1500); // UI 로드 완료 대기
-                    await toastService.ShowInfoAsync("Windows Sentinel", "보안 모니터링이 시작되었습니다.");
+                    await toastService.ShowInfoAsync("Windows Sentinel", "네트워크 모니터링이 시작되었습니다.");
                 });
             };
         }
@@ -867,5 +1015,7 @@ namespace LogCheck
             NavigateToPage(new Recoverys());
             HelpButton.Visibility = Visibility.Collapsed;
         }
+
+
     }
 }

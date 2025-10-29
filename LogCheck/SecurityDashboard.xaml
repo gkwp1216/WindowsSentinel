@@ -76,11 +76,11 @@
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,24">
                         <TextBlock Text="🛡️" FontSize="32" VerticalAlignment="Center" Margin="0,0,12,0"/>
                         <StackPanel>
-                            <TextBlock Text="보안 상태 대시보드" 
+                            <TextBlock Text="네트워크 상태 대시보드" 
                              FontSize="24" 
                              FontWeight="Bold"
                              Foreground="{DynamicResource PrimaryTextBrush}"/>
-                            <TextBlock Text="실시간 보안 모니터링 및 위험도 분석" 
+                            <TextBlock Text="실시간 네트워크 모니터링 및 위험도 분석" 
                              FontSize="14"
                              Foreground="{DynamicResource SecondaryTextBrush}"/>
                         </StackPanel>
@@ -134,7 +134,7 @@
                                 <TextBlock Text="{Binding BlockedConnections24h, FallbackValue=42}" 
                                  Style="{StaticResource SecurityValueStyle}"
                                  Foreground="{DynamicResource RiskMediumColor}"/>
-                                <TextBlock Text="{Binding BlockedConnectionsChangeText, FallbackValue='↑ 전일 대비 +12%'}" 
+                                <TextBlock Text="{Binding BlockedConnectionsChangeText, FallbackValue='↑ 전일 대비 +0%'}" 
                                  FontSize="12" 
                                  Foreground="{DynamicResource SecondaryTextBrush}"
                                  Margin="0,4,0,0"/>
@@ -159,14 +159,14 @@
                         <Border Grid.Row="0" Grid.Column="3" Style="{StaticResource SecurityCardStyle}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="🛡️ DDoS 방어" Style="{StaticResource SecurityTitleStyle}"/>
+                                    <TextBlock Text="🛡️ 자동 차단" Style="{StaticResource SecurityTitleStyle}"/>
                                     <Ellipse x:Name="DDoSStatusIndicator" Style="{StaticResource StatusIconStyle}"
                                    Fill="{Binding DDoSDefenseColor, FallbackValue=Green}"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding DDoSDefenseStatusText, FallbackValue='활성'}" 
                                  Style="{StaticResource SecurityValueStyle}"
                                  Foreground="{Binding DDoSDefenseColor, FallbackValue=Green}"/>
-                                <TextBlock Text="{Binding DDoSAttacksBlockedText, FallbackValue='차단된 공격: 3개'}" 
+                                <TextBlock Text="{Binding DDoSAttacksBlockedText, FallbackValue='차단된 공격: 0개'}" 
                                  FontSize="12" 
                                  Foreground="{DynamicResource SecondaryTextBrush}"
                                  Margin="0,4,0,0"/>
@@ -319,8 +319,32 @@
                                  FontSize="16" 
                                  FontWeight="SemiBold"
                                  Foreground="{DynamicResource PrimaryTextBrush}"/>
-                                <Button Content="전체 보기" 
+                                <Button Content="테스트 이벤트 추가" 
                               Margin="16,0,0,0"
+                              Style="{DynamicResource AccentButtonStyle}"
+                              Height="28"
+                              Padding="12,4"
+                              Click="AddTestEventButton_Click"/>
+                                <Button Content="DDoS 시뮬레이션" 
+                              Margin="8,0,0,0"
+                              Style="{DynamicResource AccentButtonStyle}"
+                              Height="28"
+                              Padding="12,4"
+                              Click="SimulateDDoSButton_Click"/>
+                                <Button Content="대량 트래픽 생성" 
+                              Margin="8,0,0,0"
+                              Style="{DynamicResource AccentButtonStyle}"
+                              Height="28"
+                              Padding="12,4"
+                              Click="GenerateTrafficButton_Click"/>
+                                <Button Content="Mock 공격 테스트" 
+                              Margin="8,0,0,0"
+                              Style="{DynamicResource AccentButtonStyle}"
+                              Height="28"
+                              Padding="12,4"
+                              Click="MockAttackButton_Click"/>
+                                <Button Content="전체 보기" 
+                              Margin="8,0,0,0"
                               Style="{DynamicResource AccentButtonStyle}"
                               Height="28"
                               Padding="12,4"/>

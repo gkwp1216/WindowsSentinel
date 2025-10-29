@@ -108,6 +108,9 @@ namespace LogCheck.Services
         private StackPanel? _containerStack;
         private const int MaxToasts = 4;
 
+        // DDoS 테스트 모드에서 토스트 알림 억제용 플래그
+        public static bool IsToastSuppressed { get; set; } = false;
+
         public static ToastNotificationService Instance => _instance ??= new ToastNotificationService();
 
         public ObservableCollection<ToastNotification> ActiveToasts { get; }
@@ -171,6 +174,13 @@ namespace LogCheck.Services
         /// </summary>
         private async Task ShowToastAsync(string title, string message, ToastType type, int durationMs)
         {
+            // 토스트 억제 모드에서는 알림 표시하지 않음
+            if (IsToastSuppressed)
+            {
+                System.Diagnostics.Debug.WriteLine($"🔇 토스트 억제됨: {title} - {message}");
+                return;
+            }
+
             await _dispatcher.InvokeAsync(() =>
             {
                 var toast = new ToastNotification

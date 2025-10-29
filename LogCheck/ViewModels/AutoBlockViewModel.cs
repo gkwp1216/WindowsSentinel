@@ -167,11 +167,11 @@ namespace LogCheck.ViewModels
 
         #region Commands
 
-        public ICommand RefreshCommand { get; private set; }
-        public ICommand UnblockSelectedCommand { get; private set; }
-        public ICommand AddToWhitelistCommand { get; private set; }
-        public ICommand ExportListCommand { get; private set; }
-        public ICommand SetFilterCommand { get; private set; }
+        public ICommand? RefreshCommand { get; private set; }
+        public ICommand? UnblockSelectedCommand { get; private set; }
+        public ICommand? AddToWhitelistCommand { get; private set; }
+        public ICommand? ExportListCommand { get; private set; }
+        public ICommand? SetFilterCommand { get; private set; }
 
         #endregion
 

@@ -270,22 +270,8 @@ namespace LogCheck.Services
         public string RecommendedAction { get; set; } = string.Empty;
     }
 
-    /// <summary>
-    /// TCP 플래그 열거형
-    /// </summary>
-    [Flags]
-    public enum TcpFlags : uint
-    {
-        None = 0,
-        FIN = 0x01,
-        SYN = 0x02,
-        RST = 0x04,
-        PSH = 0x08,
-        ACK = 0x10,
-        URG = 0x20,
-        ECE = 0x40,
-        CWR = 0x80
-    }
+    // TcpFlags enum moved to Models/DDoSAttackTypes.cs to centralize model enums.
+    // This file uses that canonical definition.
 
     /// <summary>
     /// TCP 연결 상태

@@ -348,6 +348,28 @@ namespace LogCheck.Services
         }
 
         /// <summary>
+        /// IP에 레이트 리미트를 적용할 때 제한값(pps)과 지속시간을 지정하는 오버로드
+        /// </summary>
+        public async Task ApplyRateLimit(string ipAddress, ProcessNetworkInfo networkInfo, int ppsLimit, TimeSpan duration)
+        {
+            if (string.IsNullOrEmpty(ipAddress))
+                return;
+
+            await Task.Run(() =>
+            {
+                // 실제 환경에서는 iptables/netsh/NDIS 클램프 호출 등으로 구현
+                Console.WriteLine($"IP {ipAddress}에 레이트 리미트 적용: {ppsLimit} pps, 기간 {duration}");
+                try
+                {
+                    var st = new System.Diagnostics.StackTrace();
+                    var caller = st.GetFrame(1)?.GetMethod();
+                    Console.WriteLine($"ApplyRateLimit caller: {caller}");
+                }
+                catch { }
+            });
+        }
+
+        /// <summary>
         /// IP별 연결 제한 적용
         /// </summary>
         public async Task LimitConnectionsForIP(string ipAddress)

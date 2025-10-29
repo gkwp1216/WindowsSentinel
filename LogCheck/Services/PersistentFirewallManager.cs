@@ -462,6 +462,61 @@ namespace LogCheck.Services
         }
 
         /// <summary>
+        /// 프로세스 이름 또는 원격 주소와 관련된 모든 차단 규칙을 찾아 제거합니다.
+        /// </summary>
+        public async Task<int> RemoveBlockRulesByAssociationAsync(string processName, string remoteAddress)
+        {
+            if (_firewallPolicy == null)
+            {
+                throw new InvalidOperationException("방화벽 정책이 초기화되지 않았습니다.");
+            }
+
+            var rulesToRemove = new HashSet<string>();
+            var allRules = await GetLogCheckRulesAsync();
+
+            foreach (var rule in allRules)
+            {
+                // 1. 규칙 이름에 프로세스 이름이 포함되어 있는지 확인 (더 유연한 방식)
+                if (!string.IsNullOrEmpty(processName) && rule.Name.Contains(processName, StringComparison.OrdinalIgnoreCase))
+                {
+                    rulesToRemove.Add(rule.Name);
+                    continue; // 다음 규칙으로
+                }
+
+                // 2. 원격 주소로 규칙 확인
+                if (!string.IsNullOrEmpty(rule.RemoteAddresses) && !string.IsNullOrEmpty(remoteAddress))
+                {
+                    var blockedIPs = rule.RemoteAddresses.Split(',');
+                    if (blockedIPs.Any(ip => ip.Trim().Equals(remoteAddress, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        rulesToRemove.Add(rule.Name);
+                    }
+                }
+            }
+
+            int removedCount = 0;
+            foreach (var ruleName in rulesToRemove)
+            {
+                try
+                {
+                    _firewallPolicy.Rules.Remove(ruleName);
+                    removedCount++;
+                    Debug.WriteLine($"[Unblock] Removed firewall rule '{ruleName}'");
+                }
+                catch (COMException)
+                {
+                    Debug.WriteLine($"[Unblock] Firewall rule '{ruleName}' not found for removal.");
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"[Unblock] Failed to remove firewall rule '{ruleName}': {ex.Message}");
+                }
+            }
+
+            return removedCount;
+        }
+
+        /// <summary>
         /// LogCheck 관련 모든 규칙 조회
         /// </summary>
         public async Task<List<FirewallRuleInfo>> GetLogCheckRulesAsync()

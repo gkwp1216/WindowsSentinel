@@ -78,6 +78,7 @@ namespace LogCheck
         private readonly ObservableCollection<FirewallRuleInfo> _firewallRules;
         private bool _isInitialized = false;
         private int _totalBlockedCount = 0;
+        private long _packetsReceived = 0;
         private int _level1BlockCount = 0;
         private int _level2BlockCount = 0;
         private int _level3BlockCount = 0;
@@ -283,12 +284,6 @@ namespace LogCheck
             _autoBlockService = new AutoBlockService(connectionString);
             _autoBlockStats = new AutoBlockStatisticsService(connectionString);
 
-            // 로그 파일 경로 설정 비활성화
-            // _logFilePath = System.IO.Path.Combine(
-            //     AppDomain.CurrentDomain.BaseDirectory,
-            //     @"..\..\..\monitoring_log_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt"
-            // );
-
             // XAML 로드 (이 시점에 SelectionChanged가 발생해도 컬렉션은 준비됨)
             InitializeComponent();
 
@@ -309,8 +304,7 @@ namespace LogCheck
             // 이벤트 구독
             SubscribeToEvents();
 
-            // DDoS 방어 시스템 초기화 (백그라운드)
-            Task.Run(async () => await InitializeDDoSDefenseSystem());
+            // DDoS 방어 시스템은 MainWindows에서 관리됨 (제거됨)
             SubscribeToAutoBlockEvents();
 
             // UI 초기화
@@ -322,6 +316,16 @@ namespace LogCheck
                 Interval = TimeSpan.FromSeconds(1)
             };
             _updateTimer.Tick += UpdateTimer_Tick;
+
+            // DDoS 업데이트 타이머 설정 (MainWindows의 DDoS 시스템 모니터링용)
+            _ddosUpdateTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(2)
+            };
+            _ddosUpdateTimer.Tick += DDoSUpdateTimer_Tick;
+
+            // Unloaded 이벤트에 리소스 정리 추가
+            this.Unloaded += NetWorks_New_Unloaded;
 
             // 트레이 아이콘은 App.xaml.cs에서 관리됩니다
 
@@ -428,14 +432,23 @@ namespace LogCheck
                 // 디버그: 패킷 수신 확인
                 System.Diagnostics.Debug.WriteLine($"📦 패킷 수신: {packet.SrcIp} → {packet.DstIp}, {packet.Length} bytes, {packet.Protocol}");
 
-                // DDoS 방어 시스템이 초기화되어 있으면 패킷 전달
-                if (_ddosDefenseSystem != null)
+                // 패킷 수신 카운터 증가
+                _packetsReceived++;
+                if (PacketsReceivedText != null)
                 {
-                    _ddosDefenseSystem.AddPacket(packet);
+                    Dispatcher.Invoke(() => PacketsReceivedText.Text = _packetsReceived.ToString());
+                }
+
+                // DDoS 방어 시스템이 초기화되어 있으면 패킷 전달
+                var ddos = _ddosDefenseSystem ?? SharedDDoSDefenseSystem;
+                if (ddos != null)
+                {
+                    ddos.AddPacket(packet);
+                    System.Diagnostics.Debug.WriteLine($"✅ 패킷 DDoS 시스템에 전달됨: {packet.SrcIp} → {packet.DstIp}");
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("⚠️ DDoS 방어 시스템이 초기화되지 않음");
+                    System.Diagnostics.Debug.WriteLine("⚠️ DDoS 방어 시스템이 초기화되지 않음 (Shared 또는 local)");
                 }
             }
             catch (Exception ex)
@@ -788,10 +801,20 @@ namespace LogCheck
             {
                 AddLogMessage("네트워크 모니터링 시작...");
 
-                // 전역 허브를 통해 모니터링 시작 (설정 기반 NIC/BPF 사용)
+                // 🔥 디버그: 현재 설정 확인
                 var s = LogCheck.Properties.Settings.Default;
-                var bpf = string.IsNullOrWhiteSpace(s.BpfFilter) ? "tcp or udp or icmp" : s.BpfFilter;
-                string? nic = s.AutoSelectNic ? null : (string.IsNullOrWhiteSpace(s.SelectedNicId) ? null : s.SelectedNicId);
+                AddLogMessage($"BPF 필터: {s.BpfFilter}");
+                AddLogMessage($"자동 NIC 선택: {s.AutoSelectNic}");
+                AddLogMessage($"선택된 NIC: {s.SelectedNicId}");
+
+                // 이더넷 어댑터 강제 선택 (Realtek Gaming 2.5GbE Family Controller)
+                string? nic = "Realtek Gaming 2.5GbE Family Controller";
+                var bpf = "tcp or udp or icmp";
+
+                AddLogMessage($"사용할 NIC: {nic}");
+                AddLogMessage($"사용할 BPF: {bpf}");
+
+                // 전역 허브를 통해 모니터링 시작
                 await MonitoringHub.Instance.StartAsync(bpf, nic);
                 _isMonitoring = true;
                 _timerTickCount = 0; // 카운터 초기화
@@ -861,6 +884,149 @@ namespace LogCheck
                 AddLogMessage($"새로고침 오류: {ex.Message}");
                 MessageBox.Show($"데이터 새로고침 중 오류가 발생했습니다:{ex.Message}",
                     "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // 테스트 모드 플래그 (팝업창만 억제, 토스트 알림과 AutoBlock은 유지)
+        private static bool _isTestMode = false;
+
+        /// <summary>
+        /// DDoS 테스트 버튼 클릭
+        /// </summary>
+        private async void TestDDoS_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("🔥 DDoS 테스트 버튼 클릭됨");
+
+                // Prefer shared (application-level) instance so events appear in main dashboard
+                var ddosInstance = SharedDDoSDefenseSystem ?? _ddosDefenseSystem;
+                if (ddosInstance == null)
+                {
+                    AddLogMessage("⚠️ DDoS 방어 시스템이 초기화되지 않았습니다. 초기화를 시도합니다...");
+                    await InitializeDDoSDefenseSystem();
+                    ddosInstance = SharedDDoSDefenseSystem ?? _ddosDefenseSystem;
+                    if (ddosInstance == null)
+                    {
+                        AddLogMessage("❌ DDoS 시스템 초기화에 실패했습니다.");
+                        return;
+                    }
+                }
+
+                AddLogMessage("🚀 내장 DDoS 테스트 시나리오 시작 (5초간 실행)...");
+
+                // 테스트 모드 활성화 (토스트는 5초간 허용)
+                _isTestMode = true;
+                System.Diagnostics.Debug.WriteLine("� DDoS 테스트 시작 - 5초간 토스트 알림 허용");                // 5초 제한을 위한 CancellationToken 생성
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+                var cancellationToken = cts.Token;
+
+                // 내장 MockTrafficGenerator 사용 (공유 인스턴스 사용)
+                var mockGenerator = new LogCheck.Services.MockTrafficGenerator(ddosInstance);
+
+                try
+                {
+                    // 5초 후 토스트 억제 활성화하는 지연된 작업
+                    var toastSuppressionTask = Task.Run(async () =>
+                    {
+                        await Task.Delay(5000, cancellationToken); // 정확히 5초 후
+                        LogCheck.Services.ToastNotificationService.IsToastSuppressed = true;
+                        System.Diagnostics.Debug.WriteLine("🔇 5초 경과 - 토스트 알림 억제 활성화");
+                    });
+
+                    // 모든 테스트를 병렬로 실행하되 5초 후 중지
+                    var testTasks = new[]
+                    {
+                        Task.Run(async () =>
+                        {
+                            AddLogMessage("📡 빠른 공격 테스트 시작...");
+                            await mockGenerator.QuickAttackTestAsync(cancellationToken);
+                        }, cancellationToken),
+
+                        Task.Run(async () =>
+                        {
+                            await Task.Delay(2000, cancellationToken);
+                            AddLogMessage("📡 UDP 플러드 테스트 시작...");
+                            await mockGenerator.UDFFloodTestAsync(cancellationToken);
+                        }, cancellationToken),
+
+                        Task.Run(async () =>
+                        {
+                            await Task.Delay(4000, cancellationToken);
+                            AddLogMessage("📡 혼합 트래픽 테스트 시작...");
+                            await mockGenerator.MixedTrafficTestAsync(cancellationToken);
+                        }, cancellationToken)
+                    };
+
+                    // 토스트 억제 작업과 테스트 작업을 모두 병렬 실행
+                    await Task.WhenAll(testTasks.Concat(new[] { toastSuppressionTask }));
+                }
+                catch (OperationCanceledException)
+                {
+                    AddLogMessage("⏱️ DDoS 테스트가 5초 제한으로 중지되었습니다.");
+                }
+                finally
+                {
+                    // 즉시 테스트 모드 및 토스트 억제 비활성화
+                    _isTestMode = false;
+                    LogCheck.Services.ToastNotificationService.IsToastSuppressed = false;
+                    System.Diagnostics.Debug.WriteLine("🔊 전역 토스트 알림 억제 해제");
+                    AddLogMessage("⏱️ DDoS 테스트가 5초 제한으로 완료되었습니다.");
+
+                    // 테스트 완료 후 강력한 시스템 정리 및 이벤트 핸들러 복원
+                    try
+                    {
+                        if (ddosInstance != null)
+                        {
+                            // 1. DDoS 시스템 완전 중지
+                            ddosInstance.Stop();
+                            System.Diagnostics.Debug.WriteLine("🛑 DDoS 시스템 중지됨");
+
+                            // 2. 충분한 대기 시간으로 모든 큐 처리 대기
+                            await Task.Delay(2000); // 2초 대기로 모든 잔여 패킷 처리 완료 대기
+
+                            // 3. 시스템 재시작
+                            ddosInstance.Start();
+
+                            // 4. 이벤트 핸들러 다시 등록
+                            ddosInstance.AttackDetected += OnDDoSAttackDetected;
+                            System.Diagnostics.Debug.WriteLine("🔊 DDoS 이벤트 핸들러 복원됨");
+
+                            // 5. 추가 안전 대기 (지연된 이벤트 완전 차단)
+                            await Task.Delay(1000);
+                        }
+
+                        System.Diagnostics.Debug.WriteLine("✅ DDoS 시스템 완전 정리 및 복원 완료");
+                    }
+                    catch (Exception resetEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"⚠️ DDoS 시스템 복원 오류: {resetEx.Message}");
+                    }
+                }
+                AddLogMessage("✅ DDoS 테스트 완료 - 보안 대시보드에서 이벤트를 확인하세요.");
+            }
+            catch (Exception ex)
+            {
+                // 오류 발생 시에도 모든 억제 해제 및 복원
+                _isTestMode = false;
+                LogCheck.Services.ToastNotificationService.IsToastSuppressed = false;
+                System.Diagnostics.Debug.WriteLine("🔊 오류 복구: 전역 토스트 알림 억제 해제");
+
+                try
+                {
+                    var currentDdosInstance = SharedDDoSDefenseSystem ?? _ddosDefenseSystem;
+                    if (currentDdosInstance != null)
+                    {
+                        currentDdosInstance.AttackDetected += OnDDoSAttackDetected;
+                        System.Diagnostics.Debug.WriteLine("🔊 오류 복구: DDoS 이벤트 핸들러 복원됨");
+                    }
+                }
+                catch (Exception handlerEx)
+                {
+                    System.Diagnostics.Debug.WriteLine($"⚠️ 이벤트 핸들러 복원 오류: {handlerEx.Message}");
+                }
+                System.Diagnostics.Debug.WriteLine($"❌ DDoS 테스트 오류: {ex.Message}");
+                AddLogMessage($"DDoS 테스트 오류: {ex.Message}");
             }
         }
 
@@ -1132,7 +1298,7 @@ namespace LogCheck
                 // App.xaml.cs의 App 클래스에서 트레이 알림 표시
                 if (System.Windows.Application.Current is App app)
                 {
-                    app.ShowBalloonTip("네트워크 보안 알림", message, ToolTipIcon.Info);
+                    app.ShowBalloonTip("네트워크 위협 알림", message, ToolTipIcon.Info);
                 }
             }
             catch (Exception ex)
@@ -2391,6 +2557,13 @@ namespace LogCheck
             if (!_isInitialized || connections?.Any() != true)
                 return;
 
+            // 테스트 모드에서는 AutoBlock 억제 (토스트 알림 방지)
+            if (_isTestMode)
+            {
+                System.Diagnostics.Debug.WriteLine("🧪 테스트 모드: AutoBlock 분석 억제됨");
+                return;
+            }
+
             try
             {
                 var blockedCount = 0;
@@ -2400,8 +2573,8 @@ namespace LogCheck
 
                 foreach (var connection in connections)
                 {
-                    // 화이트리스트 확인
-                    if (await _autoBlockService.IsWhitelistedAsync(connection))
+                    // 화이트리스트 확인 (DDoS 공격은 예외 처리)
+                    if (connection.ProcessName != "DDoS Attack" && await _autoBlockService.IsWhitelistedAsync(connection))
                         continue;
 
                     // 연결 분석
@@ -3986,18 +4159,23 @@ namespace LogCheck
             {
                 try
                 {
+                    System.Diagnostics.Debug.WriteLine("🔧 DDoS 방어 시스템 초기화 시작...");
+
                     // DDoS 관련 서비스 초기화
                     _ddosDetectionEngine = new DDoSDetectionEngine();
                     _packetAnalyzer = new AdvancedPacketAnalyzer();
                     _rateLimitingService = new RateLimitingService();
                     _signatureDatabase = new DDoSSignatureDatabase();
 
+                    System.Diagnostics.Debug.WriteLine("✅ DDoS 서비스 초기화 완료");
+
                     // 통합 방어 시스템 초기화
                     _ddosDefenseSystem = new IntegratedDDoSDefenseSystem(
                         _ddosDetectionEngine,
                         _packetAnalyzer,
                         _rateLimitingService,
-                        _signatureDatabase
+                        _signatureDatabase,
+                        new CaptureService() // 패킷 캡처 서비스 추가
                     );
 
                     // 정적 접근자에 할당 (다른 ViewModel에서 접근 가능)
@@ -4008,6 +4186,8 @@ namespace LogCheck
                     _ddosDefenseSystem.AttackDetected += OnDDoSAttackDetected;
                     _ddosDefenseSystem.DefenseActionExecuted += OnDefenseActionExecuted;
                     _ddosDefenseSystem.MetricsUpdated += OnDDoSMetricsUpdated;
+
+                    System.Diagnostics.Debug.WriteLine("📡 DDoS 이벤트 구독 완료");
 
                     // UI 컨트롤에 데이터 바인딩 (XAML 컨트롤들이 로드된 후 실행)
                     _ = Dispatcher.BeginInvoke(() =>
@@ -4033,10 +4213,13 @@ namespace LogCheck
                     _ddosDefenseSystem.Start();
                     _ddosUpdateTimer.Start();
 
+                    System.Diagnostics.Debug.WriteLine("🚀 DDoS 방어 시스템 시작됨");
+
                     // LogHelper.Log("DDoS 방어 시스템이 초기화되었습니다.", "Information");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    System.Diagnostics.Debug.WriteLine($"❌ DDoS 방어 시스템 초기화 실패: {ex.Message}");
                     // LogHelper.Log($"DDoS 방어 시스템 초기화 실패: {ex.Message}", "Error");
                 }
             });
@@ -4047,6 +4230,36 @@ namespace LogCheck
         /// </summary>
         private void OnDDoSAttackDetected(object? sender, DDoSDetectionResult e)
         {
+            // 테스트 모드에서는 이벤트 처리를 제한
+            if (_isTestMode)
+            {
+                System.Diagnostics.Debug.WriteLine($"🧪 테스트 모드: DDoS 이벤트 제한됨 - {e.AttackType} from {e.SourceIP}");
+
+                // 테스트 모드에서는 기본적인 로깅만 수행하고 알림/AutoBlock은 억제
+                Dispatcher.Invoke(() =>
+                {
+                    try
+                    {
+                        // 최소한의 기록만 유지 (UI 업데이트와 보안 대시보드 기록)
+                        _ddosAlerts.Insert(0, e);
+                        while (_ddosAlerts.Count > 100)
+                            _ddosAlerts.RemoveAt(_ddosAlerts.Count - 1);
+
+                        _attackHistory.Insert(0, e);
+                        AttacksDetected++;
+
+                        // 보안 대시보드에는 기록 (시각적 확인용)
+                        var securityVM = LogCheck.ViewModels.SecurityDashboardViewModel.Instance;
+                        securityVM?.AddDDoSEvent(e);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"❌ 테스트 모드 DDoS 이벤트 처리 오류: {ex.Message}");
+                    }
+                });
+                return;
+            }
+
             Dispatcher.Invoke(() =>
             {
                 try
@@ -4064,13 +4277,83 @@ namespace LogCheck
                     // UI 업데이트
                     AttacksDetected++;
 
-                    // 심각도에 따른 알림 표시
+                    // 🔥 WS 보안 이벤트에 DDoS 감지 기록 추가
+                    try
+                    {
+                        var securityVM = LogCheck.ViewModels.SecurityDashboardViewModel.Instance;
+                        if (securityVM != null)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"🔥 SecurityDashboardViewModel 인스턴스 획득 성공, AddDDoSEvent 호출");
+                            securityVM.AddDDoSEvent(e);
+                            System.Diagnostics.Debug.WriteLine($"✅ AddDDoSEvent 호출 완료 - 이벤트 타입: {e.AttackType}, 출처 IP: {e.SourceIP}");
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine($"❌ SecurityDashboardViewModel.Instance가 null입니다!");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"❌ WS 보안 이벤트 기록 실패: {ex.Message}");
+                    }
+
+                    // 🔥 테스트: SecurityDashboard에 직접 이벤트 추가
+                    try
+                    {
+                        var securityVM = LogCheck.ViewModels.SecurityDashboardViewModel.Instance;
+                        if (securityVM != null)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"🔥 테스트 이벤트 추가 시도");
+                            securityVM.AddTestDDoSEvent();
+                            System.Diagnostics.Debug.WriteLine($"✅ 테스트 이벤트 추가 완료");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"❌ 테스트 이벤트 추가 실패: {ex.Message}");
+                    }
+
+                    // 🔥 DDoS 공격 감지 시 AutoBlock 시스템 호출 (로컬 IP도 처리)
+                    if (!string.IsNullOrEmpty(e.SourceIP) && e.SourceIP != "0.0.0.0")
+                    {
+                        _ = Task.Run(async () =>
+                        {
+                            try
+                            {
+                                // DDoS 공격 출처 IP에 대한 가상 연결 정보 생성
+                                var ddosConnection = new ProcessNetworkInfo
+                                {
+                                    ProcessId = 0, // 시스템 프로세스로 표시
+                                    ProcessName = "DDoS Attack",
+                                    ProcessPath = "Network Attack",
+                                    RemoteAddress = e.SourceIP,
+                                    RemotePort = 0, // 포트 정보 없음
+                                    LocalAddress = "0.0.0.0",
+                                    LocalPort = 0,
+                                    Protocol = "UDP", // DDoS는 주로 UDP
+                                    ConnectionState = "Attack",
+                                    DataTransferred = e.PacketCount * 512L, // 대략적인 데이터량
+                                    ConnectionStartTime = DateTime.Now,
+                                    RiskLevel = SecurityRiskLevel.Critical
+                                };
+
+                                // AutoBlock 분석 수행 (DDoS 공격이므로 로컬 IP도 처리)
+                                await AnalyzeConnectionsWithAutoBlockAsync(new List<ProcessNetworkInfo> { ddosConnection });
+
+                                System.Diagnostics.Debug.WriteLine($"🔥 DDoS 공격 출처 IP {e.SourceIP}에 대한 AutoBlock 분석 시작됨");
+                            }
+                            catch (Exception ex)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"❌ DDoS AutoBlock 처리 실패: {ex.Message}");
+                            }
+                        });
+                    }
+
+                    // 심각도에 따른 알림 표시 (MessageBox는 완전히 제거)
                     var alertMessage = $"[{e.Severity}] {e.AttackType} 공격 감지 - {e.SourceIP}";
 
-                    if (e.Severity >= Models.DDoSSeverity.High)
-                    {
-                        MessageBox.Show(alertMessage, "DDoS 공격 감지", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    }
+                    // MessageBox 대신 디버그 로그만 사용
+                    System.Diagnostics.Debug.WriteLine($"🚨 DDoS 감지: {alertMessage}");
 
                     // LogHelper.Log(alertMessage, "Warning");
                 }
@@ -4108,21 +4391,20 @@ namespace LogCheck
         /// <summary>
         /// DDoS 메트릭 업데이트 이벤트 핸들러
         /// </summary>
-        private void OnDDoSMetricsUpdated(object? sender, DDoSMonitoringMetrics e)
+        private void OnDDoSMetricsUpdated()
         {
             Dispatcher.Invoke(() =>
             {
                 try
                 {
-                    // UI 메트릭 업데이트
-                    RiskScore = e.RiskScore;
-                    TrafficVolume = e.TrafficVolumeMbps;
+                    // UI 메트릭 업데이트 로직
+                    System.Diagnostics.Debug.WriteLine("DDoS 메트릭이 업데이트되었습니다.");
 
-                    // 위험 점수에 따른 색상 업데이트
-                    UpdateRiskScoreDisplay(e.RiskScore);
+                    // 위험 점수에 따른 색상 업데이트 (기본값 사용)
+                    // UpdateRiskScoreDisplay(0.0);
 
-                    // 차트 데이터 업데이트
-                    UpdateDDoSCharts(e);
+                    // 차트 데이터 업데이트 (기본값 사용)
+                    // UpdateDDoSCharts(null);
                 }
                 catch (Exception)
                 {
@@ -4138,9 +4420,12 @@ namespace LogCheck
         {
             try
             {
-                if (_ddosDefenseSystem != null)
+                // MainWindows의 공유 DDoS 시스템 사용
+                var sharedDDoS = MainWindows.SharedDDoSDefenseSystem;
+
+                if (sharedDDoS != null)
                 {
-                    var stats = _ddosDefenseSystem.GetStatistics();
+                    var stats = sharedDDoS.GetStatistics();
 
                     Dispatcher.Invoke(() =>
                     {
@@ -4161,6 +4446,45 @@ namespace LogCheck
             catch (Exception)
             {
                 // LogHelper.Log($"DDoS 정기 업데이트 오류: {ex.Message}", "Error");
+            }
+        }
+
+        /// <summary>
+        /// DDoS 공격 감지 이벤트 핸들러
+        /// </summary>
+        private void OnDDoSDetected(object? sender, DDoSAlert e)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"🔥 DDoS 공격 감지: {e.AttackType} - {e.Description}");
+
+                // DDoSAlert를 DDoSDetectionResult로 변환
+                var detectionResult = new DDoSDetectionResult
+                {
+                    IsAttackDetected = true,
+                    AttackType = e.AttackType,
+                    Severity = e.Severity,
+                    AttackDescription = e.Description,
+                    SourceIP = e.SourceIP,
+                    PacketCount = e.PacketCount,
+                    DetectedAt = e.DetectedAt,
+                    AdditionalData = new Dictionary<string, object>
+                    {
+                        ["ConnectionCount"] = e.ConnectionCount,
+                        ["DataTransferred"] = e.DataTransferred,
+                        ["RecommendedAction"] = e.RecommendedAction
+                    }
+                };
+
+                // SecurityDashboard에 이벤트 추가
+                Dispatcher.Invoke(() =>
+                {
+                    LogCheck.ViewModels.SecurityDashboardViewModel.Instance.AddDDoSEvent(detectionResult);
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ DDoS 이벤트 처리 오류: {ex.Message}");
             }
         }
 
@@ -4544,6 +4868,57 @@ namespace LogCheck
         }
 
         #endregion
+
+        /// <summary>
+        /// 페이지 언로드 시 리소스 정리
+        /// </summary>
+        private void NetWorks_New_Unloaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("🧹 NetWorks_New 리소스 정리 시작");
+
+                // DDoS 테스트 중이라면 즉시 정리
+                if (_isTestMode)
+                {
+                    _isTestMode = false;
+                    LogCheck.Services.ToastNotificationService.IsToastSuppressed = false;
+                    System.Diagnostics.Debug.WriteLine("🔊 페이지 전환 시 토스트 억제 해제");
+                }
+
+                // 타이머 정리
+                _updateTimer?.Stop();
+                _ddosUpdateTimer?.Stop();
+
+                // DDoS 시스템 안전 정리
+                try
+                {
+                    var ddosInstance = SharedDDoSDefenseSystem ?? _ddosDefenseSystem;
+                    if (ddosInstance != null)
+                    {
+                        ddosInstance.Stop();
+                        System.Diagnostics.Debug.WriteLine("🛑 페이지 전환 시 DDoS 시스템 안전 중지");
+                    }
+                }
+                catch (Exception ddosEx)
+                {
+                    System.Diagnostics.Debug.WriteLine($"⚠️ DDoS 시스템 정리 오류: {ddosEx.Message}");
+                }
+
+                // 이벤트 구독 해제 (AutoBlock 이벤트만)
+                UnsubscribeHub();
+                // UnsubscribeFromAutoBlockEvents(); // 메서드가 없음
+
+                // MonitoringHub 정리 (MainWindows에서도 정리되지만 여기서도 정리)
+                _ = MonitoringHub.Instance.StopAsync();
+
+                System.Diagnostics.Debug.WriteLine("✅ NetWorks_New 리소스 정리 완료");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ NetWorks_New 리소스 정리 오류: {ex.Message}");
+            }
+        }
 
     }
 

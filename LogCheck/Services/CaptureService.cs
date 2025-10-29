@@ -1,9 +1,13 @@
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using LogCheck.Models;
 using PacketDotNet;
 using SharpPcap;
 
 namespace LogCheck.Services
 {
+    [SupportedOSPlatform("windows")]
     public class CaptureService : ICaptureService, IDisposable
     {
         private ICaptureDevice? _device;
@@ -13,6 +17,8 @@ namespace LogCheck.Services
         private bool _disposing;
         private long _packetsReceived;
         private DateTime _lastMetricsTime = DateTime.Now;
+
+        private readonly ProcessNetworkMapper _processMapper = new ProcessNetworkMapper();
 
         public bool IsRunning { get; private set; }
 
@@ -60,7 +66,8 @@ namespace LogCheck.Services
         {
             var backoffMs = 500; // exponential backoff base
             System.Diagnostics.Debug.WriteLine("🔍 [CaptureService] RunLoop 시작");
-            
+
+
             while (!token.IsCancellationRequested && !_disposing)
             {
                 try
@@ -98,13 +105,42 @@ namespace LogCheck.Services
                     {
                         if (_device != null)
                         {
-                            _device.OnPacketArrival -= OnPacketArrival;
-                            _device.StopCapture();
-                            _device.Close();
+                            try
+                            {
+                                _device.OnPacketArrival -= OnPacketArrival;
+                            }
+                            catch (Exception ex)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"⚠️ 패킷 이벤트 해제 오류: {ex.Message}");
+                            }
+
+                            try
+                            {
+                                _device.StopCapture();
+                            }
+                            catch (Exception ex)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"⚠️ 캡처 중지 오류: {ex.Message}");
+                            }
+
+                            try
+                            {
+                                _device.Close();
+                            }
+                            catch (Exception ex)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"⚠️ 디바이스 닫기 오류: {ex.Message}");
+                            }
                         }
                     }
-                    catch { }
-                    finally { _device = null; }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"⚠️ CaptureService 정리 중 오류: {ex.Message}");
+                    }
+                    finally 
+                    { 
+                        _device = null; 
+                    }
                 }
             }
         }
@@ -113,7 +149,8 @@ namespace LogCheck.Services
         {
             var devices = CaptureDeviceList.Instance;
             System.Diagnostics.Debug.WriteLine($"🔍 [CaptureService] 사용 가능한 디바이스 수: {devices?.Count ?? 0}");
-            
+
+
             if (devices == null || devices.Count == 0)
             {
                 System.Diagnostics.Debug.WriteLine("❌ [CaptureService] 네트워크 디바이스를 찾을 수 없습니다. Npcap이 설치되어 있는지 확인하세요.");
@@ -122,10 +159,13 @@ namespace LogCheck.Services
 
             _device = _nicId != null
                 ? devices.FirstOrDefault(d => d.Name?.Contains(_nicId, StringComparison.OrdinalIgnoreCase) == true)
-                : devices.First();
+                : devices.FirstOrDefault(d => !d.Name?.Contains("Loopback", StringComparison.OrdinalIgnoreCase) == true && !d.Name?.Contains("127.0.0.1", StringComparison.OrdinalIgnoreCase) == true)
+                  ?? devices.First(); // 루프백이 아닌 인터페이스가 없으면 첫 번째 사용
 
             if (_device == null)
                 return false;
+
+            System.Diagnostics.Debug.WriteLine($"🎯 [CaptureService] 선택된 디바이스: {_device.Name} - 설명: {_device.Description}");
 
             _device.Open();
             try
@@ -146,8 +186,9 @@ namespace LogCheck.Services
             {
                 var raw = e.GetPacket();
                 if (raw == null) return;
-                
+
                 // 디버그: 패킷 캡처 확인 (처음 10개만)
+
                 if (_packetsReceived < 10)
                 {
                     System.Diagnostics.Debug.WriteLine($"📥 [CaptureService] 패킷 캡처됨 #{_packetsReceived + 1}");
@@ -180,6 +221,14 @@ namespace LogCheck.Services
                     proto = ProtocolKind.ICMP;
                 }
 
+                int? processId = null;
+                string? processName = null;
+
+                if (ip?.SourceAddress != null && ip.DestinationAddress != null)
+                {
+                    (processId, processName) = _processMapper.GetProcessForConnection(proto, ip.SourceAddress, sport ?? 0, ip.DestinationAddress, dport ?? 0);
+                }
+
                 var dto = new PacketDto
                 {
                     Timestamp = DateTime.UtcNow,
@@ -189,7 +238,9 @@ namespace LogCheck.Services
                     SrcPort = sport,
                     DstPort = dport,
                     Length = raw.Data.Length,
-                    Flags = flags
+                    Flags = flags,
+                    ProcessId = processId,
+                    ProcessName = processName ?? "Unknown"
                 };
 
                 OnPacket?.Invoke(this, dto);

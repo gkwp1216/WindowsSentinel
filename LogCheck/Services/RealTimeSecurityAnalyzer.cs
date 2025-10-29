@@ -195,7 +195,7 @@ namespace LogCheck.Services
                         Description = GenerateAlertDescription(connection, riskFactors),
                         AlertLevel = alertLevel,
                         ProcessId = connection.ProcessId,
-                        ProcessName = connection.ProcessName,
+                        ProcessName = connection.ProcessName ?? string.Empty,
                         RemoteAddress = connection.RemoteAddress,
                         RemotePort = connection.RemotePort,
                         Protocol = connection.Protocol,

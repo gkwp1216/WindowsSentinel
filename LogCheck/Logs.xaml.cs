@@ -3,16 +3,41 @@ using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 
 namespace LogCheck
 {
     public partial class Logs : Page
     {
-
+        private System.Windows.Controls.CheckBox? chkSecurityEvents;
 
         public Logs()
         {
             InitializeComponent();
+
+            // chkSecurityEvents 컨트롤 찾기
+            chkSecurityEvents = FindCheckBoxByContent(this, "WS 보안 이벤트");
+        }
+
+        private System.Windows.Controls.CheckBox? FindCheckBoxByContent(DependencyObject parent, string content)
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is System.Windows.Controls.CheckBox checkBox && checkBox.Content?.ToString() == content)
+                {
+                    return checkBox;
+                }
+
+                var result = FindCheckBoxByContent(child, content);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            return null;
         }
 
         public class ChangeLogEntry
@@ -138,12 +163,84 @@ namespace LogCheck
             if (sender == chkExternalLog)
             {
                 chkEventLog.IsChecked = false;
+                if (chkSecurityEvents != null) chkSecurityEvents.IsChecked = false;
                 isEventChecked = false;
             }
             else if (sender == chkEventLog)
             {
                 chkExternalLog.IsChecked = false;
+                if (chkSecurityEvents != null) chkSecurityEvents.IsChecked = false;
                 isEventChecked = true;
+            }
+            else if (chkSecurityEvents != null && sender == chkSecurityEvents)
+            {
+                chkExternalLog.IsChecked = false;
+                chkEventLog.IsChecked = false;
+                isEventChecked = false;
+                LoadWSSecurityEvents();
+            }
+        }
+
+        /// <summary>
+        /// WS 보안 이벤트를 로드하여 표시합니다.
+        /// </summary>
+        private void LoadWSSecurityEvents()
+        {
+            try
+            {
+                // SecurityDashboardViewModel의 RecentSecurityEvents 가져오기 (Windows 전용)
+                if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
+                {
+                    System.Diagnostics.Debug.WriteLine("WS 보안 이벤트는 Windows 전용입니다.");
+                    return;
+                }
+
+                var securityEvents = LogCheck.ViewModels.SecurityDashboardViewModel.Instance.RecentSecurityEvents;
+
+                // 이벤트 목록 초기화
+                logsDataGrid.Items.Clear();
+
+                if (securityEvents != null && securityEvents.Any())
+                {
+                    foreach (var securityEvent in securityEvents.OrderByDescending(e => e.Timestamp))
+                    {
+                        // DataGrid에 행 추가
+                        logsDataGrid.Items.Add(new
+                        {
+                            Date = securityEvent.Timestamp.ToString("yyyy-MM-dd HH:mm:ss"),
+                            ProgramName = securityEvent.EventType,
+                            Reason = $"{securityEvent.Description} | 위험도: {securityEvent.RiskLevel} | 출처: {securityEvent.Source}",
+                            EventId = 0 // WS 보안 이벤트는 EventId 없음
+                        });
+                    }
+
+                    System.Diagnostics.Debug.WriteLine($"✅ WS 보안 이벤트 {securityEvents.Count}개 로드됨");
+                }
+                else
+                {
+                    // 이벤트가 없을 때 안내 메시지
+                    logsDataGrid.Items.Add(new
+                    {
+                        Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                        ProgramName = "WS 보안 이벤트",
+                        Reason = "아직 감지된 보안 이벤트가 없습니다. DDoS 공격을 시도해 보세요.",
+                        EventId = 0
+                    });
+                    System.Diagnostics.Debug.WriteLine("ℹ️ WS 보안 이벤트가 없음");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ WS 보안 이벤트 로드 실패: {ex.Message}");
+
+                // 오류 메시지 표시
+                logsDataGrid.Items.Add(new
+                {
+                    Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    ProgramName = "오류",
+                    Reason = $"WS 보안 이벤트를 로드하는 중 오류가 발생했습니다: {ex.Message}",
+                    EventId = 0
+                });
             }
         }
         private string AnalyzeReason(string reason, int eventcode)

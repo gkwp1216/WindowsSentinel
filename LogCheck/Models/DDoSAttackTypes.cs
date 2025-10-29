@@ -126,6 +126,11 @@ namespace LogCheck.Models
         /// 알 수 없는 공격 유형
         /// </summary>
         Unknown
+        ,
+        /// <summary>
+        /// 프로세스 기반 이상 트래픽
+        /// </summary>
+        HighTrafficProcess
     }
 
     /// <summary>
@@ -291,6 +296,11 @@ namespace LogCheck.Models
         /// 관리자 알림
         /// </summary>
         AdminAlert
+        ,
+        /// <summary>
+        /// 단순 로깅만 수행
+        /// </summary>
+        LogOnly
     }
 
     /// <summary>

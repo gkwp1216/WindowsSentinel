@@ -441,6 +441,22 @@ namespace LogCheck.Services
         }
 
         /// <summary>
+        /// 연결 정보로 프로세스 정보 조회
+        /// </summary>
+        public (int ProcessId, string ProcessName) GetProcessForConnection(ProtocolKind protocol, System.Net.IPAddress srcIp, int srcPort, System.Net.IPAddress dstIp, int dstPort)
+        {
+            var key = $"{protocol}:{srcIp}:{srcPort}-{dstIp}:{dstPort}";
+            if (_connectionCache.TryGetValue(key, out var connection))
+            {
+                if (_processCache.TryGetValue(connection.ProcessId, out var process))
+                {
+                    return (process.ProcessId, process.ProcessName);
+                }
+            }
+            return (0, "Unknown");
+        }
+
+        /// <summary>
         /// 오류 발생 이벤트 발생
         /// </summary>
         private void OnErrorOccurred(string message)

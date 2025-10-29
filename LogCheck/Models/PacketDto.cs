@@ -12,5 +12,10 @@ namespace LogCheck.Models
         public int? DstPort { get; set; }
         public int Length { get; set; }
         public uint Flags { get; set; }
+        public int? ProcessId { get; set; }
+        public string? ProcessName { get; set; }
+        public string SourceIP { get; set; } = string.Empty;
+        public string DestinationIP { get; set; } = string.Empty;
+        public ProtocolKind ProtocolType { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Runtime.Versioning;
+using System.Security.Principal;
 using System.Windows;
 using System.Windows.Forms;
 using LogCheck.Services;
@@ -40,6 +41,27 @@ namespace LogCheck
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            // 🔥 관리자 권한 체크 - 필수 보안 요구사항
+            if (!IsRunningAsAdministrator())
+            {
+                System.Diagnostics.Debug.WriteLine("🚫 관리자 권한 없음 - 프로그램 종료");
+                System.Windows.MessageBox.Show(
+                    "WindowsSentinel은 시스템 보안을 위해 관리자 권한이 필요합니다.\n\n" +
+                    "프로그램을 관리자 권한으로 다시 실행해주세요.\n\n" +
+                    "방법: exe 파일을 마우스 오른쪽 버튼으로 클릭 → '관리자 권한으로 실행'",
+                    "관리자 권한 필요",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+
+                // 프로그램 즉시 종료
+                System.Windows.Application.Current.Shutdown();
+                return;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("✅ 관리자 권한 확인됨 - 프로그램 계속 실행");
+            }
 
             ToolStripMenuItem? toggleItem = null;
 
@@ -263,6 +285,23 @@ namespace LogCheck
             // 가능한 한 빨리 백그라운드 작업을 중단 후 종료
             try { MonitoringHub.Instance.StopAsync().GetAwaiter().GetResult(); } catch { }
             Shutdown(); // 명시적 종료
+        }
+
+        /// <summary>
+        /// 현재 프로세스가 관리자 권한으로 실행되고 있는지 확인
+        /// </summary>
+        private bool IsRunningAsAdministrator()
+        {
+            try
+            {
+                var identity = System.Security.Principal.WindowsIdentity.GetCurrent();
+                var principal = new System.Security.Principal.WindowsPrincipal(identity);
+                return principal.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public static class ThemeManager

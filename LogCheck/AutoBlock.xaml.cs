@@ -33,6 +33,8 @@ namespace LogCheck
         private readonly PersistentFirewallManager? firewallManager;
         private readonly ToastNotificationService? toastService;
         private ObservableCollection<IBlockedConnection> blockedConnections = new();
+        // PropertyChanged handlers for items (so checkbox changes update buttons)
+        private readonly Dictionary<IBlockedConnection, PropertyChangedEventHandler> _propertyChangedHandlers = new();
         private ICollectionView? filteredView;
         private string currentFilter = "All";
         private bool isLoading = false;
@@ -56,6 +58,53 @@ namespace LogCheck
                 OnPropertyChanged(nameof(IsLoading));
                 UpdateLoadingVisibility();
             }
+        }
+
+        #endregion
+
+        #region Item PropertyChanged Helpers
+
+        private void AttachItemPropertyChangedHandler(IBlockedConnection item)
+        {
+            if (item == null) return;
+            if (_propertyChangedHandlers.ContainsKey(item)) return;
+
+            PropertyChangedEventHandler handler = (s, e) =>
+            {
+                if (string.IsNullOrEmpty(e.PropertyName) || e.PropertyName == nameof(IBlockedConnection.IsSelected))
+                {
+                    Application.Current.Dispatcher.Invoke(UpdateSelectionButtons);
+                }
+            };
+
+            item.PropertyChanged += handler;
+            _propertyChangedHandlers[item] = handler;
+        }
+
+        private void DetachItemPropertyChangedHandler(IBlockedConnection item)
+        {
+            if (item == null) return;
+            if (_propertyChangedHandlers.TryGetValue(item, out var handler))
+            {
+                try { item.PropertyChanged -= handler; } catch { }
+                _propertyChangedHandlers.Remove(item);
+            }
+        }
+
+        private void DetachAllItemPropertyChangedHandlers()
+        {
+            foreach (var kv in _propertyChangedHandlers.ToList())
+            {
+                try { kv.Key.PropertyChanged -= kv.Value; } catch { }
+            }
+            _propertyChangedHandlers.Clear();
+        }
+
+        private void UpdateSelectionButtons()
+        {
+            var selectedCount = BlockedConnections.Count(c => c.IsSelected);
+            if (UnblockSelectedButton != null) UnblockSelectedButton.IsEnabled = selectedCount > 0;
+            if (AddToWhitelistButton != null) AddToWhitelistButton.IsEnabled = selectedCount > 0;
         }
 
         #endregion
@@ -116,6 +165,19 @@ namespace LogCheck
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+            if (firewallManager != null)
+            {
+                try
+                {
+                    await firewallManager.InitializeAsync();
+                }
+                catch (Exception ex)
+                {
+                    toastService?.ShowErrorAsync("방화벽 초기화 실패", ex.Message);
+                    return; // 초기화 실패 시 더 이상 진행하지 않음
+                }
+            }
+
             await LoadDataAsync();
 
             // 5초마다 데이터 갱신
@@ -130,6 +192,7 @@ namespace LogCheck
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             // 정리 작업
+            DetachAllItemPropertyChangedHandlers();
         }
 
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
@@ -368,10 +431,14 @@ namespace LogCheck
                 // UI 업데이트
                 Application.Current.Dispatcher.Invoke(() =>
                 {
+                    // Unsubscribe existing handlers before clearing
+                    DetachAllItemPropertyChangedHandlers();
+
                     BlockedConnections.Clear();
                     foreach (var connection in allConnections)
                     {
                         BlockedConnections.Add(connection);
+                        AttachItemPropertyChangedHandler(connection);
                     }
 
                     // 차트 업데이트
@@ -600,31 +667,93 @@ namespace LogCheck
                 {
                     bool success = false;
 
-                    if (connection.IsPermanentlyBlocked)
-                    {
-                        // 영구 차단 해제 - 방화벽 규칙 제거
-                        try
-                        {
-                            var ruleName = $"LogCheck_Block_{connection.ProcessName}_{connection.RemoteAddress}";
-                            success = firewallManager != null && await firewallManager.RemoveBlockRuleAsync(ruleName);
+                                                                                if (connection.IsPermanentlyBlocked)
 
-                            if (success)
-                            {
-                                // 데이터베이스에서도 영구 차단 기록 제거 (선택사항)
-                                // await statisticsService.RemovePermanentBlockAsync(connection);
-                                toastService?.ShowSuccessAsync("영구 차단 해제", $"{connection.ProcessName} → {connection.RemoteAddress}");
-                            }
-                            else
-                            {
-                                toastService?.ShowWarningAsync("방화벽 규칙 제거 실패", connection.ProcessName);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            toastService?.ShowErrorAsync("영구 차단 해제 실패", ex.Message);
-                            success = false;
-                        }
-                    }
+                                                                                {
+
+                                                                                    // 영구 차단 해제 - 연관된 모든 방화벽 규칙 검색 및 제거
+
+                                                                                    try
+
+                                                                                    {
+
+                                                                                                                    int removedCount = 0;
+
+                                                                                                                    if (firewallManager != null)
+
+                                                                                                                    {
+
+                                                                                                                        removedCount = await firewallManager.RemoveBlockRulesByAssociationAsync(connection.ProcessName, connection.RemoteAddress);
+
+                                                                                                                    }
+
+                                                                                        
+
+                                                                                                                    // 방화벽 규칙 존재 여부와 관계없이 DB 항목은 제거 시도
+
+                                                                                                                    success = true;
+
+                                                                                        
+
+                                                                                                                    if (success)
+
+                                                                                                                    {
+
+                                                                                                                        bool dbSuccess = false;
+
+                                                                                                                        if (statisticsService != null)
+
+                                                                                                                        {
+
+                                                                                                                            dbSuccess = await statisticsService.RemovePermanentBlockRecordsAsync(connection.ProcessName, connection.RemoteAddress);
+
+                                                                                                                        }
+
+                                                                                        
+
+                                                                                                                        if (removedCount > 0)
+
+                                                                                                                        {
+
+                                                                                                                            toastService?.ShowSuccessAsync("영구 차단 해제", $"{removedCount}개 규칙 및 DB 기록 제거됨");
+
+                                                                                                                        }
+
+                                                                                                                        else if (dbSuccess)
+
+                                                                                                                        {
+
+                                                                                                                            toastService?.ShowInfoAsync("차단 해제", "방화벽 규칙이 없어 DB의 기록만 제거했습니다.");
+
+                                                                                                                        }
+
+                                                                                                                        else
+
+                                                                                                                        {
+
+                                                                                                                            // 이 경우는 거의 없지만, 만약을 위해
+
+                                                                                                                            success = false; 
+
+                                                                                                                            toastService?.ShowWarningAsync("차단 해제 실패", "규칙 및 DB 기록을 제거하지 못했습니다.");
+
+                                                                                                                        }
+
+                                                                                                                    }
+
+                                                                                    }
+
+                                                                                    catch (Exception ex)
+
+                                                                                    {
+
+                                                                                        toastService?.ShowErrorAsync("영구 차단 해제 실패", ex.Message);
+
+                                                                                        success = false;
+
+                                                                                    }
+
+                                                                                }
                     else
                     {
                         // 임시 차단 해제
@@ -649,6 +778,8 @@ namespace LogCheck
                         // UI에서 제거
                         Application.Current.Dispatcher.Invoke(() =>
                         {
+                            // 먼저 핸들러 분리
+                            DetachItemPropertyChangedHandler(connection);
                             BlockedConnections.Remove(connection);
                         });
                     }
@@ -717,6 +848,8 @@ namespace LogCheck
                         // UI에서 제거
                         Application.Current.Dispatcher.Invoke(() =>
                         {
+                            // 핸들러 분리
+                            DetachItemPropertyChangedHandler(connection);
                             BlockedConnections.Remove(connection);
                         });
                     }

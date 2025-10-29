@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    
+  <!-- App.xaml is included by default when UseWPF is true; remove explicit ApplicationDefinition to avoid duplicates -->
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-beta.710" />
     <PackageReference Include="MaterialDesignColors" Version="3.0.0" />
     <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />

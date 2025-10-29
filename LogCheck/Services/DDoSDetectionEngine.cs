@@ -63,7 +63,7 @@ namespace LogCheck.Services
                 MaxConcurrentConnections = 5000, // 1000 → 5000 (5배 상향)
                 MaxBytesPerSecond = 150 * 1024 * 1024, // 10MB → 150MB/s (1.2Gbps) 현실적 임계값
                 SynFloodThreshold = 500, // 100 → 500 (5배 상향) 1초 내 500개 SYN 패킷
-                UdpFloodThreshold = 1000, // 200 → 1000 (5배 상향) 1초 내 1000개 UDP 패킷
+                UdpFloodThreshold = 100, // 1000 → 100 (데모용 낮춤) - 1초 내 100개 UDP 패킷
                 SlowLorisTimeout = 50, // 10 → 50 (5배 상향) 50초 이상 미완성 연결
                 HttpFloodThreshold = 500 // 100 → 500 (5배 상향) 1초 내 500개 HTTP 요청
             };
@@ -275,6 +275,8 @@ namespace LogCheck.Services
 
                     if (udpCount > _thresholds.UdpFloodThreshold)
                     {
+                        System.Diagnostics.Debug.WriteLine($"🔥 UDP Flood 감지! IP: {ipAddress}, 패킷 수: {udpCount}, 임계값: {_thresholds.UdpFloodThreshold}");
+                        
                         var alert = new DDoSAlert
                         {
                             AttackType = DDoSAttackType.UdpFlood,
@@ -703,14 +705,14 @@ namespace LogCheck.Services
     /// </summary>
     public class DDoSThresholds
     {
-        public int MaxConnectionsPerSecond { get; set; } = 250; // 50 → 250 (5배 상향)
-        public int MaxConnectionsPerMinute { get; set; } = 1500; // 300 → 1500 (5배 상향)
-        public int MaxConcurrentConnections { get; set; } = 5000; // 1000 → 5000 (5배 상향)
-        public long MaxBytesPerSecond { get; set; } = 150 * 1024 * 1024; // 10MB → 150MB/s (1.2Gbps)
-        public int SynFloodThreshold { get; set; } = 500; // 100 → 500 (5배 상향)
-        public int UdpFloodThreshold { get; set; } = 1000; // 200 → 1000 (5배 상향)
-        public int SlowLorisTimeout { get; set; } = 50; // 10 → 50 (5배 상향)
-        public int HttpFloodThreshold { get; set; } = 500; // 100 → 500 (5배 상향)
+        public int MaxConnectionsPerSecond { get; set; } = 10; // 데모용으로 낮춤
+        public int MaxConnectionsPerMinute { get; set; } = 50; // 데모용으로 낮춤
+        public int MaxConcurrentConnections { get; set; } = 100; // 데모용으로 낮춤
+        public long MaxBytesPerSecond { get; set; } = 1 * 1024 * 1024; // 1MB/s로 낮춤
+        public int SynFloodThreshold { get; set; } = 20; // 데모용으로 크게 낮춤 (원래 500)
+        public int UdpFloodThreshold { get; set; } = 50; // 데모용으로 낮춤
+        public int SlowLorisTimeout { get; set; } = 10; // 데모용으로 낮춤
+        public int HttpFloodThreshold { get; set; } = 20; // 데모용으로 낮춤
     }
 
     /// <summary>

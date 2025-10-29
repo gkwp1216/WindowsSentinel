@@ -148,7 +148,7 @@
                                                          HorizontalAlignment="Center"
                                                          VerticalAlignment="Center" />
                             <Border.ToolTip>
-                                <ToolTip Content="실시간으로 네트워크 모니터링을 하고 보안 위협을 탐지합니다."/>
+                                <ToolTip Content="실시간으로 네트워크 모니터링을 하고 위협을 탐지합니다."/>
                             </Border.ToolTip>
                         </Border>
                     </StackPanel>
@@ -207,6 +207,17 @@
                                     VerticalAlignment="Center"
                                     Width="80" Height="32"
                                     Margin="0,0,6,0">
+                        </Button>
+
+                        <Button x:Name="TestDDoSButton"
+                                    Content="패킷 테스트"
+                                    Style="{DynamicResource RefreshButtonStyle}"
+                                    Click="TestDDoS_Click"
+                                    VerticalAlignment="Center"
+                                    Width="100" Height="32"
+                                    Margin="0,0,6,0"
+                                    Background="Orange"
+                                    Foreground="White">
                         </Button>
 
 
@@ -272,6 +283,26 @@
                                 <TextBlock x:Name="DangerousConnectionsText"
                                                Text="0"
                                                Foreground="White" 
+                                               FontWeight="Bold"
+                                               FontSize="14"
+                                               Margin="6,0,0,0"
+                                               VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- 패킷 수신 카운터 -->
+                        <Border Background="{DynamicResource SecondaryBackgroundColor}" 
+                                    CornerRadius="6" 
+                                    Padding="8,4"
+                                    Margin="10,0,0,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="수신 패킷" 
+                                               Foreground="{DynamicResource SecondaryForegroundColor}" 
+                                               FontSize="12" 
+                                               VerticalAlignment="Center"/>
+                                <TextBlock x:Name="PacketsReceivedText"
+                                               Text="0"
+                                               Foreground="Cyan" 
                                                FontWeight="Bold"
                                                FontSize="14"
                                                Margin="6,0,0,0"
@@ -975,7 +1006,7 @@
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Security" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <TextBlock Text="🔒 보안 관리" VerticalAlignment="Center"/>
+                            <TextBlock Text="🔒 차단 관리" VerticalAlignment="Center"/>
                         </StackPanel>
                     </TabItem.Header>
 
@@ -1150,7 +1181,7 @@
                             <TabItem.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Kind="Alert" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                    <TextBlock Text="보안 경고" VerticalAlignment="Center"/>
+                                    <TextBlock Text="경고 목록" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </TabItem.Header>
 
@@ -1163,7 +1194,7 @@
                                 <!-- 보안 경고 제목 -->
                                 <Border Grid.Row="0" Background="{DynamicResource SecondaryBackgroundColor}" 
                                             CornerRadius="8" Padding="15" Margin="0,0,0,10">
-                                    <TextBlock Text="실시간 보안 경고 및 위협 분석" 
+                                    <TextBlock Text="실시간 경고 목록 및 위협 분석" 
                                                    FontWeight="Bold" FontSize="16"
                                                    Foreground="{DynamicResource PrimaryForegroundColor}"
                                                    HorizontalAlignment="Center"/>

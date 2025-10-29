@@ -21,6 +21,20 @@ namespace LogCheck.ViewModels
     [SupportedOSPlatform("windows")]
     public class SecurityDashboardViewModel : INotifyPropertyChanged, IDisposable
     {
+        // 싱글톤 인스턴스
+        private static SecurityDashboardViewModel? _instance;
+        public static SecurityDashboardViewModel Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new SecurityDashboardViewModel();
+                }
+                return _instance;
+            }
+        }
+
         private readonly System.Timers.Timer _updateTimer;
         private readonly AutoBlockStatisticsService _statisticsService;
         private readonly ToastNotificationService _toastService;
@@ -460,6 +474,241 @@ namespace LogCheck.ViewModels
                     }
                 });
             }
+        }
+
+        /// <summary>
+        /// 외부에서 DDoS 이벤트를 추가하기 위한 public 메서드
+        /// </summary>
+        public void AddDDoSEvent(DDoSDetectionResult result)
+        {
+            System.Diagnostics.Debug.WriteLine($"🔥 AddDDoSEvent 호출됨 - 공격 타입: {result.AttackType}, 출처 IP: {result.SourceIP}, 심각도: {result.Severity}");
+            
+            System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+            {
+                System.Diagnostics.Debug.WriteLine($"📝 UI 스레드에서 이벤트 추가 시작");
+                
+                // 최대 50개 이벤트 유지
+                if (RecentSecurityEvents.Count >= 50)
+                {
+                    RecentSecurityEvents.RemoveAt(RecentSecurityEvents.Count - 1);
+                }
+
+                var riskLevel = result.Severity switch
+                {
+                    DDoSSeverity.Critical => "높음",
+                    DDoSSeverity.High => "높음",
+                    DDoSSeverity.Medium => "보통",
+                    DDoSSeverity.Low => "낮음",
+                    _ => "정보"
+                };
+
+                var riskColor = result.Severity switch
+                {
+                    DDoSSeverity.Critical => System.Windows.Media.Brushes.Red,
+                    DDoSSeverity.High => System.Windows.Media.Brushes.Orange,
+                    DDoSSeverity.Medium => System.Windows.Media.Brushes.Yellow,
+                    DDoSSeverity.Low => System.Windows.Media.Brushes.Green,
+                    _ => System.Windows.Media.Brushes.Gray
+                };
+
+                var eventTypeColor = System.Windows.Media.Brushes.Red; // DDoS는 빨간색
+
+                var newEvent = new SecurityEventInfo
+                {
+                    Timestamp = DateTime.Now,
+                    EventType = "DDoS 탐지",
+                    TypeColor = eventTypeColor,
+                    Description = $"{result.AttackType}: {result.AttackDescription} (패킷: {result.PacketCount}, 점수: {result.AttackScore:F1})",
+                    RiskLevel = riskLevel,
+                    RiskColor = riskColor,
+                    Source = result.SourceIP ?? "알 수 없음"
+                };
+
+                RecentSecurityEvents.Insert(0, newEvent);
+                System.Diagnostics.Debug.WriteLine($"✅ 이벤트 추가 완료 - 총 이벤트 수: {RecentSecurityEvents.Count}");
+                System.Diagnostics.Debug.WriteLine($"📋 추가된 이벤트: {newEvent.EventType} - {newEvent.Description}");
+
+                // PropertyChanged 이벤트 발생
+                OnPropertyChanged(nameof(RecentSecurityEvents));
+
+                // DDoS 이벤트는 항상 Toast 알림 표시
+                ShowSecurityToast(newEvent);
+                System.Diagnostics.Debug.WriteLine($"🔔 Toast 알림 표시 완료");
+            });
+        }
+
+        /// <summary>
+        /// 테스트용 이벤트 추가 메서드
+        /// </summary>
+        public void AddTestDDoSEvent()
+        {
+            System.Diagnostics.Debug.WriteLine($"🔥 AddTestDDoSEvent 호출됨");
+            
+            System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+            {
+                System.Diagnostics.Debug.WriteLine($"📝 UI 스레드에서 테스트 이벤트 추가 시작");
+                
+                // 최대 50개 이벤트 유지
+                if (RecentSecurityEvents.Count >= 50)
+                {
+                    RecentSecurityEvents.RemoveAt(RecentSecurityEvents.Count - 1);
+                }
+
+                var newEvent = new SecurityEventInfo
+                {
+                    Timestamp = DateTime.Now,
+                    EventType = "테스트 DDoS",
+                    TypeColor = System.Windows.Media.Brushes.Red,
+                    Description = "테스트용 DDoS 이벤트 - PowerShell UDP Flood 감지됨",
+                    RiskLevel = "높음",
+                    RiskColor = System.Windows.Media.Brushes.Red,
+                    Source = "127.0.0.1"
+                };
+
+                RecentSecurityEvents.Insert(0, newEvent);
+                System.Diagnostics.Debug.WriteLine($"✅ 테스트 이벤트 추가 완료 - 총 이벤트 수: {RecentSecurityEvents.Count}");
+                System.Diagnostics.Debug.WriteLine($"📋 추가된 테스트 이벤트: {newEvent.EventType} - {newEvent.Description}");
+
+                // 통계 업데이트
+                ActiveThreats++;
+                UpdateThreatTrendChart(new DDoSDetectionStats
+                {
+                    TotalAttacksDetected = ActiveThreats,
+                    AttacksBlocked = BlockedConnections24h
+                });
+
+                // PropertyChanged 이벤트 발생
+                OnPropertyChanged(nameof(RecentSecurityEvents));
+
+                // Toast 알림 표시
+                ShowSecurityToast(newEvent);
+                System.Diagnostics.Debug.WriteLine($"🔔 테스트 Toast 알림 표시 완료");
+            });
+        }
+
+        /// <summary>
+        /// DDoS 공격 시뮬레이션 메서드
+        /// </summary>
+        public void SimulateDDoSAttack(string attackType, string sourceIP, int packetCount)
+        {
+            System.Diagnostics.Debug.WriteLine($"🚨 DDoS 시뮬레이션 시작 - 타입: {attackType}, 출처: {sourceIP}, 패킷 수: {packetCount}");
+            
+            System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+            {
+                // 최대 50개 이벤트 유지
+                if (RecentSecurityEvents.Count >= 50)
+                {
+                    RecentSecurityEvents.RemoveAt(RecentSecurityEvents.Count - 1);
+                }
+
+                var severityColor = attackType switch
+                {
+                    "TCP SYN Flood" => System.Windows.Media.Brushes.Red,
+                    "UDP Flood" => System.Windows.Media.Brushes.OrangeRed,
+                    "ICMP Flood" => System.Windows.Media.Brushes.Orange,
+                    _ => System.Windows.Media.Brushes.Yellow
+                };
+
+                var newEvent = new SecurityEventInfo
+                {
+                    Timestamp = DateTime.Now,
+                    EventType = attackType,
+                    TypeColor = severityColor,
+                    Description = $"{attackType} 공격 감지 - {packetCount}개 패킷, 출처 IP: {sourceIP}",
+                    RiskLevel = packetCount > 500 ? "높음" : "보통",
+                    RiskColor = packetCount > 500 ? System.Windows.Media.Brushes.Red : System.Windows.Media.Brushes.Orange,
+                    Source = sourceIP
+                };
+
+                RecentSecurityEvents.Insert(0, newEvent);
+
+                // 통계 업데이트
+                ActiveThreats++;
+                BlockedConnections24h++;
+                UpdateThreatTrendChart(new DDoSDetectionStats 
+                { 
+                    TotalAttacksDetected = ActiveThreats, 
+                    AttacksBlocked = BlockedConnections24h 
+                });
+
+                // PropertyChanged 이벤트 발생
+                OnPropertyChanged(nameof(RecentSecurityEvents));
+
+                // Toast 알림 표시
+                ShowSecurityToast(newEvent);
+                
+                System.Diagnostics.Debug.WriteLine($"✅ {attackType} 시뮬레이션 완료 - 활성 위협: {ActiveThreats}");
+            });
+        }
+
+        /// <summary>
+        /// 네트워크 트래픽 시뮬레이션 메서드
+        /// </summary>
+        public void AddTestNetworkTraffic(string sourceIP, int bytes)
+        {
+            System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+            {
+                // 네트워크 트래픽 통계 업데이트
+                var additionalTraffic = bytes / 1024.0; // KB로 변환
+                var currentTrafficKB = NetworkTrafficMB * 1024; // 현재 트래픽을 KB로 변환
+                var newTrafficKB = currentTrafficKB + additionalTraffic;
+                
+                NetworkTrafficMB = newTrafficKB / 1024.0; // 다시 MB로 변환하여 저장
+                
+                System.Diagnostics.Debug.WriteLine($"📈 트래픽 업데이트 - 출처: {sourceIP}, 바이트: {bytes}, 총 트래픽: {NetworkTrafficText}");
+            });
+        }
+
+        private void OnDDoSAttackDetected(object? sender, DDoSDetectionResult result)
+        {
+            System.Diagnostics.Debug.WriteLine($"🔥 OnDDoSAttackDetected 호출됨 - 공격 타입: {result.AttackType}, 출처 IP: {result.SourceIP}, 심각도: {result.Severity}");
+            
+            System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+            {
+                // 최대 50개 이벤트 유지
+                if (RecentSecurityEvents.Count >= 50)
+                {
+                    RecentSecurityEvents.RemoveAt(RecentSecurityEvents.Count - 1);
+                }
+
+                var riskLevel = result.Severity switch
+                {
+                    DDoSSeverity.Critical => "높음",
+                    DDoSSeverity.High => "높음",
+                    DDoSSeverity.Medium => "보통",
+                    DDoSSeverity.Low => "낮음",
+                    _ => "정보"
+                };
+
+                var riskColor = result.Severity switch
+                {
+                    DDoSSeverity.Critical => System.Windows.Media.Brushes.Red,
+                    DDoSSeverity.High => System.Windows.Media.Brushes.Orange,
+                    DDoSSeverity.Medium => System.Windows.Media.Brushes.Yellow,
+                    DDoSSeverity.Low => System.Windows.Media.Brushes.Green,
+                    _ => System.Windows.Media.Brushes.Gray
+                };
+
+                var eventTypeColor = System.Windows.Media.Brushes.Red; // DDoS는 빨간색
+
+                var newEvent = new SecurityEventInfo
+                {
+                    Timestamp = DateTime.Now,
+                    EventType = "DDoS 탐지",
+                    TypeColor = eventTypeColor,
+                    Description = $"{result.AttackType}: {result.AttackDescription} (패킷: {result.PacketCount}, 점수: {result.AttackScore:F1})",
+                    RiskLevel = riskLevel,
+                    RiskColor = riskColor,
+                    Source = result.SourceIP ?? "알 수 없음"
+                };
+
+                RecentSecurityEvents.Insert(0, newEvent);
+
+                // DDoS 이벤트는 항상 Toast 알림 표시
+                ShowSecurityToast(newEvent);
+
+                System.Diagnostics.Debug.WriteLine($"🔥 DDoS 이벤트 추가됨: {newEvent.Description}");
+            });
         }
 
         private async void ShowSecurityToast(SecurityEventInfo securityEvent)

@@ -262,4 +262,9 @@ namespace LogCheck.Models
         public Dictionary<string, object> Details { get; set; } = new();
         public DateTime DetectedAt { get; set; } = DateTime.Now;
     }
+
+    // NOTE: Enum types (DDoSAttackType, DDoSSeverity, DDoSDetectionState,
+    // DefenseActionType, ProtocolKind, TcpFlags) were moved to
+    // `DDoSAttackTypes.cs` to avoid duplicate definitions across the
+    // codebase. Keep model classes here only.
 }

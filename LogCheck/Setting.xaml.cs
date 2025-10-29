@@ -51,7 +51,7 @@ namespace LogCheck
             {
                 demoCb.Checked -= DemoModeCheckBox_Changed;
                 demoCb.Unchecked -= DemoModeCheckBox_Changed;
-                demoCb.IsChecked = false; // 기본값: 비활성화 (프로덕션 모드)
+                demoCb.IsChecked = LogCheck.Services.DDoSDetectionEngine.DemoMode; // 현재 DemoMode 값으로 초기화
                 demoCb.Checked += DemoModeCheckBox_Changed;
                 demoCb.Unchecked += DemoModeCheckBox_Changed;
             }
@@ -102,7 +102,7 @@ namespace LogCheck
         {
             var isChecked = (sender as System.Windows.Controls.CheckBox)?.IsChecked == true;
 
-            // DDoSDetectionEngine의 DemoMode 직접 설정 (Reflection 대신)
+            // DDoSDetectionEngine의 DemoMode 설정
             try
             {
                 LogCheck.Services.DDoSDetectionEngine.DemoMode = isChecked;

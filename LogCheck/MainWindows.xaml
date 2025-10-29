@@ -259,7 +259,7 @@
                                        FontSize="18" 
                                        Margin="0,0,15,0" 
                                        VerticalAlignment="Center"/>
-                            <TextBlock Text="보안 상태 대시보드" 
+                            <TextBlock Text="통합 대시보드" 
                                        FontSize="14" 
                                        Foreground="{DynamicResource SidebarForegroundColor}"
                                        VerticalAlignment="Center"/>
@@ -275,7 +275,7 @@
                                        FontSize="18" 
                                        Margin="0,0,15,0" 
                                        VerticalAlignment="Center"/>
-                            <TextBlock Text="네트워크 보안" 
+                            <TextBlock Text="네트워크 모니터링" 
                                        FontSize="14" 
                                        Foreground="{DynamicResource SidebarForegroundColor}"
                                        VerticalAlignment="Center"/>
@@ -476,7 +476,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="보안 상태" Foreground="{DynamicResource ForegroundColor}" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="0" Text="시스템 상태" Foreground="{DynamicResource ForegroundColor}" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center"/>
 
                     <Button Grid.Column="1" 
                         x:Name="RefreshSecurityStatusButton"
@@ -506,7 +506,7 @@
                     <!-- 1. 핵심 Windows 보안 서비스 상태 -->
                     <Border Grid.Column="0" Background="{DynamicResource BackgroundColor}" CornerRadius="8" Padding="15" Margin="0,0,10,0">
                         <StackPanel>
-                            <TextBlock Text="🛡️ 핵심 보안 서비스" Foreground="{DynamicResource ForegroundColor}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,15"/>
+                            <TextBlock Text="🛡️ 핵심 서비스" Foreground="{DynamicResource ForegroundColor}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,15"/>
 
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -651,7 +651,7 @@
                     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
                         <TextBlock Text="&#xE704;" 
                                Style="{StaticResource MaterialIconStyle}"/>
-                        <TextBlock Text="네트워크 보안" 
+                        <TextBlock Text="네트워크 모니터링" 
                                TextAlignment="Center"
                                FontSize="25" 
                                FontWeight="SemiBold"/>
@@ -685,7 +685,7 @@
                     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Background="Transparent">
                         <TextBlock Text="&#xE8C7;" 
                                Style="{StaticResource MaterialIconStyle}"/>
-                        <TextBlock Text="보안 대시보드" 
+                        <TextBlock Text="통합 대시보드" 
                                TextAlignment="Center"
                                FontSize="25" 
                                FontWeight="SemiBold"/>
